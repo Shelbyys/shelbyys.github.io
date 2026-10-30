@@ -1,0 +1,716 @@
+/* ==========================================================================
+   Carrossel 3D — estilos
+   Sumário:
+     1. Tokens (:root)            → troque cores, fontes e medidas aqui
+     2. Base da página
+     3. Topo, herói e cabeçalhos de seção
+     4. Componente .c3 (palco, trilho, slides, controles)
+     5. Ajustes por modo (cobertura, anel, pilha)
+     6. Cartão e ilustrações (temas .c3-tema--*)
+     7. Responsivo e movimento reduzido
+   ========================================================================== */
+
+/* 1. TOKENS ------------------------------------------------------------- */
+:root {
+  /* Cores */
+  --c3-fundo: #0b0c10;
+  --c3-fundo-2: #12141b;
+  --c3-superficie: rgba(255, 255, 255, 0.04);
+  --c3-linha: rgba(255, 255, 255, 0.09);
+  --c3-texto: #f1f1f1;
+  --c3-texto-2: rgba(241, 241, 241, 0.68);
+  --c3-texto-3: rgba(241, 241, 241, 0.44);
+  --c3-sinal: #ffb547;            /* âmbar: destaques, bolinha ativa, foco */
+  --c3-sinal-tinta: #1d1304;      /* texto sobre o âmbar */
+
+  /* Tipografia */
+  --c3-fonte-titulo: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --c3-fonte-texto: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Medidas */
+  --c3-margem: clamp(20px, 5vw, 72px);  /* respiro lateral da página */
+  --c3-raio: 22px;                      /* cantos dos cartões */
+  --c3-foco: 0 0 0 2px var(--c3-fundo), 0 0 0 4px var(--c3-sinal);
+
+  /* Tamanho do cartão em cada modo (largura; a altura segue a proporção 3:4) */
+  --c3-l-cobertura: clamp(184px, min(21vw, 34vh), 306px);
+  --c3-l-anel: clamp(168px, 17vw, 236px);
+  --c3-l-pilha: clamp(232px, 24vw, 310px);
+}
+
+/* 2. BASE --------------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body.c3-pagina {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(60vw 40vw at 85% -10%, rgba(255, 181, 71, 0.10), transparent 70%),
+    radial-gradient(50vw 40vw at -10% 30%, rgba(90, 120, 255, 0.08), transparent 70%),
+    var(--c3-fundo);
+  color: var(--c3-texto);
+  font-family: var(--c3-fonte-texto);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p { margin: 0; }
+a { color: inherit; }
+
+:focus-visible { outline: none; box-shadow: var(--c3-foco); border-radius: 8px; }
+
+.c3-pular {
+  position: absolute; left: 12px; top: -60px; z-index: 50;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--c3-sinal); color: var(--c3-sinal-tinta);
+  font-weight: 600; text-decoration: none;
+}
+.c3-pular:focus-visible { top: 12px; }
+
+/* 3. TOPO, HERÓI E CABEÇALHOS ------------------------------------------- */
+.c3-topo {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 22px var(--c3-margem) 0;
+}
+.c3-marca {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--c3-fonte-titulo); font-weight: 600; font-size: 17px;
+  text-decoration: none; letter-spacing: -0.01em;
+}
+/* Ícone da marca: três cartões em leque, puro CSS */
+.c3-marca-icone { position: relative; width: 28px; height: 28px; }
+.c3-marca-icone i {
+  position: absolute; inset: 3px 7px; border-radius: 4px;
+  background: linear-gradient(160deg, #ffd08a, var(--c3-sinal));
+  transform-origin: 50% 120%;
+}
+.c3-marca-icone i:nth-child(1) { transform: rotate(-24deg); opacity: 0.35; }
+.c3-marca-icone i:nth-child(2) { transform: rotate(-10deg); opacity: 0.6; }
+.c3-marca-icone i:nth-child(3) { transform: rotate(6deg); }
+
+.c3-nav { display: flex; gap: 4px; }
+.c3-nav a {
+  padding: 8px 14px; border-radius: 999px;
+  color: var(--c3-texto-2); text-decoration: none; font-size: 14px; font-weight: 500;
+  transition: color 0.2s, background-color 0.2s;
+}
+.c3-nav a:hover { color: var(--c3-texto); background: var(--c3-superficie); }
+
+.c3-heroi {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  align-items: end; gap: 24px 48px;
+  padding: clamp(24px, 3.4vh, 44px) var(--c3-margem) 0;
+}
+.c3-sobretitulo {
+  display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px;
+  color: var(--c3-texto-2); font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+}
+.c3-ponto {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--c3-sinal);
+  box-shadow: 0 0 0 4px rgba(255, 181, 71, 0.16);
+}
+.c3-heroi h1 {
+  font-family: var(--c3-fonte-titulo); font-weight: 600;
+  font-size: clamp(36px, 3.9vw, 58px); line-height: 1.02; letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.c3-heroi h1 em { font-style: normal; color: var(--c3-sinal); }
+.c3-heroi-texto { color: var(--c3-texto-2); max-width: 42ch; padding-bottom: 6px; }
+
+.c3-secao { padding: clamp(72px, 10vw, 128px) 0 0; overflow: hidden; }
+.c3-secao--primeira { padding-top: clamp(16px, 2.6vh, 28px); }
+
+.c3-cabeca {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end; gap: 20px 64px;
+  padding: 0 var(--c3-margem); margin-bottom: clamp(16px, 3vw, 36px);
+}
+.c3-cabeca--compacta {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  margin-bottom: 0;
+}
+.c3-rotulo {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--c3-fonte-titulo); font-weight: 500; font-size: 15px;
+  color: var(--c3-texto-2); letter-spacing: 0.01em;
+}
+.c3-rotulo span {
+  display: inline-grid; place-items: center; min-width: 34px; height: 24px; padding: 0 8px;
+  border: 1px solid var(--c3-linha); border-radius: 999px;
+  color: var(--c3-sinal); font-size: 12px;
+}
+.c3-cabeca-titulo {
+  margin-top: 14px;
+  font-family: var(--c3-fonte-titulo); font-weight: 600;
+  font-size: clamp(28px, 3.4vw, 46px); line-height: 1.05; letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.c3-cabeca-lado { display: grid; gap: 16px; color: var(--c3-texto-2); max-width: 52ch; }
+.c3-codigo {
+  justify-self: start; max-width: 100%;
+  padding: 7px 12px; border: 1px solid var(--c3-linha); border-radius: 10px;
+  background: var(--c3-superficie); color: var(--c3-texto-2);
+  font: 500 12.5px/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.c3-rodape {
+  margin-top: clamp(72px, 10vw, 120px);
+  padding: 28px var(--c3-margem) 36px;
+  border-top: 1px solid var(--c3-linha);
+  color: var(--c3-texto-3); font-size: 13px; text-align: center;
+}
+/* mantém as duas teclas juntas na mesma linha */
+.c3-teclas { white-space: nowrap; }
+kbd {
+  display: inline-block; min-width: 22px; padding: 1px 6px;
+  border: 1px solid var(--c3-linha); border-bottom-width: 2px; border-radius: 6px;
+  font: 500 12px/1.4 var(--c3-fonte-texto); color: var(--c3-texto-2);
+}
+
+/* 4. COMPONENTE .c3 ----------------------------------------------------- */
+.c3 {
+  --c3-l: 260px;                  /* largura do cartão (sobrescrita por modo) */
+  --c3-folga-topo: 28px;          /* espaço acima dos cartões no palco */
+  --c3-folga-base: 36px;          /* espaço abaixo dos cartões no palco */
+  --c3-perspectiva: 1200px;
+  position: relative;
+  border-radius: 18px;
+}
+.c3:focus-visible { box-shadow: inset 0 0 0 2px var(--c3-sinal); }
+
+.c3-palco {
+  position: relative;
+  height: calc(var(--c3-l) * 4 / 3 + var(--c3-folga-topo) + var(--c3-folga-base));
+  overflow: hidden;
+  touch-action: pan-y;            /* rolagem vertical continua; o horizontal é nosso */
+  user-select: none; -webkit-user-select: none;
+  cursor: grab;
+  /* esmaece as bordas laterais */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.c3-arrastando .c3-palco { cursor: grabbing; }
+
+.c3-trilho {
+  position: absolute; inset: 0;
+  margin: 0; padding: 0; list-style: none;
+  perspective: var(--c3-perspectiva);
+  perspective-origin: 50% 45%;
+}
+
+.c3-slide {
+  position: absolute;
+  top: var(--c3-folga-topo); left: 50%;
+  width: var(--c3-l);
+  margin-left: calc(var(--c3-l) / -2);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  -webkit-tap-highlight-color: transparent;
+}
+.c3-slide:not(.c3-ativo) { cursor: pointer; }
+.c3-arrastando .c3-slide { cursor: inherit; }
+
+/* Controles (criados pelo script) */
+.c3-controles {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 10px var(--c3-margem) 0;
+}
+.c3-seta,
+.c3-play {
+  display: inline-grid; place-items: center; flex: none;
+  width: 44px; height: 44px; padding: 0;
+  border: 1px solid var(--c3-linha); border-radius: 50%;
+  background: var(--c3-superficie); color: var(--c3-texto);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.c3-seta:hover,
+.c3-play:hover { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.18); }
+.c3-seta:active,
+.c3-play:active { transform: scale(0.94); }
+.c3-seta:focus-visible,
+.c3-play:focus-visible,
+.c3-bolinha:focus-visible { border-radius: 50%; box-shadow: var(--c3-foco); }
+.c3-seta svg,
+.c3-play svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.c3-play svg path[data-cheio] { fill: currentColor; stroke: none; }
+.c3-play { margin-left: 6px; }
+
+.c3-bolinhas { display: flex; align-items: center; gap: 2px; padding: 0 6px; }
+.c3-bolinha {
+  position: relative; display: grid; place-items: center;
+  width: 22px; height: 28px; padding: 0;
+  border: 0; background: none; cursor: pointer;
+}
+.c3-bolinha::before {
+  content: ""; width: 7px; height: 7px; border-radius: 999px;
+  background: rgba(241, 241, 241, 0.28);
+  transition: width 0.35s cubic-bezier(.2, .8, .2, 1), background-color 0.3s;
+}
+.c3-bolinha:hover::before { background: rgba(241, 241, 241, 0.6); }
+.c3-bolinha[aria-current="true"] { width: 34px; }
+.c3-bolinha[aria-current="true"]::before { width: 24px; background: rgba(255, 181, 71, 0.35); }
+/* Barra de tempo do autoplay dentro da bolinha ativa */
+.c3-bolinha[aria-current="true"]::after {
+  content: ""; position: absolute; left: 5px; top: 50%;
+  width: 24px; height: 7px; margin-top: -3.5px; border-radius: 999px;
+  background: var(--c3-sinal);
+  transform-origin: 0 50%;
+}
+.c3-rodando .c3-bolinha[aria-current="true"]::after {
+  animation: c3-tempo var(--c3-intervalo, 4500ms) linear both;
+}
+@keyframes c3-tempo { from { transform: scaleX(0.12); } to { transform: scaleX(1); } }
+
+.c3-contador {
+  min-width: 64px; margin-right: 6px;
+  font: 500 13px/1 var(--c3-fonte-titulo); color: var(--c3-texto-3);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.04em;
+}
+.c3-contador b { color: var(--c3-texto); font-weight: 600; }
+
+.c3-sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* 5. MODOS -------------------------------------------------------------- */
+
+/* Cobertura: cartão central + laterais em perspectiva + reflexo no chão */
+.c3-modo-cobertura { --c3-l: var(--c3-l-cobertura); --c3-folga-base: calc(var(--c3-l) * 0.25); --c3-perspectiva: 1100px; }
+.c3-modo-cobertura .c3-palco::before {
+  /* chão: brilho suave logo abaixo dos cartões */
+  content: ""; position: absolute; left: 50%; top: calc(var(--c3-folga-topo) + var(--c3-l) * 4 / 3);
+  width: min(1100px, 120%); height: calc(var(--c3-l) * 0.6);
+  transform: translateX(-50%);
+  background: radial-gradient(50% 60% at 50% 0%, rgba(255, 181, 71, 0.11), transparent 70%);
+  pointer-events: none;
+}
+.c3-modo-cobertura .c3-palco::after {
+  content: ""; position: absolute; left: 10%; right: 10%; top: calc(var(--c3-folga-topo) + var(--c3-l) * 4 / 3 + 6px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+  pointer-events: none;
+}
+/* O reflexo é uma cópia do cartão (criada pelo script), espelhada e esmaecida */
+.c3-reflexo {
+  position: absolute !important; left: 0; right: 0; top: calc(100% + 8px);
+  transform: scaleY(-1);
+  opacity: 0.26;
+  pointer-events: none;
+  box-shadow: none !important;
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 34%);
+          mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 34%);
+}
+
+/* No reflexo só a ilustração aparece (texto espelhado não fica bonito) */
+.c3-reflexo .c3-info,
+.c3-reflexo .c3-etiqueta { visibility: hidden; }
+
+/* Anel: cilindro 3D */
+.c3-modo-anel { --c3-l: var(--c3-l-anel); --c3-folga-topo: 72px; --c3-folga-base: 72px; --c3-perspectiva: 1500px; }
+.c3-modo-anel .c3-palco::before {
+  content: ""; position: absolute; left: 50%; bottom: 14px;
+  width: min(900px, 110%); height: 70px; transform: translateX(-50%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 181, 71, 0.12), transparent 70%);
+  pointer-events: none;
+}
+
+/* Pilha: baralho */
+.c3-modo-pilha { --c3-l: var(--c3-l-pilha); --c3-folga-topo: calc(var(--c3-l) * 0.24); --c3-folga-base: 40px; }
+.c3-modo-pilha .c3-palco { -webkit-mask-image: none; mask-image: none; }
+.c3-modo-pilha .c3-cartao { box-shadow: 0 30px 50px -24px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
+
+/* 6. CARTÃO E ILUSTRAÇÕES ----------------------------------------------- */
+.c3-cartao {
+  position: relative;
+  width: 100%; aspect-ratio: 3 / 4;
+  border-radius: var(--c3-raio);
+  overflow: hidden;
+  isolation: isolate;
+  container-type: inline-size;
+  background: var(--c3-fundo-2);
+  box-shadow: 0 40px 70px -30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+/* Escurecimento controlado pelo script (--c3-escuro: 0 a 1) para dar profundidade */
+.c3-cartao::after {
+  content: ""; position: absolute; inset: 0; z-index: 7;
+  background: #05060a; opacity: var(--c3-escuro, 0);
+  pointer-events: none;
+}
+/* Brilho de borda superior */
+.c3-cartao::before {
+  content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 22%);
+  mix-blend-mode: soft-light; pointer-events: none;
+}
+
+.c3-arte {
+  position: absolute; inset: 0; z-index: 0;
+  background: var(--ceu, linear-gradient(#1b2030, #0e1018));
+}
+/* Estrelas (opacidade definida por tema em --estrelas) */
+.c3-arte::before {
+  content: ""; position: absolute; inset: 0 0 45% 0;
+  opacity: var(--estrelas, 0);
+  background:
+    radial-gradient(1px 1px at 6% 30%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 36% 14%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 52% 34%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 66% 22%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 82% 16%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 96% 40%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1px 1px at 8% 4%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 48% 4%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 28% 8%, #fff, transparent),
+    radial-gradient(1px 1px at 44% 26%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 58% 12%, #fff, transparent),
+    radial-gradient(1px 1px at 86% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 92% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 20% 38%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 76% 6%, #fff, transparent);
+}
+/* Granulado + grade geométrica muito sutis */
+.c3-arte::after {
+  content: ""; position: absolute; inset: 0; z-index: 8;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url%28%23g%29'/></svg>"),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 12.5%);
+  mix-blend-mode: overlay; opacity: 0.35;
+  pointer-events: none;
+}
+.c3-astro {
+  position: absolute; z-index: 1;
+  left: var(--astro-x, 70%); top: var(--astro-y, 24%);
+  width: var(--astro-t, 16%); aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 36% 34%, #fff 0%, var(--astro-cor, #fff) 55%, var(--astro-borda, var(--astro-cor, #fff)) 100%);
+  box-shadow: 0 0 calc(var(--c3-l) * 0.2) calc(var(--c3-l) * 0.03) var(--astro-brilho, rgba(255, 255, 255, 0.4));
+}
+/* Camadas da paisagem (distante → perto). Cada tema define a silhueta (--m,
+   uma máscara SVG), a pintura (--c) e um detalhe opcional (--d + --dm).
+   .c3-nevoa e .c3-luz são opcionais: sem elas a cena continua funcionando. */
+.c3-c1, .c3-c2, .c3-c3, .c3-nevoa, .c3-luz { position: absolute; inset: 0; }
+.c3-c1 { z-index: 2; }
+.c3-nevoa { z-index: 3; }
+.c3-c2 { z-index: 4; }
+.c3-c3 { z-index: 5; }
+.c3-luz { z-index: 6; }
+.c3-c1, .c3-c2, .c3-c3 {
+  background: var(--c, none);
+  -webkit-mask: var(--m, none) 0 0 / 100% 100% no-repeat;
+          mask: var(--m, none) 0 0 / 100% 100% no-repeat;
+}
+.c3-c1::before, .c3-c2::before, .c3-c3::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--d, none);
+  -webkit-mask: var(--dm, none) 0 0 / 100% 100% no-repeat;
+          mask: var(--dm, none) 0 0 / 100% 100% no-repeat;
+}
+.c3-nevoa {
+  background: var(--nevoa, none);
+  -webkit-mask: var(--nevoa-mascara, none) 0 0 / 100% 100% no-repeat;
+          mask: var(--nevoa-mascara, none) 0 0 / 100% 100% no-repeat;
+}
+.c3-luz {
+  background: var(--luz, none);
+  mix-blend-mode: screen;
+  -webkit-mask: var(--luz-mascara, none);
+          mask: var(--luz-mascara, none);
+  pointer-events: none;
+}
+
+.c3-etiqueta {
+  position: absolute; z-index: 6; top: 6cqi; left: 6cqi;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 10px 5px 8px; border-radius: 999px;
+  background: rgba(8, 9, 13, 0.42);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: clamp(10px, 3.8cqi, 12px); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.c3-etiqueta::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c3-sinal); box-shadow: 0 0 8px var(--c3-sinal);
+}
+.c3-info {
+  position: absolute; z-index: 6; left: 0; right: 0; bottom: 0;
+  padding: 26cqi 7cqi 7cqi;
+  background: linear-gradient(180deg, transparent, rgba(6, 7, 11, 0.72) 45%, rgba(6, 7, 11, 0.92));
+  opacity: var(--c3-texto-op, 1);
+}
+.c3-meta {
+  font-size: clamp(10px, 3.7cqi, 12px); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--c3-sinal);
+}
+.c3-titulo {
+  margin-top: 1.6cqi;
+  font-family: var(--c3-fonte-titulo); font-weight: 600;
+  font-size: clamp(20px, 10.6cqi, 32px); line-height: 1.04; letter-spacing: -0.025em;
+}
+.c3-legenda {
+  margin-top: 2.6cqi;
+  font-size: clamp(12px, 4.6cqi, 14.5px); line-height: 1.45; color: rgba(241, 241, 241, 0.74);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* ---- Temas (cada destino é um conjunto de variáveis + 3 camadas) -----
+   Variáveis de cada tema:
+     --ceu            fundo da cena (degradês)
+     --astro-*        sol/lua (.c3-astro) · --estrelas = opacidade das estrelas
+     --nevoa          faixa de névoa entre o plano distante e o médio
+     --nevoa-mascara  (opcional) recorte da névoa, ex.: coluna de fumaça
+     --luz            luz por cima de tudo (modo "screen"): halos, raios, farol
+     --luz-mascara    (opcional) esmaece a luz a partir de um ponto
+   Camadas .c3-c1 / .c3-c2 / .c3-c3 (distante → primeiro plano):
+     --m              silhueta da camada: SVG em data URI (viewBox 300×400,
+                      estica para o cartão; nada é baixado da internet)
+     --c              pintura da camada (degradês, texturas)
+     --d / --dm       detalhe por cima da camada (neve, sombra, lava) e o
+                      recorte desse detalhe (opcional)
+   ------------------------------------------------------------------------ */
+
+/* Serra Azul — cordilheiras em camadas, neve nos picos e névoa no vale ao amanhecer */
+.c3-tema--serra {
+  --ceu:
+    radial-gradient(80% 22% at 50% 60%, rgba(255, 212, 170, 0.55), transparent 70%),
+    linear-gradient(180deg, #050d26 0%, #11296a 34%, #3f6fc6 54%, #9fc0f0 66%, #f1dcc8 78%, #f1dcc8 100%);
+  --astro-x: 74%; --astro-y: 17%; --astro-t: 8%;
+  --astro-cor: #f4f8ff; --astro-brilho: rgba(190, 215, 255, 0.6); --estrelas: 0.85;
+  --nevoa: linear-gradient(180deg, transparent 52%, rgba(226, 236, 255, 0.62) 61%, rgba(226, 236, 255, 0.2) 69%, transparent 76%);
+  --luz: radial-gradient(70% 18% at 50% 63%, rgba(255, 196, 150, 0.4), transparent 70%);
+}
+.c3-tema--serra .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 214L2.6 212.2L4.8 212L7 209.6L8.4 206.8L9.6 205.1L11 204.6L12.6 203.3L13.8 202.5L16.5 201L18.2 197.1L20.3 196L22.4 193.7L25.8 191.1L28.3 189.9L31.6 188.7L34 186L36.7 187.7L38.9 188.1L41.6 187.4L43.5 189.2L45.7 190.1L47.5 189.3L48.4 189.3L49.8 189.7L50.7 192L52 192.6L53.6 195.7L54.9 196L57 195.8L58.9 197.4L60.6 198L62 200L63.9 195.2L66.7 192.9L68.8 187L71.4 181.7L74.2 177.1L76 175L78.1 171.3L81 167.5L82.6 165.2L84.8 161.8L86.7 158.6L88 157.8L90.9 154.6L93.4 151.7L95.7 150.7L98 148L99.9 152.3L102 154.9L103.2 157.1L104.8 158.4L106.5 159.3L107.4 161.5L109.6 161.8L111.3 163.3L112.3 165.3L114.3 166.5L116.4 167.3L119 170.3L121 172.5L123.2 174.5L125.3 177.7L128 182L130.1 181.8L132.5 181.4L133.9 179.4L136.3 179.6L138.8 177.8L140.8 176.9L142.3 175L143.3 174.8L144.5 172.9L146.3 173L148.3 172L150.5 170.9L153.6 169.5L155.7 166.8L157.6 164.2L160 162L163.6 160.3L166.9 158.3L169.4 156.6L171.9 157.2L174.1 153.5L175.5 150.4L177.7 148.9L180.7 146.6L182 144.3L183.7 141.7L185 141.4L187.4 140.9L190 136.2L192.1 133.7L194 131.2L196 128L197.8 131.4L200 135.8L202.2 137.6L204.3 139.7L206.3 142.1L208.6 145L210.7 146.1L211.8 146.8L213.4 149.2L215.5 151.9L218.5 156.5L221 160.2L223.7 165.3L226.9 168.1L229 171.3L232 176L233.7 175.9L235.3 175.4L236.3 173.2L237.6 172.5L239.6 170.6L242.1 171.2L244.1 169.6L245.5 170.4L247.6 168.4L248.7 165L250.6 162.6L253.3 162.4L255.2 159.4L258.2 159.1L260.5 159.9L262 160L264.7 160L267.2 162.2L269.6 162.2L272.2 162.8L273.6 162.9L276.1 164.6L278.1 165.2L280.1 167.6L281.8 168.9L283.6 170.6L286.6 173.2L288.9 177.7L290.9 179.7L293.8 184.1L296.8 188.2L300 190L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(90deg, rgba(255, 236, 220, 0.22), transparent 55%), linear-gradient(180deg, #a7c1ee 0%, #7396d8 45%, #b6cbf0 100%);
+  --d: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0 37%, rgba(255, 255, 255, 0) 41.5%);
+}
+.c3-tema--serra .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 236L2.7 235.8L5.5 234.4L8.7 233.3L11.3 234.4L13.4 232.5L15.6 231.1L18.8 228.2L21.5 225.3L23.9 224.6L25.7 222.8L27.1 220.1L29.2 219.6L32.4 217.2L34.9 214.4L37.3 211.7L40 208L42.8 209.6L44.7 213.2L47.3 213.1L49.2 214.6L51.9 214.6L55 214.3L57.9 215.3L60.5 216.8L62.2 219.7L64.7 220.8L67.1 221.4L69.6 221.8L71.2 223.3L73.6 224.8L74.9 228.3L76 230L77.9 228L80.5 227.1L82.8 224.5L85.4 220.5L88.2 217.8L90.9 215.2L93.6 212.8L96.8 210.9L99.2 207.9L102.1 204.4L103.9 202.8L106.1 199.9L108.9 197.4L111.8 196.5L114.9 196.1L118 194L120.2 198.1L122.6 201.4L124.6 205.5L127 207.6L129.6 208.5L131.8 211.7L133.8 211.9L136.2 213.9L138.1 215.7L139.3 217.8L141.5 219.3L143 220L144.8 220.5L146.7 220.1L148 221.3L150 222L152.3 220.7L153.9 217.3L155.9 214.8L157.4 214.3L158.7 213L160.8 211L163.6 212L165.8 211.8L168.8 211.5L171.3 212.8L173.6 211.7L175.2 211.7L177.6 209.3L180.4 208.8L182.8 206.4L186 204L188.2 206.4L190.9 207.3L193 207.9L195.2 209.6L197.6 209.4L200.3 209.9L203.5 210.8L206.6 213.8L208.5 216.7L210.3 218.5L211.8 222.9L214.3 225.6L216.9 227.6L218.5 231.2L220.2 233.4L222 236L225 235.1L227.3 235.7L230.4 234.9L233.2 232.4L235 230.2L237.5 228.4L240 228.4L242.6 226.8L244.8 224L246.8 222.4L249.2 221.9L251.1 219.8L252.5 216.1L253.9 211.3L255.8 208.4L258 206L261.1 205.8L263.6 207L265.6 206.5L268.2 207.8L270.8 207L272.9 207.3L274.8 209.1L277.4 209.4L280.4 211.6L284.1 215.3L286.5 218L289.4 219.1L292.6 220.9L295.5 221.4L297.5 222.3L300 224L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(100deg, rgba(255, 214, 190, 0.2) 0 28%, transparent 58%), linear-gradient(180deg, #3b62b4 0%, #23418a 50%, #1a3170 100%);
+}
+.c3-tema--serra .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 300L7.4 298.3L14.7 296.4L22.3 295L30.4 292L37.7 288.9L45.8 285.2L53 283.5L60 280L67 282.8L74.4 284.1L81.8 284.5L89.7 284.8L97.6 288.4L104.6 291.1L111.8 294.3L120 296L128.8 291.9L137.1 288.8L145.7 283.5L155.2 279.7L163.4 277.1L171.8 276.4L180.8 273.1L190 270L198.2 272.1L206.4 276.3L213.5 278.9L221.5 280.9L228.8 282.2L236.3 284.4L242.9 287.4L250 290L255.9 289.1L262.2 286.1L268.5 283.1L274.9 281.1L281 281.7L287.7 279.9L293.8 276.8L300 276L300 400ZM0 288L3.6 279.8L1.2 279.8L4.3 271.7L2.7 271.7L6 260.9L9.3 271.7L7.7 271.7L10.8 279.8L8.4 279.8L12 288ZM7.7 291.6L12.7 280.2L9.4 280.2L13.7 268.8L11.4 268.8L16.1 253.6L20.8 268.8L18.4 268.8L22.8 280.2L19.4 280.2L24.4 291.6ZM22.5 291.9L27.2 281.1L24.1 281.1L28.2 270.2L26 270.2L30.4 255.8L34.9 270.2L32.6 270.2L36.8 281.1L33.6 281.1L38.3 291.9ZM40.2 286.2L43.8 278.1L41.4 278.1L44.5 270L42.9 270L46.2 259.2L49.5 270L47.8 270L50.9 278.1L48.6 278.1L52.1 286.2ZM54 288.8L58.2 279.2L55.4 279.2L59.1 269.5L57.1 269.5L61 256.7L65 269.5L63 269.5L66.7 279.2L63.9 279.2L68.1 288.8ZM63.7 287L68.2 276.9L65.2 276.9L69.1 266.7L67 266.7L71.1 253.1L75.3 266.7L73.2 266.7L77.1 276.9L74.1 276.9L78.6 287ZM80.1 286.1L83.2 279L81.2 279L83.8 272L82.4 272L85.3 262.6L88.2 272L86.7 272L89.4 279L87.4 279L90.5 286.1ZM88.1 287.2L92.9 276.2L89.7 276.2L93.9 265.1L91.6 265.1L96.2 250.4L100.7 265.1L98.4 265.1L102.6 276.2L99.4 276.2L104.3 287.2ZM104.5 287.9L108.9 277.9L105.9 277.9L109.7 268L107.7 268L111.8 254.7L115.9 268L113.8 268L117.6 277.9L114.7 277.9L119.1 287.9ZM191 278.6L194 271.9L192 271.9L194.6 265.1L193.2 265.1L196 256.1L198.8 265.1L197.4 265.1L200 271.9L198 271.9L201 278.6ZM200 281L204.5 270.6L201.5 270.6L205.5 260.1L203.3 260.1L207.6 246.2L211.9 260.1L209.7 260.1L213.7 270.6L210.7 270.6L215.3 281ZM211.6 279.9L216.3 269.2L213.2 269.2L217.2 258.6L215.1 258.6L219.4 244.5L223.8 258.6L221.6 258.6L225.6 269.2L222.5 269.2L227.2 279.9ZM228.5 278L232 270.2L229.7 270.2L232.6 262.5L231 262.5L234.2 252.1L237.4 262.5L235.8 262.5L238.8 270.2L236.5 270.2L239.9 278ZM237.5 280.1L241.3 271.3L238.8 271.3L242.1 262.5L240.3 262.5L243.9 250.7L247.5 262.5L245.7 262.5L249.1 271.3L246.5 271.3L250.4 280.1ZM253 279.3L256.4 271.5L254.1 271.5L257.1 263.7L255.5 263.7L258.7 253.2L261.9 263.7L260.3 263.7L263.3 271.5L261 271.5L264.5 279.3ZM262.7 278.9L268 266.8L264.5 266.8L269.1 254.7L266.6 254.7L271.6 238.6L276.5 254.7L274.1 254.7L278.7 266.8L275.1 266.8L280.5 278.9ZM278.6 278.7L283.6 267.4L280.3 267.4L284.6 256.2L282.2 256.2L286.9 241.1L291.5 256.2L289.2 256.2L293.5 267.4L290.2 267.4L295.1 278.7Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #0c1a44 0%, #050c22 40%);
+}
+
+/* Duna Clara — dunas com face iluminada e face na sombra, sol baixo e ar quente */
+.c3-tema--duna {
+  --ceu:
+    radial-gradient(42% 24% at 60% 42%, rgba(255, 246, 225, 0.9), transparent 70%),
+    linear-gradient(180deg, #e9686b 0%, #ff946f 24%, #ffc196 46%, #ffe3c0 62%, #fff2dc 74%);
+  --astro-x: 60%; --astro-y: 42%; --astro-t: 28%;
+  --astro-cor: #fff8e8; --astro-borda: #ffe0ae; --astro-brilho: rgba(255, 228, 180, 0.85);
+  --nevoa: linear-gradient(180deg, transparent 58%, rgba(255, 238, 216, 0.75) 65.5%, rgba(255, 238, 216, 0.2) 69%, transparent 73%);
+  --luz: radial-gradient(60% 30% at 60% 42%, rgba(255, 240, 210, 0.35), transparent 70%);
+}
+.c3-tema--duna .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 268C8.3 266 31.7 257 50 256C68.3 255 90 263 110 262C130 261 150 250.7 170 250C190 249.3 208.3 258.3 230 258C251.7 257.7 288.3 249.7 300 248L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #f6b98c, #eba077 60%, #f2c09c);
+}
+.c3-tema--duna .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 300C10 297 40 287.7 60 282C80 276.3 99 271.7 120 266C141 260.3 167.7 248.7 186 248C204.3 247.3 211 255 230 262C249 269 288.3 285.3 300 290L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #f7a467 0%, #e1854b 40%, #c86a36 100%);
+  --d: linear-gradient(180deg, rgba(120, 40, 20, 0.5), rgba(120, 40, 20, 0.25));
+  --dm: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M186 248C206 262 236 274 300 290L300 400L150 400C176 340 190 300 186 248Z'/%3E%3C/svg%3E");
+}
+.c3-tema--duna .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 330C11.7 328 48.3 319 70 318C91.7 317 108.3 325 130 324C151.7 323 178.3 316 200 312C221.7 308 243.3 302.7 260 300C276.7 297.3 293.3 296.7 300 296L300 400Z'/%3E%3C/svg%3E");
+  --c: repeating-linear-gradient(174deg, rgba(255, 230, 200, 0.12) 0 2px, transparent 2px 10px), linear-gradient(180deg, #c76a39 0%, #8a3c1b 40%, #4f1f0d 100%);
+}
+
+/* Vale do Cobre — mesas de rocha com estratos, poeira dourada e raios de pôr do sol */
+.c3-tema--cobre {
+  --ceu:
+    radial-gradient(46% 24% at 28% 50%, rgba(255, 196, 130, 0.7), transparent 70%),
+    linear-gradient(180deg, #1b0505 0%, #561409 28%, #ad3b1a 50%, #ec7f3e 64%, #ffbf88 76%);
+  --astro-x: 28%; --astro-y: 50%; --astro-t: 15%;
+  --astro-cor: #fff1d8; --astro-brilho: rgba(255, 160, 90, 0.8); --estrelas: 0.3;
+  --nevoa: linear-gradient(180deg, transparent 54%, rgba(255, 176, 112, 0.5) 63%, rgba(255, 176, 112, 0.15) 70%, transparent 76%);
+  --luz: repeating-conic-gradient(from 0deg at 28% 50%, rgba(255, 220, 170, 0.16) 0deg 3deg, transparent 3deg 11deg);
+  --luz-mascara: radial-gradient(circle at 28% 50%, #000 0%, transparent 62%);
+}
+.c3-tema--cobre .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M-10 270L-6 240L0 218L2 214L58 214L60 218L66 240L70 270ZM110 270L114 228L120 204L122 200L178 200L180 204L186 228L190 270ZM212 270L216 246L222 226L224 222L278 222L280 226L286 246L290 270ZM0 262L300 262L300 400L0 400Z'/%3E%3C/svg%3E");
+  --c: repeating-linear-gradient(180deg, rgba(255, 214, 176, 0.13) 0 2px, transparent 2px 9px), linear-gradient(180deg, #d06a35 0%, #a8471f 60%, #c9764a 100%);
+}
+.c3-tema--cobre .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M-30 330L-26 262L-20 240L-18 236L108 236L110 240L116 262L120 330ZM170 330L174 272L180 252L182 248L318 248L320 252L326 272L330 330ZM0 400L0 300L300 300L300 400Z'/%3E%3C/svg%3E");
+  --c: repeating-linear-gradient(180deg, rgba(255, 200, 150, 0.12) 0 3px, transparent 3px 12px), linear-gradient(90deg, #b44c20 0%, #8a3313 45%, #6a250c 100%);
+  --d: linear-gradient(180deg, rgba(40, 8, 2, 0.55), rgba(40, 8, 2, 0.3));
+  --dm: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M92 240L108 240L114 262L120 330L80 330Z M286 252L302 252L308 272L330 330L270 330Z'/%3E%3C/svg%3E");
+}
+.c3-tema--cobre .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 334L4.6 334.7L9.4 333.7L13.7 332.7L18 329.1L23.4 325.7L29.5 322.4L34.8 321.7L40 320L45.4 322.5L49.7 326.8L53 328.5L57.3 329.6L61.1 329.9L64.5 332.2L68 331.6L72 330L79 329.1L85.2 326.5L91.8 327.2L97.7 327.5L103 325L107.8 324.7L114.3 321.1L120 318L126 319.6L132.1 323.1L138.5 327.1L145.4 328.3L151.5 329.6L157.5 328L163.9 331.2L170 332L177.4 328.9L183.9 328.5L189.8 325L196.3 320.5L202.6 318.2L208 318.9L214.3 317.8L220 316L225.5 318.6L231.6 318.5L237 320L242.9 323.5L247.5 324.8L251.9 326.6L257.5 326.5L262 326L266.9 326.3L272.9 323.6L277.7 321.6L282.2 318.5L286.6 319.1L290.5 316.7L295.1 315.7L300 312L300 400ZM232 320L236 268L240 262L246 262L250 270L252 320Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #3a1006 0%, #1c0603 45%);
+}
+
+/* Ilha Lume — noite no mar, lua com trilha de luz e o farol varrendo a névoa */
+.c3-tema--ilha {
+  --ceu:
+    radial-gradient(40% 20% at 30% 24%, rgba(170, 255, 240, 0.18), transparent 70%),
+    linear-gradient(180deg, #020a12 0%, #041d29 36%, #0a4652 56%, #2a8c90 64%, #2a8c90 100%);
+  --astro-x: 30%; --astro-y: 24%; --astro-t: 13%;
+  --astro-cor: #f0fffb; --astro-borda: #bdeee6; --astro-brilho: rgba(170, 255, 240, 0.5); --estrelas: 1;
+  --nevoa: linear-gradient(180deg, transparent 55%, rgba(170, 240, 232, 0.32) 62%, rgba(170, 240, 232, 0.1) 67%, transparent 72%);
+  --luz:
+    radial-gradient(3% 2.2% at 73.5% 41%, #fff6d4 0 30%, rgba(255, 240, 190, 0.6) 55%, transparent 100%),
+    conic-gradient(from 238deg at 73.5% 41%, transparent 0deg, rgba(255, 238, 190, 0.32) 7deg, rgba(255, 238, 190, 0.08) 18deg, transparent 24deg),
+    conic-gradient(from 86deg at 73.5% 41%, transparent 0deg, rgba(255, 238, 190, 0.18) 6deg, transparent 16deg);
+  --luz-mascara: radial-gradient(circle at 73.5% 41%, #000 0%, rgba(0, 0, 0, 0.6) 30%, transparent 70%);
+}
+.c3-tema--ilha .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 256C60 254 120 257 180 255C230 254 270 256 300 255L300 400L0 400Z'/%3E%3C/svg%3E");
+  --c: radial-gradient(9% 34% at 30% 64%, rgba(225, 255, 250, 0.55), transparent 70%), repeating-linear-gradient(180deg, rgba(190, 255, 245, 0.1) 0 1px, transparent 1px 7px), linear-gradient(180deg, #146270 0%, #07323d 40%, #021820 100%);
+}
+.c3-tema--ilha .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M146 262C160 254 176 250 192 246L204 240C212 236 216 236 218 236L219.5 172L218 172L220 164L221.5 164L222 160L224 156L226 160L226.5 164L228 164L230 172L228.5 172L230 236C236 236 246 240 256 246C270 252 286 256 300 258L300 266L146 266Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #06262d, #021116);
+  --d: repeating-linear-gradient(180deg, transparent 0 10px, rgba(255, 255, 255, 0.5) 10px 14px);
+  --dm: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M219.5 176L228.5 176L229.5 236L218.5 236Z'/%3E%3C/svg%3E");
+}
+.c3-tema--ilha .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 330L3.3 329.8L6.7 327.4L10 325.4L13.4 321.9L17.2 321.3L21 320.3L25.8 320L30 318L35.2 317.8L39.8 319L43.6 322.2L48.1 324.4L51.8 324.7L55.9 323.6L59.5 324.1L64 326L67.9 326.3L71.3 328.8L75.1 331.6L78.6 334.8L82.1 335.6L86.6 338.2L90.8 339.5L96 340L100.9 342.8L106.6 344.1L112.6 344.1L119 345.3L124.1 346.4L129.3 349.7L134.5 350L140 350L160.4 350L180.2 350.4L200.4 352L220.2 354.1L239.8 354.6L259.3 354.9L279.3 352.9L300 352L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #03141a 0%, #010709 40%);
+}
+
+/* Bosque Ameixa — fileiras de pinheiros em perspectiva atmosférica sob a lua rosada */
+.c3-tema--bosque {
+  --ceu:
+    radial-gradient(50% 30% at 64% 30%, rgba(255, 190, 230, 0.35), transparent 70%),
+    linear-gradient(180deg, #13071f 0%, #34155a 32%, #7c39a6 54%, #d781c0 68%, #ffc3d9 80%);
+  --astro-x: 64%; --astro-y: 30%; --astro-t: 21%;
+  --astro-cor: #ffe6f3; --astro-borda: #f6aed5; --astro-brilho: rgba(250, 170, 220, 0.6); --estrelas: 0.7;
+  --nevoa: linear-gradient(180deg, transparent 55%, rgba(255, 196, 232, 0.6) 64%, rgba(255, 196, 232, 0.22) 71%, transparent 78%);
+  --luz: radial-gradient(40% 24% at 64% 30%, rgba(255, 210, 236, 0.25), transparent 70%);
+}
+.c3-tema--bosque .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M-16.1 262L-10 248.3L-14.1 248.3L-8.8 234.5L-11.6 234.5L-6 216.2L-0.4 234.5L-3.2 234.5L2.1 248.3L-2 248.3L4.1 262ZM0.6 265.8L4.7 256.5L2 256.5L5.5 247.3L3.6 247.3L7.4 234.9L11.2 247.3L9.3 247.3L12.9 256.5L10.1 256.5L14.2 265.8ZM11.9 267.9L16.2 258.1L13.3 258.1L17.1 248.3L15.1 248.3L19.1 235.3L23.1 248.3L21.1 248.3L24.8 258.1L21.9 258.1L26.3 267.9ZM22.5 265.8L26.1 257.6L23.7 257.6L26.8 249.3L25.2 249.3L28.5 238.4L31.9 249.3L30.2 249.3L33.3 257.6L30.9 257.6L34.6 265.8ZM32.3 264.7L38.3 251.2L34.3 251.2L39.5 237.8L36.7 237.8L42.2 219.8L47.7 237.8L45 237.8L50.1 251.2L46.2 251.2L52.1 264.7ZM44.5 262.7L48.2 254.2L45.7 254.2L49 245.7L47.2 245.7L50.7 234.3L54.2 245.7L52.5 245.7L55.7 254.2L53.2 254.2L57 262.7ZM51.5 262.3L56.3 251.4L53.1 251.4L57.2 240.4L55 240.4L59.5 225.8L64 240.4L61.7 240.4L65.9 251.4L62.7 251.4L67.5 262.3ZM64.4 264.5L69.1 253.9L66 253.9L70.1 243.2L67.9 243.2L72.3 229L76.6 243.2L74.4 243.2L78.5 253.9L75.4 253.9L80.1 264.5ZM77.4 266.6L81.1 258.3L78.6 258.3L81.8 250L80.1 250L83.5 238.9L86.9 250L85.2 250L88.4 258.3L86 258.3L89.6 266.6ZM87.4 266.4L93.4 252.9L89.4 252.9L94.6 239.3L91.8 239.3L97.4 221.3L102.9 239.3L100.1 239.3L105.3 252.9L101.3 252.9L107.3 266.4ZM104.1 262.7L107.5 254.9L105.2 254.9L108.2 247L106.6 247L109.8 236.5L113.1 247L111.5 247L114.5 254.9L112.1 254.9L115.6 262.7ZM112.6 268L117.6 256.6L114.3 256.6L118.6 245.2L116.3 245.2L120.9 230.1L125.6 245.2L123.3 245.2L127.6 256.6L124.3 256.6L129.3 268ZM123.7 263.7L130.2 249L125.9 249L131.5 234.3L128.5 234.3L134.5 214.7L140.6 234.3L137.5 234.3L143.1 249L138.8 249L145.3 263.7ZM140.8 266L144.9 256.8L142.1 256.8L145.7 247.5L143.8 247.5L147.6 235.1L151.4 247.5L149.5 247.5L153 256.8L150.3 256.8L154.4 266ZM149 263.1L155.3 248.9L151.1 248.9L156.5 234.7L153.6 234.7L159.5 215.7L165.3 234.7L162.4 234.7L167.8 248.9L163.6 248.9L169.9 263.1ZM164.4 265.2L168.8 255.3L165.9 255.3L169.6 245.4L167.6 245.4L171.7 232.3L175.7 245.4L173.7 245.4L177.4 255.3L174.5 255.3L178.9 265.2ZM176.5 266.4L180.5 257.3L177.8 257.3L181.3 248.2L179.4 248.2L183.2 236.1L186.9 248.2L185 248.2L188.5 257.3L185.8 257.3L189.8 266.4ZM180.1 262.2L187 246.6L182.4 246.6L188.3 231.1L185.1 231.1L191.5 210.4L197.9 231.1L194.7 231.1L200.6 246.6L196.1 246.6L202.9 262.2ZM195.8 265.3L200.9 253.6L197.5 253.6L201.9 241.9L199.5 241.9L204.3 226.4L209.1 241.9L206.7 241.9L211.2 253.6L207.7 253.6L212.9 265.3ZM207.2 267.1L210.9 258.6L208.4 258.6L211.7 250L209.9 250L213.4 238.7L216.9 250L215.2 250L218.4 258.6L215.9 258.6L219.7 267.1ZM213.8 268L219.3 255.5L215.6 255.5L220.4 243.1L217.8 243.1L222.9 226.5L228 243.1L225.5 243.1L230.2 255.5L226.6 255.5L232.1 268ZM226.4 266.2L232.3 252.8L228.3 252.8L233.4 239.4L230.7 239.4L236.2 221.5L241.7 239.4L239 239.4L244.1 252.8L240.1 252.8L246 266.2ZM235.5 265.5L242 250.7L237.6 250.7L243.3 235.8L240.3 235.8L246.4 216L252.5 235.8L249.4 235.8L255.1 250.7L250.7 250.7L257.3 265.5ZM251.4 265.3L256.6 253.5L253.1 253.5L257.6 241.7L255.2 241.7L260 225.9L264.9 241.7L262.4 241.7L267 253.5L263.5 253.5L268.7 265.3ZM261.4 266.9L265.4 257.6L262.7 257.6L266.3 248.3L264.4 248.3L268.2 236L272 248.3L270.1 248.3L273.6 257.6L270.9 257.6L275 266.9ZM266.6 266.5L272.7 252.8L268.6 252.8L273.9 239.1L271 239.1L276.7 220.7L282.3 239.1L279.5 239.1L284.7 252.8L280.7 252.8L286.8 266.5ZM278 268L282 258.8L279.4 258.8L282.8 249.6L281 249.6L284.7 237.4L288.5 249.6L286.6 249.6L290.1 258.8L287.4 258.8L291.4 268ZM287.3 265.8L291.9 255.4L288.9 255.4L292.8 245L290.7 245L295 231.1L299.2 245L297.1 245L301.1 255.4L298 255.4L302.6 265.8ZM298.7 263.4L302.9 253.9L300.1 253.9L303.7 244.4L301.8 244.4L305.7 231.7L309.6 244.4L307.6 244.4L311.3 253.9L308.5 253.9L312.7 263.4ZM0 258L300 258L300 400L0 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #c07ad0 0%, #9a52b6 50%, #d8a0d8 100%);
+}
+.c3-tema--bosque .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M-32.8 301.4L-19.1 270.4L-28.2 270.4L-16.4 239.3L-22.7 239.3L-10 197.9L2.7 239.3L-3.6 239.3L8.2 270.4L-0.9 270.4L12.8 301.4ZM-6.1 305.4L4.1 282.4L-2.7 282.4L6.1 259.3L1.4 259.3L10.8 228.6L20.3 259.3L15.6 259.3L24.3 282.4L17.6 282.4L27.7 305.4ZM11.7 304.7L21.7 281.9L15 281.9L23.7 259.2L19 259.2L28.4 228.8L37.7 259.2L33 259.2L41.7 281.9L35 281.9L45 304.7ZM31 303.9L42.6 277.4L34.9 277.4L44.9 251L39.5 251L50.4 215.7L61.3 251L55.8 251L65.9 277.4L58.2 277.4L69.8 303.9ZM55.8 304.3L65 283.5L58.9 283.5L66.9 262.6L62.6 262.6L71.2 234.7L79.7 262.6L75.4 262.6L83.4 283.5L77.3 283.5L86.5 304.3ZM73.7 300.2L85.8 272.7L77.7 272.7L88.2 245.1L82.6 245.1L93.9 208.4L105.2 245.1L99.5 245.1L110 272.7L102 272.7L114.1 300.2ZM88.5 300L101.3 271L92.7 271L103.8 241.9L97.9 241.9L109.8 203.2L121.7 241.9L115.7 241.9L126.8 271L118.3 271L131.1 300ZM113.7 301.3L124.1 277.8L117.2 277.8L126.2 254.3L121.3 254.3L131 222.9L140.7 254.3L135.8 254.3L144.8 277.8L137.9 277.8L148.3 301.3ZM125.9 304.3L137.3 278.2L129.7 278.2L139.6 252.1L134.3 252.1L145 217.3L155.7 252.1L150.4 252.1L160.3 278.2L152.7 278.2L164.2 304.3ZM146.8 300.7L158.5 274.1L150.7 274.1L160.9 247.5L155.4 247.5L166.3 212L177.3 247.5L171.8 247.5L182 274.1L174.2 274.1L185.9 300.7ZM171.3 302.8L178.7 285.9L173.8 285.9L180.2 269L176.7 269L183.7 246.4L190.6 269L187.2 269L193.6 285.9L188.7 285.9L196.1 302.8ZM185 305.5L197.3 277.6L189.1 277.6L199.7 249.8L194 249.8L205.4 212.7L216.9 249.8L211.1 249.8L221.8 277.6L213.6 277.6L225.8 305.5ZM201.2 304.2L212.1 279.3L204.8 279.3L214.3 254.3L209.2 254.3L219.4 221.1L229.7 254.3L224.6 254.3L234.1 279.3L226.8 279.3L237.7 304.2ZM230.3 304.2L238 286.8L232.9 286.8L239.5 269.5L235.9 269.5L243.1 246.3L250.2 269.5L246.6 269.5L253.2 286.8L248.2 286.8L255.8 304.2ZM246.5 304L257.9 278.2L250.3 278.2L260.2 252.4L254.9 252.4L265.5 217.9L276.1 252.4L270.8 252.4L280.6 278.2L273.1 278.2L284.4 304ZM271.1 300.9L280.4 279.7L274.2 279.7L282.3 258.5L278 258.5L286.7 230.1L295.4 258.5L291 258.5L299.1 279.7L292.9 279.7L302.3 300.9ZM283.6 300.9L294.1 276.9L287.1 276.9L296.2 253L291.3 253L301.1 221.1L311 253L306.1 253L315.2 276.9L308.2 276.9L318.7 300.9ZM0 296L300 296L300 400L0 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(90deg, rgba(255, 180, 230, 0.16), transparent 50%), linear-gradient(180deg, #5c2884 0%, #3a1658 62%, #1e0a2e 84%);
+}
+.c3-tema--bosque .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M-33.9 372L-6.4 291L-24.7 291L-0.9 210L-13.7 210L12 102L37.7 210L24.9 210L48.7 291L30.4 291L57.9 372ZM10 380L30.4 320L16.8 320L34.5 260L25 260L44 180L63 260L53.5 260L71.2 320L57.6 320L78 380ZM224.4 370L253 286L233.9 286L258.7 202L245.3 202L272 90L298.7 202L285.3 202L310.1 286L291 286L319.6 370ZM262.6 378L285 312L270.1 312L289.5 246L279.1 246L300 158L320.9 246L310.5 246L329.9 312L315 312L337.4 378ZM0 400L0 344C11.7 342.7 45 336.3 70 336C95 335.7 123.3 342.3 150 342C176.7 341.7 205 334.3 230 334C255 333.7 288.3 339 300 340L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #1c0a2a 0%, #0d0414 50%);
+}
+
+/* Lago Vidro — montanhas espelhadas na água parada, com névoa rente à margem */
+.c3-tema--lago {
+  --ceu:
+    radial-gradient(60% 18% at 50% 60%, rgba(220, 255, 240, 0.7), transparent 70%),
+    linear-gradient(180deg, #041a18 0%, #0e463f 32%, #3aa58e 52%, #c3f3e2 60%, #c3f3e2 100%);
+  --astro-x: 72%; --astro-y: 21%; --astro-t: 10%;
+  --astro-cor: #f2fff9; --astro-brilho: rgba(170, 255, 225, 0.55); --estrelas: 0.5;
+  --nevoa: linear-gradient(180deg, transparent 50%, rgba(226, 255, 244, 0.7) 59%, rgba(226, 255, 244, 0.25) 63%, transparent 68%);
+  --luz: linear-gradient(180deg, transparent 59.5%, rgba(255, 255, 255, 0.5) 60%, transparent 61%);
+}
+.c3-tema--lago .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 240L0 214L0.9 216L2.3 215.9L3.4 214.8L4.9 215.1L6.6 213.6L7.9 210.3L9.9 210.4L12.2 209.4L13.7 208.5L15.8 208.7L17.8 206.8L19.9 205.9L21.8 203.8L24.5 201.5L26.9 199.2L30 196L32.1 193.8L35 192.6L36.7 192.8L38.4 191.3L40.8 187.7L44 184.5L46.5 181.1L49.3 179.2L51.3 178.5L53.4 176.1L55.2 174.7L56.8 171.9L58.3 169.6L60.4 168.4L62.3 169.1L64 168L65.7 168.8L68.2 170.5L70 174L72.4 176L73.6 177.2L75.3 176.5L77.8 175.9L79.7 176.9L81.2 177.3L82.9 179.4L84.7 181.7L86.5 182.2L89 184.5L90.9 185.9L93.6 188.4L96 190L97.3 186.4L99.5 182.4L101.7 180.3L104.3 176.3L106.3 173.9L107.9 173L110.3 169.9L113.2 168.6L115.6 164.9L118 163.5L120.9 158.3L123 154.4L125.1 150.4L126.9 147.1L129.2 145.7L132 142L134.4 143.5L136.5 144.2L139 147.8L141.6 150.4L145 152.8L147.7 155.6L150 156.7L152.1 158.5L154.7 164.5L156.8 168.7L159.1 171.8L160.6 175.6L162.8 179.4L164.8 182.4L167.5 184L170 186L171.8 185.1L173.5 182.2L176.3 179.1L178.2 178.2L180.4 175.5L182.3 173.1L183.8 170.2L184.9 168.9L187 167.9L189.7 165.7L191.3 166L193.4 166.4L196.1 166.1L198.8 165.5L201.6 164.1L204 164L206.1 166L208.4 166.2L211 168L213.3 171.2L214.7 172.5L216.4 172.4L218.4 172.9L219.7 173L222 176.8L225 179.2L228.3 179.3L231.1 181.5L232.9 185.5L235.5 188.6L237.5 193.3L240 196L241.7 196.5L244.1 195L245.9 194.2L247.6 192.2L249.5 191.1L251.2 190.5L253.8 187.5L256.3 186.1L258.7 185.3L260.2 184.8L262.6 185.4L265.4 184.2L266.7 181.4L268.9 180.7L270.4 179.4L272 180L273.5 181.5L275.4 184.8L277 186.6L278.1 187.3L280.5 188.2L282.2 190.2L284 188.6L285.8 189.1L287.8 190.8L289.3 193.1L291.4 196.6L294.1 201.2L295.5 201.9L297.5 204L298.6 204.5L300 206L300 240Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(95deg, rgba(220, 255, 240, 0.25), transparent 50%), linear-gradient(180deg, #4fb59a 0%, #2a8571 40%, #6cc5ab 100%);
+  --d: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0 39%, rgba(255, 255, 255, 0) 42.5%);
+}
+.c3-tema--lago .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 240L300 240L300 400L0 400Z'/%3E%3C/svg%3E");
+  --c: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 6px), linear-gradient(180deg, #a3e8d3 0%, #3c9a83 22%, #135146 60%, #082a24 100%);
+  --d: repeating-linear-gradient(180deg, rgba(30, 110, 92, 0.7) 0 4px, rgba(30, 110, 92, 0.4) 4px 6px);
+  --dm: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 240L0 266L0.9 264L2.3 264.1L3.4 265.2L4.9 264.9L6.6 266.4L7.9 269.7L9.9 269.6L12.2 270.6L13.7 271.5L15.8 271.3L17.8 273.2L19.9 274.1L21.8 276.2L24.5 278.5L26.9 280.8L30 284L32.1 286.2L35 287.4L36.7 287.2L38.4 288.7L40.8 292.3L44 295.5L46.5 298.9L49.3 300.8L51.3 301.5L53.4 303.9L55.2 305.3L56.8 308.1L58.3 310.4L60.4 311.6L62.3 310.9L64 312L65.7 311.2L68.2 309.5L70 306L72.4 304L73.6 302.8L75.3 303.5L77.8 304.1L79.7 303.1L81.2 302.7L82.9 300.6L84.7 298.3L86.5 297.8L89 295.5L90.9 294.1L93.6 291.6L96 290L97.3 293.6L99.5 297.6L101.7 299.7L104.3 303.7L106.3 306.1L107.9 307L110.3 310.1L113.2 311.4L115.6 315.1L118 316.5L120.9 321.7L123 325.6L125.1 329.6L126.9 332.9L129.2 334.3L132 338L134.4 336.5L136.5 335.8L139 332.2L141.6 329.6L145 327.2L147.7 324.4L150 323.3L152.1 321.5L154.7 315.5L156.8 311.3L159.1 308.2L160.6 304.4L162.8 300.6L164.8 297.6L167.5 296L170 294L171.8 294.9L173.5 297.8L176.3 300.9L178.2 301.8L180.4 304.5L182.3 306.9L183.8 309.8L184.9 311.1L187 312.1L189.7 314.3L191.3 314L193.4 313.6L196.1 313.9L198.8 314.5L201.6 315.9L204 316L206.1 314L208.4 313.8L211 312L213.3 308.8L214.7 307.5L216.4 307.6L218.4 307.1L219.7 307L222 303.2L225 300.8L228.3 300.7L231.1 298.5L232.9 294.5L235.5 291.4L237.5 286.7L240 284L241.7 283.5L244.1 285L245.9 285.8L247.6 287.8L249.5 288.9L251.2 289.5L253.8 292.5L256.3 293.9L258.7 294.7L260.2 295.2L262.6 294.6L265.4 295.8L266.7 298.6L268.9 299.3L270.4 300.6L272 300L273.5 298.5L275.4 295.2L277 293.4L278.1 292.7L280.5 291.8L282.2 289.8L284 291.4L285.8 290.9L287.8 289.2L289.3 286.9L291.4 283.4L294.1 278.8L295.5 278.1L297.5 276L298.6 275.5L300 274L300 240Z'/%3E%3C/svg%3E");
+}
+.c3-tema--lago .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 326C6.7 324.7 26.7 317 40 318C53.3 319 66.7 327.7 80 332C93.3 336.3 106.7 340 120 344C133.3 348 130 353.3 160 356C190 358.7 276.7 359.3 300 360L300 400ZM22 322L24 290L26 322Z M32 320L35 280L38 320Z M44 324L46 298L48 324Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #0b3a31 0%, #04201b 40%);
+}
+
+/* Pico Brasa — vulcão com cratera acesa, rios de lava e coluna de fumaça ao entardecer */
+.c3-tema--brasa {
+  --ceu:
+    radial-gradient(44% 26% at 50% 46%, rgba(255, 150, 100, 0.45), transparent 70%),
+    linear-gradient(180deg, #13020a 0%, #430722 30%, #a3244f 52%, #ff7559 68%, #ffb28a 78%);
+  --astro-x: 50%; --astro-y: 44%; --astro-t: 46%;
+  --astro-cor: #ff9a84; --astro-borda: #e3405c; --astro-brilho: rgba(255, 90, 110, 0.5); --estrelas: 0.4;
+  --nevoa: linear-gradient(0deg, rgba(58, 12, 26, 0.96) 0%, rgba(80, 22, 38, 0.85) 50%, rgba(110, 40, 56, 0.35) 75%, rgba(140, 60, 70, 0) 100%);
+  --nevoa-mascara: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M140 190C130 160 112 150 116 124C120 98 100 86 108 60C114 40 96 26 100 0L156 0C150 22 166 36 158 58C150 80 170 92 162 118C156 140 168 160 160 190Z'/%3E%3C/svg%3E");
+  --luz: radial-gradient(20% 9% at 50% 46%, rgba(255, 196, 110, 0.9), rgba(255, 100, 60, 0.35) 45%, transparent 100%);
+}
+.c3-tema--brasa .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 286L6.2 282.1L12.2 278.4L18 276.1L23.4 274.6L30.3 273.2L37 272L43.4 270.6L50 270L56.2 269.8L62.9 270.7L68.9 272.1L74.8 273.7L81.4 274.9L88.1 276L94.3 279.7L100 282L106.5 280.9L113.3 279.7L118.8 278.7L125.1 279.3L130.7 279L137.1 277.2L143.2 275.5L150 272L155.5 272.1L162 271.5L167.9 272.8L174.9 272.4L181.5 273.3L188.1 275.2L193.8 278.3L200 280L206.1 279.2L212.5 279.4L218.1 279.1L223.6 276.8L230 274L236.3 272L243.1 268.7L250 266L255.9 266.5L262.5 266.8L269.5 268.2L276.2 267.8L282.6 270.1L288.7 270.5L294.3 272.9L300 276L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #8a1f45 0%, #561033 60%);
+}
+.c3-tema--brasa .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M-20 400L60 300C90 260 112 214 128 186L136 182L146 186L154 182L164 186L172 182C188 214 210 260 240 300L320 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(90deg, #6e1530 0%, #4a0b22 45%, #2a0512 100%);
+  --d: linear-gradient(180deg, #ffd27a 0%, #ff6a2a 30%, #b02a20 70%, rgba(176, 42, 32, 0) 100%);
+  --dm: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M142 186C140 210 128 228 120 250C114 268 104 290 98 320L104 320C110 292 122 270 128 252C136 230 146 212 146 188Z M158 186C164 214 176 236 184 262C190 282 200 300 206 330L212 330C204 296 196 278 190 260C182 234 170 212 162 186Z M150 188C150 214 152 236 150 270L154 270C156 238 154 212 154 188Z'/%3E%3C/svg%3E");
+}
+.c3-tema--brasa .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 344L6.3 341L11.7 337.9L16.3 338.8L22 337.2L26.8 334.8L30.6 336.1L34.7 332.8L40 330L47 333.2L53.7 334L60.1 334.9L66.6 337.9L73.2 338.6L79.3 342.1L85.3 342.3L90 346L97.2 345.9L104.4 345.2L110.4 342.3L117.3 341.5L123.2 339L129.6 335.6L134.4 336.2L140 336L147.2 338.2L154.5 339.2L161.5 341.1L168.7 343L177.1 342.4L184.7 344.5L192.2 348.3L200 350L206.9 348.2L212.6 348.7L220.3 347.4L226.8 345.9L233.1 340L238.1 336.4L243.7 335.6L250 332L256.9 333.5L263.3 333L268.1 332.1L274.2 332.7L280.7 334.7L286.2 333.3L292.7 336.3L300 340L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #2a0612 0%, #12030a 40%);
+}
+
+/* Campo Âmbar — colinas de trigo com sulcos, árvore solitária e raios do sol se pondo */
+.c3-tema--campo {
+  --ceu:
+    radial-gradient(48% 30% at 58% 56%, rgba(255, 236, 170, 0.8), transparent 70%),
+    linear-gradient(180deg, #2a1404 0%, #6e3609 28%, #d77f24 50%, #ffcf7c 64%, #fff0c8 74%);
+  --astro-x: 58%; --astro-y: 57%; --astro-t: 20%;
+  --astro-cor: #fff7de; --astro-borda: #ffd98a; --astro-brilho: rgba(255, 210, 120, 0.85);
+  --nevoa: linear-gradient(180deg, transparent 57%, rgba(255, 236, 190, 0.65) 64%, rgba(255, 236, 190, 0.2) 70%, transparent 76%);
+  --luz: repeating-conic-gradient(from 0deg at 58% 57%, rgba(255, 240, 200, 0.18) 0deg 2.5deg, transparent 2.5deg 9deg);
+  --luz-mascara: radial-gradient(circle at 58% 57%, #000 0%, transparent 58%);
+}
+.c3-tema--campo .c3-c1 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 252C10 250.7 38.3 243.7 60 244C81.7 244.3 108.3 253.7 130 254C151.7 254.3 170 246.3 190 246C210 245.7 231.7 252.7 250 252C268.3 251.3 291.7 243.7 300 242L300 400Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #eaa64e 0%, #cf8530 50%, #e9b26a 100%);
+}
+.c3-tema--campo .c3-c2 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M0 400L0 262C8.3 261 31.7 255.3 50 256C68.3 256.7 90 261 110 266C130 271 150 280.3 170 286C190 291.7 208.3 296.7 230 300C251.7 303.3 288.3 305 300 306L300 400Z'/%3E%3C/svg%3E");
+  --c: repeating-linear-gradient(166deg, rgba(255, 240, 200, 0.16) 0 2px, transparent 2px 11px), linear-gradient(180deg, #c97f24 0%, #9a5512 45%, #6a3507 100%);
+}
+.c3-tema--campo .c3-c3 {
+  --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='none'%3E%3Cpath d='M70 262L71 244C64 244 58 240 58 234C58 228 62 224 66 223C66 216 72 212 78 213C82 208 90 208 94 213C100 212 106 217 105 223C110 225 112 230 110 235C108 240 102 243 96 243L80 244L81 262ZM0 400L0 340C10 337.3 36.7 328.7 60 324C83.3 319.3 115 316 140 312C165 308 190 302.7 210 300C230 297.3 245 297.3 260 296C275 294.7 293.3 292.7 300 292L300 400ZM196 304L197 284L199 284L200 302Z M224 298L225 280L227 280L228 296Z M252 294L253 278L255 278L256 292Z'/%3E%3C/svg%3E");
+  --c: linear-gradient(180deg, #3e1f04 0%, #1f0e02 40%);
+}
+
+/* 7. RESPONSIVO E MOVIMENTO REDUZIDO ------------------------------------ */
+@media (max-width: 900px) {
+  .c3-heroi,
+  .c3-cabeca { grid-template-columns: minmax(0, 1fr); align-items: start; }
+}
+@media (max-width: 560px) {
+  .c3-nav a { padding: 8px 9px; font-size: 13px; }
+  .c3-marca { font-size: 0; gap: 0; }       /* só o ícone no celular */
+  .c3-contador { display: none; }
+  .c3-controles { gap: 6px; }
+  .c3-play { margin-left: 0; }
+  .c3-bolinha { width: 18px; }
+  .c3-bolinha[aria-current="true"] { width: 30px; }
+  .c3-codigo { font-size: 11.5px; }
+  .c3-cabeca--compacta .c3-codigo { display: none; }   /* no celular, o carrossel da capa ganha espaço */
+  .c3-heroi { gap: 16px; }
+  .c3-palco {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .c3-bolinha::before,
+  .c3-seta,
+  .c3-play { transition: none; }
+  .c3-rodando .c3-bolinha[aria-current="true"]::after { animation: none; }
+}

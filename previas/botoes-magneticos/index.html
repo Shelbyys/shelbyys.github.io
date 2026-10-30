@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Botões Magnéticos — 9 microinterações prontas para copiar</title>
+  <meta name="description" content="Galeria com 9 botões animados em HTML, CSS e JavaScript puros: magnético, ripple, brilho, borda viva, líquido, 3D, seta, confete e segurar para confirmar.">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Única dependência externa: fontes do Google (opcional — há fallback do sistema) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <main class="pagina">
+
+    <!-- ===== Topo da página ===== -->
+    <header class="pagina-topo">
+      <div class="pagina-topo__titulo">
+        <p class="eyebrow"><span class="eyebrow__ponto" aria-hidden="true"></span>Coleção de microinterações · 9 efeitos</p>
+        <h1>Botões <em>magnéticos</em></h1>
+      </div>
+      <div class="pagina-topo__texto">
+        <p class="lead">Nove botões independentes, cada um com seu CSS e seu trecho de JavaScript. Passe o mouse, toque ou navegue com <kbd>Tab</kbd> e <kbd>Enter</kbd>. Quando gostar de um, clique em <strong>Copiar HTML</strong>.</p>
+        <ul class="chips" aria-label="Recursos">
+          <li>Mouse</li>
+          <li>Toque</li>
+          <li>Teclado</li>
+          <li>Zero dependências</li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- ===== Galeria: 9 células, uma por efeito ===== -->
+    <section class="galeria" aria-label="Galeria de botões">
+
+      <!-- 01 · Magnético -->
+      <article class="celula" aria-labelledby="t-magnetico">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">01</span>
+          <div class="celula__titulos">
+            <h2 id="t-magnetico">Magnético</h2>
+            <p>Atrai o cursor e volta com mola</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Magnético">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-magnetico">
+            <span class="bm-magnetico__texto">Fale com a gente</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- 02 · Ripple -->
+      <article class="celula" aria-labelledby="t-ripple">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">02</span>
+          <div class="celula__titulos">
+            <h2 id="t-ripple">Ripple</h2>
+            <p>Onda que nasce no ponto do clique</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Ripple">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-ripple">
+            <span class="bm-ripple__texto">Ver novidades</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- 03 · Brilho -->
+      <article class="celula" aria-labelledby="t-brilho">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">03</span>
+          <div class="celula__titulos">
+            <h2 id="t-brilho">Brilho</h2>
+            <p>Faixa de luz cruza o botão no hover</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Brilho">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-brilho">Começar agora</button>
+        </div>
+      </article>
+
+      <!-- 04 · Borda viva -->
+      <article class="celula" aria-labelledby="t-borda">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">04</span>
+          <div class="celula__titulos">
+            <h2 id="t-borda">Borda viva</h2>
+            <p>Gradiente cônico girando no contorno</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Borda viva">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-borda-viva">
+            <span class="bm-borda-viva__texto">Experimentar</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- 05 · Preenchimento líquido -->
+      <article class="celula" aria-labelledby="t-liquido">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">05</span>
+          <div class="celula__titulos">
+            <h2 id="t-liquido">Preenchimento líquido</h2>
+            <p>Sobe a partir de onde o mouse entrou</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Preenchimento líquido">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-liquido">
+            <span class="bm-liquido__onda" aria-hidden="true"></span>
+            <span class="bm-liquido__texto">Explorar coleção</span>
+          </button>
+        </div>
+      </article>
+
+      <!-- 06 · Pressão 3D -->
+      <article class="celula" aria-labelledby="t-pressao">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">06</span>
+          <div class="celula__titulos">
+            <h2 id="t-pressao">Pressão 3D</h2>
+            <p>Tem profundidade e afunda ao clicar</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Pressão 3D">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-pressao">Baixar agora</button>
+        </div>
+      </article>
+
+      <!-- 07 · Seta deslizante -->
+      <article class="celula" aria-labelledby="t-seta">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">07</span>
+          <div class="celula__titulos">
+            <h2 id="t-seta">Seta deslizante</h2>
+            <p>O texto sai, a seta entra</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Seta deslizante">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-seta">
+            <span class="bm-seta__texto">Continuar</span>
+            <svg class="bm-seta__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </article>
+
+      <!-- 08 · Confete -->
+      <article class="celula" aria-labelledby="t-confete">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">08</span>
+          <div class="celula__titulos">
+            <h2 id="t-confete">Confete</h2>
+            <p>Explosão de partículas ao clicar</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Confete">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-confete">
+            <span class="bm-confete__texto">Celebrar</span>
+            <canvas class="bm-confete__tela" aria-hidden="true"></canvas>
+          </button>
+        </div>
+      </article>
+
+      <!-- 09 · Segure para confirmar -->
+      <article class="celula" aria-labelledby="t-segure">
+        <header class="celula__topo">
+          <span class="celula__num" aria-hidden="true">09</span>
+          <div class="celula__titulos">
+            <h2 id="t-segure">Segure para confirmar</h2>
+            <p>Anel de progresso; soltar cancela</p>
+          </div>
+          <button type="button" class="copiar" data-copiar aria-label="Copiar HTML do botão Segure para confirmar">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
+            <span class="copiar__rotulo">Copiar HTML</span>
+          </button>
+        </header>
+        <div class="celula__palco">
+          <button type="button" class="bm-segure" aria-describedby="dica-segure">
+            <span class="bm-segure__fundo" aria-hidden="true"></span>
+            <svg class="bm-segure__anel" viewBox="0 0 36 36" aria-hidden="true">
+              <g transform="rotate(-90 18 18)">
+                <circle class="bm-segure__trilha" cx="18" cy="18" r="14"/>
+                <circle class="bm-segure__progresso" cx="18" cy="18" r="14" pathLength="1"/>
+              </g>
+              <path class="bm-segure__ok" d="M11.5 18.5l4.5 4.5 8.5-9.5"/>
+            </svg>
+            <span class="bm-segure__texto" aria-live="polite">Segure para enviar</span>
+            <span id="dica-segure" class="bm-segure__dica">Mantenha pressionado por um segundo e meio com o mouse, o dedo ou as teclas Enter e Espaço.</span>
+          </button>
+        </div>
+      </article>
+
+    </section>
+
+    <footer class="pagina-rodape">
+      <p>Cada efeito é independente: copie o bloco <code>.bm-nome</code> do <code>estilo.css</code>, o trecho correspondente do <code>script.js</code> e o HTML.</p>
+    </footer>
+  </main>
+
+  <!-- Aviso de "copiado" (acessível: role="status") -->
+  <div class="toast" role="status" aria-live="polite"><span class="toast__ponto" aria-hidden="true"></span><span class="toast__texto"></span></div>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

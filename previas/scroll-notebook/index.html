@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pauta 3.0 — Do rascunho à entrega</title>
+  <meta name="description" content="Apresentação de produto guiada pela rolagem: um notebook em CSS que abre, gira e mostra o app em três etapas.">
+  <meta name="theme-color" content="#f4f4f2">
+  <!-- Fonte (única dependência externa; sem ela o layout usa a fonte do sistema) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="sn-pagina">
+  <!-- RETRATOS: retratos ilustrados em SVG (#retrato-lia, #retrato-theo, #retrato-bia, #retrato-davi).
+       Use com <svg class="..." aria-hidden="true"><use href="#retrato-ana"/></svg>.
+       Cores por variável CSS: --retrato-fundo, --retrato-aro, --retrato-luz, --retrato-roupa-<nome>.
+       Para trocar por foto real, veja "Retratos" no LEIAME.md. -->
+  <svg class="retratos-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="rt-disco"><circle cx="60" cy="60" r="60"/></clipPath>
+      <path id="rt-rosto" d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/>
+      <clipPath id="rt-clip-rosto"><path d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-fora-rosto"><path clip-rule="evenodd" d="M0 0H120V120H0ZM60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-clip-torso"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></clipPath>
+      <radialGradient id="rt-luz-fundo" cx=".32" cy=".26" r=".85"><stop offset="0" stop-color="#fff" style="stop-opacity:var(--retrato-luz, .38)"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></radialGradient>
+      <linearGradient id="rt-sombra-corpo" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+      <linearGradient id="rt-sombra-pescoco" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".5" stop-color="#000" stop-opacity=".06"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
+      <linearGradient id="rt-sombra-gola" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".25"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+      <linearGradient id="rt-aro-grad" gradientUnits="userSpaceOnUse" x1="62" y1="40" x2="86" y2="54"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <mask id="rt-aro" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-grad)"/></mask>
+      <radialGradient id="rt-aro-cabeca-grad" gradientUnits="userSpaceOnUse" cx="94" cy="26" r="46"><stop offset=".25" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+      <mask id="rt-aro-cabeca" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-cabeca-grad)"/></mask>
+      <linearGradient id="rt-pele-lia" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#d1a27f"/><stop offset=".38" stop-color="#f0caa5"/><stop offset="1" stop-color="#f9e0c6"/></linearGradient>
+      <linearGradient id="rt-cabelo-lia" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#15141a"/><stop offset=".6" stop-color="#15141a"/><stop offset="1" stop-color="#454b63"/></linearGradient>
+      <radialGradient id="rt-volume-lia" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#454b63"/><stop offset=".6" stop-color="#15141a"/><stop offset="1" stop-color="#15141a"/></radialGradient>
+      <clipPath id="rt-clip-cabelo-lia"><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z"/></clipPath>
+      <linearGradient id="rt-pele-theo" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#683f27"/><stop offset=".38" stop-color="#8c5b3b"/><stop offset="1" stop-color="#ad7650"/></linearGradient>
+      <linearGradient id="rt-cabelo-theo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1411"/><stop offset=".6" stop-color="#1c1411"/><stop offset="1" stop-color="#45332a"/></linearGradient>
+      <radialGradient id="rt-volume-theo" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#45332a"/><stop offset=".6" stop-color="#1c1411"/><stop offset="1" stop-color="#1c1411"/></radialGradient>
+      <clipPath id="rt-clip-cabelo-theo"><path d="M37.2 51C35 31 45 19.5 60 19.5C75 19.5 85 31 82.8 51C81.5 44.5 78.5 40.5 73.5 38.5C66.5 36.6 53.5 36.6 46.5 38.5C41.5 40.5 38.5 44.5 37.2 51Z"/></clipPath>
+      <linearGradient id="rt-pele-bia" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#a06646"/><stop offset=".38" stop-color="#c88d64"/><stop offset="1" stop-color="#e0ab84"/></linearGradient>
+      <linearGradient id="rt-cabelo-bia" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4e2a1b"/><stop offset=".6" stop-color="#4e2a1b"/><stop offset="1" stop-color="#a5633b"/></linearGradient>
+      <radialGradient id="rt-volume-bia" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#a5633b"/><stop offset=".6" stop-color="#4e2a1b"/><stop offset="1" stop-color="#4e2a1b"/></radialGradient>
+      <linearGradient id="rt-pele-davi" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#d09a7b"/><stop offset=".38" stop-color="#f0c5a4"/><stop offset="1" stop-color="#fbdcc6"/></linearGradient>
+      <linearGradient id="rt-cabelo-davi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6c4529"/><stop offset=".6" stop-color="#6c4529"/><stop offset="1" stop-color="#a87a50"/></linearGradient>
+      <radialGradient id="rt-volume-davi" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#a87a50"/><stop offset=".6" stop-color="#6c4529"/><stop offset="1" stop-color="#6c4529"/></radialGradient>
+      <clipPath id="rt-clip-cabelo-davi"><path d="M37.4 52C35.6 40 37.6 30.5 44 25C47.5 21 52.5 19.2 57.5 19.8C61.5 17.6 67.5 17.8 71.5 20.4C76.5 21.8 80.5 25.4 82.4 30.6C84.6 36.6 84.2 44.4 82.6 52C81.6 47.2 80.2 43.6 78.2 41.2C77.2 38.4 75.2 36.8 72.4 36.2C69.2 37.8 65 36.8 62 34.2C58 37.4 53 38.8 48 38.8C43.4 40.4 39.8 45 37.4 52Z"/></clipPath>
+    </defs>
+    <symbol id="retrato-lia" viewBox="0 0 120 120"><!-- Lia — cabelo preto preso em coque --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><circle cx="60" cy="15.5" r="11.5" fill="url(#rt-cabelo-lia)"/><path d="M53 11.5Q58 6.5 65 9" fill="none" stroke="#454b63" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".9"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#d1a27f"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-lia, #24272f)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M46 88.6Q60 97 74 88.6L72 124H48Z" fill="#f2efe8"/><path d="M46.5 89Q60 97.5 73.5 89" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2"/><path d="M44 90.5L54 124H38L33 97Z" style="fill:var(--retrato-roupa-lia, #24272f)"/><path d="M76 90.5L66 124H82L87 97Z" style="fill:var(--retrato-roupa-lia, #24272f)"/><path d="M44 90.5L54 124 M76 90.5L66 124" stroke="#fff" stroke-opacity=".18" stroke-width="1.4"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#d1a27f"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#f9e0c6"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-lia)"/><circle cx="47.5" cy="65" r="5" fill="#ef8a7c" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#ef8a7c" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#d1a27f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#c95a5c"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="56.2" rx="3.2" ry="2.6" fill="#1d1412"/><circle cx="51.5" cy="55.2" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="56.2" rx="3.2" ry="2.6" fill="#1d1412"/><circle cx="70.5" cy="55.2" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#15141a" stroke-width="2.3" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)"><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z" transform="translate(-.6 2.8)" fill="#000" fill-opacity=".16"/></g><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z" fill="url(#rt-volume-lia)"/><path d="M48.6 31.6Q53.6 27.4 58.4 27M71.4 31.6Q66.4 27.4 61.6 27" fill="none" stroke="#454b63" stroke-width="2.6" stroke-linecap="round" stroke-opacity=".8"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-fora-rosto)"><g clip-path="url(#rt-clip-cabelo-lia)"><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z"/></g></g></g><circle cx="38.4" cy="63.6" r="2.2" fill="#e9b949"/><circle cx="81.6" cy="63.6" r="2.2" fill="#f4cd63"/></g></symbol>
+    <symbol id="retrato-theo" viewBox="0 0 120 120"><!-- Theo — cabelo crespo curto, cavanhaque --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#683f27"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-theo, #8c3a46)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M46.5 88.6Q60 97.6 73.5 88.6" fill="none" stroke="#000" stroke-opacity=".22" stroke-width="4.4" stroke-linecap="round"/><path d="M46.5 87.4Q60 96.4 73.5 87.4" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="1.6" stroke-linecap="round"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#683f27"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#ad7650"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-theo)"/><circle cx="47.5" cy="65" r="5" fill="#a2523e" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#a2523e" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M52 72.8C54 75.5 57 76 60 76C63 76 66 75.5 68 72.8C68 77.5 65 82 60 82.5C55 82 52 77.5 52 72.8Z" fill="#1c1411"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#683f27" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M51.5 68.4C54.5 65.6 57.5 65.6 60 67C62.5 65.6 65.5 65.6 68.5 68.4C65.5 68.2 62.5 68 60 68.6C57.5 68 54.5 68.2 51.5 68.4Z" fill="#1c1411"/><path d="M55.2 70.8Q60 72.4 64.8 70.8Q63.2 74.8 60 74.8Q56.8 74.8 55.2 70.8Z" fill="#6a3427"/><path d="M54 70.4Q60 72.6 66 70.4" fill="none" stroke="#000" stroke-opacity=".28" stroke-width="1.1" stroke-linecap="round"/><ellipse cx="61.4" cy="73" rx="2" ry=".9" fill="#fff" fill-opacity=".18"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#1c1411" stroke-width="2.8" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)"><path d="M37.2 51C35 31 45 19.5 60 19.5C75 19.5 85 31 82.8 51C81.5 44.5 78.5 40.5 73.5 38.5C66.5 36.6 53.5 36.6 46.5 38.5C41.5 40.5 38.5 44.5 37.2 51Z" transform="translate(-.6 2.8)" fill="#000" fill-opacity=".16"/></g><path d="M37.2 51C35 31 45 19.5 60 19.5C75 19.5 85 31 82.8 51C81.5 44.5 78.5 40.5 73.5 38.5C66.5 36.6 53.5 36.6 46.5 38.5C41.5 40.5 38.5 44.5 37.2 51Z" fill="url(#rt-volume-theo)"/><g fill="url(#rt-volume-theo)"><circle cx="37.7" cy="41.0" r="2.6"/><circle cx="38.5" cy="37.5" r="2.6"/><circle cx="39.8" cy="34.2" r="2.6"/><circle cx="41.4" cy="31.1" r="2.6"/><circle cx="43.4" cy="28.3" r="2.6"/><circle cx="45.7" cy="25.8" r="2.6"/><circle cx="48.2" cy="23.7" r="2.6"/><circle cx="50.9" cy="22.1" r="2.6"/><circle cx="53.9" cy="20.9" r="2.6"/><circle cx="56.9" cy="20.1" r="2.6"/><circle cx="60.0" cy="19.9" r="2.6"/><circle cx="63.1" cy="20.1" r="2.6"/><circle cx="66.1" cy="20.9" r="2.6"/><circle cx="69.1" cy="22.1" r="2.6"/><circle cx="71.8" cy="23.7" r="2.6"/><circle cx="74.3" cy="25.8" r="2.6"/><circle cx="76.6" cy="28.3" r="2.6"/><circle cx="78.6" cy="31.1" r="2.6"/><circle cx="80.2" cy="34.2" r="2.6"/><circle cx="81.5" cy="37.5" r="2.6"/><circle cx="82.3" cy="41.0" r="2.6"/></g></g></symbol>
+    <symbol id="retrato-bia" viewBox="0 0 120 120"><!-- Bia — cabelo cacheado volumoso --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><g fill="url(#rt-volume-bia)"><circle cx="33.2" cy="65.5" r="11.5"/><circle cx="29.9" cy="57.5" r="11.5"/><circle cx="29.0" cy="48.9" r="11.5"/><circle cx="30.5" cy="40.4" r="11.5"/><circle cx="34.3" cy="32.7" r="11.5"/><circle cx="40.1" cy="26.3" r="11.5"/><circle cx="47.4" cy="21.7" r="11.5"/><circle cx="55.7" cy="19.3" r="11.5"/><circle cx="64.3" cy="19.3" r="11.5"/><circle cx="72.6" cy="21.7" r="11.5"/><circle cx="79.9" cy="26.3" r="11.5"/><circle cx="85.7" cy="32.7" r="11.5"/><circle cx="89.5" cy="40.4" r="11.5"/><circle cx="91.0" cy="48.9" r="11.5"/><circle cx="90.1" cy="57.5" r="11.5"/><circle cx="86.8" cy="65.5" r="11.5"/><circle cx="60" cy="50" r="31"/><circle cx="30.5" cy="78.8" r="9"/><circle cx="32.5" cy="69.7" r="9"/><circle cx="43.5" cy="62.6" r="9"/><circle cx="60.0" cy="60.0" r="9"/><circle cx="76.5" cy="62.6" r="9"/><circle cx="87.5" cy="69.7" r="9"/><circle cx="89.5" cy="78.8" r="9"/></g><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#a06646"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-bia, #dfa43a)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M45.5 88.8Q60 104 74.5 88.8Q60 98.5 45.5 88.8Z" fill="url(#rt-pele-bia)"/><path d="M45.5 88.8Q60 104 74.5 88.8" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#a06646"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#e0ab84"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-bia)"/><circle cx="47.5" cy="65" r="5" fill="#d0705a" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#d0705a" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#a06646" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#9a4a3e"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#4e2a1b" stroke-width="2.4" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)" transform="translate(-.6 2.8)" opacity=".16"><g fill="#000"><circle cx="38.3" cy="44.0" r="7.2"/><circle cx="42.4" cy="36.8" r="7.2"/><circle cx="50.1" cy="31.8" r="7.2"/><circle cx="60.0" cy="30.0" r="7.2"/><circle cx="69.9" cy="31.8" r="7.2"/><circle cx="77.6" cy="36.8" r="7.2"/><circle cx="81.7" cy="44.0" r="7.2"/></g></g><g fill="#4e2a1b"><circle cx="38.3" cy="44.0" r="7.2"/><circle cx="42.4" cy="36.8" r="7.2"/><circle cx="50.1" cy="31.8" r="7.2"/><circle cx="60.0" cy="30.0" r="7.2"/><circle cx="69.9" cy="31.8" r="7.2"/><circle cx="77.6" cy="36.8" r="7.2"/><circle cx="81.7" cy="44.0" r="7.2"/></g><g fill="none" stroke="#a5633b" stroke-width="2" stroke-linecap="round" stroke-opacity=".85"><path d="M70 24q4 1 4 5M80 34q4 2 3 6M45 25q-4 2-4 6M86 54q2 3 0 6M34 50q-2 3 0 6M66 34q3 1 3 4M53 33q-3 1-3 4M85 72q2 3 0 5M35 70q-2 3 0 5"/></g></g></symbol>
+    <symbol id="retrato-davi" viewBox="0 0 120 120"><!-- Davi — ondulado curto, óculos, barba por fazer --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#d09a7b"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-davi, #4b7a5a)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M47.5 88.2L56 99.5L50.5 103L44.2 91.6Z M72.5 88.2L64 99.5L69.5 103L75.8 91.6Z" fill="#f4f1ea"/><path d="M44 91Q60 108 76 91" fill="none" stroke="#000" stroke-opacity=".22" stroke-width="3.4"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#d09a7b"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#fbdcc6"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-davi)"/><circle cx="47.5" cy="65" r="5" fill="#ea8a78" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#ea8a78" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M38.8 55C40 67 45.5 79 60 82.5C74.5 79 80 67 81.2 55C79.5 63 77 68 72 70C68 72.5 64 73 60 73C56 73 52 72.5 48 70C43 68 40.5 63 38.8 55Z" fill="#6c4529" fill-opacity=".2"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#d09a7b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#c06a60"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#6c4529" stroke-width="2.6" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)"><path d="M37.4 52C35.6 40 37.6 30.5 44 25C47.5 21 52.5 19.2 57.5 19.8C61.5 17.6 67.5 17.8 71.5 20.4C76.5 21.8 80.5 25.4 82.4 30.6C84.6 36.6 84.2 44.4 82.6 52C81.6 47.2 80.2 43.6 78.2 41.2C77.2 38.4 75.2 36.8 72.4 36.2C69.2 37.8 65 36.8 62 34.2C58 37.4 53 38.8 48 38.8C43.4 40.4 39.8 45 37.4 52Z" transform="translate(-.6 2.8)" fill="#000" fill-opacity=".16"/></g><path d="M37.4 52C35.6 40 37.6 30.5 44 25C47.5 21 52.5 19.2 57.5 19.8C61.5 17.6 67.5 17.8 71.5 20.4C76.5 21.8 80.5 25.4 82.4 30.6C84.6 36.6 84.2 44.4 82.6 52C81.6 47.2 80.2 43.6 78.2 41.2C77.2 38.4 75.2 36.8 72.4 36.2C69.2 37.8 65 36.8 62 34.2C58 37.4 53 38.8 48 38.8C43.4 40.4 39.8 45 37.4 52Z" fill="url(#rt-volume-davi)"/><path d="M48 29Q54 23.6 62 24M67 23.6Q74 24 78.4 29.4" fill="none" stroke="#a87a50" stroke-width="2.6" stroke-linecap="round" stroke-opacity=".8"/><g><rect x="42.6" y="50.4" width="15.2" height="10.6" rx="3.6" fill="#fff" fill-opacity=".14" stroke="#1d1817" stroke-width="2.3"/><rect x="62.2" y="50.4" width="15.2" height="10.6" rx="3.6" fill="#fff" fill-opacity=".14" stroke="#1d1817" stroke-width="2.3"/><path d="M57.8 54.6Q60 52.6 62.2 54.6M42.6 53.6L38.6 52.6M77.4 53.6L81.4 52.6" fill="none" stroke="#1d1817" stroke-width="2.1" stroke-linecap="round"/></g><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-fora-rosto)"><g clip-path="url(#rt-clip-cabelo-davi)"><path d="M37.4 52C35.6 40 37.6 30.5 44 25C47.5 21 52.5 19.2 57.5 19.8C61.5 17.6 67.5 17.8 71.5 20.4C76.5 21.8 80.5 25.4 82.4 30.6C84.6 36.6 84.2 44.4 82.6 52C81.6 47.2 80.2 43.6 78.2 41.2C77.2 38.4 75.2 36.8 72.4 36.2C69.2 37.8 65 36.8 62 34.2C58 37.4 53 38.8 48 38.8C43.4 40.4 39.8 45 37.4 52Z"/></g></g></g></g></symbol>
+  </svg>
+  <!-- /RETRATOS -->
+
+  <a class="sn-pular" href="#sn-passo-1">Pular para as etapas</a>
+
+  <!-- Barra de progresso de leitura (preenchida pelo script) -->
+  <div class="sn-progresso" aria-hidden="true"><span class="sn-progresso-barra"></span></div>
+
+  <!-- ===================== TOPO ===================== -->
+  <header class="sn-topo">
+    <a class="sn-marca" href="#" aria-label="Pauta — início">
+      <span class="sn-marca-icone" aria-hidden="true"></span>Pauta
+    </a>
+    <nav class="sn-nav" aria-label="Principal">
+      <a href="#sn-passo-1">Recursos</a>
+      <a href="#sn-final">Planos</a>
+      <a class="sn-nav-botao" href="#sn-final">Entrar</a>
+    </nav>
+  </header>
+
+  <main>
+    <!--
+      CENA GUIADA PELA ROLAGEM
+      .sn-cena é alta (veja --sn-altura-cena no CSS); .sn-fixo fica "grudado" (sticky)
+      enquanto a pessoa rola. O script calcula o progresso (0 → 1) e chama mapear().
+    -->
+    <section class="sn-cena" aria-labelledby="sn-titulo">
+      <div class="sn-fixo">
+
+        <!-- Título do lançamento (capa) -->
+        <div class="sn-intro">
+          <p class="sn-selo"><span>Novo</span> Pauta 3.0 para times criativos</p>
+          <h1 id="sn-titulo" class="sn-titulo">Do rascunho à entrega, <em>sem perder o fio.</em></h1>
+          <p class="sn-sub">Organize tarefas, acompanhe o ritmo do time e entregue no prazo — tudo num só lugar. Role a página e veja o Pauta abrir.</p>
+          <div class="sn-acoes">
+            <a class="sn-botao sn-botao--cheio" href="#sn-final">Experimentar 14 dias</a>
+            <a class="sn-botao" href="#sn-passo-1">Ver como funciona</a>
+          </div>
+        </div>
+
+        <!-- Palco 3D com o notebook (100% CSS) -->
+        <!-- Pessoas da tela: retratos ilustrados (bloco RETRATOS no topo do <body>); --cor é o fundo do disco.
+             Foto real: troque o <svg> por <img src="img/foto.jpg" alt="">. Iniciais: <span class="sn-av" style="--cor:#3a6bff">MR</span>. -->
+        <div class="sn-palco" aria-hidden="true">
+          <div class="sn-notebook">
+
+            <!-- Tampa: frente (tela) e costas (alumínio) -->
+            <div class="sn-tampa">
+              <div class="sn-tampa-frente">
+                <span class="sn-camera"></span>
+                <div class="sn-tela">
+
+                  <!-- Interface fictícia do app (desenhada em 1280 × 760 e escalada pelo script) -->
+                  <div class="sn-ui">
+                    <aside class="sn-ui-lateral">
+                      <div class="sn-ui-marca"><span class="sn-ui-logo"></span>Pauta</div>
+                      <div class="sn-ui-busca">Buscar<kbd>⌘K</kbd></div>
+                      <nav class="sn-ui-menu">
+                        <span class="sn-ui-item" data-tela="0"><i class="sn-ico sn-ico--quadro"></i>Quadro</span>
+                        <span class="sn-ui-item" data-tela="1"><i class="sn-ico sn-ico--ritmo"></i>Ritmo</span>
+                        <span class="sn-ui-item" data-tela="2"><i class="sn-ico sn-ico--entrega"></i>Entregas</span>
+                        <span class="sn-ui-item"><i class="sn-ico sn-ico--arquivo"></i>Arquivo</span>
+                      </nav>
+                      <p class="sn-ui-grupo">Projetos</p>
+                      <ul class="sn-ui-projetos">
+                        <li><i style="--cor:#3a6bff"></i>Site institucional</li>
+                        <li><i style="--cor:#14b8a6"></i>App 2.0</li>
+                        <li><i style="--cor:#f59e0b"></i>Campanha de verão</li>
+                        <li><i style="--cor:#e5484d"></i>Relatório anual</li>
+                      </ul>
+                      <div class="sn-ui-usuario"><span class="sn-av" style="--cor:#3a6bff"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-lia"/></svg></span><div><b>Marina Reis</b><small>Produto</small></div></div>
+                    </aside>
+
+                    <div class="sn-ui-principal">
+                      <div class="sn-ui-telas">
+
+                        <!-- Tela 1 · Organize (quadro) -->
+                        <section class="sn-ui-tela sn-ui-tela--1">
+                          <header class="sn-ui-cabeca">
+                            <div><small>Site institucional</small><h3>Quadro da semana</h3></div>
+                            <div class="sn-ui-pessoas"><span class="sn-av" style="--cor:#3a6bff"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-lia"/></svg></span><span class="sn-av" style="--cor:#14b8a6"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-theo"/></svg></span><span class="sn-av" style="--cor:#f59e0b"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-bia"/></svg></span><span class="sn-av sn-av--mais">+4</span></div>
+                            <span class="sn-ui-btn">+ Nova tarefa</span>
+                          </header>
+                          <div class="sn-quadro">
+                            <div class="sn-coluna">
+                              <p class="sn-coluna-titulo">A fazer <b>4</b></p>
+                              <div class="sn-card" style="--i:0"><span class="sn-tag sn-tag--azul">Design</span><p>Revisar grade da home</p><footer><span class="sn-av" style="--cor:#3a6bff"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-lia"/></svg></span><time>Seg</time></footer></div>
+                              <div class="sn-card" style="--i:1"><span class="sn-tag sn-tag--ambar">Texto</span><p>Escrever manifesto da marca</p><footer><span class="sn-av" style="--cor:#f59e0b"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-bia"/></svg></span><time>Ter</time></footer></div>
+                              <div class="sn-card" style="--i:2"><span class="sn-tag sn-tag--verde">SEO</span><p>Mapear palavras-chave</p><footer><span class="sn-av" style="--cor:#14b8a6"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-theo"/></svg></span><time>Qua</time></footer></div>
+                            </div>
+                            <div class="sn-coluna">
+                              <p class="sn-coluna-titulo">Fazendo <b>3</b></p>
+                              <div class="sn-card sn-card--destaque" style="--i:3"><span class="sn-tag sn-tag--azul">Design</span><p>Protótipo da página de planos</p><div class="sn-barra"><i style="--v:.64"></i></div><footer><span class="sn-av" style="--cor:#3a6bff"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-lia"/></svg></span><time>Hoje</time></footer></div>
+                              <div class="sn-card" style="--i:4"><span class="sn-tag sn-tag--roxo">Dev</span><p>Componentes do cabeçalho</p><div class="sn-barra"><i style="--v:.38"></i></div><footer><span class="sn-av" style="--cor:#8b5cf6"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-davi"/></svg></span><time>Qui</time></footer></div>
+                            </div>
+                            <div class="sn-coluna">
+                              <p class="sn-coluna-titulo">Revisão <b>2</b></p>
+                              <div class="sn-card" style="--i:5"><span class="sn-tag sn-tag--verde">SEO</span><p>Metadados das páginas</p><footer><span class="sn-av" style="--cor:#14b8a6"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-theo"/></svg></span><time>Sex</time></footer></div>
+                              <div class="sn-card" style="--i:6"><span class="sn-tag sn-tag--ambar">Texto</span><p>Revisar textos do rodapé</p><footer><span class="sn-av" style="--cor:#f59e0b"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-bia"/></svg></span><time>Sex</time></footer></div>
+                            </div>
+                          </div>
+                        </section>
+
+                        <!-- Tela 2 · Acompanhe (painel) -->
+                        <section class="sn-ui-tela sn-ui-tela--2">
+                          <header class="sn-ui-cabeca">
+                            <div><small>Últimos 30 dias</small><h3>Ritmo do time</h3></div>
+                            <div class="sn-ui-filtros"><span class="sn-ativo">30 dias</span><span>Trimestre</span><span>Ano</span></div>
+                          </header>
+                          <div class="sn-kpis">
+                            <div class="sn-kpi" style="--i:0"><small>Concluídas</small><b>128</b><span class="sn-alta">+18%</span></div>
+                            <div class="sn-kpi" style="--i:1"><small>No prazo</small><b>94%</b><span class="sn-alta">+6 pts</span></div>
+                            <div class="sn-kpi" style="--i:2"><small>Em atraso</small><b>3</b><span class="sn-baixa">−5</span></div>
+                          </div>
+                          <div class="sn-paineis">
+                            <div class="sn-painel sn-grafico">
+                              <p class="sn-painel-titulo">Tarefas concluídas por semana</p>
+                              <svg viewBox="0 0 520 200" preserveAspectRatio="none">
+                                <defs>
+                                  <linearGradient id="sn-area" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#3a6bff" stop-opacity=".28"/>
+                                    <stop offset="1" stop-color="#3a6bff" stop-opacity="0"/>
+                                  </linearGradient>
+                                </defs>
+                                <g class="sn-grade"><path d="M0 50H520M0 100H520M0 150H520"/></g>
+                                <path class="sn-area" d="M0 160 C40 150 70 120 110 126 S180 150 220 112 S300 70 340 84 S420 60 460 40 S510 30 520 28 V200 H0Z" fill="url(#sn-area)"/>
+                                <path class="sn-linha" pathLength="1" d="M0 160 C40 150 70 120 110 126 S180 150 220 112 S300 70 340 84 S420 60 460 40 S510 30 520 28"/>
+                                <circle class="sn-ponto" cx="460" cy="40" r="7"/>
+                              </svg>
+                            </div>
+                            <div class="sn-painel sn-carga">
+                              <p class="sn-painel-titulo">Carga por pessoa</p>
+                              <div class="sn-pessoa" style="--i:0"><span class="sn-av" style="--cor:#3a6bff"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-lia"/></svg></span><div class="sn-trilha"><i style="--v:.72"></i></div><b>72%</b></div>
+                              <div class="sn-pessoa" style="--i:1"><span class="sn-av" style="--cor:#14b8a6"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-theo"/></svg></span><div class="sn-trilha"><i style="--v:.55"></i></div><b>55%</b></div>
+                              <div class="sn-pessoa" style="--i:2"><span class="sn-av" style="--cor:#f59e0b"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-bia"/></svg></span><div class="sn-trilha sn-trilha--alerta"><i style="--v:.91"></i></div><b>91%</b></div>
+                              <div class="sn-pessoa" style="--i:3"><span class="sn-av" style="--cor:#8b5cf6"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-davi"/></svg></span><div class="sn-trilha"><i style="--v:.47"></i></div><b>47%</b></div>
+                            </div>
+                          </div>
+                        </section>
+
+                        <!-- Tela 3 · Entregue (checklist + pronto) -->
+                        <section class="sn-ui-tela sn-ui-tela--3">
+                          <header class="sn-ui-cabeca">
+                            <div><small>Site institucional</small><h3>Entrega v1.0</h3></div>
+                            <span class="sn-ui-btn sn-ui-btn--claro">Ver histórico</span>
+                          </header>
+                          <div class="sn-entrega">
+                            <div class="sn-painel sn-checklist">
+                              <p class="sn-painel-titulo">Checklist de revisão</p>
+                              <div class="sn-check" style="--i:0"><i></i>Textos aprovados pelo cliente</div>
+                              <div class="sn-check" style="--i:1"><i></i>Imagens otimizadas</div>
+                              <div class="sn-check" style="--i:2"><i></i>Testes em celular e desktop</div>
+                              <div class="sn-check" style="--i:3"><i></i>Acessibilidade revisada</div>
+                              <div class="sn-check" style="--i:4"><i></i>Domínio e certificados</div>
+                            </div>
+                            <div class="sn-painel sn-pronto">
+                              <svg class="sn-anel" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="50" class="sn-anel-fundo"/>
+                                <circle cx="60" cy="60" r="50" class="sn-anel-valor" pathLength="1"/>
+                                <path class="sn-anel-check" d="M42 61l12 12 25-27"/>
+                              </svg>
+                              <b>Pronto para entregar</b>
+                              <small>5 de 5 itens revisados · 2 dias antes do prazo</small>
+                              <span class="sn-ui-btn">Publicar entrega</span>
+                            </div>
+                          </div>
+                          <div class="sn-aviso"><span class="sn-av" style="--cor:#14b8a6"><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-theo"/></svg></span><p><b>João</b> aprovou a entrega · agora</p></div>
+                        </section>
+                      </div>
+                    </div>
+                    <!-- "Tela desligada": some conforme a tampa abre -->
+                    <div class="sn-ui-luz"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="sn-tampa-borda"></div>
+              <div class="sn-tampa-costas"><span class="sn-logo-tampa"></span></div>
+            </div>
+
+            <!-- Base: teclado sugerido, trackpad, borda frontal e sombra -->
+            <div class="sn-base">
+              <div class="sn-sombra"></div>
+              <div class="sn-base-topo">
+                <span class="sn-alto-falante sn-alto-falante--e"></span>
+                <span class="sn-teclado"></span>
+                <span class="sn-alto-falante sn-alto-falante--d"></span>
+                <span class="sn-trackpad"></span>
+              </div>
+              <div class="sn-base-frente"><span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Textos laterais das etapas (entram e saem com a rolagem) -->
+        <div class="sn-passos">
+          <article class="sn-passo" id="sn-passo-1" aria-labelledby="sn-passo-1-t">
+            <p class="sn-passo-num">Etapa 01</p>
+            <h2 id="sn-passo-1-t">Organize</h2>
+            <p>Tudo o que chega vira um cartão. Arraste entre colunas, defina responsáveis e prazos e enxergue a semana inteira num só quadro.</p>
+            <ul><li>Quadros por projeto</li><li>Prazos e etiquetas</li><li>Atalhos de teclado</li></ul>
+          </article>
+          <article class="sn-passo" id="sn-passo-2" aria-labelledby="sn-passo-2-t">
+            <p class="sn-passo-num">Etapa 02</p>
+            <h2 id="sn-passo-2-t">Acompanhe</h2>
+            <p>O painel mostra o ritmo real do time: o que foi concluído, o que atrasou e quem está sobrecarregado — antes de virar problema.</p>
+            <ul><li>Indicadores ao vivo</li><li>Carga por pessoa</li><li>Relatórios em um clique</li></ul>
+          </article>
+          <article class="sn-passo" id="sn-passo-3" aria-labelledby="sn-passo-3-t">
+            <p class="sn-passo-num">Etapa 03</p>
+            <h2 id="sn-passo-3-t">Entregue</h2>
+            <p>Checklist de revisão, aprovação com um clique e um aviso quando está tudo pronto. A entrega sai no prazo e o time inteiro fica sabendo.</p>
+            <ul><li>Checklists reutilizáveis</li><li>Aprovação do cliente</li><li>Histórico de versões</li></ul>
+          </article>
+        </div>
+
+        <!-- Indicador de etapas: clicar rola até a etapa -->
+        <nav class="sn-indicador" aria-label="Etapas da apresentação">
+          <a class="sn-indicador-item" href="#sn-passo-1" data-etapa="0"><span class="sn-indicador-barra"><i></i></span><b>01</b> Organize</a>
+          <a class="sn-indicador-item" href="#sn-passo-2" data-etapa="1"><span class="sn-indicador-barra"><i></i></span><b>02</b> Acompanhe</a>
+          <a class="sn-indicador-item" href="#sn-passo-3" data-etapa="2"><span class="sn-indicador-barra"><i></i></span><b>03</b> Entregue</a>
+        </nav>
+
+        <p class="sn-dica" aria-hidden="true"><span class="sn-dica-mouse"></span>Role para abrir</p>
+      </div>
+    </section>
+
+    <!-- ===================== FECHAMENTO ===================== -->
+    <section class="sn-final" id="sn-final" aria-labelledby="sn-final-t">
+      <p class="sn-selo"><span>Grátis</span> 14 dias, sem cartão</p>
+      <h2 id="sn-final-t">Pronto para abrir o seu?</h2>
+      <p>Comece com um quadro, convide o time quando quiser e veja o ritmo aparecer já na primeira semana.</p>
+      <div class="sn-acoes">
+        <a class="sn-botao sn-botao--cheio" href="#sn-final">Criar conta grátis</a>
+        <a class="sn-botao" href="#sn-passo-1">Rever as etapas</a>
+      </div>
+      <dl class="sn-numeros">
+        <div><dt>Times usando</dt><dd>12 mil</dd></div>
+        <div><dt>Entregas no prazo</dt><dd>94%</dd></div>
+        <div><dt>Horas poupadas / mês</dt><dd>31 h</dd></div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="sn-rodape">
+    <p>Pauta é um produto fictício criado para esta demonstração · HTML, CSS e JavaScript puros.</p>
+  </footer>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

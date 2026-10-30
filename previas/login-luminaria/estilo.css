@@ -1,0 +1,626 @@
+/* =====================================================================
+   LOGIN LUMINÁRIA — estilo.css
+   Tudo é controlado pelos tokens do :root. Troque as cores aqui.
+   Prefixo de classes: .ll-
+   ===================================================================== */
+
+/* Raio da luz como propriedade registrada: permite ANIMAR a máscara radial */
+@property --ll-r {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+:root {
+  /* Cores base */
+  --ll-fundo: #0d0f14;          /* fundo da sala */
+  --ll-parede: #12151d;         /* parede */
+  --ll-mesa-topo: #2d251e;      /* borda do tampo */
+  --ll-mesa-frente: #1a1612;    /* frente da mesa */
+  --ll-texto: #f4efe6;          /* texto principal */
+  --ll-texto-suave: rgba(244, 239, 230, .64);
+  --ll-erro: #ff9c86;
+  --ll-ok: #a6e3b8;
+
+  /* Luz (o tom pode ser trocado pelas bolinhas — ver [data-tom] abaixo) */
+  --ll-luz: #ffcf7a;            /* âmbar */
+  --ll-luz-forte: #ffe7b8;      /* miolo mais claro do feixe */
+  --ll-luz-texto: #1d1408;      /* texto sobre o botão iluminado */
+
+  /* Cartão */
+  --ll-cartao: rgba(19, 21, 28, .82);
+  --ll-borda: rgba(244, 239, 230, .12);
+  --ll-entrada: rgba(255, 255, 255, .04);
+  --ll-raio: 22px;
+
+  /* Luminária */
+  --ll-contorno: rgba(244, 239, 230, .4);   /* traço no escuro */
+  --ll-corpo: #171a22;                      /* preenchimento das peças */
+
+  /* Tipografia */
+  --ll-fonte-titulo: "Fraunces", Georgia, "Times New Roman", serif;
+  --ll-fonte: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Layout (ajustado nos breakpoints) */
+  --ll-mesa-h: 150px;           /* altura da frente da mesa */
+  --ll-cartao-w: 400px;         /* largura do cartão */
+  --ll-vao: 34px;               /* distância entre cartão e tampo */
+  --ll-desloc: 150px;           /* desloca cartão p/ direita, abrindo espaço à luminária */
+  --ll-lamp-w: 470px;           /* largura da luminária */
+
+  /* Bloqueio: a luz quente dá lugar a um contorno frio e silencioso */
+  --ll-frio: #b9c8e2;
+  --ll-frio-forte: #e3eaf6;
+
+  /* Movimento */
+  --ll-mola: cubic-bezier(.2, .8, .2, 1);
+}
+
+/* Tons da luz */
+.ll-cena[data-tom="neutra"] { --ll-luz: #fff0d4; --ll-luz-forte: #fffaf0; }
+.ll-cena[data-tom="fria"]   { --ll-luz: #a9d2ff; --ll-luz-forte: #e6f2ff; --ll-luz-texto: #0b1626; }
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--ll-fundo);
+  color: var(--ll-texto);
+  font-family: var(--ll-fonte);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+button, input { font: inherit; color: inherit; }
+.ll-oculto {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Cena ---------- */
+.ll-cena {
+  position: relative;
+  min-height: max(100vh, 780px);
+  min-height: max(100svh, 780px);
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 70% at 50% 0%, #161a24 0%, transparent 60%),
+    linear-gradient(var(--ll-parede), var(--ll-fundo));
+}
+
+/* Marca */
+.ll-marca {
+  position: absolute; z-index: 6; top: 28px; left: 32px;
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--ll-fonte-titulo); font-size: 18px; letter-spacing: .01em;
+  color: var(--ll-texto-suave);
+}
+.ll-marca-icone { width: 22px; height: 22px; color: var(--ll-luz); transition: color .6s; }
+
+/* ---------- Parede ---------- */
+.ll-parede { position: absolute; inset: 0 0 var(--ll-mesa-h) 0; z-index: 0; }
+.ll-parede svg { position: absolute; display: block; height: auto; }
+.ll-janela  { right: 6%;  top: 10%; width: 230px; }
+.ll-estante { left: 3.5%; top: 17%; width: 230px; }
+.ll-quadro  { right: calc(6% + 272px); top: 5%; width: 84px; }
+
+/* ---------- Mesa ---------- */
+.ll-mesa {
+  position: absolute; z-index: 1; left: 0; right: 0; bottom: 0;
+  height: var(--ll-mesa-h);
+  background:
+    linear-gradient(var(--ll-mesa-topo) 0 10px, #120f0c 10px 13px, transparent 13px),
+    repeating-linear-gradient(90deg, transparent 0 180px, rgba(255, 255, 255, .025) 180px 182px),
+    linear-gradient(var(--ll-mesa-frente), #110e0b);
+}
+
+/* ---------- Âncora: cartão, luminária e objetos usam a mesma referência ----------
+   A base fica no tampo da mesa e o conjunto é centralizado (com deslocamento). */
+.ll-ancora {
+  position: absolute;
+  bottom: var(--ll-mesa-h);
+  left: 50%;
+  width: var(--ll-cartao-w);
+  transform: translateX(calc(-50% + var(--ll-desloc)));
+}
+.ll-objetos { z-index: 1; height: 0; }
+.ll-planta { position: absolute; bottom: -2px; left: calc(100% + 64px); width: 150px; }
+.ll-livros { position: absolute; bottom: -2px; right: calc(100% + var(--ll-lamp-w) - 10px); width: 150px; }
+
+/* ---------- Escuridão com máscara radial ---------- */
+.ll-sombra {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: rgba(5, 6, 9, .93);
+  --ll-r: 0px;
+  -webkit-mask-image: radial-gradient(circle at var(--ll-fx, 60%) var(--ll-fy, 50%),
+    transparent 0, transparent calc(var(--ll-r) * .3), rgba(0, 0, 0, .55) calc(var(--ll-r) * .7), #000 var(--ll-r));
+          mask-image: radial-gradient(circle at var(--ll-fx, 60%) var(--ll-fy, 50%),
+    transparent 0, transparent calc(var(--ll-r) * .3), rgba(0, 0, 0, .55) calc(var(--ll-r) * .7), #000 var(--ll-r));
+  transition: --ll-r .35s ease, background-color .35s ease;
+}
+.ll-cena[data-luz="acesa"] .ll-sombra {
+  --ll-r: var(--ll-raio-luz, 620px);
+  background: rgba(5, 6, 9, var(--ll-penumbra, .8));   /* --ll-penumbra sobe a cada senha errada */
+  transition: --ll-r 1s var(--ll-mola) .05s, background-color 1s ease;
+}
+
+/* ---------- Feixe ---------- */
+.ll-feixe {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  z-index: 3; pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.ll-cena[data-luz="acesa"] .ll-feixe { animation: ll-acende .8s linear forwards; }
+.ll-cena[data-luz="acesa"] .ll-feixe-oscila { animation: ll-oscila 6s linear 1s infinite; }
+
+.ll-s0 { stop-color: var(--ll-luz-forte); stop-opacity: .8; transition: stop-color .6s; }
+.ll-s1 { stop-color: var(--ll-luz); stop-opacity: .36; transition: stop-color .6s; }
+.ll-s2 { stop-color: var(--ll-luz); stop-opacity: 0; transition: stop-color .6s; }
+.ll-nucleo { opacity: .7; }
+
+/* Acendimento de filamento: falha um pouco e firma (~0,8 s) */
+@keyframes ll-acende {
+  0% { opacity: 0; } 12% { opacity: .55; } 20% { opacity: .12; } 34% { opacity: .85; }
+  44% { opacity: .4; } 62% { opacity: 1; } 100% { opacity: 1; }
+}
+/* Oscilação suave contínua, como uma lâmpada de filamento */
+@keyframes ll-oscila {
+  0%, 100% { opacity: 1; } 9% { opacity: .95; } 10% { opacity: 1; } 31% { opacity: .97; }
+  32% { opacity: .9; } 33% { opacity: .99; } 58% { opacity: .96; } 59% { opacity: 1; }
+  78% { opacity: .94; } 79% { opacity: .99; }
+}
+
+/* Apagão de comemoração (a luz pisca 2 vezes) */
+.ll-apagao { position: absolute; inset: 0; z-index: 3; background: #050608; opacity: 0; pointer-events: none; }
+.ll-cena.ll-comemora .ll-apagao { animation: ll-pisca .9s linear; }
+.ll-cena.ll-comemora .ll-bulbo   { animation: ll-pisca-bulbo .9s linear; }
+@keyframes ll-pisca {
+  0%, 100% { opacity: 0; } 14%, 26% { opacity: .82; } 36% { opacity: 0; } 52%, 64% { opacity: .82; } 76% { opacity: 0; }
+}
+@keyframes ll-pisca-bulbo {
+  0%, 100% { opacity: 1; } 14%, 26% { opacity: .2; } 36% { opacity: 1; } 52%, 64% { opacity: .2; } 76% { opacity: 1; }
+}
+
+/* ---------- Palco ---------- */
+.ll-palco { z-index: 4; }
+
+/* ---------- Luminária ---------- */
+.ll-luminaria {
+  position: absolute; bottom: 0;
+  right: calc(100% + 10px);
+  width: var(--ll-lamp-w);
+  pointer-events: none;                 /* só a área .ll-alvo recebe clique */
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ll-lamp-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ll-alvo { pointer-events: all; cursor: pointer; }
+.ll-luminaria.ll-arrastando .ll-alvo { cursor: grabbing; }
+
+.ll-lamp-traco { stroke: var(--ll-contorno); stroke-width: 3; transition: stroke .6s ease; }
+.ll-lamp-cheio { fill: var(--ll-corpo); }
+.ll-mola { stroke-width: 2; }
+.ll-bulbo { fill: #262a33; transition: fill .4s ease; }
+.ll-boca  { fill: #0f1117; transition: fill .4s ease; }
+.ll-luminaria:hover .ll-lamp-traco { stroke: rgba(244, 239, 230, .62); }
+
+/* Acesa: contorno ganha luz quente, lâmpada brilha */
+.ll-cena[data-luz="acesa"] .ll-lamp-traco { stroke: color-mix(in srgb, var(--ll-luz) 40%, #b9b2a5); }
+.ll-cena[data-luz="acesa"] .ll-bulbo { fill: var(--ll-luz-forte); }
+.ll-cena[data-luz="acesa"] .ll-boca  { fill: var(--ll-luz); }
+.ll-cena[data-luz="acesa"] .ll-lamp-svg { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--ll-luz) 16%, transparent)); }
+
+/* Suporte de parede (só no celular) */
+.ll-suporte { display: none; }
+
+/* ---------- Cartão ---------- */
+.ll-cartao {
+  position: relative;
+  margin-bottom: var(--ll-vao);
+  padding: 34px 34px 26px;
+  border-radius: var(--ll-raio);
+  background:
+    radial-gradient(130% 90% at 0% 0%, color-mix(in srgb, var(--ll-luz) 21%, transparent) 0%, transparent 60%),
+    var(--ll-cartao);
+  border: 1px solid color-mix(in srgb, var(--ll-luz) 22%, rgba(255, 255, 255, .06));
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, .75),
+    0 0 0 1px rgba(0, 0, 0, .3),
+    -18px -18px 70px -30px color-mix(in srgb, var(--ll-luz) 45%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  /* Escondido no escuro: surge "de dentro da luz", a partir do canto da luminária */
+  opacity: 0;
+  clip-path: circle(0% at 0% 0%);
+  transition: clip-path .4s ease, opacity .35s ease;
+}
+.ll-cena[data-luz="acesa"] .ll-cartao {
+  opacity: 1;
+  clip-path: circle(160% at 0% 0%);
+  transition: clip-path .85s var(--ll-mola) .25s, opacity .45s ease .25s;
+}
+
+.ll-sobretitulo {
+  margin: 0 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ll-luz); transition: color .6s;
+}
+.ll-titulo {
+  margin: 0; font-family: var(--ll-fonte-titulo); font-weight: 600;
+  font-size: 40px; line-height: 1.05; letter-spacing: -.01em;
+  font-variation-settings: "opsz" 96;
+}
+.ll-titulo:focus { outline: none; }
+.ll-titulo-menor { font-size: 32px; }
+.ll-subtitulo { margin: 10px 0 22px; color: var(--ll-texto-suave); font-size: 15px; line-height: 1.5; }
+.ll-subtitulo strong { color: var(--ll-texto); font-weight: 600; word-break: break-all; }
+
+/* Campos */
+.ll-form { display: grid; gap: 4px; }
+.ll-campo { display: grid; gap: 7px; }
+.ll-rotulo { font-size: 13px; font-weight: 500; color: rgba(244, 239, 230, .86); }
+.ll-entrada {
+  width: 100%; height: 48px; padding: 0 15px;
+  border-radius: 12px;
+  border: 1px solid var(--ll-borda);
+  background: var(--ll-entrada);
+  font-size: 15px;
+  transition: border-color .2s, box-shadow .2s, background-color .2s;
+}
+.ll-entrada::placeholder { color: rgba(244, 239, 230, .34); }
+.ll-entrada:hover { border-color: rgba(244, 239, 230, .22); }
+.ll-entrada:focus {
+  outline: none;
+  border-color: var(--ll-luz);
+  background: rgba(255, 255, 255, .06);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ll-luz) 22%, transparent);
+}
+.ll-entrada[aria-invalid="true"] { border-color: var(--ll-erro); }
+.ll-entrada[aria-invalid="true"]:focus { box-shadow: 0 0 0 4px rgba(255, 156, 134, .2); }
+/* Remove o fundo amarelo do autocompletar */
+.ll-entrada:-webkit-autofill {
+  -webkit-text-fill-color: var(--ll-texto);
+  -webkit-box-shadow: 0 0 0 40px #1c1d22 inset;
+  caret-color: var(--ll-texto);
+}
+.ll-erro { min-height: 18px; margin: 0 0 4px; font-size: 12.5px; line-height: 18px; color: var(--ll-erro); }
+
+/* Senha + olho */
+.ll-senha-caixa { position: relative; }
+.ll-senha-caixa .ll-entrada { padding-right: 52px; }
+.ll-olho {
+  position: absolute; top: 4px; right: 4px; width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 9px; background: transparent; cursor: pointer;
+  color: var(--ll-texto-suave);
+}
+.ll-olho:hover { color: var(--ll-texto); background: rgba(255, 255, 255, .06); }
+.ll-olho svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.ll-olho-risco { stroke-dasharray: 23; stroke-dashoffset: 0; transition: stroke-dashoffset .25s ease; }
+.ll-olho[aria-pressed="true"] .ll-olho-risco { stroke-dashoffset: 23; }
+
+/* Linha lembrar / esqueci */
+.ll-linha { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 2px 0 18px; font-size: 13.5px; }
+.ll-lembrar { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ll-texto-suave); }
+.ll-lembrar input { width: 16px; height: 16px; margin: 0; accent-color: var(--ll-luz); cursor: pointer; }
+.ll-link { color: var(--ll-luz); text-decoration: none; font-weight: 500; border-radius: 4px; transition: color .6s; }
+.ll-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Botão Entrar: normal → carregando → sucesso */
+.ll-entrar {
+  position: relative; height: 50px; width: 100%;
+  display: grid; place-items: center;
+  border: 0; border-radius: 13px; cursor: pointer;
+  background: linear-gradient(180deg, var(--ll-luz-forte), var(--ll-luz));
+  color: var(--ll-luz-texto); font-weight: 600; font-size: 15.5px;
+  box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--ll-luz) 70%, transparent), inset 0 1px 0 rgba(255, 255, 255, .5);
+  transition: transform .15s ease, filter .2s ease, background .6s ease;
+}
+.ll-entrar:hover { filter: brightness(1.05); }
+.ll-entrar:active { transform: translateY(1px) scale(.995); }
+.ll-entrar > * { grid-area: 1 / 1; transition: opacity .2s ease, transform .25s var(--ll-mola); }
+.ll-spinner {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2.5px solid currentColor; border-right-color: transparent;
+  opacity: 0; transform: scale(.6);
+}
+.ll-entrar-ok { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.ll-entrar-ok path { stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .45s ease .1s; }
+.ll-entrar.ll-carregando { cursor: progress; }
+.ll-entrar.ll-carregando .ll-entrar-texto { opacity: 0; transform: translateY(-6px); }
+.ll-entrar.ll-carregando .ll-spinner { opacity: 1; transform: none; animation: ll-gira .7s linear infinite; }
+.ll-entrar.ll-feito .ll-entrar-texto { opacity: 0; }
+.ll-entrar.ll-feito .ll-entrar-ok { opacity: 1; }
+.ll-entrar.ll-feito .ll-entrar-ok path { stroke-dashoffset: 0; }
+@keyframes ll-gira { to { transform: rotate(360deg); } }
+
+.ll-secundario {
+  background: transparent; color: var(--ll-texto);
+  border: 1px solid var(--ll-borda); box-shadow: none; margin-top: 6px;
+}
+.ll-secundario:hover { background: rgba(255, 255, 255, .05); }
+
+.ll-rodape { margin: 16px 0 0; text-align: center; font-size: 13.5px; color: var(--ll-texto-suave); }
+
+/* Painel de sucesso */
+.ll-sucesso { text-align: center; padding: 22px 0 8px; animation: ll-surge .5s var(--ll-mola); }
+.ll-sucesso[hidden] { display: none; }
+.ll-sucesso-icone { width: 64px; height: 64px; margin: 0 auto 16px; display: block; fill: none; stroke: var(--ll-luz); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ll-sucesso-icone circle { stroke-dasharray: 132; stroke-dashoffset: 132; animation: ll-desenha .7s ease forwards; }
+.ll-sucesso-icone path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: ll-desenha .4s ease .55s forwards; }
+@keyframes ll-desenha { to { stroke-dashoffset: 0; } }
+@keyframes ll-surge { from { opacity: 0; transform: translateY(8px); } }
+
+.ll-nota { margin: 10px 0 0; min-height: 0; font-size: 12.5px; color: var(--ll-texto-suave); text-align: center; }
+.ll-nota:empty { display: none; }
+
+/* ---------- Painel de controle (frente da mesa) ---------- */
+.ll-painel {
+  z-index: 5; bottom: 0; height: var(--ll-mesa-h);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  padding-top: 12px;
+}
+.ll-controles {
+  display: flex; align-items: center; gap: 14px;
+  padding: 6px 8px 6px 6px;
+  border-radius: 999px;
+  background: rgba(10, 9, 8, .6);
+  border: 1px solid rgba(255, 255, 255, .07);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+}
+.ll-interruptor {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 40px; padding: 0 16px 0 8px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  background: rgba(255, 255, 255, .06);
+  font-size: 14px; font-weight: 500; white-space: nowrap;
+  transition: background .2s;
+}
+.ll-interruptor:hover { background: rgba(255, 255, 255, .11); }
+.ll-chave {
+  width: 38px; height: 24px; padding: 3px; border-radius: 999px;
+  background: #2a2c33; display: flex; transition: background .3s;
+}
+.ll-chave span {
+  width: 18px; height: 18px; border-radius: 50%; background: #8c8a86;
+  transition: transform .3s var(--ll-mola), background .3s;
+}
+.ll-cena[data-luz="acesa"] .ll-chave { background: color-mix(in srgb, var(--ll-luz) 40%, #2a2c33); }
+.ll-cena[data-luz="acesa"] .ll-chave span { transform: translateX(14px); background: var(--ll-luz-forte); box-shadow: 0 0 12px var(--ll-luz); }
+
+.ll-tons { display: flex; gap: 8px; padding-right: 4px; }
+.ll-tom {
+  width: 24px; height: 24px; border-radius: 50%; cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, .4);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .14);
+  transition: transform .2s var(--ll-mola), box-shadow .2s;
+}
+.ll-tom[data-tom="quente"] { background: #ffcf7a; }
+.ll-tom[data-tom="neutra"] { background: #fff0d4; }
+.ll-tom[data-tom="fria"]   { background: #a9d2ff; }
+.ll-tom:hover { transform: scale(1.12); }
+.ll-tom[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ll-fundo), 0 0 0 4px var(--ll-texto); }
+
+.ll-dica { margin: 0; font-size: 12.5px; color: rgba(244, 239, 230, .45); text-align: center; }
+
+/* ---------- Foco visível (teclado) ---------- */
+:where(button, a, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--ll-luz);
+  outline-offset: 3px;
+}
+.ll-entrada:focus-visible { outline: none; }
+
+/* =====================================================================
+   DICA DA CONTA DEMO
+   ===================================================================== */
+.ll-demo {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  margin: -8px 0 18px; padding: 9px 12px;
+  border-radius: 12px;
+  border: 1px dashed color-mix(in srgb, var(--ll-luz) 38%, transparent);
+  background: color-mix(in srgb, var(--ll-luz) 6%, transparent);
+  font-size: 12.5px; color: var(--ll-texto-suave);
+}
+.ll-demo-texto { margin: 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ll-demo-rotulo { font-weight: 600; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ll-luz); margin-right: 2px; transition: color .6s; }
+.ll-demo code {
+  font: 500 12px/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+  padding: 4px 7px; border-radius: 7px;
+  background: rgba(255, 255, 255, .07); color: var(--ll-texto);
+}
+.ll-demo-usar {
+  padding: 4px 2px; border: 0; background: none; cursor: pointer;
+  color: var(--ll-luz); font-size: 13px; font-weight: 500; border-radius: 4px;
+}
+.ll-demo-usar:hover { text-decoration: underline; text-underline-offset: 3px; }
+.ll-demo-usar:disabled { opacity: .45; cursor: not-allowed; text-decoration: none; }
+
+/* =====================================================================
+   ESTADOS DE VALIDAÇÃO
+   ===================================================================== */
+
+/* ---------- APROVADO: o cone se abre (JS) e a sala inteira acende por um instante ---------- */
+.ll-cena::after {
+  content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: radial-gradient(90% 80% at var(--ll-fx, 60%) var(--ll-fy, 50%),
+    color-mix(in srgb, var(--ll-luz) 26%, transparent), transparent 72%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+.ll-cena.ll-sala-acesa::after { animation: ll-sala-brilho 1s ease-out .4s both; }
+.ll-cena.ll-sala-acesa .ll-sombra { animation: ll-sala-acende 1s ease-out .4s both; }
+@keyframes ll-sala-acende {
+  0%   { --ll-r: var(--ll-raio-luz, 620px); background-color: rgba(5, 6, 9, .8); }
+  28%  { --ll-r: 2600px; background-color: rgba(5, 6, 9, .3); }
+  50%  { --ll-r: 2600px; background-color: rgba(5, 6, 9, .34); }
+  100% { --ll-r: var(--ll-raio-luz, 620px); background-color: rgba(5, 6, 9, .8); }
+}
+@keyframes ll-sala-brilho { 0%, 100% { opacity: 0; } 28%, 50% { opacity: 1; } }
+
+/* ---------- ERRO: lâmpada com mau contato e sala mais escura ---------- */
+.ll-cena.ll-falha .ll-feixe-oscila { animation: ll-mau-contato 1.2s linear; }
+.ll-cena.ll-falha .ll-bulbo { animation: ll-mau-contato-bulbo 1.2s linear; }
+.ll-cena.ll-falha .ll-sombra { animation: ll-mau-contato-sala 1.2s linear; }
+.ll-cena.ll-falha .ll-cartao { border-color: color-mix(in srgb, var(--ll-erro) 60%, transparent); }
+@keyframes ll-mau-contato {
+  0% { opacity: 1; } 6% { opacity: .15; } 10% { opacity: .85; } 16% { opacity: .05; }
+  24% { opacity: .7; } 30% { opacity: .25; } 38% { opacity: .95; } 52% { opacity: .55; }
+  58% { opacity: 1; } 72% { opacity: .75; } 78% { opacity: 1; } 100% { opacity: 1; }
+}
+@keyframes ll-mau-contato-bulbo {
+  0%, 100% { fill: var(--ll-luz-forte); } 6%, 16%, 30% { fill: #4a3a26; } 10%, 24%, 38% { fill: var(--ll-luz); }
+}
+@keyframes ll-mau-contato-sala {
+  0% { background-color: rgba(5, 6, 9, .8); } 6%, 16% { background-color: rgba(5, 6, 9, .94); }
+  10%, 24% { background-color: rgba(5, 6, 9, .84); } 30% { background-color: rgba(5, 6, 9, .92); }
+  100% { background-color: rgba(5, 6, 9, var(--ll-penumbra, .8)); }
+}
+
+/* ---------- BLOQUEADO: a luz se apaga, fica o contorno frio e um cadeado tranca o cartão ---------- */
+.ll-cena[data-acesso] { --ll-luz: var(--ll-frio); --ll-luz-forte: var(--ll-frio-forte); --ll-luz-texto: #10151f; }
+.ll-cena[data-acesso="bloqueado"] .ll-feixe { animation: ll-luz-morre 1s linear forwards; }
+.ll-cena[data-acesso] .ll-feixe-oscila { animation: none; }
+.ll-cena[data-acesso] .ll-lamp-traco { stroke: rgba(185, 200, 226, .5); }
+.ll-cena[data-acesso] .ll-bulbo { fill: #262a33; }
+.ll-cena[data-acesso] .ll-boca { fill: #0f1117; }
+.ll-cena[data-acesso] .ll-lamp-svg { filter: none; }
+.ll-cena[data-acesso] .ll-sombra {
+  --ll-r: calc(var(--ll-raio-luz, 620px) * .72);
+  background: rgba(5, 6, 9, .9);
+  transition: --ll-r 1.2s ease, background-color 1.2s ease;
+}
+.ll-cena[data-acesso] .ll-cartao {
+  background: var(--ll-cartao);
+  border-color: rgba(185, 200, 226, .34);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .75), 0 0 0 1px rgba(0, 0, 0, .3), 0 0 46px -16px rgba(150, 180, 230, .3);
+}
+.ll-cena[data-acesso] .ll-chave span { box-shadow: none; }
+@keyframes ll-luz-morre {
+  0% { opacity: 1; } 12% { opacity: .3; } 20% { opacity: .9; } 34% { opacity: .12; }
+  42% { opacity: .45; } 60% { opacity: .06; } 100% { opacity: 0; }
+}
+
+/* Área do formulário: o cadeado cobre os campos durante o bloqueio */
+.ll-area-form { position: relative; }
+.ll-bloqueio {
+  position: absolute; inset: -6px -6px 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  padding: 18px 16px;
+  border-radius: 16px;
+  text-align: center;
+  background: linear-gradient(180deg, #14171e, #101218);
+  border: 1px solid rgba(185, 200, 226, .2);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  animation: ll-porta-fecha .7s var(--ll-mola) both;
+}
+.ll-bloqueio[hidden] { display: none; }
+@keyframes ll-porta-fecha {
+  from { opacity: 0; clip-path: inset(0 0 100% 0 round 16px); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0 round 16px); }
+}
+.ll-cadeado { width: 58px; height: 58px; margin-bottom: 4px; overflow: visible; fill: none; stroke: var(--ll-frio-forte); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ll-cadeado-corpo { stroke-dasharray: 130; stroke-dashoffset: 130; animation: ll-desenha .8s ease .2s forwards; }
+.ll-cadeado-arco { transform-box: fill-box; transform-origin: 100% 100%; animation: ll-arco-fecha .45s cubic-bezier(.34, 1.56, .64, 1) .75s both; }
+.ll-cadeado-furo { stroke-width: 2.6; }
+.ll-cadeado-furo-topo { fill: var(--ll-frio-forte); stroke: none; }
+@keyframes ll-arco-fecha { from { transform: translateY(-9px); opacity: 0; } 40% { opacity: 1; } to { transform: none; opacity: 1; } }
+
+.ll-bloqueio-titulo { margin: 0; font-family: var(--ll-fonte-titulo); font-weight: 600; font-size: 24px; font-variation-settings: "opsz" 72; color: var(--ll-texto); }
+.ll-bloqueio-titulo:focus { outline: none; }
+.ll-bloqueio-titulo:focus-visible { outline: 2px solid var(--ll-frio); outline-offset: 4px; border-radius: 4px; }
+.ll-bloqueio-texto { margin: 0 0 6px; max-width: 30ch; font-size: 13.5px; line-height: 1.5; color: var(--ll-texto-suave); }
+.ll-bloqueio-contagem { margin: 0; font-size: 14px; color: var(--ll-texto-suave); }
+.ll-bloqueio-contagem strong {
+  display: inline-block; min-width: 2.6em;
+  font-family: var(--ll-fonte-titulo); font-size: 22px; font-weight: 600; color: var(--ll-frio-forte);
+  font-variant-numeric: tabular-nums; vertical-align: -2px;
+}
+.ll-bloqueio-barra { width: min(220px, 80%); height: 3px; margin: 4px 0 8px; border-radius: 3px; background: rgba(185, 200, 226, .14); overflow: hidden; }
+.ll-bloqueio-barra span {
+  display: block; height: 100%; background: var(--ll-frio);
+  transform-origin: left; transform: scaleX(var(--ll-resta, 1)); transition: transform .3s linear;
+}
+.ll-bloqueio-suporte { font-size: 13.5px; color: var(--ll-frio); }
+
+/* Controles travados (o interruptor também) */
+.ll-entrada:disabled, .ll-entrar:disabled, .ll-olho:disabled, .ll-lembrar input:disabled { cursor: not-allowed; }
+.ll-entrar:disabled { filter: saturate(.3) brightness(.7); }
+.ll-interruptor:disabled, .ll-tom:disabled { cursor: not-allowed; opacity: .45; }
+.ll-interruptor:disabled:hover { background: rgba(255, 255, 255, .06); }
+.ll-tom:disabled:hover { transform: none; }
+
+/* LIBERANDO: o arco do cadeado salta, a trava se abre e a lâmpada reacende */
+.ll-cena[data-acesso="liberando"] .ll-cadeado-arco { animation: ll-arco-abre .5s cubic-bezier(.34, 1.56, .64, 1) forwards; }
+.ll-cena[data-acesso="liberando"] .ll-bloqueio { animation: ll-porta-abre .5s ease .25s forwards; }
+@keyframes ll-arco-abre { from { transform: none; } to { transform: translate(-3px, -9px) rotate(-14deg); } }
+@keyframes ll-porta-abre { to { opacity: 0; transform: translateY(-6px); } }
+
+/* =====================================================================
+   RESPONSIVO
+   ===================================================================== */
+@media (max-width: 1240px) {
+  :root { --ll-lamp-w: 360px; --ll-desloc: 110px; }
+  .ll-parede .ll-quadro { display: none; }
+}
+
+/* Tablet/celular: a luminária vai para um suporte de parede ACIMA do cartão */
+@media (max-width: 1020px) {
+  :root {
+    --ll-mesa-h: 104px;
+    --ll-cartao-w: min(400px, calc(100vw - 32px));
+    --ll-desloc: 0px;
+    --ll-lamp-w: 150px;
+    --ll-vao: 20px;
+  }
+  .ll-cena { min-height: max(100vh, 830px); min-height: max(100svh, 830px); }
+  .ll-luminaria { right: auto; left: 6px; bottom: calc(100% + 8px); }
+  .ll-suporte {
+    display: block; position: absolute; left: -40px; bottom: calc(100% + 2px);
+    width: 120px; height: 9px; border-radius: 3px;
+    background: #2b2620;
+    box-shadow: 0 6px 0 -3px rgba(0, 0, 0, .3);
+  }
+  .ll-suporte::after {
+    content: ""; position: absolute; left: 62px; top: 9px; width: 14px; height: 14px;
+    border-left: 4px solid #2b2620; border-bottom: 4px solid #2b2620;
+  }
+  .ll-parede .ll-estante, .ll-parede .ll-quadro, .ll-objetos .ll-livros { display: none; }
+  .ll-parede .ll-janela { width: 150px; right: 5%; top: 9%; }
+  .ll-planta { left: auto; right: -4px; width: 86px; bottom: calc(100% + 0px); display: none; }
+  .ll-marca { left: auto; right: 20px; top: 22px; font-size: 16px; }
+  .ll-dica { display: none; }
+}
+
+/* Tablet em pé: luminária um pouco maior */
+@media (min-width: 600px) and (max-width: 1020px) and (min-height: 900px) {
+  :root { --ll-lamp-w: 200px; }
+}
+
+@media (max-width: 480px) {
+  :root { --ll-mesa-h: 86px; --ll-lamp-w: 140px; }
+  /* Dica da demo numa linha só, para a luminária caber acima do cartão */
+  .ll-demo { padding: 8px 10px; gap: 6px; margin: -4px 0 14px; }
+  .ll-demo code { font-size: 11px; padding: 3px 6px; }
+  .ll-cartao { padding: 26px 22px 20px; }
+  .ll-titulo { font-size: 34px; }
+  .ll-subtitulo { margin: 8px 0 16px; font-size: 14.5px; }
+  .ll-entrada { height: 46px; }
+  .ll-olho { top: 3px; }
+  .ll-linha { margin-bottom: 14px; }
+  .ll-rodape { margin-top: 12px; }
+  .ll-parede .ll-janela { width: 120px; }
+  .ll-interruptor { padding-right: 14px; }
+}
+
+/* ---------- Movimento reduzido: tudo estático, luz já acesa ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    transition-delay: 0s !important;
+  }
+}

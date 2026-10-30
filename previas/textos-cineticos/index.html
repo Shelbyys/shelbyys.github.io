@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Textos Cinéticos — 18 efeitos de texto animado</title>
+  <meta name="description" content="Dezoito efeitos de texto animado em HTML, CSS e JavaScript puros, ativados por um data-atributo.">
+  <meta name="theme-color" content="#0c0c0b">
+
+  <!-- Marca o documento como "com JS": o CSS esconde o texto cru só até o script prepará-lo -->
+  <script>document.documentElement.classList.add("js");</script>
+
+  <!-- Fontes (única dependência externa, só para a tipografia) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <!-- =====================================================================
+       HERO — usa "revelar" no título e "decodificar" na linha de apoio
+       ===================================================================== -->
+  <section class="hero" data-area>
+    <nav class="topo" aria-label="Topo">
+      <a class="marca" href="#">Textos Cinéticos</a>
+      <span class="topo-meta">Amostra gratuita · v1.1.0</span>
+      <a class="topo-link" href="#efeitos">Ver os 18 efeitos ↓</a>
+    </nav>
+
+    <div class="hero-centro">
+      <h1 class="hero-titulo" data-tc="revelar" data-atraso="0.05" data-passo="24">
+        <span class="l1">Texto</span>
+        <span class="l2">em <em>movimento</em></span>
+      </h1>
+    </div>
+
+    <div class="hero-base">
+      <p class="hero-tag" data-tc="decodificar" data-atraso="0.2" data-duracao="0.8">18 efeitos de texto · 1 atributo · 0 dependências</p>
+      <div class="hero-meta" aria-hidden="true">
+        <span><b>18</b>efeitos</span>
+        <span><b>00</b>libs</span>
+        <span><b>1</b>atributo</span>
+      </div>
+      <button class="repetir" type="button" data-repetir>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+        Repetir
+      </button>
+    </div>
+
+    <!-- faixa rolante (decorativa) -->
+    <div class="faixa" aria-hidden="true">
+      <div class="faixa-trilho">
+        <div class="faixa-grupo"><span>Revelar</span><span>Decodificar</span><span>Digitar</span><span>Varredura</span><span>Onda</span><span>Desfocar</span><span>Contador</span><span>Destaque</span><span>Cair</span><span>Girar</span><span>Glitch</span><span>Neon</span><span>Fatiar</span><span>Trocar</span><span>Contorno</span><span>Gradiente</span><span>Espalhar</span><span>Riscar</span></div>
+        <div class="faixa-grupo"><span>Revelar</span><span>Decodificar</span><span>Digitar</span><span>Varredura</span><span>Onda</span><span>Desfocar</span><span>Contador</span><span>Destaque</span><span>Cair</span><span>Girar</span><span>Glitch</span><span>Neon</span><span>Fatiar</span><span>Trocar</span><span>Contorno</span><span>Gradiente</span><span>Espalhar</span><span>Riscar</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <!-- =====================================================================
+         GALERIA — um efeito por célula
+         ===================================================================== -->
+    <section class="secao" id="efeitos">
+      <div class="secao-cab">
+        <div>
+          <p class="eyebrow">Galeria</p>
+          <h2 class="secao-titulo">Dezoito efeitos,<br><i>um atributo.</i></h2>
+        </div>
+        <p class="secao-nota">Role a página: cada efeito dispara ao entrar na tela. Use <code>Repetir</code> para ver de novo.</p>
+      </div>
+
+      <div class="grade">
+
+        <!-- 01 · revelar -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>01</i>revelar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <h3 class="t-display" data-tc="revelar">Letras que sobem da sombra</h3>
+          </div>
+          <div class="celula-uso">&lt;h3 <b>data-tc="revelar"</b> data-passo="30"&gt;</div>
+        </article>
+
+        <!-- 02 · decodificar -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>02</i>decodificar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-mono" data-tc="decodificar" data-duracao="1.8">Sinal recebido. A mensagem se resolve letra por letra.</p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="decodificar"</b> data-duracao="1.8"&gt;</div>
+        </article>
+
+        <!-- 03 · digitar -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>03</i>digitar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="digitar-linha">Eu crio
+              <span data-tc="digitar" data-frases="landing pages|painéis bonitos|textos vivos|interfaces com alma"></span>
+            </p>
+          </div>
+          <div class="celula-uso">&lt;span <b>data-tc="digitar"</b> data-frases="uma|duas|três"&gt;</div>
+        </article>
+
+        <!-- 04 · varredura -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>04</i>varredura</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <h3 class="t-display" data-tc="varredura">Uma faixa de luz atravessa cada palavra</h3>
+          </div>
+          <div class="celula-uso">&lt;h3 <b>data-tc="varredura"</b>&gt; <span style="opacity:.7">— background-clip: text</span></div>
+        </article>
+
+        <!-- 05 · onda -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>05</i>onda</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-onda" data-tc="onda">ondas de tipografia</p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="onda"</b>&gt; <span style="opacity:.7">— loop contínuo</span></div>
+        </article>
+
+        <!-- 06 · desfocar -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>06</i>desfocar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-serif" data-tc="desfocar" data-passo="120">Cada palavra chega do desfoque, uma de cada vez, até a frase ficar <em>nítida.</em></p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="desfocar"</b> data-passo="120"&gt;</div>
+        </article>
+
+        <!-- 07 · contador -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>07</i>contador</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <div>
+              <div class="contador-grande" data-tc="contador" data-valor="1284750"></div>
+              <p class="contador-legenda">letras animadas desde que você abriu a página*</p>
+            </div>
+            <div class="mini-stats">
+              <div>
+                <div class="contador-mini" data-tc="contador" data-valor="98.4" data-decimais="2" data-prefixo="R$ " data-atraso="0.2"></div>
+                <small>ticket médio</small>
+              </div>
+              <div>
+                <div class="contador-mini" data-tc="contador" data-valor="99.9" data-decimais="1" data-sufixo="%" data-atraso="0.35"></div>
+                <small>satisfação</small>
+              </div>
+            </div>
+          </div>
+          <div class="celula-uso">&lt;span <b>data-tc="contador"</b> data-valor="1284750" data-decimais="0"&gt;</div>
+        </article>
+
+        <!-- 08 · destaque -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>08</i>destaque</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-destaque" data-tc="destaque">Escreva o que importa e <mark>deixe a ideia saltar</mark> da página com <mark data-cor="tomate">um traço</mark> de marca-texto.</p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="destaque"</b>&gt; … &lt;mark&gt;trecho&lt;/mark&gt; … &lt;mark data-cor="tomate"&gt;</div>
+        </article>
+
+        <!-- 09 · cair -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>09</i>cair</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <h3 class="t-display" data-tc="cair" data-passo="45">Letras que despencam e quicam</h3>
+          </div>
+          <div class="celula-uso">&lt;h3 <b>data-tc="cair"</b> data-passo="45"&gt;</div>
+        </article>
+
+        <!-- 10 · girar -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>10</i>girar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-serif" data-tc="girar">Cada letra vira em <em>três dimensões</em> antes de pousar.</p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="girar"</b>&gt; <span style="opacity:.7">— rotateX + perspective</span></div>
+        </article>
+
+        <!-- 11 · glitch -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>11</i>glitch</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <h3 class="t-display t-glitch" data-tc="glitch">SINAL CORROMPIDO</h3>
+          </div>
+          <div class="celula-uso">&lt;h3 <b>data-tc="glitch"</b>&gt; <span style="opacity:.7">— cópias RGB em fatias</span></div>
+        </article>
+
+        <!-- 12 · neon -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>12</i>neon</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-neon" data-tc="neon">aberto até tarde</p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="neon"</b>&gt; <span style="opacity:.7">— pisca e acende</span></div>
+        </article>
+
+        <!-- 13 · fatiar -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>13</i>fatiar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <h3 class="t-display" data-tc="fatiar" data-fatias="3">Cortado em três fatias</h3>
+          </div>
+          <div class="celula-uso">&lt;h3 <b>data-tc="fatiar"</b> data-fatias="3"&gt;</div>
+        </article>
+
+        <!-- 14 · trocar -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>14</i>trocar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="trocar-linha">Feito para ser<br>
+              <span data-tc="trocar" data-palavras="rápido|bonito|simples|seu" data-pausa="1700"></span></p>
+          </div>
+          <div class="celula-uso">&lt;span <b>data-tc="trocar"</b> data-palavras="um|dois|três" data-pausa="1700"&gt;</div>
+        </article>
+
+        <!-- 15 · contorno -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>15</i>contorno</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <h3 class="t-display" data-tc="contorno" data-passo="40">Traço que <em>vira</em> tinta</h3>
+          </div>
+          <div class="celula-uso">&lt;h3 <b>data-tc="contorno"</b> data-passo="40"&gt;</div>
+        </article>
+
+        <!-- 16 · gradiente -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>16</i>gradiente</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-gradiente" data-tc="gradiente">cores em fluxo</p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="gradiente"</b>&gt; <span style="opacity:.7">— loop contínuo</span></div>
+        </article>
+
+        <!-- 17 · espalhar -->
+        <article class="celula c7" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>17</i>espalhar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <h3 class="t-display" data-tc="espalhar" data-passo="28">Do caos para o lugar certo</h3>
+          </div>
+          <div class="celula-uso">&lt;h3 <b>data-tc="espalhar"</b> data-passo="28"&gt;</div>
+        </article>
+
+        <!-- 18 · riscar -->
+        <article class="celula c5" data-area>
+          <div class="celula-topo">
+            <span class="rotulo"><i>18</i>riscar</span>
+            <button class="repetir" type="button" data-repetir>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1M2.5 2v3h3"/></svg>
+              Repetir
+            </button>
+          </div>
+          <div class="celula-corpo">
+            <p class="t-serif" data-tc="riscar">Design não é <s>enfeite</s><ins>estratégia</ins>. Movimento não é <s>firula</s><ins>clareza</ins>.</p>
+          </div>
+          <div class="celula-uso">&lt;p <b>data-tc="riscar"</b>&gt; … &lt;s&gt;antes&lt;/s&gt;&lt;ins&gt;depois&lt;/ins&gt; …</div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         COMO USAR
+         ===================================================================== -->
+    <section class="secao" id="uso" style="padding-top:0">
+      <div class="uso">
+        <div>
+          <p class="eyebrow">Como usar</p>
+          <h2 class="secao-titulo">Três passos,<br><i>nenhum build.</i></h2>
+          <ol class="passos">
+            <li><span>Copie <code>estilo.css</code> e <code>script.js</code> para o seu projeto.</span></li>
+            <li><span>Marque o texto com <code>data-tc="efeito"</code>.</span></li>
+            <li><span>Pronto: o script inicia sozinho. Para controlar, use <code>TextosCineticos.iniciar()</code>.</span></li>
+          </ol>
+        </div>
+
+<pre class="codigo"><code><span class="c">&lt;!-- 1. estilos e script --&gt;</span>
+&lt;<span class="k">link</span> <span class="a">rel</span>=<span class="v">"stylesheet"</span> <span class="a">href</span>=<span class="v">"estilo.css"</span>&gt;
+&lt;<span class="k">script</span> <span class="a">src</span>=<span class="v">"script.js"</span> <span class="a">defer</span>&gt;&lt;/<span class="k">script</span>&gt;
+
+<span class="c">&lt;!-- 2. qualquer elemento de texto --&gt;</span>
+&lt;<span class="k">h2</span> <span class="a">data-tc</span>=<span class="v">"revelar"</span>&gt;Seu título&lt;/<span class="k">h2</span>&gt;
+
+&lt;<span class="k">p</span> <span class="a">data-tc</span>=<span class="v">"decodificar"</span> <span class="a">data-duracao</span>=<span class="v">"1.5"</span>&gt;
+  Mensagem secreta
+&lt;/<span class="k">p</span>&gt;
+
+&lt;<span class="k">span</span> <span class="a">data-tc</span>=<span class="v">"digitar"</span>
+      <span class="a">data-frases</span>=<span class="v">"um|dois|três"</span>&gt;&lt;/<span class="k">span</span>&gt;
+
+&lt;<span class="k">span</span> <span class="a">data-tc</span>=<span class="v">"contador"</span> <span class="a">data-valor</span>=<span class="v">"1284750"</span>&gt;&lt;/<span class="k">span</span>&gt;
+
+<span class="c">&lt;!-- 3. opcional: controle manual --&gt;</span>
+<span class="c">// &lt;body data-tc-manual&gt;</span>
+TextosCineticos.iniciar();
+TextosCineticos.repetir(elemento);</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <span>Textos Cinéticos · v1.1.0</span>
+    <span>*número ilustrativo · HTML, CSS e JS puros</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

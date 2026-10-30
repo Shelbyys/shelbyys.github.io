@@ -1,0 +1,1155 @@
+/* ==========================================================================
+   LOADERS ESSENCIAIS — estilo.css
+   --------------------------------------------------------------------------
+   Estrutura:
+   1. Tokens (:root)           → cor, tamanho e velocidade dos loaders + tema da página
+   2. Base dos loaders         → variáveis internas e texto para leitores de tela
+   3. Os 22 loaders .ld-<nome> → CSS puro, um bloco por loader (copie o que usar)
+   4. Página da galeria        → só a moldura da demo (pode descartar)
+   5. Movimento reduzido
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. TOKENS
+   Mude aqui o visual de TODOS os loaders de uma vez. Para mudar só um,
+   escreva as variáveis no próprio elemento:
+       <div class="ld-anel" style="--ld-cor:#2f6bff; --ld-tamanho:64px" role="status">
+   ========================================================================== */
+:root {
+  /* --- Loaders --- */
+  --ld-cor: #ee4d2a;        /* cor principal */
+  --ld-tamanho: 56px;       /* tamanho de referência (a altura do loader) */
+  --ld-velocidade: 1s;      /* duração base: MENOR = MAIS RÁPIDO (ex.: 0.5s, 2s) */
+  --ld-reduz: 1;            /* fator de lentidão p/ movimento reduzido (ver seção 5) */
+
+  /* --- Página da galeria --- */
+  --pg-fundo: #f3f2ee;
+  --pg-cartao: #ffffff;
+  --pg-borda: #e2dfd6;
+  --pg-tinta: #1c1b18;
+  --pg-suave: #6b675e;
+  --pg-verde: #0f7b53;
+  --pg-verde-fundo: #def2e8;
+  --pg-fonte: "Outfit", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --pg-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+
+/* ==========================================================================
+   2. BASE DOS LOADERS
+   Todo loader lê as três variáveis públicas (--ld-*) e as guarda em nomes
+   curtos internos: --c (cor), --t (tamanho) e --v (velocidade).
+   Se você definir --ld-* em qualquer ancestral, o loader obedece.
+   Copie este bloco junto com o loader que escolher.
+   ========================================================================== */
+.ld-anel, .ld-pontos, .ld-barras, .ld-orbita, .ld-quadrado, .ld-onda,
+.ld-progresso, .ld-ampulheta, .ld-coracao, .ld-radar, .ld-gota, .ld-contorno,
+.ld-esqueleto, .ld-blob, .ld-conico, .ld-enchendo, .ld-newton, .ld-moeda,
+.ld-cubo, .ld-dna, .ld-percentual, .ld-digitando {
+  --c: var(--ld-cor, #ee4d2a);
+  --t: var(--ld-tamanho, 56px);
+  --v: calc(var(--ld-velocidade, 1s) * var(--ld-reduz, 1));
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  box-sizing: border-box;
+}
+
+/* Texto "Carregando…" visível só para leitores de tela */
+.ld-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* ==========================================================================
+   3. OS 22 LOADERS (3.1–3.12 clássicos · 3.13–3.22 realistas/3D)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   3.1  ANEL · .ld-anel — borda com um trecho colorido que gira
+   -------------------------------------------------------------------------- */
+.ld-anel {
+  width: var(--t);
+  height: var(--t);
+  border-radius: 50%;
+  border: calc(var(--t) * 0.11) solid color-mix(in srgb, var(--c) 18%, transparent);
+  border-top-color: var(--c);
+  animation: ld-gira calc(var(--v) * 0.9) linear infinite;
+}
+@keyframes ld-gira { to { transform: rotate(360deg); } }
+
+
+/* --------------------------------------------------------------------------
+   3.2  PONTOS PULSANDO · .ld-pontos — três pontos crescem em sequência
+   -------------------------------------------------------------------------- */
+.ld-pontos {
+  align-items: center;
+  gap: calc(var(--t) * 0.14);
+  height: var(--t);
+}
+.ld-pontos > i {
+  width: calc(var(--t) * 0.26);
+  height: calc(var(--t) * 0.26);
+  border-radius: 50%;
+  background: var(--c);
+  animation: ld-pulsa calc(var(--v) * 1.2) ease-in-out infinite;
+}
+.ld-pontos > i:nth-child(2) { animation-delay: calc(var(--v) * -0.15); }
+.ld-pontos > i:nth-child(1) { animation-delay: calc(var(--v) * -0.3); }
+/* o terceiro é o "líder": sem atraso */
+@keyframes ld-pulsa {
+  0%, 80%, 100% { transform: scale(0.45); opacity: 0.45; }
+  40%           { transform: scale(1);    opacity: 1; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.3  EQUALIZADOR · .ld-barras — cinco barras que sobem e descem
+   -------------------------------------------------------------------------- */
+.ld-barras {
+  align-items: center;
+  gap: calc(var(--t) * 0.08);
+  height: var(--t);
+}
+.ld-barras > i {
+  width: calc(var(--t) * 0.12);
+  height: 100%;
+  border-radius: 99px;
+  background: var(--c);
+  transform: scaleY(0.25);
+  animation: ld-eq var(--v) ease-in-out infinite;
+}
+/* cada barra com duração e fase diferentes: parece música de verdade */
+.ld-barras > i:nth-child(1) { animation-duration: calc(var(--v) * 0.9);  animation-delay: calc(var(--v) * -0.6); }
+.ld-barras > i:nth-child(2) { animation-duration: calc(var(--v) * 1.15); animation-delay: calc(var(--v) * -0.2); }
+.ld-barras > i:nth-child(3) { animation-duration: calc(var(--v) * 0.8);  animation-delay: calc(var(--v) * -0.9); }
+.ld-barras > i:nth-child(4) { animation-duration: calc(var(--v) * 1.25); animation-delay: calc(var(--v) * -0.4); }
+.ld-barras > i:nth-child(5) { animation-duration: calc(var(--v) * 1);    animation-delay: calc(var(--v) * -0.1); }
+@keyframes ld-eq {
+  0%, 100% { transform: scaleY(0.25); }
+  50%      { transform: scaleY(1); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.4  ÓRBITA · .ld-orbita — dois satélites em volta de um núcleo
+   -------------------------------------------------------------------------- */
+.ld-orbita {
+  width: var(--t);
+  height: var(--t);
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--c) 22%, transparent);
+  animation: ld-gira calc(var(--v) * 1.4) linear infinite;
+}
+.ld-orbita::before {            /* satélite (a sombra desenha o segundo, do lado oposto) */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: calc(var(--t) * 0.2);
+  height: calc(var(--t) * 0.2);
+  border-radius: 50%;
+  background: var(--c);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 calc(var(--t) - 3px) 0 0 var(--c);
+}
+.ld-orbita::after {             /* núcleo */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--t) * 0.26);
+  height: calc(var(--t) * 0.26);
+  border-radius: 50%;
+  background: var(--c);
+  opacity: 0.85;
+  transform: translate(-50%, -50%);
+}
+
+
+/* --------------------------------------------------------------------------
+   3.5  QUADRADO DOBRANDO · .ld-quadrado — quatro pedaços que viram sobre a dobradiça
+   -------------------------------------------------------------------------- */
+.ld-quadrado {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: calc(var(--t) * 0.62);
+  height: calc(var(--t) * 0.62);
+  margin: calc(var(--t) * 0.19);        /* espaço para o losango não encostar nos vizinhos */
+  transform: rotate(45deg);
+}
+.ld-quadrado > i {
+  background: var(--c);
+  opacity: 0;
+  animation-duration: calc(var(--v) * 2.4);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+/* cada pedaço dobra em torno da aresta voltada para o centro */
+.ld-quadrado > i:nth-child(1) { transform-origin: 0 100%;    animation-name: ld-dobra-x; }
+.ld-quadrado > i:nth-child(2) { transform-origin: 0 0;       animation-name: ld-dobra-y; animation-delay: calc(var(--v) * 0.3); }
+.ld-quadrado > i:nth-child(4) { transform-origin: 0 0;       animation-name: ld-dobra-x; animation-delay: calc(var(--v) * 0.6); }
+.ld-quadrado > i:nth-child(3) { transform-origin: 100% 0;    animation-name: ld-dobra-y; animation-delay: calc(var(--v) * 0.9); }
+@keyframes ld-dobra-x {
+  0%, 10%   { transform: perspective(160px) rotateX(-180deg); opacity: 0; }
+  25%, 75%  { transform: perspective(160px) rotateX(0);       opacity: 1; }
+  90%, 100% { transform: perspective(160px) rotateX(180deg);  opacity: 0; }
+}
+@keyframes ld-dobra-y {
+  0%, 10%   { transform: perspective(160px) rotateY(-180deg); opacity: 0; }
+  25%, 75%  { transform: perspective(160px) rotateY(0);       opacity: 1; }
+  90%, 100% { transform: perspective(160px) rotateY(180deg);  opacity: 0; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.6  ONDA · .ld-onda — cinco bolinhas ondulando em fase
+   -------------------------------------------------------------------------- */
+.ld-onda {
+  align-items: center;
+  gap: calc(var(--t) * 0.09);
+  height: var(--t);
+}
+.ld-onda > i {
+  width: calc(var(--t) * 0.15);
+  height: calc(var(--t) * 0.15);
+  border-radius: 50%;
+  background: var(--c);
+  animation: ld-ondula calc(var(--v) * 1.1) ease-in-out infinite;
+}
+.ld-onda > i:nth-child(1) { animation-delay: calc(var(--v) * -0.55); }
+.ld-onda > i:nth-child(2) { animation-delay: calc(var(--v) * -0.44); }
+.ld-onda > i:nth-child(3) { animation-delay: calc(var(--v) * -0.33); }
+.ld-onda > i:nth-child(4) { animation-delay: calc(var(--v) * -0.22); }
+.ld-onda > i:nth-child(5) { animation-delay: calc(var(--v) * -0.11); }
+@keyframes ld-ondula {
+  0%, 100% { transform: translateY(calc(var(--t) * 0.26));  opacity: 0.5; }
+  50%      { transform: translateY(calc(var(--t) * -0.26)); opacity: 1; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.7  PROGRESSO INDETERMINADO · .ld-progresso — barra que desliza de ponta a ponta
+   -------------------------------------------------------------------------- */
+.ld-progresso {
+  width: calc(var(--t) * 3);
+  max-width: 100%;
+  height: max(4px, calc(var(--t) * 0.1));
+  overflow: hidden;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--c) 18%, transparent);
+}
+.ld-progresso::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  border-radius: inherit;
+  background: var(--c);
+  animation: ld-desliza calc(var(--v) * 1.5) cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+@keyframes ld-desliza {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(250%); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.8  AMPULHETA · .ld-ampulheta — a areia desce e, no fim, ela gira
+   Truque: o vidro e a areia usam o mesmo clip-path em "gravata borboleta";
+   a areia é um fundo cujo tamanho/posição é animado.
+   -------------------------------------------------------------------------- */
+.ld-ampulheta {
+  width: calc(var(--t) * 0.64);
+  height: var(--t);
+  margin-inline: calc(var(--t) * 0.1);
+  /* tampa de cima e de baixo */
+  background:
+    linear-gradient(var(--c), var(--c)) top / 100% max(2px, calc(var(--t) * 0.07)) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom / 100% max(2px, calc(var(--t) * 0.07)) no-repeat;
+  animation: ld-ampulheta-gira calc(var(--v) * 3) ease-in-out infinite;
+}
+.ld-ampulheta::before,
+.ld-ampulheta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(10% 0, 90% 0, 50% 50%, 90% 100%, 10% 100%, 50% 50%);
+}
+.ld-ampulheta::before {         /* vidro */
+  background: color-mix(in srgb, var(--c) 20%, transparent);
+}
+.ld-ampulheta::after {          /* areia de cima, areia de baixo e o fio caindo */
+  background-image:
+    linear-gradient(var(--c), var(--c)),
+    linear-gradient(var(--c), var(--c)),
+    linear-gradient(var(--c), var(--c));
+  background-repeat: no-repeat;
+  background-size: 100% calc(var(--t) * 0.5), 100% 0, 2px calc(var(--t) * 0.5);
+  background-position: 0 0, 0 var(--t), 50% calc(var(--t) * 0.5);
+  animation: ld-areia calc(var(--v) * 3) linear infinite;
+}
+@keyframes ld-areia {
+  0% {
+    background-size: 100% calc(var(--t) * 0.5), 100% 0, 2px calc(var(--t) * 0.5);
+    background-position: 0 0, 0 var(--t), 50% calc(var(--t) * 0.5);
+  }
+  68% {
+    background-size: 100% 0, 100% calc(var(--t) * 0.5), 2px calc(var(--t) * 0.5);
+    background-position: 0 calc(var(--t) * 0.5), 0 calc(var(--t) * 0.5), 50% calc(var(--t) * 0.5);
+  }
+  70%, 100% {
+    background-size: 100% 0, 100% calc(var(--t) * 0.5), 2px 0;
+    background-position: 0 calc(var(--t) * 0.5), 0 calc(var(--t) * 0.5), 50% calc(var(--t) * 0.5);
+  }
+}
+@keyframes ld-ampulheta-gira {
+  0%, 70%   { transform: rotate(0deg); }
+  90%, 100% { transform: rotate(180deg); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.9  CORAÇÃO BATENDO · .ld-coracao — desenhado só com duas "pétalas" arredondadas
+   -------------------------------------------------------------------------- */
+.ld-coracao {
+  width: var(--t);
+  height: calc(var(--t) * 0.9);
+  animation: ld-bate calc(var(--v) * 1.3) ease-in-out infinite;
+}
+.ld-coracao::before,
+.ld-coracao::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: calc(var(--t) * 0.5);
+  height: calc(var(--t) * 0.8);
+  border-radius: calc(var(--t) * 0.5) calc(var(--t) * 0.5) 0 0;
+  background: var(--c);
+}
+.ld-coracao::before { left: 50%; transform: rotate(-45deg); transform-origin: 0 100%; }
+.ld-coracao::after  { left: 0;   transform: rotate(45deg);  transform-origin: 100% 100%; }
+@keyframes ld-bate {                 /* dois batimentos seguidos e uma pausa */
+  0%, 70%, 100% { transform: scale(1); }
+  14%           { transform: scale(1.2); }
+  28%           { transform: scale(1); }
+  42%           { transform: scale(1.28); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.10  RADAR · .ld-radar — varredura em conic-gradient e um alvo que pisca
+   -------------------------------------------------------------------------- */
+.ld-radar {
+  width: var(--t);
+  height: var(--t);
+  overflow: hidden;
+  border-radius: 50%;
+  border: max(2px, calc(var(--t) * 0.04)) solid var(--c);
+  background:
+    radial-gradient(circle, var(--c) 0 calc(var(--t) * 0.035), transparent calc(var(--t) * 0.04)),
+    repeating-radial-gradient(circle, transparent 0 calc(var(--t) * 0.15),
+      color-mix(in srgb, var(--c) 35%, transparent) calc(var(--t) * 0.15) calc(var(--t) * 0.15 + 1px));
+}
+.ld-radar::before {             /* a varredura */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 55%, var(--c));
+  opacity: 0.55;
+  animation: ld-gira calc(var(--v) * 1.6) linear infinite;
+}
+.ld-radar::after {              /* alvo: acende quando a varredura passa */
+  content: "";
+  position: absolute;
+  left: 62%;
+  top: 22%;
+  width: calc(var(--t) * 0.13);
+  height: calc(var(--t) * 0.13);
+  border-radius: 50%;
+  background: var(--c);
+  opacity: 0;
+  animation: ld-alvo calc(var(--v) * 1.6) linear infinite;
+}
+@keyframes ld-alvo {
+  0%      { opacity: 0; transform: scale(0.6); }
+  9%      { opacity: 1; transform: scale(1.25); }
+  55%, 100% { opacity: 0; transform: scale(1); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.11  GOTA · .ld-gota — uma gota cai e abre uma onda na superfície
+   -------------------------------------------------------------------------- */
+.ld-gota {
+  width: var(--t);
+  height: var(--t);
+}
+.ld-gota::before {              /* a gota */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: calc(var(--t) * 0.3);
+  height: calc(var(--t) * 0.3);
+  margin-left: calc(var(--t) * -0.15);
+  border-radius: 50% 0 50% 50%;
+  background: var(--c);
+  opacity: 0;
+  animation: ld-gota-cai calc(var(--v) * 1.6) cubic-bezier(0.5, 0, 0.9, 0.6) calc(var(--v) * -0.55) infinite;
+}
+.ld-gota::after {               /* a onda */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  width: calc(var(--t) * 0.8);
+  height: calc(var(--t) * 0.22);
+  margin-left: calc(var(--t) * -0.4);
+  border-radius: 50%;
+  border: max(1.5px, calc(var(--t) * 0.04)) solid var(--c);
+  opacity: 0;
+  animation: ld-gota-onda calc(var(--v) * 1.6) ease-out calc(var(--v) * -0.55) infinite;
+}
+@keyframes ld-gota-cai {
+  0%   { transform: translateY(0) rotate(-45deg) scale(0.5); opacity: 0; }
+  12%  { transform: translateY(calc(var(--t) * 0.05)) rotate(-45deg) scale(1); opacity: 1; }
+  46%  { transform: translateY(calc(var(--t) * 0.7)) rotate(-45deg) scale(0.9); opacity: 1; }
+  48%, 100% { transform: translateY(calc(var(--t) * 0.74)) rotate(-45deg) scale(0); opacity: 0; }
+}
+@keyframes ld-gota-onda {
+  0%, 46% { transform: scale(0.15); opacity: 0; }
+  50%     { transform: scale(0.3);  opacity: 1; }
+  100%    { transform: scale(1);    opacity: 0; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.12  CONTORNO DESENHANDO · .ld-contorno — traço SVG que se desenha e se apaga
+   É o único que usa SVG; o desenho é um <path pathLength="1"> (infinito).
+   Para outro formato, troque o atributo d do <path>.
+   -------------------------------------------------------------------------- */
+.ld-contorno {
+  width: calc(var(--t) * 1.2);
+  height: var(--t);
+}
+.ld-contorno > svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ld-contorno > svg path {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  animation: ld-desenha calc(var(--v) * 2.4) ease-in-out calc(var(--v) * -1.5) infinite;
+}
+@keyframes ld-desenha {
+  0%   { stroke-dashoffset: 1; }      /* nada desenhado */
+  45%  { stroke-dashoffset: 0; }      /* contorno completo… */
+  60%  { stroke-dashoffset: 0; }      /* …e uma pausa para admirar */
+  100% { stroke-dashoffset: -1; }     /* apagado a partir do início */
+}
+
+
+/* ==========================================================================
+   3b. LOADERS 13–22 (versão 1.1) — mais realistas e modernos: luz, volume,
+   física e 3D, ainda em CSS puro. Mesmas variáveis --c / --t / --v.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   3.13  ESQUELETO · .ld-esqueleto — cartão "fantasma" com brilho varrendo
+   4 <i>: avatar + três linhas. O brilho é um gradiente que corre por todos.
+   -------------------------------------------------------------------------- */
+.ld-esqueleto {
+  display: grid;
+  grid-template-columns: calc(var(--t) * 0.5) minmax(0, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: calc(var(--t) * 0.12) calc(var(--t) * 0.18);
+  align-items: center;
+  width: calc(var(--t) * 2.9);
+  max-width: 100%;
+}
+.ld-esqueleto > i {
+  display: block;
+  height: calc(var(--t) * 0.14);
+  border-radius: 99px;
+  background:
+    linear-gradient(100deg,
+      transparent 30%,
+      color-mix(in srgb, #fff 65%, transparent) 50%,
+      transparent 70%) 200% 0 / 220% 100% no-repeat,
+    color-mix(in srgb, var(--c) 16%, #e9e6df);
+  animation: ld-brilho calc(var(--v) * 1.8) ease-in-out infinite;
+}
+.ld-esqueleto > i:nth-child(1) {
+  grid-row: 1 / span 3;
+  width: calc(var(--t) * 0.5);
+  height: calc(var(--t) * 0.5);
+  border-radius: 50%;
+}
+.ld-esqueleto > i:nth-child(2) { width: 85%; height: calc(var(--t) * 0.18); }
+.ld-esqueleto > i:nth-child(3) { width: 100%; }
+.ld-esqueleto > i:nth-child(4) { width: 60%; }
+@keyframes ld-brilho { to { background-position: -120% 0, 0 0; } }
+
+
+/* --------------------------------------------------------------------------
+   3.14  BLOB · .ld-blob — massa líquida que muda de forma, com volume e luz
+   -------------------------------------------------------------------------- */
+.ld-blob {
+  width: var(--t);
+  height: var(--t);
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  background:
+    radial-gradient(circle at 32% 28%, color-mix(in srgb, #fff 55%, var(--c)) 0, transparent 38%),
+    radial-gradient(circle at 70% 80%, color-mix(in srgb, #000 35%, var(--c)) 0, transparent 50%),
+    var(--c);
+  box-shadow:
+    inset calc(var(--t) * -0.08) calc(var(--t) * -0.1) calc(var(--t) * 0.2) color-mix(in srgb, #000 30%, transparent),
+    0 calc(var(--t) * 0.18) calc(var(--t) * 0.3) calc(var(--t) * -0.12) color-mix(in srgb, var(--c) 60%, transparent);
+  animation: ld-blob calc(var(--v) * 4) ease-in-out infinite;
+}
+.ld-blob::after {            /* reflexo da luz, fixo enquanto a massa gira */
+  content: "";
+  position: absolute;
+  left: 22%;
+  top: 16%;
+  width: 24%;
+  height: 14%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  filter: blur(1.5px);
+  transform: rotate(-25deg);
+}
+@keyframes ld-blob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; transform: rotate(0deg) scale(1); }
+  25%      { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; transform: rotate(45deg) scale(1.04); }
+  50%      { border-radius: 50% 50% 40% 60% / 40% 60% 50% 50%; transform: rotate(90deg) scale(0.96); }
+  75%      { border-radius: 40% 60% 55% 45% / 65% 35% 60% 40%; transform: rotate(135deg) scale(1.03); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.15  ANEL CÔNICO · .ld-conico — cauda em degradê que some e uma cabeça que brilha
+   -------------------------------------------------------------------------- */
+.ld-conico {
+  --esp: calc(var(--t) * 0.12);                       /* espessura do anel */
+  width: var(--t);
+  height: var(--t);
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 18%, color-mix(in srgb, var(--c) 10%, transparent) 30%, var(--c) 100%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--esp) - 0.5px), #000 calc(100% - var(--esp) + 0.5px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--esp) - 0.5px), #000 calc(100% - var(--esp) + 0.5px));
+  animation: ld-gira var(--v) linear infinite;
+}
+.ld-conico::after {          /* cabeça arredondada, com brilho */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--esp);
+  height: var(--esp);
+  margin-left: calc(var(--esp) / -2);
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 calc(var(--esp) * 1.2) color-mix(in srgb, var(--c) 80%, transparent);
+}
+
+
+/* --------------------------------------------------------------------------
+   3.16  ENCHENDO · .ld-enchendo — água com duas ondas sobe e desce num copo redondo
+   As ondas são quadrados arredondados enormes girando; o nível é o "top" deles.
+   -------------------------------------------------------------------------- */
+.ld-enchendo {
+  width: var(--t);
+  height: var(--t);
+  overflow: hidden;
+  border-radius: 50%;
+  border: max(2px, calc(var(--t) * 0.05)) solid color-mix(in srgb, var(--c) 35%, transparent);
+  background: color-mix(in srgb, var(--c) 8%, #fff);
+  box-shadow: inset 0 calc(var(--t) * 0.06) calc(var(--t) * 0.12) rgba(0, 0, 0, 0.08);
+}
+.ld-enchendo::before,
+.ld-enchendo::after {
+  content: "";
+  position: absolute;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  border-radius: 42% 44% 41% 45%;
+  animation: ld-onda-gira calc(var(--v) * 3) linear infinite, ld-nivel calc(var(--v) * 6) ease-in-out infinite;
+}
+.ld-enchendo::before { background: color-mix(in srgb, var(--c) 92%, #fff); }
+.ld-enchendo::after {
+  background: color-mix(in srgb, var(--c) 55%, #fff);
+  opacity: 0.55;
+  border-radius: 44% 41% 45% 42%;
+  animation-direction: reverse, normal;
+  animation-duration: calc(var(--v) * 4), calc(var(--v) * 6);
+}
+@keyframes ld-onda-gira { to { transform: rotate(360deg); } }
+@keyframes ld-nivel {
+  0%, 100% { top: 85%; }
+  50%      { top: 18%; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.17  PÊNDULO DE NEWTON · .ld-newton — 5 esferas; as pontas se revezam
+   -------------------------------------------------------------------------- */
+.ld-newton {
+  --esf: calc(var(--t) * 0.19);                        /* diâmetro da esfera */
+  align-items: flex-start;
+  gap: 0;
+  width: calc(var(--esf) * 5 + 2px);
+  height: var(--t);
+  border-top: 2px solid color-mix(in srgb, var(--c) 45%, transparent);  /* a barra */
+}
+.ld-newton > i {
+  position: relative;
+  width: var(--esf);
+  height: 100%;
+  transform-origin: 50% 0;
+}
+.ld-newton > i::before {      /* fio */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: calc(100% - var(--esf));
+  background: color-mix(in srgb, var(--c) 45%, transparent);
+}
+.ld-newton > i::after {       /* esfera com volume */
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--esf);
+  height: var(--esf);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, #fff 60%, var(--c)) 0, var(--c) 45%, color-mix(in srgb, #000 40%, var(--c)) 100%);
+}
+.ld-newton > i:first-child { animation: ld-newton-esq calc(var(--v) * 1.6) linear infinite; }
+.ld-newton > i:last-child  { animation: ld-newton-dir calc(var(--v) * 1.6) linear infinite; }
+@keyframes ld-newton-esq {
+  0%, 50%, 100% { transform: rotate(0deg); animation-timing-function: ease-out; }
+  25%           { transform: rotate(38deg); animation-timing-function: ease-in; }
+}
+@keyframes ld-newton-dir {
+  0%, 50%, 100% { transform: rotate(0deg); animation-timing-function: ease-in; }
+  75%           { transform: rotate(-38deg); animation-timing-function: ease-out; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.18  MOEDA · .ld-moeda — gira em 3D; a borda metálica aparece de perfil
+   -------------------------------------------------------------------------- */
+.ld-moeda {
+  width: var(--t);
+  height: var(--t);
+  perspective: calc(var(--t) * 4);
+}
+.ld-moeda::before {           /* a face */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, color-mix(in srgb, #fff 45%, var(--c)) 0, var(--c) 38%, color-mix(in srgb, #000 30%, var(--c)) 100%);
+  box-shadow:
+    inset 0 0 0 calc(var(--t) * 0.07) color-mix(in srgb, #fff 18%, var(--c)),
+    inset 0 0 0 calc(var(--t) * 0.09) color-mix(in srgb, #000 22%, var(--c));
+  animation: ld-moeda calc(var(--v) * 2.2) cubic-bezier(0.6, 0.1, 0.4, 0.9) infinite;
+}
+.ld-moeda::after {            /* sombra no chão, achata quando a moeda fica de perfil */
+  content: "";
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: -14%;
+  height: 10%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.28), transparent 70%);
+  animation: ld-moeda-sombra calc(var(--v) * 2.2) cubic-bezier(0.6, 0.1, 0.4, 0.9) infinite;
+}
+@keyframes ld-moeda {
+  0%   { transform: rotateY(0deg); }
+  50%  { transform: rotateY(180deg); filter: brightness(0.82); }
+  100% { transform: rotateY(360deg); }
+}
+@keyframes ld-moeda-sombra {
+  0%, 50%, 100% { transform: scaleX(1); }
+  25%, 75%      { transform: scaleX(0.3); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.19  CUBO · .ld-cubo — cubo 3D de 6 faces (6 <i>) girando em dois eixos
+   -------------------------------------------------------------------------- */
+.ld-cubo {
+  --l: calc(var(--t) * 0.5);                           /* lado do cubo */
+  width: var(--l);
+  height: var(--l);
+  margin: calc(var(--t) * 0.25);
+  transform-style: preserve-3d;
+  animation: ld-cubo calc(var(--v) * 3) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.ld-cubo > i {
+  position: absolute;
+  inset: 0;
+  background: var(--c);
+  border: 1px solid color-mix(in srgb, #fff 25%, var(--c));
+  backface-visibility: hidden;
+}
+.ld-cubo > i:nth-child(1) { transform: translateZ(calc(var(--l) / 2)); }
+.ld-cubo > i:nth-child(2) { transform: rotateY(180deg) translateZ(calc(var(--l) / 2)); }
+.ld-cubo > i:nth-child(3) { transform: rotateY(90deg) translateZ(calc(var(--l) / 2));  background: color-mix(in srgb, #000 22%, var(--c)); }
+.ld-cubo > i:nth-child(4) { transform: rotateY(-90deg) translateZ(calc(var(--l) / 2)); background: color-mix(in srgb, #000 22%, var(--c)); }
+.ld-cubo > i:nth-child(5) { transform: rotateX(90deg) translateZ(calc(var(--l) / 2));  background: color-mix(in srgb, #fff 35%, var(--c)); }
+.ld-cubo > i:nth-child(6) { transform: rotateX(-90deg) translateZ(calc(var(--l) / 2)); background: color-mix(in srgb, #000 40%, var(--c)); }
+@keyframes ld-cubo {
+  0%   { transform: rotateX(-30deg) rotateY(45deg); }
+  50%  { transform: rotateX(-30deg) rotateY(225deg); }
+  100% { transform: rotateX(-30deg) rotateY(405deg); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.20  HÉLICE · .ld-dna — duas fitas de pontos se cruzam (profundidade pela escala)
+   8 <i>; cada um tem dois pontos (::before e ::after) em fases opostas.
+   -------------------------------------------------------------------------- */
+.ld-dna {
+  align-items: center;
+  gap: calc(var(--t) * 0.07);
+  width: calc(var(--t) * 1.6);
+  height: var(--t);
+}
+.ld-dna > i {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+.ld-dna > i::before,
+.ld-dna > i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--t) * 0.13);
+  height: calc(var(--t) * 0.13);
+  margin: calc(var(--t) * -0.065);
+  border-radius: 50%;
+  background: var(--c);
+  animation: ld-dna calc(var(--v) * 1.6) ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * var(--v) * -0.2);
+}
+.ld-dna > i::after {
+  background: color-mix(in srgb, var(--c) 45%, #fff);
+  animation-delay: calc(var(--i, 0) * var(--v) * -0.2 - var(--v) * 0.8);
+}
+.ld-dna > i:nth-child(1) { --i: 0; } .ld-dna > i:nth-child(2) { --i: 1; }
+.ld-dna > i:nth-child(3) { --i: 2; } .ld-dna > i:nth-child(4) { --i: 3; }
+.ld-dna > i:nth-child(5) { --i: 4; } .ld-dna > i:nth-child(6) { --i: 5; }
+.ld-dna > i:nth-child(7) { --i: 6; } .ld-dna > i:nth-child(8) { --i: 7; }
+@keyframes ld-dna {
+  0%, 100% { transform: translateY(calc(var(--t) * -0.33)) scale(1);   opacity: 1;   z-index: 2; }
+  50%      { transform: translateY(calc(var(--t) * 0.33))  scale(0.5); opacity: 0.45; z-index: 1; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.21  PERCENTUAL · .ld-percentual — anel que enche de 0 a 100% com o número no meio
+   Usa @property para animar o número (Chrome 85+, Safari 16.4+, Firefox 128+).
+   Em navegadores antigos o anel fica cheio e o número não aparece.
+   -------------------------------------------------------------------------- */
+@property --ld-p { syntax: "<integer>"; inherits: false; initial-value: 0; }
+.ld-percentual {
+  --esp: calc(var(--t) * 0.11);
+  --ld-p: 0;
+  display: grid;
+  place-items: center;
+  width: var(--t);
+  height: var(--t);
+  border-radius: 50%;
+  background: conic-gradient(var(--c) calc(var(--ld-p) * 1%), color-mix(in srgb, var(--c) 15%, transparent) 0);
+  font: 700 calc(var(--t) * 0.24) / 1 system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: var(--c);
+  animation: ld-percentual calc(var(--v) * 4) cubic-bezier(0.3, 0.7, 0.4, 1) infinite;
+}
+.ld-percentual::before {      /* miolo claro, deixando só o anel */
+  content: "";
+  position: absolute;
+  inset: var(--esp);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 10px -4px rgba(0, 0, 0, 0.25);
+}
+.ld-percentual::after {       /* o número vem do contador que lê --ld-p */
+  content: counter(ld-p) "%";
+  counter-reset: ld-p var(--ld-p);
+  position: relative;
+  letter-spacing: -0.03em;
+}
+@keyframes ld-percentual {
+  0%        { --ld-p: 0; }
+  80%, 92%  { --ld-p: 100; }
+  100%      { --ld-p: 0; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.22  DIGITANDO · .ld-digitando — balão de chat com três pontos pulando
+   -------------------------------------------------------------------------- */
+.ld-digitando {
+  align-items: center;
+  gap: calc(var(--t) * 0.1);
+  height: calc(var(--t) * 0.62);
+  padding: 0 calc(var(--t) * 0.26);
+  border-radius: calc(var(--t) * 0.31);
+  border-bottom-left-radius: calc(var(--t) * 0.06);
+  background: color-mix(in srgb, var(--c) 14%, #fff);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 18%, transparent);
+}
+.ld-digitando::before {       /* rabinho do balão */
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: calc(var(--t) * 0.16);
+  height: calc(var(--t) * 0.16);
+  background: inherit;
+  clip-path: polygon(0 100%, 100% 100%, 100% 0);
+  transform: translate(-45%, 0);
+}
+.ld-digitando > i {
+  width: calc(var(--t) * 0.14);
+  height: calc(var(--t) * 0.14);
+  border-radius: 50%;
+  background: var(--c);
+  animation: ld-digita calc(var(--v) * 1.3) ease-in-out infinite;
+}
+.ld-digitando > i:nth-child(2) { animation-delay: calc(var(--v) * 0.15); }
+.ld-digitando > i:nth-child(3) { animation-delay: calc(var(--v) * 0.3); }
+@keyframes ld-digita {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30%           { transform: translateY(calc(var(--t) * -0.12)); opacity: 1; }
+}
+
+
+/* ==========================================================================
+   4. PÁGINA DA GALERIA (moldura da demo — não faz parte dos loaders)
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--pg-fonte);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--pg-tinta);
+  background: var(--pg-fundo);
+}
+
+h1, h2, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+.pg {
+  width: min(100% - 2rem, 1240px);
+  margin-inline: auto;
+  padding: 30px 0 28px;
+}
+
+/* --- Topo: texto à esquerda, painel de controle à direita --- */
+.pg-topo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 28px 48px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.pg-selos { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+.pg-selo {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pg-suave);
+  background: var(--pg-cartao);
+  border: 1px solid var(--pg-borda);
+}
+.pg-selo--gratis { color: var(--pg-verde); background: var(--pg-verde-fundo); border-color: transparent; }
+
+.pg-topo h1 {
+  font-size: clamp(2.5rem, 5.2vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+.pg-topo h1 span { color: var(--ld-cor); transition: color 0.2s; }
+
+.pg-lead {
+  max-width: 50ch;
+  margin-top: 14px;
+  font-size: 1.0625rem;
+  color: var(--pg-suave);
+}
+.pg-lead strong { color: var(--pg-tinta); font-weight: 600; }
+
+/* --- Painel de controle --- */
+.pg-painel {
+  padding: 18px 20px 16px;
+  border: 1px solid var(--pg-borda);
+  border-radius: 20px;
+  background: var(--pg-cartao);
+}
+.pg-painel__titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pg-suave);
+}
+
+.pg-linha {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) 56px;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--pg-borda);
+}
+.pg-linha label { font-size: 14.5px; font-weight: 500; }
+.pg-valor { font-size: 13.5px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; color: var(--pg-suave); }
+
+/* Cor: seletor nativo + amostras */
+.pg-cores { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; grid-column: 2 / -1; }
+.pg-cores input[type="color"] {
+  width: 38px; height: 38px;
+  padding: 2px;
+  border: 1px solid var(--pg-borda);
+  border-radius: 12px;
+  background: var(--pg-cartao);
+  cursor: pointer;
+}
+.pg-amostra {
+  width: 26px; height: 26px;
+  padding: 0;
+  border: 2px solid var(--pg-cartao);
+  border-radius: 50%;
+  background: var(--amostra);
+  box-shadow: 0 0 0 1px var(--pg-borda);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.pg-amostra:hover { transform: scale(1.15); }
+.pg-amostra[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--pg-tinta); }
+
+/* Sliders: a cor do controle acompanha a cor escolhida */
+.pg-linha input[type="range"] {
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--ld-cor);
+  cursor: pointer;
+}
+
+.pg-reset {
+  padding: 5px 12px;
+  border: 1px solid var(--pg-borda);
+  border-radius: 999px;
+  font: 600 12.5px/1 var(--pg-fonte);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--pg-tinta);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.pg-reset:hover { background: var(--pg-fundo); border-color: #cfcbbf; }
+
+/* Foco visível em tudo que é interativo */
+.pg-cartao:focus-within { border-color: var(--pg-tinta); }
+.pg input:focus-visible,
+.pg button:focus-visible {
+  outline: 3px solid var(--pg-tinta);
+  outline-offset: 3px;
+}
+
+/* --- Grade de cartões --- */
+.pg-grade {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pg-cartao {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--pg-borda);
+  border-radius: 18px;
+  background: var(--pg-cartao);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.pg-cartao:hover {
+  border-color: #cfcbbf;
+  box-shadow: 0 10px 28px -16px rgba(28, 27, 24, 0.35);
+  transform: translateY(-2px);
+}
+.pg-cartao.is-copiado { border-color: var(--pg-verde); }
+
+.pg-palco {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);   /* deixa max-width:100% do loader valer */
+  place-items: center;
+  min-height: 116px;
+  padding: 14px;
+  overflow: hidden;
+  background:
+    radial-gradient(rgba(28, 27, 24, 0.055) 1px, transparent 1.2px) 0 0 / 16px 16px,
+    #fbfaf7;
+  border-bottom: 1px solid var(--pg-borda);
+}
+
+.pg-rodape-cartao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 12px 12px 14px;
+}
+.pg-nome { min-width: 0; }
+.pg-nome h2 { font-size: 16.5px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
+.pg-nome code {
+  display: block;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 500 12px/1.3 var(--pg-mono);
+  color: var(--pg-suave);
+}
+
+.pg-copiar {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 11px 7px 9px;
+  border: 1px solid var(--pg-borda);
+  border-radius: 999px;
+  font: 600 12.5px/1 var(--pg-fonte);
+  color: var(--pg-tinta);
+  background: var(--pg-cartao);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.pg-copiar svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.pg-cartao:hover .pg-copiar { background: var(--pg-tinta); border-color: var(--pg-tinta); color: #fff; }
+.pg-cartao.is-copiado .pg-copiar { background: var(--pg-verde-fundo); border-color: var(--pg-verde); color: var(--pg-verde); }
+
+/* --- Rodapé e toast --- */
+.pg-rodape { margin-top: 20px; font-size: 14px; color: var(--pg-suave); }
+.pg-rodape code {
+  padding: 1px 6px;
+  border-radius: 5px;
+  font: 500 0.9em var(--pg-mono);
+  color: var(--pg-tinta);
+  background: #e9e7df;
+}
+
+.pg-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--pg-tinta);
+  box-shadow: 0 16px 40px -12px rgba(28, 27, 24, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 16px);
+  transition: opacity 0.25s, transform 0.25s, visibility 0s 0.25s;
+  pointer-events: none;
+}
+.pg-toast.is-visivel {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.pg-toast i { flex: none; width: 9px; height: 9px; border-radius: 50%; background: #5ad19a; }
+
+/* --- Responsivo --- */
+@media (max-width: 1100px) {
+  .pg-topo { grid-template-columns: 1fr; gap: 20px; }
+  .pg-grade { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .pg-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pg-rodape-cartao { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .pg { padding-top: 22px; }
+  .pg-grade { gap: 10px; }
+  .pg-palco { min-height: 104px; padding: 10px; }
+  .pg-linha { grid-template-columns: 78px minmax(0, 1fr) 52px; gap: 10px; }
+}
+
+
+/* ==========================================================================
+   5. MOVIMENTO REDUZIDO
+   Loaders indicam que algo está acontecendo, então não somem: ficam 2,5x mais
+   lentos (menos agitação). Se preferir parar de vez, troque o --ld-reduz por
+   "animation: none" nos loaders. A interface da página perde as transições.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root { --ld-reduz: 2.5; }
+  .pg-cartao, .pg-amostra, .pg-toast, .pg-copiar, .pg-reset {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .pg-cartao:hover { transform: none; }
+}

@@ -1,0 +1,771 @@
+/* ==========================================================================
+   BOTÕES MAGNÉTICOS — estilo.css
+   --------------------------------------------------------------------------
+   Estrutura:
+   1. Tokens (:root)            → cores, fontes e medidas. Troque aqui.
+   2. Página da galeria         → só a moldura da demo (pode descartar).
+   3. Os 9 efeitos .bm-<nome>   → cada bloco é independente: copie só o que usar.
+   4. Movimento reduzido        → respeita prefers-reduced-motion.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+:root {
+  /* Superfícies (fundo escuro quente) */
+  --bm-bg: #121110;
+  --bm-superficie: #1b1917;
+  --bm-superficie-2: #25221f;
+  --bm-borda: #34302b;
+
+  /* Texto */
+  --bm-creme: #f4ead8;
+  --bm-creme-suave: #aca291;
+  --bm-tinta: #17130f;          /* texto escuro sobre botões claros */
+
+  /* Acentos */
+  --bm-sinal: #ff6a2b;          /* laranja-sinal */
+  --bm-sinal-escuro: #b8400f;
+  --bm-lima: #b9d84e;           /* verde-limão discreto */
+  --bm-lima-escuro: #6b8620;
+
+  /* Medidas dos botões */
+  --bm-altura: 54px;
+  --bm-pad-x: 28px;
+  --bm-foco: var(--bm-creme);   /* cor do anel de foco do teclado */
+
+  /* Tipografia */
+  --bm-fonte-titulo: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --bm-fonte-texto: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+
+/* ==========================================================================
+   2. PÁGINA DA GALERIA (moldura da demo)
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--bm-creme);
+  font-family: var(--bm-fonte-texto);
+  font-size: 16px;
+  line-height: 1.5;
+  background-color: var(--bm-bg);
+  /* brilho laranja discreto no canto + malha de pontos */
+  background-image:
+    radial-gradient(60rem 28rem at 8% -6%, rgba(255, 106, 43, 0.13), transparent 70%),
+    radial-gradient(40rem 24rem at 100% 100%, rgba(185, 216, 78, 0.06), transparent 70%),
+    radial-gradient(rgba(244, 234, 216, 0.07) 1px, transparent 1.2px);
+  background-size: auto, auto, 26px 26px;
+  background-attachment: fixed, fixed, scroll;
+}
+
+h1, h2, p, ul { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+.pagina {
+  width: min(100% - 2rem, 1240px);
+  margin-inline: auto;
+  padding: 32px 0 28px;
+}
+
+/* --- Topo --- */
+.pagina-topo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 28px 56px;
+  align-items: end;
+  margin-bottom: 26px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bm-creme-suave);
+}
+.eyebrow__ponto {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--bm-sinal);
+  box-shadow: 0 0 0 4px rgba(255, 106, 43, 0.2);
+}
+
+h1 {
+  font-family: var(--bm-fonte-titulo);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4.1rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+h1 em { font-style: normal; color: var(--bm-sinal); }
+@media (min-width: 1081px) { h1 { white-space: nowrap; } }
+
+.lead {
+  max-width: 52ch;
+  font-size: 1.0625rem;
+  color: var(--bm-creme-suave);
+}
+.lead strong { color: var(--bm-creme); font-weight: 600; }
+
+kbd {
+  padding: 1px 7px;
+  border: 1px solid var(--bm-borda);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  font: 600 0.8em var(--bm-fonte-texto);
+  color: var(--bm-creme);
+  background: var(--bm-superficie);
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.chips li {
+  padding: 5px 13px;
+  border: 1px solid var(--bm-borda);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bm-creme);
+  background: rgba(244, 234, 216, 0.03);
+}
+.chips li:nth-child(4) { border-color: rgba(185, 216, 78, 0.45); color: var(--bm-lima); }
+
+/* --- Grade de células --- */
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.celula {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px 16px 16px 18px;
+  border: 1px solid var(--bm-borda);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--bm-superficie-2), var(--bm-superficie));
+  transition: border-color 0.25s ease;
+}
+.celula:hover, .celula:focus-within { border-color: #4a443d; }
+
+/* Topo da célula: número | título | botão copiar — e o rótulo ocupa a linha de baixo */
+.celula__topo {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 12px;
+  row-gap: 3px;
+  align-items: center;
+}
+
+.celula__num {
+  grid-column: 1;
+  grid-row: 1;
+  font: 700 12px/1 var(--bm-fonte-texto);
+  letter-spacing: 0.1em;
+  color: var(--bm-sinal);
+}
+
+.celula__titulos { display: contents; }
+.celula__titulos h2 { grid-column: 2; grid-row: 1; min-width: 0;
+  font-family: var(--bm-fonte-titulo);
+  font-weight: 650;
+  font-size: 1.2rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.celula__titulos p {
+  grid-column: 2 / -1;
+  grid-row: 2;
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--bm-creme-suave);
+}
+
+/* Palco: a "arena" onde o botão vive. overflow visível para o confete e a mola */
+.celula__palco {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 112px;
+  padding: 16px 12px;
+  border-radius: 14px;
+  background:
+    radial-gradient(70% 80% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%),
+    rgba(0, 0, 0, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(244, 234, 216, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* --- Botão "Copiar HTML" --- */
+.copiar {
+  grid-column: 3;
+  grid-row: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px 7px 10px;
+  border: 1px solid var(--bm-borda);
+  border-radius: 999px;
+  font: 600 12px/1 var(--bm-fonte-texto);
+  color: var(--bm-creme);
+  background: rgba(244, 234, 216, 0.04);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.copiar svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.copiar:hover { border-color: var(--bm-sinal); background: rgba(255, 106, 43, 0.1); }
+.copiar:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 3px; }
+.copiar.is-copiado { border-color: var(--bm-lima); color: var(--bm-lima); }
+
+/* --- Rodapé --- */
+.pagina-rodape { margin-top: 22px; font-size: 13.5px; color: var(--bm-creme-suave); }
+.pagina-rodape code {
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.92em;
+  color: var(--bm-creme);
+  background: var(--bm-superficie-2);
+}
+
+/* --- Toast de confirmação --- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bm-tinta);
+  background: var(--bm-creme);
+  box-shadow: 0 14px 40px -10px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 16px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s 0.25s;
+  pointer-events: none;
+}
+.toast.is-visivel {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast__ponto { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--bm-lima-escuro); }
+
+/* --- Responsivo da página --- */
+@media (max-width: 1080px) {
+  .galeria { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pagina-topo { grid-template-columns: 1fr; align-items: start; gap: 18px; }
+}
+@media (max-width: 640px) {
+  .pagina { padding-top: 24px; }
+  .galeria { grid-template-columns: 1fr; }
+  .celula { padding: 14px; }
+
+}
+
+
+/* ==========================================================================
+   3. OS 9 EFEITOS
+   Cada bloco abaixo funciona sozinho. Copie o bloco + os tokens que ele usa.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   3.1  MAGNÉTICO  · .bm-magnetico
+   O botão e o texto seguem o cursor (JS) e voltam com mola.
+   O movimento vem do script.js; aqui ficam só o visual e o foco.
+   -------------------------------------------------------------------------- */
+.bm-magnetico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--bm-altura);
+  padding: 0 var(--bm-pad-x);
+  border: 0;
+  border-radius: 999px;
+  font: 600 16px/1 var(--bm-fonte-texto);
+  color: var(--bm-tinta);
+  background: linear-gradient(180deg, #fffaf0 0%, var(--bm-creme) 52%, #eadbc1 100%);
+  cursor: pointer;
+  will-change: transform;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -2px 0 rgba(120, 92, 54, 0.14),
+    0 1px 0 rgba(0, 0, 0, 0.35),
+    0 12px 28px -10px rgba(244, 234, 216, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+.bm-magnetico__texto { display: inline-block; will-change: transform; pointer-events: none; }
+.bm-magnetico:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -2px 0 rgba(120, 92, 54, 0.14),
+    0 1px 0 rgba(0, 0, 0, 0.35),
+    0 18px 40px -12px rgba(255, 106, 43, 0.6);
+}
+.bm-magnetico:active { filter: brightness(0.94); }
+.bm-magnetico:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+
+/* --------------------------------------------------------------------------
+   3.2  RIPPLE  · .bm-ripple
+   O JS cria um <span class="bm-ripple__onda"> no ponto do clique.
+   -------------------------------------------------------------------------- */
+.bm-ripple {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: var(--bm-altura);
+  padding: 0 var(--bm-pad-x);
+  border: 0;
+  border-radius: 14px;
+  font: 600 16px/1 var(--bm-fonte-texto);
+  color: var(--bm-tinta);
+  background: linear-gradient(180deg, #d3ec72 0%, var(--bm-lima) 50%, #a8c93c 100%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 0 rgba(70, 92, 14, 0.25),
+    0 10px 26px -12px rgba(185, 216, 78, 0.6);
+  transition: box-shadow 0.3s ease, filter 0.2s ease;
+}
+.bm-ripple:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 0 rgba(70, 92, 14, 0.25),
+    0 16px 34px -12px rgba(185, 216, 78, 0.75);
+}
+.bm-ripple:active { filter: brightness(0.96); }
+.bm-ripple__texto { position: relative; z-index: 1; pointer-events: none; }
+.bm-ripple__onda {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(23, 19, 15, 0.28);
+  transform: scale(0);
+  opacity: 1;
+  pointer-events: none;
+  animation: bm-ripple-onda 0.7s cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
+}
+.bm-ripple:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+@keyframes bm-ripple-onda {
+  to { transform: scale(1); opacity: 0; }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.3  BRILHO  · .bm-brilho
+   Uma faixa de luz inclinada atravessa o botão no hover / foco. CSS puro.
+   -------------------------------------------------------------------------- */
+.bm-brilho {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: var(--bm-altura);
+  padding: 0 var(--bm-pad-x);
+  border: 1px solid #4a443d;
+  border-radius: 14px;
+  font: 600 16px/1 var(--bm-fonte-texto);
+  color: var(--bm-creme);
+  background: linear-gradient(180deg, #2e2a26 0%, var(--bm-superficie-2) 55%, #1e1b18 100%);
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 22px -14px rgba(0, 0, 0, 0.9);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.bm-brilho::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 42%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  transform: translateX(-170%) skewX(-22deg);
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+.bm-brilho:hover,
+.bm-brilho:focus-visible,
+.bm-brilho:active {
+  border-color: var(--bm-sinal);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(255, 106, 43, 0.4), 0 12px 30px -12px rgba(255, 106, 43, 0.6);
+}
+.bm-brilho:hover::after,
+.bm-brilho:focus-visible::after,
+.bm-brilho:active::after { transform: translateX(380%) skewX(-22deg); }
+.bm-brilho:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+
+/* --------------------------------------------------------------------------
+   3.4  BORDA VIVA  · .bm-borda-viva
+   Um gradiente cônico gira atrás de uma "tampa" escura: só o contorno aparece.
+   Não usa @property, então funciona em qualquer navegador moderno.
+   -------------------------------------------------------------------------- */
+.bm-borda-viva {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 2px;                 /* espessura da borda */
+  border: 0;
+  border-radius: 999px;
+  font: 600 16px/1 var(--bm-fonte-texto);
+  color: var(--bm-creme);
+  background: var(--bm-borda);  /* trilho da borda quando o gradiente não passa */
+  cursor: pointer;
+}
+.bm-borda-viva::before {        /* o gradiente que gira */
+  content: "";
+  position: absolute;
+  z-index: -2;
+  left: 50%;
+  top: 50%;
+  width: 220%;
+  aspect-ratio: 1;
+  background: conic-gradient(from 0deg, transparent 0 28%, var(--bm-lima) 52%, var(--bm-sinal) 78%, var(--bm-creme) 100%);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: bm-borda-gira 3.2s linear infinite;
+}
+.bm-borda-viva::after {         /* a tampa que esconde o miolo */
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 2px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #231f1b, var(--bm-superficie));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: background 0.3s;
+}
+.bm-borda-viva__texto {
+  display: inline-flex;
+  align-items: center;
+  height: calc(var(--bm-altura) - 4px);
+  padding: 0 var(--bm-pad-x);
+}
+.bm-borda-viva:hover::before,
+.bm-borda-viva:focus-visible::before { animation-duration: 1.1s; }
+.bm-borda-viva:hover::after { background: linear-gradient(180deg, #1b1815, #14120f); }
+.bm-borda-viva:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+@keyframes bm-borda-gira {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3.5  PREENCHIMENTO LÍQUIDO  · .bm-liquido
+   O JS grava --x e --y (ponto de entrada/saída do mouse); o círculo cresce dali.
+   Sem JS ele ainda funciona: sobe pela base do botão (valores padrão).
+   -------------------------------------------------------------------------- */
+.bm-liquido {
+  --x: 50%;
+  --y: 115%;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  overflow: hidden;
+  height: var(--bm-altura);
+  padding: 0 var(--bm-pad-x);
+  border: 1.5px solid var(--bm-creme);
+  border-radius: 999px;
+  font: 600 16px/1 var(--bm-fonte-texto);
+  color: var(--bm-creme);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.35s ease 0.05s, border-color 0.35s, box-shadow 0.35s;
+}
+.bm-liquido__onda {             /* camada clara (a "espuma") */
+  position: absolute;
+  z-index: -1;
+  left: var(--x);
+  top: var(--y);
+  width: 280%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ff9566;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.25, 1);
+  pointer-events: none;
+}
+.bm-liquido__onda::after {      /* camada principal, chega um instante depois */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--bm-sinal);
+  transform: scale(0);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.25, 1) 0.09s;
+}
+.bm-liquido__texto { position: relative; pointer-events: none; }
+.bm-liquido:hover,
+.bm-liquido:focus-visible { color: var(--bm-tinta); border-color: var(--bm-sinal); box-shadow: 0 14px 32px -14px rgba(255, 106, 43, 0.7); }
+.bm-liquido:hover .bm-liquido__onda,
+.bm-liquido:focus-visible .bm-liquido__onda { transform: translate(-50%, -50%) scale(1); }
+.bm-liquido:hover .bm-liquido__onda::after,
+.bm-liquido:focus-visible .bm-liquido__onda::after { transform: scale(1); }
+.bm-liquido:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+
+/* --------------------------------------------------------------------------
+   3.6  PRESSÃO 3D  · .bm-pressao
+   A "espessura" é uma sombra sólida; ao pressionar, o botão desce o mesmo tanto.
+   O JS só ajuda o Enter a acionar o estado .is-pressionado (Espaço já funciona).
+   -------------------------------------------------------------------------- */
+.bm-pressao {
+  --bm-prof: 6px;               /* profundidade do botão */
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--bm-altura);
+  margin-bottom: var(--bm-prof);
+  padding: 0 var(--bm-pad-x);
+  border: 0;
+  border-radius: 16px;
+  font: 700 16px/1 var(--bm-fonte-texto);
+  color: var(--bm-tinta);
+  background: linear-gradient(180deg, #d3ec72 0%, var(--bm-lima) 60%, #afcf42 100%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.38),
+    0 var(--bm-prof) 0 var(--bm-lima-escuro),
+    0 calc(var(--bm-prof) + 10px) 22px -4px rgba(0, 0, 0, 0.65);
+  transition: transform 0.09s ease, box-shadow 0.09s ease;
+}
+.bm-pressao:hover { transform: translateY(-2px); }
+.bm-pressao:active,
+.bm-pressao.is-pressionado {
+  transform: translateY(var(--bm-prof));
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 var(--bm-lima-escuro),
+    0 2px 6px -2px rgba(0, 0, 0, 0.6);
+}
+.bm-pressao:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 5px; }
+
+
+/* --------------------------------------------------------------------------
+   3.7  SETA DESLIZANTE  · .bm-seta
+   No hover o texto escorre para a direita e a seta entra pela esquerda. CSS puro.
+   -------------------------------------------------------------------------- */
+.bm-seta {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  width: 190px;
+  max-width: 100%;
+  height: var(--bm-altura);
+  border: 0;
+  border-radius: 999px;
+  font: 600 16px/1 var(--bm-fonte-texto);
+  color: var(--bm-tinta);
+  background: linear-gradient(180deg, #ff9258 0%, var(--bm-sinal) 55%, #ee5516 100%);
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 rgba(130, 45, 0, 0.28),
+    0 10px 24px -12px rgba(255, 106, 43, 0.55);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.bm-seta__texto,
+.bm-seta__icone {
+  grid-area: 1 / 1;
+  transition: transform 0.45s cubic-bezier(0.6, 0, 0.2, 1), opacity 0.3s ease;
+}
+.bm-seta__icone {
+  width: 26px; height: 26px;
+  fill: none; stroke: currentColor; stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round;
+  transform: translateX(-120px);
+  opacity: 0;
+}
+.bm-seta:hover,
+.bm-seta:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 rgba(130, 45, 0, 0.28),
+    0 16px 36px -12px rgba(255, 106, 43, 0.8);
+}
+.bm-seta:hover .bm-seta__texto,
+.bm-seta:focus-visible .bm-seta__texto { transform: translateX(120px); opacity: 0; }
+.bm-seta:hover .bm-seta__icone,
+.bm-seta:focus-visible .bm-seta__icone { transform: translateX(0); opacity: 1; }
+.bm-seta:active { filter: brightness(0.93); }
+.bm-seta:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+
+/* --------------------------------------------------------------------------
+   3.8  CONFETE  · .bm-confete
+   O <canvas> é maior que o botão (sobra espaço para as partículas voarem)
+   e ignora o mouse. O JS desenha as partículas ao clicar.
+   -------------------------------------------------------------------------- */
+.bm-confete {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 170px;
+  height: var(--bm-altura);
+  padding: 0 var(--bm-pad-x);
+  border: 1.5px solid var(--bm-sinal);
+  border-radius: 14px;
+  font: 600 16px/1 var(--bm-fonte-texto);
+  color: #ff8a55;
+  background: linear-gradient(180deg, rgba(255, 106, 43, 0.22), rgba(255, 106, 43, 0.08));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: background 0.25s, transform 0.12s, box-shadow 0.25s;
+}
+.bm-confete__texto { pointer-events: none; }
+.bm-confete__tela {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: min(340px, 88vw);
+  height: 280px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.bm-confete:hover {
+  background: linear-gradient(180deg, rgba(255, 106, 43, 0.32), rgba(255, 106, 43, 0.14));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 12px 28px -14px rgba(255, 106, 43, 0.6);
+}
+.bm-confete:active { transform: scale(0.96); }
+.bm-confete:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+
+/* --------------------------------------------------------------------------
+   3.9  SEGURE PARA CONFIRMAR  · .bm-segure
+   A variável --p (0 → 1) é atualizada pelo JS enquanto o botão é segurado.
+   Ela move a barra de fundo e o anel. Soltar antes de 1 faz tudo voltar.
+   Estados: .is-segurando · .is-ok
+   -------------------------------------------------------------------------- */
+.bm-segure {
+  --p: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  width: 258px;
+  max-width: 100%;
+  height: 60px;
+  padding: 0 22px 0 14px;
+  border: 1.5px solid #4a443d;
+  border-radius: 999px;
+  font: 600 15.5px/1 var(--bm-fonte-texto);
+  color: var(--bm-creme);
+  background: linear-gradient(180deg, #2c2824, var(--bm-superficie-2));
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 8px 22px -14px rgba(0, 0, 0, 0.9);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.bm-segure__fundo {             /* barra que enche da esquerda para a direita */
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 106, 43, 0.38);
+  transform: scaleX(var(--p));
+  transform-origin: left center;
+  pointer-events: none;
+}
+.bm-segure__anel {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke-width: 3;
+  pointer-events: none;
+}
+.bm-segure__trilha { stroke: rgba(244, 234, 216, 0.18); }
+.bm-segure__progresso {
+  stroke: var(--bm-sinal);
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: calc(1 - var(--p));
+}
+.bm-segure__ok {                /* check: aparece só ao confirmar */
+  stroke: var(--bm-tinta);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+  opacity: 0;
+}
+.bm-segure__texto { position: relative; pointer-events: none; white-space: nowrap; }
+.bm-segure__dica {              /* texto só para leitores de tela */
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.bm-segure:hover { border-color: var(--bm-sinal); }
+.bm-segure.is-segurando { border-color: var(--bm-sinal); }
+.bm-segure.is-ok {
+  border-color: var(--bm-lima);
+  color: var(--bm-tinta);
+  background: var(--bm-lima);
+}
+.bm-segure.is-ok .bm-segure__fundo { background: var(--bm-lima); }
+.bm-segure.is-ok .bm-segure__trilha { stroke: rgba(23, 19, 15, 0.25); }
+.bm-segure.is-ok .bm-segure__progresso { stroke: var(--bm-tinta); }
+.bm-segure.is-ok .bm-segure__ok { opacity: 1; }
+.bm-segure:focus-visible { outline: 3px solid var(--bm-foco); outline-offset: 4px; }
+
+
+/* ==========================================================================
+   4. MOVIMENTO REDUZIDO
+   Quem prefere menos animação recebe os mesmos botões, sem o movimento.
+   (O script.js também desliga mola, ripple e confete.)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}

@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar · Ninho — login com mascote</title>
+  <meta name="description" content="Tela de login com uma coruja em SVG que acompanha o cursor, tampa os olhos na senha e comemora o acesso.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="lm2-corpo">
+
+  <!-- Formas suaves de fundo (decorativas) -->
+  <div class="lm2-fundo" aria-hidden="true">
+    <span class="lm2-forma lm2-forma--1"></span>
+    <span class="lm2-forma lm2-forma--2"></span>
+    <span class="lm2-forma lm2-forma--3"></span>
+    <span class="lm2-forma lm2-forma--4"></span>
+    <svg class="lm2-onda" viewBox="0 0 600 80" preserveAspectRatio="none"><path d="M0 40 C 75 0 150 80 225 40 S 375 0 450 40 S 525 80 600 40" /></svg>
+  </div>
+
+  <header class="lm2-topo">
+    <a class="lm2-logo" href="#" aria-label="Ninho — página inicial">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+        <path d="M16 4 C25 4 29 11 29 18 C29 25 23 29 16 29 C9 29 3 25 3 18 C3 11 7 4 16 4Z" fill="#1f7a8c"/>
+        <path d="M6 9 L5 2 L12 6Z M26 9 L27 2 L20 6Z" fill="#17606e"/>
+        <circle cx="11.5" cy="15" r="5.2" fill="#fffaf3"/><circle cx="20.5" cy="15" r="5.2" fill="#fffaf3"/>
+        <circle cx="12.3" cy="15.6" r="2.2" fill="#1d1b26"/><circle cx="21.3" cy="15.6" r="2.2" fill="#1d1b26"/>
+        <path d="M16 18 L18 20.5 L16 23.5 L14 20.5Z" fill="#ff6f59"/>
+      </svg>
+      <span>Ninho</span>
+    </a>
+    <a class="lm2-topo__ajuda" href="#" id="lm2-ajuda">Precisa de ajuda?</a>
+  </header>
+
+  <main class="lm2-palco">
+    <!-- ===== MASCOTE: coruja “Oli” (decorativa) ===== -->
+    <div class="lm2-mascote" aria-hidden="true">
+      <div class="lm2-confetes" id="lm2-confetes"></div>
+      <svg class="lm2-coruja" id="lm2-coruja" viewBox="0 0 240 230">
+        <defs>
+          <clipPath id="lm2-clip-olho-e"><circle cx="88" cy="100" r="25.5"/></clipPath>
+          <clipPath id="lm2-clip-olho-d"><circle cx="152" cy="100" r="25.5"/></clipPath>
+
+          <!-- Volume e luz: as cores de cada <stop> vêm dos tokens (classes .lm2-s-*) -->
+          <radialGradient id="lm2-g-corpo" cx="38%" cy="24%" r="86%">
+            <stop offset="0" class="lm2-s-corpo-luz"/>
+            <stop offset=".48" class="lm2-s-corpo"/>
+            <stop offset="1" class="lm2-s-corpo-sombra"/>
+          </radialGradient>
+          <linearGradient id="lm2-g-barriga" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="lm2-s-barriga-luz"/>
+            <stop offset="1" class="lm2-s-barriga"/>
+          </linearGradient>
+          <linearGradient id="lm2-g-asa" x1=".15" y1="0" x2=".85" y2="1">
+            <stop offset="0" class="lm2-s-asa-luz"/>
+            <stop offset="1" class="lm2-s-asa"/>
+          </linearGradient>
+          <linearGradient id="lm2-g-orelha" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="lm2-s-orelha-luz"/>
+            <stop offset="1" class="lm2-s-orelha"/>
+          </linearGradient>
+          <radialGradient id="lm2-g-disco" cx="50%" cy="38%" r="64%">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset=".7" stop-color="#fff8ef"/>
+            <stop offset="1" stop-color="#f0dcc4"/>
+          </radialGradient>
+          <radialGradient id="lm2-g-iris" cx="40%" cy="36%" r="64%">
+            <stop offset="0" stop-color="#ffe6a6"/>
+            <stop offset=".55" class="lm2-s-iris"/>
+            <stop offset="1" stop-color="#d7740c"/>
+          </radialGradient>
+          <linearGradient id="lm2-g-bico" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff9278"/>
+            <stop offset="1" stop-color="#de4c36"/>
+          </linearGradient>
+          <radialGradient id="lm2-g-bochecha">
+            <stop offset="0" class="lm2-s-bochecha"/>
+            <stop offset="1" class="lm2-s-bochecha" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <g class="lm2-pulo">
+          <!-- Corpo -->
+          <g class="lm2-corpo-ave">
+            <path class="lm2-c-corpo" d="M120 38 C176 38 202 84 202 140 C202 196 166 228 120 228 C74 228 38 196 38 140 C38 84 64 38 120 38Z"/>
+            <!-- penugem das laterais (textura sutil) -->
+            <g class="lm2-c-textura">
+              <path d="M50 152 q6 -8 12 0 M44 172 q6 -8 12 0 M56 190 q6 -8 12 0"/>
+              <path d="M178 152 q6 -8 12 0 M184 172 q6 -8 12 0 M172 190 q6 -8 12 0"/>
+            </g>
+            <ellipse class="lm2-c-barriga" cx="120" cy="176" rx="54" ry="50"/>
+            <ellipse class="lm2-c-barriga-luz" cx="104" cy="150" rx="20" ry="11"/>
+            <g class="lm2-c-penas">
+              <path d="M98 162 q7 7 14 0 M126 162 q7 7 14 0"/>
+              <path d="M84 180 q7 7 14 0 M112 180 q7 7 14 0 M140 180 q7 7 14 0"/>
+              <path d="M98 198 q7 7 14 0 M126 198 q7 7 14 0"/>
+            </g>
+            <!-- brilho no alto da cabeça -->
+            <ellipse class="lm2-c-luz" cx="100" cy="51" rx="20" ry="6.5" transform="rotate(-16 100 51)"/>
+          </g>
+
+          <!-- Cabeça: sacode no erro (externo) e inclina seguindo o olhar (interno) -->
+          <g class="lm2-sacode">
+            <g class="lm2-cabeca" id="lm2-cabeca">
+              <path class="lm2-c-orelha" d="M64 72 L50 22 L96 50Z"/>
+              <path class="lm2-c-orelha" d="M176 72 L190 22 L144 50Z"/>
+              <path class="lm2-c-orelha-pena" d="M61 58 L55 34 M179 58 L185 34"/>
+              <circle class="lm2-c-disco" cx="88" cy="100" r="40"/>
+              <circle class="lm2-c-disco" cx="152" cy="100" r="40"/>
+
+              <!-- Olho esquerdo -->
+              <g class="lm2-olho lm2-olho--e">
+                <circle class="lm2-c-branco" cx="88" cy="100" r="26"/>
+                <g clip-path="url(#lm2-clip-olho-e)">
+                  <g class="lm2-pupila" id="lm2-pupila-e">
+                    <circle class="lm2-c-iris" cx="88" cy="100" r="14"/>
+                    <circle class="lm2-c-pupila" cx="88" cy="100" r="8"/>
+                    <circle class="lm2-c-brilho" cx="92" cy="95" r="3.2"/>
+                    <circle class="lm2-c-brilho lm2-c-brilho--2" cx="84" cy="105" r="1.6"/>
+                  </g>
+                  <!-- sombra da pálpebra sobre o globo ocular -->
+                  <path class="lm2-c-olho-sombra" d="M62 100 A26 26 0 0 1 114 100 A38 38 0 0 0 62 100Z"/>
+                  <rect class="lm2-palpebra" x="58" y="72" width="60" height="56"/>
+                </g>
+                <circle class="lm2-c-aro" cx="88" cy="100" r="26"/>
+              </g>
+
+              <!-- Olho direito -->
+              <g class="lm2-olho lm2-olho--d">
+                <circle class="lm2-c-branco" cx="152" cy="100" r="26"/>
+                <g clip-path="url(#lm2-clip-olho-d)">
+                  <g class="lm2-pupila" id="lm2-pupila-d">
+                    <circle class="lm2-c-iris" cx="152" cy="100" r="14"/>
+                    <circle class="lm2-c-pupila" cx="152" cy="100" r="8"/>
+                    <circle class="lm2-c-brilho" cx="156" cy="95" r="3.2"/>
+                    <circle class="lm2-c-brilho lm2-c-brilho--2" cx="148" cy="105" r="1.6"/>
+                  </g>
+                  <path class="lm2-c-olho-sombra" d="M126 100 A26 26 0 0 1 178 100 A38 38 0 0 0 126 100Z"/>
+                  <rect class="lm2-palpebra" x="122" y="72" width="60" height="56"/>
+                </g>
+                <circle class="lm2-c-aro" cx="152" cy="100" r="26"/>
+              </g>
+
+              <!-- Olhos sorrindo (sucesso) -->
+              <path class="lm2-feliz" d="M72 104 Q88 88 104 104"/>
+              <path class="lm2-feliz" d="M136 104 Q152 88 168 104"/>
+
+              <!-- Sobrancelhas -->
+              <path class="lm2-sobrancelha lm2-sobrancelha--e" d="M70 66 Q88 58 104 64"/>
+              <path class="lm2-sobrancelha lm2-sobrancelha--d" d="M136 64 Q152 58 170 66"/>
+
+              <!-- Bochechas, bico e lágrima -->
+              <circle class="lm2-c-bochecha" cx="62" cy="130" r="12"/>
+              <circle class="lm2-c-bochecha" cx="178" cy="130" r="12"/>
+              <path class="lm2-c-bico-sombra" d="M120 116 L132 128 L120 147 L108 128Z"/>
+              <path class="lm2-c-bico" d="M120 112 L131 125 L120 143 L109 125Z"/>
+              <path class="lm2-c-bico-luz" d="M120 112 L131 125 L120 127Z"/>
+              <path class="lm2-lagrima" d="M78 128 C78 128 72 136 72 140 A6 6 0 0 0 84 140 C84 136 78 128 78 128Z"/>
+            </g>
+          </g>
+
+          <!-- Cadeado fofo (bloqueio): a Oli segura junto ao peito; o arco abre na liberação -->
+          <g class="lm2-cadeado-ave">
+            <path class="lm2-cadeado-ave__arco" d="M110 137 v-4 a10 10 0 0 1 20 0 v4"/>
+            <rect class="lm2-cadeado-ave__corpo" x="101" y="135" width="38" height="28" rx="9"/>
+            <rect class="lm2-cadeado-ave__luz" x="105" y="138" width="14" height="4" rx="2"/>
+            <circle class="lm2-cadeado-ave__olho" cx="113" cy="148" r="2.3"/>
+            <circle class="lm2-cadeado-ave__olho" cx="127" cy="148" r="2.3"/>
+            <path class="lm2-cadeado-ave__boca" d="M116.5 153.5 q3.5 3 7 0"/>
+            <circle class="lm2-cadeado-ave__bochecha" cx="108" cy="153" r="2.6"/>
+            <circle class="lm2-cadeado-ave__bochecha" cx="132" cy="153" r="2.6"/>
+          </g>
+
+          <!-- Asas: giram a partir do ombro para tampar/espiar -->
+          <g transform="translate(52 138)">
+            <g class="lm2-asa lm2-asa--e">
+              <path class="lm2-c-asa" d="M0 0 C27 4 32 48 23 80 C17 98 -17 98 -23 80 C-32 48 -27 4 0 0Z"/>
+              <path class="lm2-c-asa-luz" d="M-8 10 C-20 26 -22 48 -16 66"/>
+              <path class="lm2-c-asa-pena" d="M-12 56 Q0 66 12 56 M-14 72 Q0 82 14 72"/>
+            </g>
+          </g>
+          <g transform="translate(188 138)">
+            <g class="lm2-asa lm2-asa--d">
+              <path class="lm2-c-asa" d="M0 0 C27 4 32 48 23 80 C17 98 -17 98 -23 80 C-32 48 -27 4 0 0Z"/>
+              <path class="lm2-c-asa-luz" d="M8 10 C20 26 22 48 16 66"/>
+              <path class="lm2-c-asa-pena" d="M-12 56 Q0 66 12 56 M-14 72 Q0 82 14 72"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
+
+    <!-- ===== CARTÃO DE LOGIN ===== -->
+    <section class="lm2-cartao" aria-labelledby="lm2-titulo">
+      <!-- Pezinhos da coruja segurando a borda do cartão -->
+      <svg class="lm2-pes" viewBox="0 0 120 26" aria-hidden="true">
+        <defs>
+          <linearGradient id="lm2-g-pe" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff9a80"/>
+            <stop offset="1" stop-color="#ef5f47"/>
+          </linearGradient>
+        </defs>
+        <g class="lm2-pes__pe"><ellipse cx="19" cy="12" rx="5.5" ry="9"/><ellipse cx="30" cy="13" rx="5.5" ry="10"/><ellipse cx="41" cy="12" rx="5.5" ry="9"/></g>
+        <g class="lm2-pes__pe"><ellipse cx="79" cy="12" rx="5.5" ry="9"/><ellipse cx="90" cy="13" rx="5.5" ry="10"/><ellipse cx="101" cy="12" rx="5.5" ry="9"/></g>
+        <path class="lm2-pes__unha" d="M19 19v2.5M30 21v2.5M41 19v2.5M79 19v2.5M90 21v2.5M101 19v2.5"/>
+      </svg>
+
+      <h1 class="lm2-titulo" id="lm2-titulo">Que bom te ver de novo!</h1>
+      <p class="lm2-sub">A Oli fica de olho — menos na sua senha.</p>
+
+      <div class="lm2-dica" id="lm2-dica">
+        <span class="lm2-dica__icone" aria-hidden="true">
+          <svg viewBox="0 0 20 20" width="18" height="18"><circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 9v5M10 6.2v.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </span>
+        <p class="lm2-dica__texto"><strong>Conta demo</strong><br><code>demo@exemplo.com</code> <span class="lm2-dica__sep" aria-hidden="true">·</span> <span class="lm2-oculto">senha</span> <code>123456</code></p>
+        <button class="lm2-dica__usar" type="button" id="lm2-preencher">Preencher</button>
+      </div>
+
+      <form class="lm2-form" id="lm2-form" novalidate>
+        <div class="lm2-campo" id="lm2-campo-email">
+          <label class="lm2-campo__rotulo" for="lm2-email">E-mail</label>
+          <div class="lm2-campo__caixa">
+            <svg class="lm2-campo__icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+            <input class="lm2-campo__entrada" id="lm2-email" name="email" type="email" inputmode="email" autocomplete="username" placeholder="voce@email.com" spellcheck="false" aria-describedby="lm2-msg">
+          </div>
+        </div>
+
+        <div class="lm2-campo" id="lm2-campo-senha">
+          <label class="lm2-campo__rotulo" for="lm2-senha">Senha</label>
+          <div class="lm2-campo__caixa">
+            <svg class="lm2-campo__icone" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <input class="lm2-campo__entrada" id="lm2-senha" name="senha" type="password" autocomplete="current-password" placeholder="••••••" aria-describedby="lm2-msg">
+            <button class="lm2-olhinho" id="lm2-mostrar" type="button" aria-pressed="false" aria-controls="lm2-senha" aria-label="Mostrar senha">
+              <svg class="lm2-olhinho__aberto" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="lm2-olhinho__fechado" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a9.6 9.6 0 0 0 5.4-1.6M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="lm2-linha">
+          <label class="lm2-check">
+            <input type="checkbox" id="lm2-lembrar" name="lembrar">
+            <span class="lm2-check__caixa" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="m3.5 8.5 3 3 6-7"/></svg></span>
+            Lembrar de mim
+          </label>
+          <button class="lm2-link" type="button" id="lm2-esqueci">Esqueci a senha</button>
+        </div>
+
+        <button class="lm2-botao" id="lm2-entrar" type="submit">
+          <span class="lm2-botao__texto">Entrar</span>
+          <span class="lm2-botao__giro" aria-hidden="true"></span>
+          <svg class="lm2-botao__ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+        </button>
+
+        <p class="lm2-msg" id="lm2-msg" role="status" aria-live="polite"></p>
+
+        <!-- BLOQUEIO (após 3 erros seguidos): duas “asas” cobrem o formulário,
+             que fica disabled por baixo, com a contagem regressiva por cima. -->
+        <div class="lm2-bloqueio" id="lm2-bloqueio" hidden>
+          <span class="lm2-bloqueio__asa lm2-bloqueio__asa--e" aria-hidden="true"></span>
+          <span class="lm2-bloqueio__asa lm2-bloqueio__asa--d" aria-hidden="true"></span>
+          <div class="lm2-bloqueio__conteudo">
+            <svg class="lm2-bloqueio__cadeado" viewBox="0 0 48 48" aria-hidden="true">
+              <path class="lm2-bloqueio__arco" d="M16 22v-5a8 8 0 0 1 16 0v5"/>
+              <rect x="9" y="21" width="30" height="22" rx="8"/>
+              <circle class="lm2-bloqueio__furo" cx="24" cy="30.5" r="3"/>
+              <path class="lm2-bloqueio__furo" d="M22.6 32h2.8l.8 5h-4.4z"/>
+            </svg>
+            <h2 class="lm2-bloqueio__titulo" id="lm2-bloqueio-titulo" tabindex="-1">A Oli trancou o ninho</h2>
+            <p class="lm2-bloqueio__texto">Foram muitas tentativas seguidas. Vamos dar uma pausa rapidinha para proteger sua conta.</p>
+            <p class="lm2-bloqueio__contagem">Tente de novo em <strong id="lm2-bloqueio-tempo">0:30</strong></p>
+            <span class="lm2-bloqueio__barra" aria-hidden="true"><span></span></span>
+            <a class="lm2-bloqueio__suporte" id="lm2-suporte" href="#">Falar com o suporte</a>
+          </div>
+        </div>
+      </form>
+
+      <p class="lm2-rodape">Ainda não tem conta? <a href="#" id="lm2-criar">Criar conta grátis</a></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

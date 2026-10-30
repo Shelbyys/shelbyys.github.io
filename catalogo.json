@@ -1,0 +1,194 @@
+[
+  {
+    "slug": "painel-orbita",
+    "nome": "Painel Órbita",
+    "categoria": "dashboards",
+    "preco": 79,
+    "versao": "1.1.0",
+    "resumo": "Dashboard de analytics para SaaS, escuro e claro, com gráficos SVG feitos à mão, feed ao vivo e zero dependências."
+  },
+  {
+    "slug": "painel-vidro",
+    "nome": "Painel Vidro",
+    "categoria": "dashboards",
+    "preco": 69,
+    "versao": "1.1.0",
+    "resumo": "Dashboard de casa inteligente em vidro fosco, com céu que muda com a hora, termostato arrastável e cenas. Zero dependências."
+  },
+  {
+    "slug": "painel-caixa",
+    "nome": "Painel Caixa",
+    "categoria": "dashboards",
+    "preco": 69,
+    "versao": "1.0.0",
+    "resumo": "Dashboard de fluxo de caixa com visual editorial claro: saldo animado, gráfico SVG, orçamento em anéis e lançamentos ao vivo."
+  },
+  {
+    "slug": "checkout-pix",
+    "nome": "Checkout Pix",
+    "categoria": "ecommerce",
+    "preco": 49,
+    "versao": "1.1.0",
+    "resumo": "Checkout brasileiro em 3 etapas: Pix com QR e contador, cartão 3D ao vivo, boleto, CPF validado e resumo com cupom."
+  },
+  {
+    "slug": "login-aurora",
+    "nome": "Login Aurora",
+    "categoria": "formularios",
+    "preco": 39,
+    "versao": "1.2.0",
+    "resumo": "Login e cadastro com aurora boreal animada, vidro fosco, validação em tempo real e botão que vira spinner e ✓."
+  },
+  {
+    "slug": "verificacao-otp",
+    "nome": "Verificação OTP",
+    "categoria": "formularios",
+    "preco": 29,
+    "versao": "1.2.0",
+    "resumo": "8 estilos de campo de código com animações próprias de aprovado, erro e bloqueio após 3 tentativas, com contagem."
+  },
+  {
+    "slug": "botoes-magneticos",
+    "nome": "Botões Magnéticos",
+    "categoria": "botoes",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "9 botões animados em HTML, CSS e JS puros: magnético, ripple, líquido, 3D, confete e segurar para confirmar. Copie com um clique."
+  },
+  {
+    "slug": "menus-animados",
+    "nome": "Menus Animados",
+    "categoria": "navegacao",
+    "preco": 39,
+    "versao": "1.0.0",
+    "resumo": "10 menus animados em HTML, CSS e JS puros: hambúrguer em cascata, holofote, mega menu que morfa, lateral, radial, cortina e mais."
+  },
+  {
+    "slug": "navegacao-fluida",
+    "nome": "Navegação Fluida",
+    "categoria": "navegacao",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "6 navegações animadas em HTML, CSS e JS puros: abas com mola, pílula gooey, dock, barra com recorte, navbar ilha e menu cheio."
+  },
+  {
+    "slug": "cards-holograficos",
+    "nome": "Cards Holográficos",
+    "categoria": "cards",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "Cartas colecionáveis em CSS/SVG com inclinação 3D, foil holográfico que muda com o ângulo, reflexo e verso com estatísticas."
+  },
+  {
+    "slug": "cracha-pendurado",
+    "nome": "Crachá Pendurado",
+    "categoria": "cards",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "Crachá de evento pendurado por uma fita com física real: arraste, solte, veja balançar e vire para ler a programação."
+  },
+  {
+    "slug": "landing-restaurante",
+    "nome": "Landing Restaurante",
+    "categoria": "landing",
+    "preco": 59,
+    "versao": "1.2.0",
+    "resumo": "Site de uma página para restaurante: cardápio com abas e filtros, galeria, depoimentos e reserva online com horários."
+  },
+  {
+    "slug": "landing-moda",
+    "nome": "Landing Moda",
+    "categoria": "landing",
+    "preco": 59,
+    "versao": "1.2.0",
+    "resumo": "Lançamento de coleção de moda: hero editorial com contagem do drop, grade com filtros, mini carrinho, quick view e lookbook."
+  },
+  {
+    "slug": "carrinho-animado",
+    "nome": "Carrinho Animado",
+    "categoria": "ecommerce",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "Microinterações de compra prontas: produto voando até o carrinho, contador que rola, gaveta com frete grátis, favoritos e desfazer."
+  },
+  {
+    "slug": "scroll-notebook",
+    "nome": "Scroll Notebook",
+    "categoria": "animacoes",
+    "preco": 39,
+    "versao": "1.1.0",
+    "resumo": "Página de lançamento guiada pela rolagem: um notebook 100% CSS abre em 3D, cresce e mostra seu app em 3 etapas animadas."
+  },
+  {
+    "slug": "carrossel-3d",
+    "nome": "Carrossel 3D",
+    "categoria": "componentes",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "3 carrosséis 3D em uma biblioteca leve: cobertura, anel e pilha, com arrastar com inércia, teclado, autoplay e zero dependências."
+  },
+  {
+    "slug": "busca-instantanea",
+    "nome": "Busca Instantânea",
+    "categoria": "componentes",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "Paleta de comandos ⌘K para apps web: busca difusa com destaque, grupos, teclado completo, subníveis e tema claro/escuro."
+  },
+  {
+    "slug": "loaders-essenciais",
+    "nome": "Loaders Essenciais",
+    "categoria": "loaders",
+    "preco": 0,
+    "versao": "1.1.0",
+    "resumo": "22 loaders em CSS puro, sem JavaScript: anel, blob líquido, moeda e cubo 3D, pêndulo de Newton, percentual e mais. Grátis."
+  },
+  {
+    "slug": "login-luminaria",
+    "nome": "Login Luminária",
+    "categoria": "formularios",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "Login num escritório noturno em SVG: clique ou puxe a luminária de braço para acender a luz e revelar o formulário."
+  },
+  {
+    "slug": "upload-arquivos",
+    "nome": "Upload de Arquivos",
+    "categoria": "formularios",
+    "preco": 29,
+    "versao": "1.2.0",
+    "resumo": "Kit de upload com arrastar e soltar, barra de progresso por arquivo, botão que vira anel e avatar com recorte. Sem dependências."
+  },
+  {
+    "slug": "contato-animado",
+    "nome": "Contato Animado",
+    "categoria": "formularios",
+    "preco": 29,
+    "versao": "1.1.0",
+    "resumo": "Seção \"Fale com a gente\" com formulário validado que se dobra num avião de papel e voa ao enviar. Sem dependências."
+  },
+  {
+    "slug": "login-mascote",
+    "nome": "Login Mascote",
+    "categoria": "formularios",
+    "preco": 29,
+    "versao": "1.2.0",
+    "resumo": "Tela de login com uma coruja em SVG que segue o que você digita, tampa os olhos na senha, espia e comemora o acesso."
+  },
+  {
+    "slug": "textos-cineticos",
+    "nome": "Textos Cinéticos",
+    "categoria": "animacoes",
+    "preco": 0,
+    "versao": "1.1.0",
+    "resumo": "18 efeitos de texto animado em HTML, CSS e JS puros: revelar, glitch, neon, trocar, contador e mais. Um data-atributo por efeito."
+  },
+  {
+    "slug": "icones-animados",
+    "nome": "Ícones Animados",
+    "categoria": "icones",
+    "preco": 0,
+    "versao": "1.2.0",
+    "resumo": "20 ícones SVG originais em traço com toque duotone e microanimações em CSS no hover, foco ou toque. Grátis e leves."
+  }
+]

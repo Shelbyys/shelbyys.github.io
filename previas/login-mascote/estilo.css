@@ -1,0 +1,648 @@
+/* =========================================================================
+   Login Mascote — estilos
+   Prefixo .lm2- em tudo. Cores, fontes e tamanhos nos tokens do :root.
+   ========================================================================= */
+
+:root {
+  /* Cores */
+  --lm2-fundo: #fff6ec;          /* fundo creme */
+  --lm2-cartao: #ffffff;
+  --lm2-tinta: #1d1b26;          /* texto principal */
+  --lm2-tinta-suave: #5d5a68;    /* texto secundário */
+  --lm2-coral: #ff6f59;          /* sinal / destaques */
+  --lm2-coral-texto: #c4402b;    /* coral escurecido para texto (contraste AA) */
+  --lm2-petroleo: #1f7a8c;       /* ação principal + corpo da coruja */
+  --lm2-petroleo-escuro: #145764;
+  --lm2-sucesso: #23905f;
+  --lm2-borda: #ece3d8;
+  --lm2-campo: #fffdf9;
+
+  /* Coruja */
+  --lm2-ave-corpo: var(--lm2-petroleo);
+  --lm2-ave-asa: #1a6b7b;
+  --lm2-ave-orelha: #17606e;
+  --lm2-ave-barriga: #fde6cc;
+  --lm2-ave-disco: #fffaf3;
+  --lm2-ave-iris: #ffb648;
+  --lm2-mascote: clamp(176px, 50vw, 228px);   /* largura da coruja */
+  --lm2-cadeado: #ff8a6f;        /* cadeado fofo que a Oli abraça no bloqueio */
+  --lm2-cadeado-arco: #ffb648;
+  --lm2-trava: #17606e;          /* “asas” que cobrem o formulário (texto branco: AA) */
+  --lm2-trava-escuro: #11505c;
+
+  /* Forma */
+  --lm2-raio: 28px;
+  --lm2-raio-campo: 14px;
+  --lm2-sombra: 0 30px 70px -28px rgba(29, 27, 38, .28), 0 2px 6px rgba(29, 27, 38, .05);
+
+  /* Tipografia */
+  --lm2-titulo: "Baloo 2", "Nunito", ui-rounded, system-ui, sans-serif;
+  --lm2-texto: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { overflow-x: hidden; }
+
+.lm2-corpo {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  background: var(--lm2-fundo);
+  color: var(--lm2-tinta);
+  font: 400 15px/1.5 var(--lm2-texto);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ===================== FUNDO ===================== */
+.lm2-fundo { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.lm2-forma { position: absolute; display: block; }
+.lm2-forma--1 {
+  width: 520px; height: 520px; left: -170px; top: -190px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 60%, rgba(255, 111, 89, .22), rgba(255, 111, 89, .06) 70%);
+}
+.lm2-forma--2 {
+  width: 600px; height: 600px; right: -220px; bottom: -260px;
+  border-radius: 46% 54% 42% 58%;
+  background: radial-gradient(circle at 40% 40%, rgba(31, 122, 140, .17), rgba(31, 122, 140, .04) 70%);
+}
+.lm2-forma--3 {
+  width: 120px; height: 120px; right: 14%; top: 14%;
+  border-radius: 50%;
+  border: 14px solid rgba(255, 182, 72, .35);
+}
+.lm2-forma--4 {
+  width: 84px; height: 84px; left: 12%; bottom: 14%;
+  border-radius: 24px;
+  background: rgba(255, 111, 89, .16);
+  transform: rotate(18deg);
+}
+.lm2-onda {
+  position: absolute; left: 4%; top: 58%;
+  width: 240px; height: 40px;
+  fill: none; stroke: rgba(31, 122, 140, .28); stroke-width: 4; stroke-linecap: round;
+  stroke-dasharray: 2 12;
+}
+
+/* ===================== TOPO ===================== */
+.lm2-topo {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 32px 0;
+}
+.lm2-logo {
+  display: inline-flex; align-items: center; gap: 9px;
+  color: var(--lm2-tinta); text-decoration: none;
+  font: 800 25px/1 var(--lm2-titulo);
+}
+.lm2-logo span { transform: translateY(2px); }
+.lm2-topo__ajuda {
+  color: var(--lm2-tinta-suave);
+  font-weight: 500; font-size: 14px;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 27, 38, .1);
+  background: rgba(255, 255, 255, .6);
+}
+.lm2-topo__ajuda:hover { color: var(--lm2-tinta); background: #fff; }
+
+/* ===================== PALCO ===================== */
+.lm2-palco {
+  position: relative; z-index: 1;
+  width: min(440px, 100% - 32px);
+  margin: auto;
+  padding: calc(var(--lm2-mascote) * .79) 0 36px;
+}
+
+/* ---------- Mascote ---------- */
+.lm2-mascote {
+  position: absolute; left: 50%; top: 4px;
+  width: var(--lm2-mascote);
+  translate: -50% 0;
+  z-index: 1;
+}
+.lm2-coruja {
+  display: block; width: 100%; height: auto; overflow: visible;
+  filter: drop-shadow(0 12px 16px rgba(29, 27, 38, .14));
+}
+
+/* Cores das peças. Os gradientes (volume) usam os mesmos tokens nos <stop> (.lm2-s-*). */
+.lm2-c-corpo   { fill: url(#lm2-g-corpo); }
+.lm2-s-corpo-luz    { stop-color: #3ca2b5; }
+.lm2-s-corpo        { stop-color: var(--lm2-ave-corpo); }
+.lm2-s-corpo-sombra { stop-color: #104b58; }
+.lm2-c-textura { fill: none; stroke: rgba(255, 255, 255, .14); stroke-width: 2.5; stroke-linecap: round; }
+.lm2-c-barriga { fill: url(#lm2-g-barriga); }
+.lm2-s-barriga-luz { stop-color: #fff6ea; }
+.lm2-s-barriga     { stop-color: var(--lm2-ave-barriga); }
+.lm2-c-barriga-luz { fill: #fff; opacity: .5; }
+.lm2-c-penas   { fill: none; stroke: #e6b98d; stroke-width: 2.6; stroke-linecap: round; opacity: .85; }
+.lm2-c-luz     { fill: #fff; opacity: .16; }
+.lm2-c-orelha  { fill: url(#lm2-g-orelha); }
+.lm2-s-orelha-luz { stop-color: #2b8c9e; }
+.lm2-s-orelha     { stop-color: var(--lm2-ave-orelha); }
+.lm2-c-orelha-pena { fill: none; stroke: rgba(255, 255, 255, .2); stroke-width: 2.5; stroke-linecap: round; }
+.lm2-c-disco   { fill: url(#lm2-g-disco); stroke: rgba(29, 27, 38, .07); stroke-width: 1.5; }
+.lm2-c-branco  { fill: #fff; }
+.lm2-c-aro     { fill: none; stroke: var(--lm2-tinta); stroke-width: 3; }
+.lm2-c-iris    { fill: url(#lm2-g-iris); }
+.lm2-s-iris    { stop-color: var(--lm2-ave-iris); }
+.lm2-c-pupila  { fill: var(--lm2-tinta); }
+.lm2-c-brilho  { fill: #fff; }
+.lm2-c-brilho--2 { opacity: .75; }
+.lm2-c-olho-sombra { fill: rgba(29, 27, 38, .09); }
+.lm2-c-bochecha { fill: url(#lm2-g-bochecha); opacity: .8; transition: opacity .3s; }
+.lm2-s-bochecha { stop-color: var(--lm2-coral); }
+.lm2-c-bico    { fill: url(#lm2-g-bico); }
+.lm2-c-bico-sombra { fill: rgba(29, 27, 38, .1); }
+.lm2-c-bico-luz { fill: #fff; opacity: .4; }
+.lm2-c-asa     { fill: url(#lm2-g-asa); }
+.lm2-s-asa-luz { stop-color: #2b8ea0; }
+.lm2-s-asa     { stop-color: var(--lm2-ave-asa); }
+.lm2-c-asa-luz { fill: none; stroke: rgba(255, 255, 255, .2); stroke-width: 2.5; stroke-linecap: round; }
+.lm2-c-asa-pena { fill: none; stroke: rgba(20, 87, 100, .9); stroke-width: 3; stroke-linecap: round; }
+
+/* Peças que giram/escalam em torno do próprio centro */
+.lm2-pulo, .lm2-sacode, .lm2-cabeca, .lm2-corpo-ave, .lm2-asa,
+.lm2-palpebra, .lm2-sobrancelha, .lm2-olho, .lm2-lagrima, .lm2-feliz {
+  transform-box: fill-box;
+}
+
+.lm2-corpo-ave { transform-origin: 50% 100%; animation: lm2-respira 3.8s ease-in-out infinite alternate; }
+@keyframes lm2-respira { to { transform: scale(1.012, 1.025); } }
+
+.lm2-cabeca { transform-origin: 50% 75%; }
+.lm2-sacode { transform-origin: 50% 85%; }
+.lm2-olho { transform-origin: 50% 50%; transition: opacity .2s, transform .25s; }
+
+/* Pálpebras: escala vertical a partir do topo (0 = aberto, 1 = fechado) */
+.lm2-palpebra {
+  fill: var(--lm2-ave-corpo);
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  transition: transform .13s ease-in;
+}
+.lm2-piscando .lm2-palpebra { transform: scaleY(1); }
+
+.lm2-sobrancelha {
+  fill: none; stroke: var(--lm2-tinta); stroke-width: 4.5; stroke-linecap: round;
+  transform-origin: 50% 50%;
+  transition: transform .3s ease;
+}
+
+.lm2-feliz {
+  fill: none; stroke: var(--lm2-tinta); stroke-width: 5.5; stroke-linecap: round;
+  opacity: 0;
+  transform-origin: 50% 100%;
+  transform: scaleY(.3);
+  transition: opacity .2s, transform .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.lm2-lagrima { fill: #7fd3e0; opacity: 0; transform-origin: 50% 0; }
+
+/* Asas — giram a partir do ombro (topo da asa) */
+.lm2-asa {
+  transform-origin: 50% 0;
+  transition: transform .5s cubic-bezier(.34, 1.45, .64, 1);
+}
+.lm2-asa--e { transform: rotate(16deg); }
+.lm2-asa--d { transform: rotate(-16deg); }
+
+/* ----- Estados do mascote (classe no <svg>) ----- */
+
+/* Tampando os olhos (senha focada) */
+.lm2-cobrindo .lm2-asa--e { transform: rotate(-140deg); }
+.lm2-cobrindo .lm2-asa--d { transform: rotate(140deg); }
+
+/* Espiando por uma fresta (senha visível) */
+.lm2-espiando .lm2-asa--e { transform: rotate(-140deg); }
+.lm2-espiando .lm2-asa--d { transform: rotate(98deg); }
+.lm2-espiando .lm2-olho--d .lm2-palpebra { transform: scaleY(.34); }
+.lm2-espiando .lm2-sobrancelha--d { transform: translateY(-4px) rotate(10deg); }
+
+/* Triste (erro) */
+.lm2-triste .lm2-palpebra { transform: scaleY(.42); }
+.lm2-triste .lm2-sobrancelha--e { transform: translateY(-3px) rotate(-16deg); }
+.lm2-triste .lm2-sobrancelha--d { transform: translateY(-3px) rotate(16deg); }
+.lm2-triste .lm2-c-bochecha { opacity: .3; }
+.lm2-triste .lm2-lagrima { animation: lm2-lagrima 1.6s ease-in .2s 1 both; }
+@keyframes lm2-lagrima {
+  0% { opacity: 0; transform: translateY(-6px) scale(.5); }
+  20% { opacity: 1; transform: translateY(0) scale(1); }
+  80% { opacity: 1; transform: translateY(16px) scale(1); }
+  100% { opacity: 0; transform: translateY(22px) scale(.8); }
+}
+.lm2-erro .lm2-sacode { animation: lm2-sacode .75s ease-in-out; }
+@keyframes lm2-sacode {
+  0%, 100% { transform: rotate(0); }
+  15% { transform: rotate(-10deg); }
+  35% { transform: rotate(9deg); }
+  55% { transform: rotate(-7deg); }
+  75% { transform: rotate(4deg); }
+}
+
+/* Feliz (sucesso) */
+.lm2-feliz-modo .lm2-olho { opacity: 0; transform: scale(.7); }
+.lm2-feliz-modo .lm2-feliz { opacity: 1; transform: scaleY(1); }
+.lm2-feliz-modo .lm2-c-bochecha { opacity: 1; }
+.lm2-feliz-modo .lm2-sobrancelha--e { transform: translateY(-6px) rotate(-6deg); }
+.lm2-feliz-modo .lm2-sobrancelha--d { transform: translateY(-6px) rotate(6deg); }
+.lm2-feliz-modo .lm2-pulo { transform-origin: 50% 100%; animation: lm2-pula 1s cubic-bezier(.3, .7, .4, 1) 2; }
+.lm2-feliz-modo .lm2-asa--e { animation: lm2-bate-e .5s ease-in-out 4; }
+.lm2-feliz-modo .lm2-asa--d { animation: lm2-bate-d .5s ease-in-out 4; }
+@keyframes lm2-pula {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  12% { transform: translateY(0) scale(1.04, .94); }
+  40% { transform: translateY(-30px) scale(.97, 1.04); }
+  70% { transform: translateY(0) scale(1.03, .96); }
+}
+@keyframes lm2-bate-e { 50% { transform: rotate(-70deg); } }
+@keyframes lm2-bate-d { 50% { transform: rotate(70deg); } }
+
+/* Confetes */
+.lm2-confetes { position: absolute; inset: 0; pointer-events: none; z-index: 3; }
+.lm2-confete {
+  position: absolute; left: 50%; top: 42%;
+  width: 8px; height: 12px;
+  border-radius: 2px;
+  background: var(--c);
+  opacity: 0;
+  animation: lm2-confete var(--d, 1.4s) cubic-bezier(.15, .7, .3, 1) forwards;
+}
+.lm2-confete--bola { width: 9px; height: 9px; border-radius: 50%; }
+@keyframes lm2-confete {
+  0%   { opacity: 1; transform: translate(-50%, 0) rotate(0) scale(.6); }
+  55%  { opacity: 1; transform: translate(calc(-50% + var(--x)), var(--y)) rotate(var(--r)) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--x) * 1.15), calc(var(--y) + 110px)) rotate(calc(var(--r) * 2)) scale(1); }
+}
+
+/* ===================== CARTÃO ===================== */
+.lm2-cartao {
+  position: relative; z-index: 2;
+  padding: 34px 36px 26px;
+  border-radius: var(--lm2-raio);
+  background: var(--lm2-cartao);
+  border: 1px solid rgba(29, 27, 38, .06);
+  box-shadow: var(--lm2-sombra);
+}
+
+.lm2-pes {
+  position: absolute; left: 50%; top: -9px;
+  width: calc(var(--lm2-mascote) * .48);
+  translate: -50% 0;
+  overflow: visible;
+}
+.lm2-pes__pe { fill: url(#lm2-g-pe); stroke: #d9503a; stroke-width: 1.5; }
+.lm2-pes__unha { fill: none; stroke: #b8432f; stroke-width: 2.2; stroke-linecap: round; }
+
+.lm2-titulo {
+  margin: 4px 0 2px;
+  font: 800 31px/1.1 var(--lm2-titulo);
+  letter-spacing: -.01em;
+  text-align: center;
+}
+.lm2-sub {
+  margin: 0 0 18px;
+  text-align: center;
+  color: var(--lm2-tinta-suave);
+  font-size: 14.5px;
+}
+
+.lm2-dica {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 10px 10px 12px;
+  margin-bottom: 18px;
+  border: 1.5px dashed rgba(255, 111, 89, .45);
+  border-radius: var(--lm2-raio-campo);
+  background: #fff5ea;
+  color: var(--lm2-coral-texto);
+  font-size: 13px;
+}
+.lm2-dica__icone { display: grid; flex: none; }
+.lm2-dica__texto { margin: 0; flex: 1; color: var(--lm2-tinta); line-height: 1.55; min-width: 0; }
+.lm2-dica__texto strong { font-weight: 700; color: var(--lm2-coral-texto); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.lm2-oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.lm2-dica code {
+  font: 600 12.5px/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--lm2-tinta);
+  white-space: nowrap;
+}
+.lm2-dica__usar {
+  flex: none;
+  padding: 7px 11px;
+  border: 0; border-radius: 10px;
+  background: var(--lm2-coral);
+  color: var(--lm2-tinta);
+  font: 700 12.5px/1 var(--lm2-texto);
+  cursor: pointer;
+}
+.lm2-dica__usar:hover { background: #ff846f; }
+
+/* ---------- Campos ---------- */
+.lm2-form { display: flex; flex-direction: column; gap: 14px; }
+.lm2-campo { display: flex; flex-direction: column; gap: 6px; }
+.lm2-campo__rotulo { font-weight: 600; font-size: 13.5px; }
+.lm2-campo__caixa { position: relative; }
+.lm2-campo__icone {
+  position: absolute; left: 15px; top: 50%;
+  width: 20px; height: 20px;
+  translate: 0 -50%;
+  fill: none; stroke: #a19caa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  pointer-events: none;
+  transition: stroke .2s;
+}
+.lm2-campo__entrada {
+  width: 100%; height: 52px;
+  padding: 0 14px 0 46px;
+  border: 2px solid var(--lm2-borda);
+  border-radius: var(--lm2-raio-campo);
+  background: var(--lm2-campo);
+  color: var(--lm2-tinta);
+  font: 500 15.5px/1 var(--lm2-texto);
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+#lm2-senha { padding-right: 52px; }
+.lm2-campo__entrada::placeholder { color: #b3adb9; }
+.lm2-campo__entrada:hover { border-color: #ddd2c4; }
+.lm2-campo__entrada:focus {
+  outline: none;
+  border-color: var(--lm2-petroleo);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(31, 122, 140, .16);
+}
+.lm2-campo__caixa:focus-within .lm2-campo__icone { stroke: var(--lm2-petroleo); }
+
+.lm2-campo--erro .lm2-campo__entrada { border-color: var(--lm2-coral); background: #fff6f3; }
+.lm2-campo--erro .lm2-campo__icone { stroke: var(--lm2-coral); }
+.lm2-tremer { animation: lm2-treme .45s cubic-bezier(.36, .07, .19, .97); }
+@keyframes lm2-treme {
+  20%, 80% { transform: translateX(-3px); }
+  30%, 50%, 70% { transform: translateX(6px); }
+  40%, 60% { transform: translateX(-6px); }
+}
+
+/* Botão mostrar/ocultar senha */
+.lm2-olhinho {
+  position: absolute; right: 6px; top: 50%;
+  translate: 0 -50%;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 0; border-radius: 10px;
+  background: transparent;
+  color: #8f8a98;
+  cursor: pointer;
+}
+.lm2-olhinho:hover { background: #f6efe6; color: var(--lm2-tinta); }
+.lm2-olhinho svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.lm2-olhinho__fechado { display: none; }
+.lm2-olhinho[aria-pressed="true"] { color: var(--lm2-petroleo); }
+.lm2-olhinho[aria-pressed="true"] .lm2-olhinho__aberto { display: none; }
+.lm2-olhinho[aria-pressed="true"] .lm2-olhinho__fechado { display: block; }
+
+/* Linha lembrar / esqueci */
+.lm2-linha { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lm2-check {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 9px;
+  font-size: 14px; font-weight: 500;
+  cursor: pointer;
+}
+.lm2-check input { position: absolute; opacity: 0; width: 22px; height: 22px; margin: 0; cursor: pointer; }
+.lm2-check__caixa {
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  border: 2px solid #d9cfc2;
+  border-radius: 7px;
+  background: #fff;
+  transition: background .2s, border-color .2s;
+}
+.lm2-check__caixa svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset .25s ease; }
+.lm2-check input:checked + .lm2-check__caixa { background: var(--lm2-petroleo); border-color: var(--lm2-petroleo); }
+.lm2-check input:checked + .lm2-check__caixa svg { stroke-dashoffset: 0; }
+.lm2-check input:focus-visible + .lm2-check__caixa { outline: 3px solid rgba(31, 122, 140, .45); outline-offset: 2px; }
+
+.lm2-link {
+  padding: 2px 0;
+  border: 0; background: none;
+  color: var(--lm2-petroleo);
+  font: 600 14px/1.3 var(--lm2-texto);
+  cursor: pointer;
+  text-decoration: underline; text-decoration-color: rgba(31, 122, 140, .35); text-underline-offset: 3px;
+}
+.lm2-link:hover { text-decoration-color: currentColor; }
+
+/* ---------- Botão Entrar ---------- */
+.lm2-botao {
+  position: relative;
+  height: 54px;
+  margin-top: 6px;
+  border: 0; border-radius: 16px;
+  background: var(--lm2-petroleo);
+  color: #fff;
+  font: 800 18px/1 var(--lm2-titulo);
+  letter-spacing: .01em;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--lm2-petroleo-escuro), 0 14px 26px -12px rgba(31, 122, 140, .6);
+  transition: transform .12s, box-shadow .12s, background .25s;
+}
+.lm2-botao:hover { background: #22879b; }
+.lm2-botao:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--lm2-petroleo-escuro), 0 8px 18px -12px rgba(31, 122, 140, .6); }
+.lm2-botao__texto { display: inline-block; padding-top: 3px; transition: opacity .2s, transform .2s; }
+.lm2-botao__giro, .lm2-botao__ok {
+  position: absolute; left: 50%; top: 50%;
+  opacity: 0;
+  transition: opacity .2s, transform .3s;
+}
+.lm2-botao__giro {
+  width: 24px; height: 24px; margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, .35);
+  border-top-color: #fff;
+}
+.lm2-botao__ok {
+  width: 28px; height: 28px; margin: -14px 0 0 -14px;
+  fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 24; stroke-dashoffset: 24;
+}
+.lm2-botao[data-estado="carregando"] { cursor: progress; }
+.lm2-botao[data-estado="carregando"] .lm2-botao__texto { opacity: 0; transform: scale(.8); }
+.lm2-botao[data-estado="carregando"] .lm2-botao__giro { opacity: 1; animation: lm2-gira .7s linear infinite; }
+.lm2-botao[data-estado="sucesso"] { background: var(--lm2-sucesso); box-shadow: 0 5px 0 #17694a, 0 14px 26px -12px rgba(35, 144, 95, .6); }
+.lm2-botao[data-estado="sucesso"] .lm2-botao__texto { opacity: 0; }
+.lm2-botao[data-estado="sucesso"] .lm2-botao__ok { opacity: 1; stroke-dashoffset: 0; transition: opacity .2s, stroke-dashoffset .45s ease .1s; }
+@keyframes lm2-gira { to { transform: rotate(360deg); } }
+
+.lm2-msg {
+  min-height: 21px;
+  margin: 0;
+  text-align: center;
+  font-size: 14px; font-weight: 600;
+}
+.lm2-msg[data-tipo="erro"] { color: var(--lm2-coral-texto); }
+.lm2-msg[data-tipo="ok"] { color: var(--lm2-sucesso); }
+.lm2-msg[data-tipo="info"] { color: var(--lm2-petroleo-escuro); }
+
+.lm2-rodape {
+  margin: 10px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #f1ebe3;
+  text-align: center;
+  font-size: 14px;
+  color: var(--lm2-tinta-suave);
+}
+.lm2-rodape a { color: var(--lm2-petroleo); font-weight: 600; }
+
+/* Foco visível consistente */
+.lm2-botao:focus-visible, .lm2-link:focus-visible, .lm2-olhinho:focus-visible,
+.lm2-dica__usar:focus-visible, .lm2-rodape a:focus-visible, .lm2-logo:focus-visible, .lm2-topo__ajuda:focus-visible {
+  outline: 3px solid var(--lm2-petroleo);
+  outline-offset: 3px;
+}
+
+/* ===================== ESTADOS DE VALIDAÇÃO ===================== */
+
+/* APROVADO: o cartão respira fundo (enche e solta) junto com o pulo da Oli */
+.lm2-cartao.lm2-respira { transform-origin: 50% 100%; animation: lm2-respira-cartao 1.3s cubic-bezier(.3, .7, .4, 1); }
+@keyframes lm2-respira-cartao {
+  0%, 100% { transform: none; }
+  22% { transform: scale(1.028, .985) translateY(2px); }
+  48% { transform: scale(.988, 1.018) translateY(-5px); }
+  72% { transform: scale(1.008, .996); }
+}
+
+/* BLOQUEIO na coruja: segura o cadeado fofo junto ao peito, olhar sereno para baixo */
+.lm2-cadeado-ave {
+  transform-box: fill-box; transform-origin: 50% 100%;
+  opacity: 0; transform: translateY(16px) scale(.5);
+  transition: opacity .25s, transform .55s cubic-bezier(.34, 1.56, .64, 1);
+}
+.lm2-cadeado-ave__corpo { fill: var(--lm2-cadeado); stroke: #e0563f; stroke-width: 1.5; }
+.lm2-cadeado-ave__luz { fill: #fff; opacity: .45; }
+.lm2-cadeado-ave__arco { fill: none; stroke: var(--lm2-cadeado-arco); stroke-width: 5; stroke-linecap: round; transform-box: fill-box; transform-origin: 100% 100%; }
+.lm2-cadeado-ave__olho { fill: var(--lm2-tinta); }
+.lm2-cadeado-ave__boca { fill: none; stroke: var(--lm2-tinta); stroke-width: 1.8; stroke-linecap: round; }
+.lm2-cadeado-ave__bochecha { fill: #ffd1c4; }
+
+.lm2-guardando .lm2-cadeado-ave, .lm2-destravando .lm2-cadeado-ave { opacity: 1; transform: none; transition-delay: .15s; }
+.lm2-guardando .lm2-cadeado-ave__arco { animation: lm2-arco-fecha .4s cubic-bezier(.34, 1.56, .64, 1) .6s both; }
+/* A Oli se levanta um pouco para mostrar o cadeado junto ao peito (o bico fica atrás dele) */
+.lm2-pulo { transition: transform .5s cubic-bezier(.34, 1.56, .64, 1); }
+.lm2-guardando .lm2-pulo, .lm2-destravando .lm2-pulo { transform: translateY(-10px); }
+.lm2-guardando .lm2-asa--e { transform: rotate(-30deg); }
+.lm2-guardando .lm2-asa--d { transform: rotate(30deg); }
+.lm2-guardando .lm2-palpebra { transform: scaleY(.22); transition-duration: .5s; }
+.lm2-guardando .lm2-sobrancelha--e { transform: translateY(-2px) rotate(-3deg); }
+.lm2-guardando .lm2-sobrancelha--d { transform: translateY(-2px) rotate(3deg); }
+.lm2-guardando .lm2-c-bochecha { opacity: .5; }
+@keyframes lm2-arco-fecha { from { transform: translateY(-7px); } to { transform: none; } }
+
+/* DESTRAVANDO: o arco salta, as asas batem de alegria e o cadeado cai */
+.lm2-destravando .lm2-cadeado-ave__arco { transform: translateY(-6px) rotate(-24deg); transition: transform .35s cubic-bezier(.34, 1.56, .64, 1); }
+.lm2-destravando .lm2-cadeado-ave { animation: lm2-cadeado-cai .55s ease-in .45s forwards; }
+.lm2-destravando .lm2-asa--e { animation: lm2-bate-e .4s ease-in-out .3s 2; }
+.lm2-destravando .lm2-asa--d { animation: lm2-bate-d .4s ease-in-out .3s 2; }
+.lm2-destravando .lm2-sobrancelha--e { transform: translateY(-5px) rotate(-6deg); }
+.lm2-destravando .lm2-sobrancelha--d { transform: translateY(-5px) rotate(6deg); }
+@keyframes lm2-cadeado-cai { to { opacity: 0; transform: translateY(30px) rotate(14deg) scale(.8); } }
+
+/* BLOQUEIO no cartão: duas asas fecham sobre o formulário */
+.lm2-form { position: relative; }
+.lm2-bloqueio {
+  position: absolute; inset: -10px -12px -8px;
+  z-index: 3;
+  display: grid; place-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.lm2-bloqueio[hidden] { display: none; }
+.lm2-bloqueio__asa {
+  position: absolute; top: 0; bottom: 0; width: 52%;
+  background:
+    radial-gradient(circle at 50% 0, transparent 8px, rgba(255, 255, 255, .09) 9px 10.5px, transparent 11.5px) 0 0 / 24px 15px,
+    linear-gradient(160deg, var(--lm2-trava), var(--lm2-trava-escuro));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15);
+  animation: lm2-asa-fecha-e .6s cubic-bezier(.3, 1.3, .5, 1) both;
+}
+.lm2-bloqueio__asa--e { left: 0; border-radius: 34px 6px 6px 20px; }
+.lm2-bloqueio__asa--d { right: 0; border-radius: 6px 34px 20px 6px; animation-name: lm2-asa-fecha-d; }
+@keyframes lm2-asa-fecha-e { from { transform: translateX(-105%) rotate(-8deg); } to { transform: none; } }
+@keyframes lm2-asa-fecha-d { from { transform: translateX(105%) rotate(8deg); } to { transform: none; } }
+
+.lm2-bloqueio__conteudo {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 16px 20px;
+  text-align: center;
+  color: #fff;
+  animation: lm2-conteudo-surge .4s ease .45s both;
+}
+@keyframes lm2-conteudo-surge { from { opacity: 0; transform: translateY(6px); } }
+.lm2-bloqueio__cadeado { width: 46px; height: 46px; margin-bottom: 2px; overflow: visible; }
+.lm2-bloqueio__cadeado rect { fill: var(--lm2-cadeado); }
+.lm2-bloqueio__arco { fill: none; stroke: var(--lm2-cadeado-arco); stroke-width: 4.5; stroke-linecap: round; transform-box: fill-box; transform-origin: 100% 100%; animation: lm2-arco-fecha .4s cubic-bezier(.34, 1.56, .64, 1) .75s both; }
+.lm2-bloqueio__furo { fill: var(--lm2-trava-escuro); }
+.lm2-bloqueio__titulo { margin: 0; font: 800 23px/1.15 var(--lm2-titulo); color: #fff; }
+.lm2-bloqueio__titulo:focus { outline: none; }
+.lm2-bloqueio__titulo:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 6px; }
+.lm2-bloqueio__texto { margin: 0 0 4px; max-width: 30ch; font-size: 13.5px; line-height: 1.45; color: rgba(255, 255, 255, .9); }
+.lm2-bloqueio__contagem { margin: 0; font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, .92); }
+.lm2-bloqueio__contagem strong {
+  display: inline-block; min-width: 2.5em; padding: 2px 8px; margin-left: 2px;
+  border-radius: 999px; background: rgba(255, 255, 255, .16);
+  font: 800 18px/1.2 var(--lm2-titulo); color: #fff; font-variant-numeric: tabular-nums;
+}
+.lm2-bloqueio__barra { display: block; width: min(200px, 70%); height: 5px; margin: 8px 0 6px; border-radius: 5px; background: rgba(255, 255, 255, .18); overflow: hidden; }
+.lm2-bloqueio__barra span {
+  display: block; height: 100%; border-radius: inherit; background: var(--lm2-cadeado-arco);
+  transform-origin: left; transform: scaleX(var(--lm2-resta, 1)); transition: transform .3s linear;
+}
+.lm2-bloqueio__suporte { color: #fff; font-weight: 600; font-size: 13.5px; text-underline-offset: 3px; }
+.lm2-bloqueio__suporte:focus-visible { outline: 3px solid #fff; outline-offset: 3px; border-radius: 4px; }
+
+/* Abrindo: o arco salta e as asas se recolhem para os lados */
+.lm2-bloqueio--abrindo .lm2-bloqueio__arco { animation: none; transform: translateY(-5px) rotate(-22deg); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1); }
+.lm2-bloqueio--abrindo .lm2-bloqueio__conteudo { animation: lm2-conteudo-some .3s ease .3s forwards; }
+.lm2-bloqueio--abrindo .lm2-bloqueio__asa--e { animation: lm2-asa-abre-e .5s ease-in .45s forwards; }
+.lm2-bloqueio--abrindo .lm2-bloqueio__asa--d { animation: lm2-asa-abre-d .5s ease-in .45s forwards; }
+@keyframes lm2-conteudo-some { to { opacity: 0; transform: scale(.94); } }
+@keyframes lm2-asa-abre-e { from { transform: none; } to { transform: translateX(-105%) rotate(-8deg); } }
+@keyframes lm2-asa-abre-d { from { transform: none; } to { transform: translateX(105%) rotate(8deg); } }
+
+/* Controles travados por baixo das asas */
+.lm2-campo__entrada:disabled, .lm2-botao:disabled, .lm2-olhinho:disabled, .lm2-link:disabled, .lm2-check input:disabled { cursor: not-allowed; }
+.lm2-dica__usar:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ===================== RESPONSIVO ===================== */
+@media (max-width: 520px) {
+  .lm2-topo { padding: 16px 18px 0; }
+  .lm2-logo { font-size: 22px; }
+  .lm2-topo__ajuda { font-size: 13px; padding: 7px 12px; }
+  .lm2-palco { width: calc(100% - 24px); padding-bottom: 24px; }
+  .lm2-cartao { padding: 28px 20px 22px; border-radius: 24px; }
+  .lm2-titulo { font-size: 27px; }
+  .lm2-sub { font-size: 14px; margin-bottom: 16px; }
+  .lm2-dica code { font-size: 11.5px; display: inline-block; margin: 2px 4px 0 0; }
+  .lm2-dica__sep { display: none; }
+  .lm2-forma--3, .lm2-onda { display: none; }
+}
+
+/* ===================== MOVIMENTO REDUZIDO ===================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;          /* bloqueio e trocas já aparecem no estado final */
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important;
+  }
+  .lm2-corpo-ave { animation: none; }
+  .lm2-botao[data-estado="carregando"] .lm2-botao__giro { animation: lm2-gira 1.4s linear infinite !important; }
+}

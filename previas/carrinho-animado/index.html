@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrinho Animado — microinterações de compra</title>
+  <meta name="description" content="Mini-loja de demonstração com as microinterações de compra: produto voando até o carrinho, contador rolando, gaveta com frete grátis, favoritos com partículas e desfazer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <a class="ca-pular" href="#ca-produtos">Pular para os produtos</a>
+
+  <!-- ========== Faixa de aviso ========== -->
+  <div class="ca-faixa">
+    <span>Frete grátis acima de <strong>R$ 299</strong></span>
+    <span class="ca-faixa__ponto" aria-hidden="true"></span>
+    <span>Troca grátis em 30 dias</span>
+  </div>
+
+  <!-- ========== Topo da loja ========== -->
+  <header class="ca-topo">
+    <div class="ca-topo__dentro">
+      <a class="ca-logo" href="#ca-produtos" aria-label="Vértice — início">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="24" height="24" rx="8" fill="#ff5c28"/><path d="M10 11l6 11 6-11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Vértice</span>
+      </a>
+      <nav class="ca-nav" aria-label="Categorias">
+        <a href="#ca-produtos">Novidades</a>
+        <a href="#ca-produtos">Esporte</a>
+        <a href="#ca-produtos">Acessórios</a>
+        <a href="#ca-produtos">Tecnologia</a>
+      </nav>
+      <div class="ca-topo__acoes">
+        <button class="ca-icone-btn ca-fav-topo" type="button" aria-label="Ver favoritos">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          <span class="ca-badge ca-badge--suave" aria-hidden="true"><span class="ca-rolo"></span></span>
+        </button>
+        <button class="ca-carrinho-btn" type="button" aria-haspopup="dialog" aria-controls="ca-gaveta" aria-expanded="false" aria-label="Abrir carrinho">
+          <span class="ca-carrinho-btn__icone">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 11a2 2 0 0 1-2 1.8h-7A2 2 0 0 1 6.5 19z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>
+          </span>
+          <span class="ca-carrinho-btn__texto">Carrinho</span>
+          <span class="ca-badge" aria-hidden="true"><span class="ca-rolo"></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="ca-loja" id="ca-produtos" tabindex="-1">
+    <div class="ca-cabecalho">
+      <div>
+        <span class="ca-olho">Coleção Movimento · Outono</span>
+        <h1 class="ca-titulo">Feito para rua, treino e viagem.</h1>
+      </div>
+      <div class="ca-filtros" role="group" aria-label="Filtrar produtos">
+        <button class="ca-chip" type="button" data-filtro="todos" aria-pressed="true">Todos</button>
+        <button class="ca-chip" type="button" data-filtro="esporte" aria-pressed="false">Esporte</button>
+        <button class="ca-chip" type="button" data-filtro="acessorios" aria-pressed="false">Acessórios</button>
+        <button class="ca-chip" type="button" data-filtro="tecnologia" aria-pressed="false">Tecnologia</button>
+        <button class="ca-chip" type="button" data-filtro="favoritos" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          Favoritos
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== Grade de produtos ==========
+         Cada cartão traz os dados no próprio HTML (data-id, data-nome, data-preco em centavos).
+         O JS lê daqui: não há catálogo duplicado. As fotos ficam em img/ (1600×1200, 4:3);
+         --ca-cor é a cor que aparece atrás da foto enquanto carrega e na miniatura da gaveta. -->
+    <div class="ca-grade">
+
+      <!-- Tênis -->
+      <article class="ca-produto" data-id="tenis" data-nome="Tênis Aero Run" data-preco="49990" data-categoria="esporte" style="--ca-cor:#2b5fd9">
+        <div class="ca-produto__midia">
+          <span class="ca-selo ca-selo--sinal">−17%</span>
+          <button class="ca-fav" type="button" data-acao="favoritar" aria-pressed="false" aria-label="Favoritar Tênis Aero Run">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          </button>
+          <img class="ca-produto__arte" src="img/tenis.jpg" width="1600" height="1200" alt="Tênis de corrida branco com detalhes laranja sobre fundo azul" decoding="async" fetchpriority="high" draggable="false">
+        </div>
+        <div class="ca-produto__corpo">
+          <span class="ca-produto__cat">Corrida</span>
+          <h2 class="ca-produto__nome">Tênis Aero Run</h2>
+          <p class="ca-produto__nota"><span aria-hidden="true">★</span> 4,8 <span class="ca-produto__aval">· 212 avaliações</span></p>
+          <div class="ca-produto__rodape">
+            <p class="ca-produto__precos"><strong>R$ 499,90</strong> <s>R$ 599,90</s></p>
+            <div class="ca-acao" data-estado="vazio">
+              <button class="ca-add" type="button" data-acao="adicionar" aria-label="Adicionar Tênis Aero Run ao carrinho">
+                <span class="ca-add__rotulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar</span>
+                <span class="ca-add__rotulo ca-add__rotulo--ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Adicionado</span>
+              </button>
+              <div class="ca-qtd" role="group" aria-label="Quantidade de Tênis Aero Run">
+                <button class="ca-qtd__btn" type="button" data-acao="menos" aria-label="Diminuir quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+                <output class="ca-qtd__n ca-rolo" aria-live="polite"></output>
+                <button class="ca-qtd__btn" type="button" data-acao="mais" aria-label="Aumentar quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Mochila -->
+      <article class="ca-produto" data-id="mochila" data-nome="Mochila Urbana 22L" data-preco="34990" data-categoria="acessorios" style="--ca-cor:#cfe0d3">
+        <div class="ca-produto__midia">
+          <span class="ca-selo">Novo</span>
+          <button class="ca-fav" type="button" data-acao="favoritar" aria-pressed="false" aria-label="Favoritar Mochila Urbana 22L">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          </button>
+          <img class="ca-produto__arte" src="img/mochila.jpg" width="1600" height="1200" alt="Mochila verde-musgo com fivelas amarelas apoiada numa pedra" decoding="async" loading="lazy" draggable="false">
+        </div>
+        <div class="ca-produto__corpo">
+          <span class="ca-produto__cat">Viagem</span>
+          <h2 class="ca-produto__nome">Mochila Urbana 22L</h2>
+          <p class="ca-produto__nota"><span aria-hidden="true">★</span> 4,9 <span class="ca-produto__aval">· 98 avaliações</span></p>
+          <div class="ca-produto__rodape">
+            <p class="ca-produto__precos"><strong>R$ 349,90</strong></p>
+            <div class="ca-acao" data-estado="vazio">
+              <button class="ca-add" type="button" data-acao="adicionar" aria-label="Adicionar Mochila Urbana 22L ao carrinho">
+                <span class="ca-add__rotulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar</span>
+                <span class="ca-add__rotulo ca-add__rotulo--ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Adicionado</span>
+              </button>
+              <div class="ca-qtd" role="group" aria-label="Quantidade de Mochila Urbana 22L">
+                <button class="ca-qtd__btn" type="button" data-acao="menos" aria-label="Diminuir quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+                <output class="ca-qtd__n ca-rolo" aria-live="polite"></output>
+                <button class="ca-qtd__btn" type="button" data-acao="mais" aria-label="Aumentar quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Garrafa -->
+      <article class="ca-produto" data-id="garrafa" data-nome="Garrafa Térmica 750 ml" data-preco="12990" data-categoria="esporte" style="--ca-cor:#2a2b31">
+        <div class="ca-produto__midia">
+          <button class="ca-fav" type="button" data-acao="favoritar" aria-pressed="false" aria-label="Favoritar Garrafa Térmica 750 ml">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          </button>
+          <img class="ca-produto__arte" src="img/garrafa.jpg" width="1600" height="1200" alt="Duas garrafas térmicas esportivas, uma vermelha e uma azul, sobre superfície escura" decoding="async" loading="lazy" draggable="false">
+        </div>
+        <div class="ca-produto__corpo">
+          <span class="ca-produto__cat">Hidratação</span>
+          <h2 class="ca-produto__nome">Garrafa Térmica 750 ml</h2>
+          <p class="ca-produto__nota"><span aria-hidden="true">★</span> 4,7 <span class="ca-produto__aval">· 341 avaliações</span></p>
+          <div class="ca-produto__rodape">
+            <p class="ca-produto__precos"><strong>R$ 129,90</strong></p>
+            <div class="ca-acao" data-estado="vazio">
+              <button class="ca-add" type="button" data-acao="adicionar" aria-label="Adicionar Garrafa Térmica 750 ml ao carrinho">
+                <span class="ca-add__rotulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar</span>
+                <span class="ca-add__rotulo ca-add__rotulo--ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Adicionado</span>
+              </button>
+              <div class="ca-qtd" role="group" aria-label="Quantidade de Garrafa Térmica 750 ml">
+                <button class="ca-qtd__btn" type="button" data-acao="menos" aria-label="Diminuir quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+                <output class="ca-qtd__n ca-rolo" aria-live="polite"></output>
+                <button class="ca-qtd__btn" type="button" data-acao="mais" aria-label="Aumentar quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Fone -->
+      <!-- data-estoque (opcional): limite de unidades. Acima dele aparece o aviso "sem estoque". -->
+      <article class="ca-produto" data-id="fone" data-nome="Fone Over-ear Silêncio" data-preco="129990" data-categoria="tecnologia" data-estoque="2" style="--ca-cor:#ebe8e3">
+        <div class="ca-produto__midia">
+          <span class="ca-selo">Mais vendido</span>
+          <button class="ca-fav" type="button" data-acao="favoritar" aria-pressed="false" aria-label="Favoritar Fone Over-ear Silêncio">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          </button>
+          <img class="ca-produto__arte" src="img/fone.jpg" width="1600" height="1200" alt="Fone de ouvido over-ear branco com sombra suave numa parede clara" decoding="async" loading="lazy" draggable="false">
+        </div>
+        <div class="ca-produto__corpo">
+          <span class="ca-produto__cat">Áudio</span>
+          <h2 class="ca-produto__nome">Fone Over-ear Silêncio</h2>
+          <p class="ca-produto__nota"><span aria-hidden="true">★</span> 4,9 <span class="ca-produto__aval">· 527 avaliações</span></p>
+          <div class="ca-produto__rodape">
+            <p class="ca-produto__precos"><strong>R$ 1.299,90</strong></p>
+            <div class="ca-acao" data-estado="vazio">
+              <button class="ca-add" type="button" data-acao="adicionar" aria-label="Adicionar Fone Over-ear Silêncio ao carrinho">
+                <span class="ca-add__rotulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar</span>
+                <span class="ca-add__rotulo ca-add__rotulo--ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Adicionado</span>
+              </button>
+              <div class="ca-qtd" role="group" aria-label="Quantidade de Fone Over-ear Silêncio">
+                <button class="ca-qtd__btn" type="button" data-acao="menos" aria-label="Diminuir quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+                <output class="ca-qtd__n ca-rolo" aria-live="polite"></output>
+                <button class="ca-qtd__btn" type="button" data-acao="mais" aria-label="Aumentar quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Boné -->
+      <article class="ca-produto" data-id="bone" data-nome="Boné Aba Curva" data-preco="8990" data-categoria="acessorios" style="--ca-cor:#d7dbdf">
+        <div class="ca-produto__midia">
+          <button class="ca-fav" type="button" data-acao="favoritar" aria-pressed="false" aria-label="Favoritar Boné Aba Curva">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          </button>
+          <img class="ca-produto__arte" src="img/bone.jpg" width="1600" height="1200" alt="Boné bege de aba curva pendurado num banco de madeira" decoding="async" loading="lazy" draggable="false">
+        </div>
+        <div class="ca-produto__corpo">
+          <span class="ca-produto__cat">Acessórios</span>
+          <h2 class="ca-produto__nome">Boné Aba Curva</h2>
+          <p class="ca-produto__nota"><span aria-hidden="true">★</span> 4,6 <span class="ca-produto__aval">· 76 avaliações</span></p>
+          <div class="ca-produto__rodape">
+            <p class="ca-produto__precos"><strong>R$ 89,90</strong></p>
+            <div class="ca-acao" data-estado="vazio">
+              <button class="ca-add" type="button" data-acao="adicionar" aria-label="Adicionar Boné Aba Curva ao carrinho">
+                <span class="ca-add__rotulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar</span>
+                <span class="ca-add__rotulo ca-add__rotulo--ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Adicionado</span>
+              </button>
+              <div class="ca-qtd" role="group" aria-label="Quantidade de Boné Aba Curva">
+                <button class="ca-qtd__btn" type="button" data-acao="menos" aria-label="Diminuir quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+                <output class="ca-qtd__n ca-rolo" aria-live="polite"></output>
+                <button class="ca-qtd__btn" type="button" data-acao="mais" aria-label="Aumentar quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Relógio -->
+      <article class="ca-produto" data-id="relogio" data-nome="Relógio Smart Pulse" data-preco="89990" data-categoria="tecnologia" style="--ca-cor:#e8e6e2">
+        <div class="ca-produto__midia">
+          <span class="ca-selo ca-selo--sinal">−10%</span>
+          <button class="ca-fav" type="button" data-acao="favoritar" aria-pressed="false" aria-label="Favoritar Relógio Smart Pulse">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>
+          </button>
+          <img class="ca-produto__arte" src="img/relogio.jpg" width="1600" height="1200" alt="Relógio inteligente com pulseira branca e detalhe verde sobre fundo claro" decoding="async" loading="lazy" draggable="false">
+        </div>
+        <div class="ca-produto__corpo">
+          <span class="ca-produto__cat">Wearables</span>
+          <h2 class="ca-produto__nome">Relógio Smart Pulse</h2>
+          <p class="ca-produto__nota"><span aria-hidden="true">★</span> 4,7 <span class="ca-produto__aval">· 189 avaliações</span></p>
+          <div class="ca-produto__rodape">
+            <p class="ca-produto__precos"><strong>R$ 899,90</strong> <s>R$ 999,90</s></p>
+            <div class="ca-acao" data-estado="vazio">
+              <button class="ca-add" type="button" data-acao="adicionar" aria-label="Adicionar Relógio Smart Pulse ao carrinho">
+                <span class="ca-add__rotulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adicionar</span>
+                <span class="ca-add__rotulo ca-add__rotulo--ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Adicionado</span>
+              </button>
+              <div class="ca-qtd" role="group" aria-label="Quantidade de Relógio Smart Pulse">
+                <button class="ca-qtd__btn" type="button" data-acao="menos" aria-label="Diminuir quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg></button>
+                <output class="ca-qtd__n ca-rolo" aria-live="polite"></output>
+                <button class="ca-qtd__btn" type="button" data-acao="mais" aria-label="Aumentar quantidade"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <p class="ca-grade__vazio" hidden>Você ainda não favoritou nada. Toque no coração de um produto.</p>
+    </div>
+
+    <p class="ca-nota-demo">Loja de demonstração · produtos e preços fictícios · fotos do Pexels (licença de uso livre) · o carrinho fica salvo neste navegador.</p>
+  </main>
+
+  <!-- ========== Gaveta do carrinho ========== -->
+  <div class="ca-fundo" data-fechar aria-hidden="true"></div>
+  <aside class="ca-gaveta" id="ca-gaveta" role="dialog" aria-modal="true" aria-labelledby="ca-gaveta-titulo" inert>
+    <header class="ca-gaveta__cab">
+      <h2 class="ca-gaveta__titulo" id="ca-gaveta-titulo">Seu carrinho <span class="ca-gaveta__qtd"></span></h2>
+      <button class="ca-icone-btn ca-gaveta__fechar" type="button" data-fechar aria-label="Fechar carrinho">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="ca-frete">
+      <p class="ca-frete__texto"></p>
+      <div class="ca-frete__trilho" aria-hidden="true">
+        <span class="ca-frete__barra"></span>
+        <span class="ca-frete__caminhao">
+          <svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <ul class="ca-gaveta__lista" aria-label="Itens no carrinho"></ul>
+
+    <div class="ca-gaveta__vazio" hidden>
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="52" fill="#fff1ea"/>
+        <path d="M36 48h48l-4 40a6 6 0 0 1-6 5H46a6 6 0 0 1-6-5z" fill="#fff" stroke="#1b1a1f" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M48 54V44a12 12 0 0 1 24 0v10" fill="none" stroke="#1b1a1f" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="51" cy="68" r="2.5" fill="#1b1a1f"/><circle cx="69" cy="68" r="2.5" fill="#1b1a1f"/>
+        <path d="M52 79q8-5 16 0" fill="none" stroke="#ff5c28" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <p class="ca-gaveta__vazio-titulo">Seu carrinho está vazio</p>
+      <p class="ca-gaveta__vazio-texto">Que tal começar pelo Fone Silêncio? É o mais vendido da semana.</p>
+      <button class="ca-botao-sec" type="button" data-fechar>Continuar comprando</button>
+    </div>
+
+    <footer class="ca-gaveta__rodape">
+      <!-- ========== Cupom: aplicado (ticket), inválido (etiqueta rasga) e trancado (corrente + cadeado) ========== -->
+      <form class="ca-cupom" novalidate>
+        <div class="ca-cupom__topo">
+          <label class="ca-cupom__rotulo" for="ca-cupom-codigo">Cupom de desconto</label>
+          <span class="ca-cupom__dica">Teste:
+            <button type="button" class="ca-cupom__exemplo" data-cupom="BEMVINDO10">BEMVINDO10</button>
+            <button type="button" class="ca-cupom__exemplo" data-cupom="FRETEGRATIS">FRETEGRATIS</button>
+            <button type="button" class="ca-cupom__exemplo" data-cupom="VERAO25">VERAO25</button>
+          </span>
+        </div>
+        <div class="ca-cupom__linha">
+          <div class="ca-cupom__campo">
+            <input class="ca-cupom__entrada" id="ca-cupom-codigo" type="text" autocomplete="off" spellcheck="false" autocapitalize="characters" placeholder="Digite o código" aria-describedby="ca-cupom-msg">
+            <!-- Erro: uma etiqueta com o código digitado aparece e se rasga ao meio -->
+            <span class="ca-etiqueta" aria-hidden="true">
+              <span class="ca-etiqueta__metade ca-etiqueta__metade--a"></span>
+              <span class="ca-etiqueta__metade ca-etiqueta__metade--b"></span>
+            </span>
+            <!-- Bloqueio: uma corrente atravessa o campo e um cadeado cai sobre ela -->
+            <span class="ca-corrente" aria-hidden="true">
+              <svg class="ca-corrente__elos" viewBox="0 0 300 16" preserveAspectRatio="xMinYMid slice">
+                <defs>
+                  <pattern id="ca-elo" width="22" height="16" patternUnits="userSpaceOnUse">
+                    <rect x="1.5" y="3.5" width="13" height="9" rx="4.5"/>
+                    <path d="M13 8h9.5"/>
+                  </pattern>
+                </defs>
+                <rect width="300" height="16" fill="url(#ca-elo)"/>
+              </svg>
+              <svg class="ca-cadeado" viewBox="0 0 32 36">
+                <path class="ca-cadeado__alca" d="M9.5 16v-5a6.5 6.5 0 0 1 13 0v5"/>
+                <rect class="ca-cadeado__corpo" x="5" y="15" width="22" height="18" rx="5"/>
+                <path class="ca-cadeado__furo" d="M16 22v4"/>
+              </svg>
+            </span>
+          </div>
+          <button class="ca-cupom__aplicar" type="submit">
+            <span class="ca-cupom__aplicar-texto">Aplicar</span>
+          </button>
+        </div>
+        <!-- Aprovado: o campo vira um ticket picotado -->
+        <div class="ca-ticket" hidden>
+          <svg class="ca-ticket__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.8 12.6V5.5a1.7 1.7 0 0 1 1.7-1.7h7.1l7.6 7.6a1.7 1.7 0 0 1 0 2.4l-6.3 6.3a1.7 1.7 0 0 1-2.4 0z"/><circle cx="8.3" cy="8.3" r="1.4"/></svg>
+          <span class="ca-ticket__texto"><strong class="ca-ticket__codigo"></strong><span class="ca-ticket__rotulo"></span></span>
+          <span class="ca-ticket__valor"></span>
+          <button type="button" class="ca-ticket__remover" aria-label="Remover cupom">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>
+          </button>
+        </div>
+        <p class="ca-cupom__msg" id="ca-cupom-msg" aria-live="polite"></p>
+        <!-- Trancado: contagem regressiva e suporte -->
+        <div class="ca-cupom__trava" tabindex="-1" hidden>
+          <p class="ca-cupom__trava-titulo">Muitas tentativas de cupom</p>
+          <p class="ca-cupom__trava-texto"><span class="ca-cupom__trava-rotulo">Tente de novo em</span> <strong class="ca-cupom__tempo" role="timer" aria-atomic="true">0:30</strong> · <a class="ca-cupom__suporte" href="#">Falar com o suporte</a></p>
+        </div>
+      </form>
+
+      <dl class="ca-resumo">
+        <div><dt>Subtotal</dt><dd class="ca-subtotal">R$ 0,00</dd></div>
+        <div class="ca-resumo__desconto" hidden><dt>Desconto <span class="ca-resumo__cupom"></span></dt><dd class="ca-desconto">− R$ 0,00</dd></div>
+        <div><dt>Frete</dt><dd class="ca-frete-valor">—</dd></div>
+        <div class="ca-resumo__total"><dt>Total</dt><dd class="ca-total">R$ 0,00</dd></div>
+      </dl>
+      <button class="ca-finalizar" type="button">
+        <span class="ca-finalizar__giro" aria-hidden="true"></span>
+        <span class="ca-finalizar__texto">Finalizar compra</span>
+      </button>
+      <p class="ca-seguro">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>
+        Pagamento seguro · demonstração, nenhuma cobrança é feita
+      </p>
+    </footer>
+  </aside>
+
+  <!-- ========== Toast "Desfazer" ========== -->
+  <div class="ca-toast" role="status">
+    <span class="ca-toast__texto"></span>
+    <button class="ca-toast__desfazer" type="button">Desfazer</button>
+    <span class="ca-toast__tempo" aria-hidden="true"></span>
+  </div>
+
+  <!-- Região lida por leitores de tela -->
+  <p class="ca-sr" aria-live="polite" id="ca-anuncio"></p>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

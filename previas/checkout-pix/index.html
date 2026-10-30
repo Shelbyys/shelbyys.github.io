@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout Pix — pagamento em etapas</title>
+  <meta name="description" content="Página de pagamento em etapas com Pix, cartão e boleto.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="cp-corpo">
+  <a class="cp-pular" href="#cp-principal">Pular para o pagamento</a>
+
+  <!-- ============ Sprite de ícones (desenhados à mão, traço de 1.75) ============ -->
+  <svg width="0" height="0" class="cp-sprite" aria-hidden="true" focusable="false">
+    <symbol id="cp-i-cadeado" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/><path d="M12 14.6v2"/></symbol>
+    <symbol id="cp-i-sacola" viewBox="0 0 24 24"><path d="M5.5 8h13l-1 11.2a1.8 1.8 0 0 1-1.8 1.6H8.3a1.8 1.8 0 0 1-1.8-1.6z"/><path d="M9 10V6.8a3 3 0 0 1 6 0V10"/></symbol>
+    <symbol id="cp-i-seta-baixo" viewBox="0 0 24 24"><path d="m6.5 9.5 5.5 5.5 5.5-5.5"/></symbol>
+    <symbol id="cp-i-seta-dir" viewBox="0 0 24 24"><path d="M5 12h13.5"/><path d="m13 6.5 5.5 5.5-5.5 5.5"/></symbol>
+    <symbol id="cp-i-seta-esq" viewBox="0 0 24 24"><path d="M19 12H5.5"/><path d="M11 6.5 5.5 12l5.5 5.5"/></symbol>
+    <symbol id="cp-i-check" viewBox="0 0 24 24"><path d="m5.5 12.5 4.2 4.2 8.8-9.4"/></symbol>
+    <symbol id="cp-i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2.2"/><path d="M15.5 8.5V6.2a1.7 1.7 0 0 0-1.7-1.7H6.2a1.7 1.7 0 0 0-1.7 1.7v7.6a1.7 1.7 0 0 0 1.7 1.7h2.3"/></symbol>
+    <symbol id="cp-i-etiqueta" viewBox="0 0 24 24"><path d="M3.8 12.6V5.5a1.7 1.7 0 0 1 1.7-1.7h7.1l7.6 7.6a1.7 1.7 0 0 1 0 2.4l-6.3 6.3a1.7 1.7 0 0 1-2.4 0z"/><circle cx="8.3" cy="8.3" r="1.4"/></symbol>
+    <symbol id="cp-i-caminhao" viewBox="0 0 24 24"><path d="M2.8 6.5h11v9.5h-11z"/><path d="M13.8 9.5h3.8l3.6 3.6V16h-7.4"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17.3" cy="17.5" r="1.8"/></symbol>
+    <symbol id="cp-i-escudo" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.4c0 4.3-2.9 7.9-7 9.4-4.1-1.5-7-5.1-7-9.4V6z"/><path d="m9 12 2.2 2.2L15.4 10"/></symbol>
+    <symbol id="cp-i-troca" viewBox="0 0 24 24"><path d="M4.5 9.5h13l-3.5-3.5"/><path d="M19.5 14.5h-13l3.5 3.5"/></symbol>
+    <symbol id="cp-i-relogio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.6V12l3 2"/></symbol>
+    <symbol id="cp-i-pix" viewBox="0 0 24 24"><path d="M12 2.8 21.2 12 12 21.2 2.8 12z"/><path d="m12 8.4 3.6 3.6-3.6 3.6L8.4 12z"/></symbol>
+    <symbol id="cp-i-cartao" viewBox="0 0 24 24"><rect x="2.8" y="5.5" width="18.4" height="13" rx="2.4"/><path d="M2.8 9.8h18.4"/><path d="M6.5 15h3.5"/></symbol>
+    <symbol id="cp-i-boleto" viewBox="0 0 24 24"><path d="M4 6v12M7 6v12M9.5 6v12M13 6v12M15 6v12M18 6v12M20 6v12"/></symbol>
+    <symbol id="cp-i-raio" viewBox="0 0 24 24"><path d="M13 2.8 5.5 13.2h5.6L10.5 21.2 18.5 10.4h-5.6z"/></symbol>
+    <symbol id="cp-i-alerta" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.6v5.2"/><path d="M12 16.3v.1"/></symbol>
+    <symbol id="cp-i-recusa" viewBox="0 0 24 24"><rect x="2.8" y="5.5" width="18.4" height="13" rx="2.4"/><path d="M2.8 9.8h18.4"/><path d="m9.6 12.6 4.8 4.4M14.4 12.6l-4.8 4.4"/></symbol>
+  </svg>
+
+  <!-- ============ Topo ============ -->
+  <header class="cp-topo">
+    <div class="cp-topo__interno">
+      <a class="cp-marca" href="#cp-principal" aria-label="Casa Brisa — voltar ao pagamento">
+        <svg class="cp-marca__simbolo" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="9"/><path d="M9 19.5c2.4-5.6 11.6-5.6 14 0"/><path d="M12.5 13.2c1.2-2 5.8-2 7 0"/></svg>
+        <span>Casa Brisa</span>
+      </a>
+      <p class="cp-seguro">
+        <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-cadeado"/></svg>
+        <span>Pagamento seguro <span class="cp-seguro__extra">· conexão criptografada</span></span>
+      </p>
+    </div>
+  </header>
+
+  <main id="cp-principal" class="cp-layout">
+
+    <!-- ============ Coluna do checkout (etapas) ============ -->
+    <div class="cp-coluna">
+    <section class="cp-checkout cp-entra" aria-labelledby="cp-titulo">
+      <div class="cp-cabecalho">
+        <h1 id="cp-titulo" class="cp-titulo">Finalizar compra</h1>
+        <p class="cp-subtitulo">Três passos rápidos. Você revisa tudo antes de pagar.</p>
+      </div>
+
+      <!-- Indicador de etapas + barra de progresso -->
+      <nav class="cp-etapas" aria-label="Etapas do pagamento">
+        <ol class="cp-etapas__lista">
+          <li class="cp-etapa cp-etapa--atual" data-etapa="1" aria-current="step">
+            <span class="cp-etapa__num" aria-hidden="true"><span>1</span><svg class="cp-ico"><use href="#cp-i-check"/></svg></span>
+            <span class="cp-etapa__texto"><strong>Dados</strong><small>Contato e entrega</small></span>
+          </li>
+          <li class="cp-etapa" data-etapa="2">
+            <span class="cp-etapa__num" aria-hidden="true"><span>2</span><svg class="cp-ico"><use href="#cp-i-check"/></svg></span>
+            <span class="cp-etapa__texto"><strong>Pagamento</strong><small>Pix, cartão ou boleto</small></span>
+          </li>
+          <li class="cp-etapa" data-etapa="3">
+            <span class="cp-etapa__num" aria-hidden="true"><span>3</span><svg class="cp-ico"><use href="#cp-i-check"/></svg></span>
+            <span class="cp-etapa__texto"><strong>Confirmação</strong><small>Pedido realizado</small></span>
+          </li>
+        </ol>
+        <div class="cp-progresso" role="progressbar" aria-label="Progresso do pagamento" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" aria-valuetext="Etapa 1 de 3: Dados">
+          <span class="cp-progresso__barra"></span>
+        </div>
+      </nav>
+
+      <!-- ===================== ETAPA 1 · DADOS ===================== -->
+      <div class="cp-painel cp-painel--ativo" id="cp-etapa-1" data-painel="1">
+        <h2 class="cp-visualmente-oculto" tabindex="-1">Etapa 1: seus dados</h2>
+        <form class="cp-form" id="cp-form-dados" novalidate>
+          <fieldset class="cp-grupo">
+            <legend class="cp-legenda">Contato</legend>
+            <div class="cp-grade">
+              <div class="cp-campo cp-col-6">
+                <label class="cp-rotulo" for="cp-nome">Nome completo</label>
+                <input class="cp-entrada" id="cp-nome" name="nome" type="text" autocomplete="name" placeholder="Como está no documento" required aria-describedby="cp-nome-erro">
+                <p class="cp-erro" id="cp-nome-erro"></p>
+              </div>
+              <div class="cp-campo cp-col-6">
+                <label class="cp-rotulo" for="cp-email">E-mail</label>
+                <input class="cp-entrada" id="cp-email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required aria-describedby="cp-email-erro" spellcheck="false">
+                <p class="cp-erro" id="cp-email-erro"></p>
+              </div>
+              <div class="cp-campo cp-col-6">
+                <label class="cp-rotulo" for="cp-cpf">CPF</label>
+                <div class="cp-entrada-icone">
+                  <input class="cp-entrada" id="cp-cpf" name="cpf" type="text" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" maxlength="14" required aria-describedby="cp-cpf-erro">
+                  <svg class="cp-ico cp-entrada-icone__ok" aria-hidden="true"><use href="#cp-i-check"/></svg>
+                  <svg class="cp-ico cp-entrada-icone__alerta" aria-hidden="true"><use href="#cp-i-alerta"/></svg>
+                </div>
+                <p class="cp-erro" id="cp-cpf-erro" aria-live="polite"></p>
+              </div>
+              <div class="cp-campo cp-col-6">
+                <label class="cp-rotulo" for="cp-celular">Celular</label>
+                <input class="cp-entrada" id="cp-celular" name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(00) 00000-0000" maxlength="15" required aria-describedby="cp-celular-erro">
+                <p class="cp-erro" id="cp-celular-erro"></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="cp-grupo">
+            <legend class="cp-legenda">Endereço de entrega</legend>
+            <div class="cp-grade">
+              <div class="cp-campo cp-col-4">
+                <label class="cp-rotulo" for="cp-cep">CEP</label>
+                <div class="cp-entrada-icone">
+                  <input class="cp-entrada" id="cp-cep" name="cep" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="00000-000" maxlength="9" required aria-describedby="cp-cep-erro cp-cep-info">
+                  <span class="cp-girando cp-entrada-icone__carregando" aria-hidden="true"></span>
+                </div>
+                <p class="cp-erro" id="cp-cep-erro"></p>
+                <p class="cp-info" id="cp-cep-info" aria-live="polite"></p>
+              </div>
+              <div class="cp-campo cp-col-8">
+                <label class="cp-rotulo" for="cp-rua">Rua / avenida</label>
+                <input class="cp-entrada" id="cp-rua" name="rua" type="text" autocomplete="address-line1" required aria-describedby="cp-rua-erro">
+                <p class="cp-erro" id="cp-rua-erro"></p>
+              </div>
+              <div class="cp-campo cp-col-3 cp-campo--metade">
+                <label class="cp-rotulo" for="cp-numero">Número</label>
+                <input class="cp-entrada" id="cp-numero" name="numero" type="text" inputmode="numeric" autocomplete="off" required aria-describedby="cp-numero-erro">
+                <p class="cp-erro" id="cp-numero-erro"></p>
+              </div>
+              <div class="cp-campo cp-col-4 cp-campo--metade">
+                <label class="cp-rotulo" for="cp-complemento">Complemento <span class="cp-opcional">(opcional)</span></label>
+                <input class="cp-entrada" id="cp-complemento" name="complemento" type="text" autocomplete="address-line2" placeholder="Apto, bloco…">
+              </div>
+              <div class="cp-campo cp-col-5">
+                <label class="cp-rotulo" for="cp-bairro">Bairro</label>
+                <input class="cp-entrada" id="cp-bairro" name="bairro" type="text" required aria-describedby="cp-bairro-erro">
+                <p class="cp-erro" id="cp-bairro-erro"></p>
+              </div>
+              <div class="cp-campo cp-col-8 cp-campo--m8">
+                <label class="cp-rotulo" for="cp-cidade">Cidade</label>
+                <input class="cp-entrada" id="cp-cidade" name="cidade" type="text" autocomplete="address-level2" required aria-describedby="cp-cidade-erro">
+                <p class="cp-erro" id="cp-cidade-erro"></p>
+              </div>
+              <div class="cp-campo cp-col-4 cp-campo--m4">
+                <label class="cp-rotulo" for="cp-uf">Estado</label>
+                <select class="cp-entrada cp-selecao" id="cp-uf" name="uf" autocomplete="address-level1" required aria-describedby="cp-uf-erro">
+                  <option value="">UF</option>
+                </select>
+                <p class="cp-erro" id="cp-uf-erro"></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="cp-acoes">
+            <button class="cp-botao cp-botao--fantasma" type="button" id="cp-preencher">Preencher exemplo</button>
+            <button class="cp-botao cp-botao--primario" type="submit">
+              Continuar para pagamento
+              <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-seta-dir"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ===================== ETAPA 2 · PAGAMENTO ===================== -->
+      <div class="cp-painel" id="cp-etapa-2" data-painel="2" hidden>
+        <h2 class="cp-visualmente-oculto" tabindex="-1">Etapa 2: forma de pagamento</h2>
+
+        <div class="cp-abas" role="tablist" aria-label="Forma de pagamento">
+          <span class="cp-abas__indicador" aria-hidden="true"></span>
+          <button class="cp-aba" type="button" role="tab" id="cp-aba-pix" aria-controls="cp-metodo-pix" aria-selected="true" data-metodo="pix">
+            <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-pix"/></svg>
+            <span>Pix</span>
+          </button>
+          <button class="cp-aba" type="button" role="tab" id="cp-aba-cartao" aria-controls="cp-metodo-cartao" aria-selected="false" tabindex="-1" data-metodo="cartao">
+            <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-cartao"/></svg>
+            <span>Cartão</span>
+          </button>
+          <button class="cp-aba" type="button" role="tab" id="cp-aba-boleto" aria-controls="cp-metodo-boleto" aria-selected="false" tabindex="-1" data-metodo="boleto">
+            <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-boleto"/></svg>
+            <span>Boleto</span>
+          </button>
+        </div>
+
+        <!-- ---------- Pix ---------- -->
+        <div class="cp-metodo cp-metodo--pix" id="cp-metodo-pix" role="tabpanel" aria-labelledby="cp-aba-pix" tabindex="0">
+          <div class="cp-pix">
+            <figure class="cp-qr">
+              <div class="cp-qr__caixa">
+                <div class="cp-qr__moldura" id="cp-qr" role="img" aria-label="QR Code Pix para pagamento"></div>
+                <!-- Selo "pago": o QR vira um carimbo quando o Pix é confirmado -->
+                <div class="cp-qr__selo" aria-hidden="true">
+                  <svg viewBox="0 0 120 120">
+                    <circle class="cp-qr__selo-borda" cx="60" cy="60" r="52"/>
+                    <circle class="cp-qr__selo-disco" cx="60" cy="60" r="44"/>
+                    <path class="cp-qr__selo-check" d="M41 58.5 54 71l26-27"/>
+                  </svg>
+                  <span class="cp-qr__selo-texto">Pago</span>
+                </div>
+              </div>
+              <figcaption class="cp-qr__legenda">Aponte a câmera do app do seu banco</figcaption>
+            </figure>
+
+            <div class="cp-pix__info">
+              <div class="cp-pix__status" id="cp-pix-status" role="status">
+                <span class="cp-pulso" aria-hidden="true"></span>
+                <span class="cp-pix__status-texto">Aguardando pagamento</span>
+              </div>
+              <p class="cp-pix__valor"><span>Valor do Pix</span> <strong data-cp-total>R$ 99,90</strong></p>
+
+              <div class="cp-expira" id="cp-expira">
+                <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-relogio"/></svg>
+                <span>O código expira em <strong class="cp-expira__tempo" id="cp-expira-tempo">15:00</strong></span>
+                <span class="cp-expira__trilho" aria-hidden="true"><span class="cp-expira__barra" id="cp-expira-barra"></span></span>
+              </div>
+
+              <ol class="cp-passos">
+                <li>Abra o app do seu banco e escolha <strong>Pix</strong>.</li>
+                <li>Leia o QR Code ou use <strong>Pix copia e cola</strong>.</li>
+                <li>Confirme — a aprovação aparece aqui na hora.</li>
+              </ol>
+
+              <label class="cp-rotulo" for="cp-pix-codigo">Pix copia e cola</label>
+              <div class="cp-copia">
+                <input class="cp-entrada cp-copia__texto" id="cp-pix-codigo" type="text" readonly value="">
+                <button class="cp-botao cp-botao--pix" type="button" id="cp-copiar-pix">
+                  <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-copiar"/></svg>
+                  <span>Copiar código Pix</span>
+                </button>
+              </div>
+
+              <button class="cp-botao cp-botao--demo" type="button" id="cp-simular-pix">
+                <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-raio"/></svg>
+                Simular pagamento aprovado
+              </button>
+              <button class="cp-botao cp-botao--fantasma cp-pix__novo" type="button" id="cp-novo-pix" hidden>Gerar novo código</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---------- Cartão ---------- -->
+        <div class="cp-metodo cp-metodo--cartao" id="cp-metodo-cartao" role="tabpanel" aria-labelledby="cp-aba-cartao" tabindex="0" hidden>
+          <div class="cp-cartao">
+            <!-- Cartão 3D: frente e verso -->
+            <div class="cp-cartao__visual">
+            <div class="cp-cc" id="cp-cc" aria-hidden="true" data-bandeira="">
+              <div class="cp-cc__giro">
+                <div class="cp-cc__face cp-cc__face--frente">
+                  <div class="cp-cc__brilho"></div>
+                  <div class="cp-cc__topo">
+                    <span class="cp-cc__chip"></span>
+                    <svg class="cp-cc__nfc" viewBox="0 0 24 24"><path d="M8 7.5c1.6 2.9 1.6 6.1 0 9"/><path d="M11.5 5.5c2.5 4.1 2.5 8.9 0 13"/><path d="M15 3.8c3.3 5.3 3.3 11.1 0 16.4"/></svg>
+                    <span class="cp-cc__bandeira" id="cp-cc-bandeira"></span>
+                  </div>
+                  <div class="cp-cc__numero" id="cp-cc-numero"></div>
+                  <div class="cp-cc__base">
+                    <div class="cp-cc__bloco">
+                      <small>Titular</small>
+                      <span class="cp-cc__nome" id="cp-cc-nome">NOME COMO NO CARTÃO</span>
+                    </div>
+                    <div class="cp-cc__bloco cp-cc__bloco--validade">
+                      <small>Validade</small>
+                      <span id="cp-cc-validade">MM/AA</span>
+                    </div>
+                  </div>
+                  <!-- Estados de validação desenhados no próprio cartão -->
+                  <div class="cp-cc__recusa"><span>Recusado</span></div>
+                  <div class="cp-cc__aprovado"><svg viewBox="0 0 24 24"><path d="m5.5 12.5 4.2 4.2 8.8-9.4"/></svg><span>Aprovado</span></div>
+                </div>
+                <div class="cp-cc__face cp-cc__face--verso">
+                  <div class="cp-cc__tarja"></div>
+                  <div class="cp-cc__assinatura">
+                    <span class="cp-cc__rabisco"></span>
+                    <span class="cp-cc__cvv" id="cp-cc-cvv">•••</span>
+                  </div>
+                  <p class="cp-cc__aviso">Código de segurança de 3 dígitos (4 no Amex)</p>
+                </div>
+              </div>
+            </div>
+              <p class="cp-cartao__seguro">
+                <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-escudo"/></svg>
+                <span>Os dados do cartão são criptografados e não ficam salvos na loja.</span>
+              </p>
+            </div>
+
+            <form class="cp-form cp-form--cartao" id="cp-form-cartao" novalidate>
+              <div class="cp-grade">
+                <div class="cp-campo cp-col-12">
+                  <label class="cp-rotulo" for="cp-cc-num">Número do cartão</label>
+                  <div class="cp-entrada-icone">
+                    <input class="cp-entrada cp-entrada--numerica" id="cp-cc-num" name="numero" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" maxlength="19" required aria-describedby="cp-cc-num-erro cp-cc-num-bandeira">
+                    <span class="cp-entrada-icone__bandeira" id="cp-cc-num-bandeira" aria-live="polite"></span>
+                  </div>
+                  <p class="cp-erro" id="cp-cc-num-erro"></p>
+                </div>
+                <div class="cp-campo cp-col-12">
+                  <label class="cp-rotulo" for="cp-cc-titular">Nome impresso no cartão</label>
+                  <input class="cp-entrada" id="cp-cc-titular" name="titular" type="text" autocomplete="cc-name" required aria-describedby="cp-cc-titular-erro" spellcheck="false">
+                  <p class="cp-erro" id="cp-cc-titular-erro"></p>
+                </div>
+                <div class="cp-campo cp-col-6 cp-campo--metade">
+                  <label class="cp-rotulo" for="cp-cc-val">Validade</label>
+                  <input class="cp-entrada cp-entrada--numerica" id="cp-cc-val" name="validade" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" maxlength="5" required aria-describedby="cp-cc-val-erro">
+                  <p class="cp-erro" id="cp-cc-val-erro"></p>
+                </div>
+                <div class="cp-campo cp-col-6 cp-campo--metade">
+                  <label class="cp-rotulo" for="cp-cc-cvv-in">CVV</label>
+                  <input class="cp-entrada cp-entrada--numerica" id="cp-cc-cvv-in" name="cvv" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="123" maxlength="3" required aria-describedby="cp-cc-cvv-erro">
+                  <p class="cp-erro" id="cp-cc-cvv-erro"></p>
+                </div>
+                <div class="cp-campo cp-col-12">
+                  <label class="cp-rotulo" for="cp-parcelas">Parcelas</label>
+                  <select class="cp-entrada cp-selecao" id="cp-parcelas" name="parcelas"></select>
+                </div>
+              </div>
+              <!-- Recusa do banco (preenchido pelo script.js; vazio = escondido) -->
+              <div class="cp-recusa" id="cp-recusa" aria-live="assertive"></div>
+              <button class="cp-botao cp-botao--primario cp-botao--largo" type="submit" id="cp-pagar-cartao">
+                <span class="cp-botao__rotulo">
+                  <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-cadeado"/></svg>
+                  Pagar <span data-cp-total>R$ 99,90</span>
+                </span>
+                <span class="cp-botao__ok" aria-hidden="true">
+                  <svg class="cp-ico"><use href="#cp-i-check"/></svg>
+                  Aprovado
+                </span>
+                <span class="cp-girando cp-botao__girando" aria-hidden="true"></span>
+              </button>
+              <p class="cp-dica-demo">Para testar: <button type="button" class="cp-link" id="cp-cartao-exemplo">4111 1111 1111 1111</button> aprova · <button type="button" class="cp-link" id="cp-cartao-recusado">4000 0000 0000 0002</button> é recusado</p>
+            </form>
+          </div>
+
+          <!-- Bloqueio temporário (3 recusas seguidas): uma porta que se fecha sobre o cartão -->
+          <div class="cp-trava" id="cp-trava" hidden>
+            <div class="cp-trava__painel">
+              <div class="cp-trava__emblema" aria-hidden="true">
+                <svg viewBox="0 0 96 96">
+                  <circle class="cp-trava__trilho" cx="48" cy="48" r="44"/>
+                  <circle class="cp-trava__anel" cx="48" cy="48" r="44"/>
+                  <path class="cp-trava__escudo" d="M48 18 70 27v16c0 14-9.4 25.4-22 30-12.6-4.6-22-16-22-30V27z"/>
+                  <path class="cp-trava__alca" d="M41 46v-5.5a7 7 0 0 1 14 0V46"/>
+                  <rect class="cp-trava__corpo" x="37" y="45.5" width="22" height="16" rx="3.5"/>
+                  <path class="cp-trava__furo" d="M48 51.5v4"/>
+                </svg>
+              </div>
+              <h3 class="cp-trava__titulo" id="cp-trava-titulo" tabindex="-1">Pagamento temporariamente bloqueado por segurança</h3>
+              <p class="cp-trava__texto" id="cp-trava-texto">Foram 3 recusas seguidas. Para proteger você, novas tentativas com cartão ficam pausadas por alguns instantes.</p>
+              <p class="cp-trava__tempo" role="timer" aria-atomic="true"><span class="cp-trava__tempo-rotulo">Tente de novo em</span> <strong id="cp-trava-tempo">0:30</strong></p>
+              <div class="cp-trava__acoes">
+                <button class="cp-botao cp-botao--secundario cp-trava__pix" type="button" id="cp-trava-pix">
+                  <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-pix"/></svg>
+                  Pagar com Pix agora
+                </button>
+                <a class="cp-trava__suporte" href="#">Falar com o suporte</a>
+              </div>
+            </div>
+          </div>
+          <p class="cp-visualmente-oculto" id="cp-trava-aviso" aria-live="polite"></p>
+        </div>
+
+        <!-- ---------- Boleto ---------- -->
+        <div class="cp-metodo cp-metodo--boleto" id="cp-metodo-boleto" role="tabpanel" aria-labelledby="cp-aba-boleto" tabindex="0" hidden>
+          <div class="cp-boleto">
+            <div class="cp-boleto__cabeca">
+              <div>
+                <p class="cp-boleto__rotulo">Vencimento</p>
+                <p class="cp-boleto__dado" id="cp-boleto-venc">—</p>
+              </div>
+              <div>
+                <p class="cp-boleto__rotulo">Valor</p>
+                <p class="cp-boleto__dado" data-cp-total>R$ 99,90</p>
+              </div>
+              <div>
+                <p class="cp-boleto__rotulo">Beneficiário</p>
+                <p class="cp-boleto__dado">Casa Brisa Ltda.</p>
+              </div>
+            </div>
+            <div class="cp-boleto__barras" id="cp-boleto-barras" role="img" aria-label="Código de barras do boleto"></div>
+            <label class="cp-rotulo" for="cp-boleto-linha">Linha digitável</label>
+            <div class="cp-copia">
+              <input class="cp-entrada cp-copia__texto cp-entrada--numerica" id="cp-boleto-linha" type="text" readonly value="">
+              <button class="cp-botao cp-botao--secundario" type="button" id="cp-copiar-boleto">
+                <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-copiar"/></svg>
+                <span>Copiar linha</span>
+              </button>
+            </div>
+            <p class="cp-nota">A compensação do boleto leva até 3 dias úteis. O pedido fica reservado até o vencimento.</p>
+            <button class="cp-botao cp-botao--primario cp-botao--largo" type="button" id="cp-concluir-boleto">
+              Concluir com boleto
+              <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-seta-dir"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="cp-rodape-etapa">
+          <button class="cp-botao cp-botao--fantasma" type="button" id="cp-voltar-dados">
+            <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-seta-esq"/></svg>
+            Voltar aos dados
+          </button>
+          <p class="cp-entrega-resumo" id="cp-entrega-resumo"></p>
+        </div>
+      </div>
+
+      <!-- ===================== ETAPA 3 · CONFIRMAÇÃO ===================== -->
+      <div class="cp-painel" id="cp-etapa-3" data-painel="3" hidden>
+        <div class="cp-confirma">
+          <svg class="cp-confirma__check" viewBox="0 0 96 96" aria-hidden="true">
+            <circle class="cp-confirma__onda" cx="48" cy="48" r="46"/>
+            <circle class="cp-confirma__onda cp-confirma__onda--2" cx="48" cy="48" r="46"/>
+            <circle class="cp-confirma__halo" cx="48" cy="48" r="46"/>
+            <circle class="cp-confirma__circulo" cx="48" cy="48" r="38"/>
+            <path class="cp-confirma__traco" d="M31 49.5 43 61l23-26"/>
+          </svg>
+          <h2 class="cp-confirma__titulo" id="cp-confirma-titulo" tabindex="-1">Pagamento aprovado!</h2>
+          <p class="cp-confirma__texto" id="cp-confirma-texto">Enviamos os detalhes para o seu e-mail.</p>
+          <dl class="cp-confirma__lista">
+            <div><dt>Pedido</dt><dd id="cp-pedido-num">#CB-000000</dd></div>
+            <div><dt>Forma</dt><dd id="cp-pedido-forma">Pix</dd></div>
+            <div><dt>Total</dt><dd data-cp-total>R$ 99,90</dd></div>
+            <div><dt>Entrega</dt><dd id="cp-pedido-entrega">—</dd></div>
+          </dl>
+          <button class="cp-botao cp-botao--secundario" type="button" id="cp-recomecar">Fazer um novo pedido</button>
+        </div>
+      </div>
+    </section>
+
+      <!-- Formas de pagamento aceitas (logos preenchidos pelo script.js) -->
+      <div class="cp-aceitos cp-entra cp-entra--3">
+        <p class="cp-aceitos__titulo">Formas aceitas</p>
+        <ul class="cp-aceitos__lista" id="cp-aceitos" aria-label="Pix, Visa, Mastercard, Elo, American Express, Hipercard e boleto"></ul>
+        <p class="cp-aceitos__ajuda">Dúvidas? <a class="cp-link" href="#cp-principal">Fale com a gente</a></p>
+      </div>
+    </div>
+
+    <!-- ============ Coluna do resumo do pedido ============ -->
+    <aside class="cp-resumo cp-entra cp-entra--2" aria-labelledby="cp-resumo-titulo">
+      <button class="cp-resumo__alternar" type="button" aria-expanded="false" aria-controls="cp-resumo-corpo" id="cp-resumo-alternar">
+        <svg class="cp-ico" aria-hidden="true"><use href="#cp-i-sacola"/></svg>
+        <span class="cp-resumo__alternar-texto">Ver resumo</span>
+        <span class="cp-resumo__alternar-sep" aria-hidden="true">·</span>
+        <strong data-cp-total>R$ 99,90</strong>
+        <svg class="cp-ico cp-resumo__seta" aria-hidden="true"><use href="#cp-i-seta-baixo"/></svg>
+      </button>
+
+      <div class="cp-resumo__corpo" id="cp-resumo-corpo">
+        <div class="cp-resumo__interno">
+          <div class="cp-resumo__cabeca">
+            <h2 class="cp-resumo__titulo" id="cp-resumo-titulo">Resumo do pedido</h2>
+            <span class="cp-selo">3 itens</span>
+          </div>
+
+          <ul class="cp-itens">
+            <li class="cp-item" data-preco="42.00" data-qtd="1">
+              <span class="cp-item__mini cp-item__mini--areia">
+                <!-- Caneca esmaltada -->
+                <svg viewBox="0 0 56 56" aria-hidden="true"><path class="cp-m-sombra" d="M14 44h26"/><path class="cp-m-corpo" d="M15 16h22v20a7 7 0 0 1-7 7h-8a7 7 0 0 1-7-7z"/><path class="cp-m-traco" d="M37 21h3.5a4.5 4.5 0 0 1 0 9H37"/><path class="cp-m-faixa" d="M15 21h22"/><path class="cp-m-vapor" d="M22 12c-1.5-1.8 1.5-3.2 0-5M30 12c-1.5-1.8 1.5-3.2 0-5"/></svg>
+              </span>
+              <div class="cp-item__info">
+                <p class="cp-item__nome">Caneca esmaltada</p>
+                <p class="cp-item__var">350 ml · Verde-musgo</p>
+              </div>
+              <span class="cp-item__qtd" aria-label="Quantidade 1">1×</span>
+              <span class="cp-item__preco">R$ 42,00</span>
+            </li>
+            <li class="cp-item" data-preco="27.90" data-qtd="1">
+              <span class="cp-item__mini cp-item__mini--petroleo">
+                <!-- Caderno pontilhado -->
+                <svg viewBox="0 0 56 56" aria-hidden="true"><path class="cp-m-sombra" d="M15 46h26"/><rect class="cp-m-corpo" x="16" y="9" width="24" height="33" rx="3"/><path class="cp-m-traco" d="M21 9v33"/><path class="cp-m-faixa" d="M34 9v12l-2.5-2-2.5 2V9"/><circle class="cp-m-ponto" cx="27" cy="28" r="1"/><circle class="cp-m-ponto" cx="31" cy="28" r="1"/><circle class="cp-m-ponto" cx="35" cy="28" r="1"/><circle class="cp-m-ponto" cx="27" cy="33" r="1"/><circle class="cp-m-ponto" cx="31" cy="33" r="1"/><circle class="cp-m-ponto" cx="35" cy="33" r="1"/></svg>
+              </span>
+              <div class="cp-item__info">
+                <p class="cp-item__nome">Caderno pontilhado</p>
+                <p class="cp-item__var">A5 · 160 páginas</p>
+              </div>
+              <span class="cp-item__qtd" aria-label="Quantidade 1">1×</span>
+              <span class="cp-item__preco">R$ 27,90</span>
+            </li>
+            <li class="cp-item" data-preco="20.00" data-qtd="1">
+              <span class="cp-item__mini cp-item__mini--verde">
+                <!-- Vela de soja -->
+                <svg viewBox="0 0 56 56" aria-hidden="true"><path class="cp-m-sombra" d="M15 46h26"/><path class="cp-m-chama" d="M28 9c3 3.5 3.2 6.4 0 8.4-3.2-2-3-4.9 0-8.4z"/><path class="cp-m-traco" d="M28 17.4V21"/><rect class="cp-m-corpo" x="17" y="21" width="22" height="21" rx="4"/><path class="cp-m-faixa" d="M17 28h22"/><path class="cp-m-faixa" d="M17 35h22"/></svg>
+              </span>
+              <div class="cp-item__info">
+                <p class="cp-item__nome">Vela de soja</p>
+                <p class="cp-item__var">Alecrim · 180 g</p>
+              </div>
+              <span class="cp-item__qtd" aria-label="Quantidade 1">1×</span>
+              <span class="cp-item__preco">R$ 20,00</span>
+            </li>
+          </ul>
+
+          <!-- Cupom -->
+          <form class="cp-cupom" id="cp-cupom" novalidate>
+            <label class="cp-rotulo" for="cp-cupom-codigo">Cupom de desconto</label>
+            <div class="cp-cupom__linha">
+              <div class="cp-entrada-icone cp-cupom__campo">
+                <svg class="cp-ico cp-entrada-icone__esq" aria-hidden="true"><use href="#cp-i-etiqueta"/></svg>
+                <input class="cp-entrada cp-entrada--com-icone" id="cp-cupom-codigo" type="text" autocomplete="off" spellcheck="false" placeholder="Digite o código" aria-describedby="cp-cupom-msg cp-cupom-dica">
+              </div>
+              <button class="cp-botao cp-botao--secundario cp-cupom__botao" type="submit">
+                <span class="cp-botao__rotulo">Aplicar</span>
+                <span class="cp-girando cp-botao__girando" aria-hidden="true"></span>
+              </button>
+            </div>
+            <p class="cp-cupom__msg" id="cp-cupom-msg" aria-live="polite"></p>
+            <p class="cp-cupom__dica" id="cp-cupom-dica">Para testar: <button type="button" class="cp-link" data-cupom="BEMVINDO10">BEMVINDO10</button> ou <button type="button" class="cp-link" data-cupom="FRETEGRATIS">FRETEGRATIS</button></p>
+          </form>
+
+          <!-- Valores -->
+          <dl class="cp-valores">
+            <div class="cp-valores__linha"><dt>Subtotal</dt><dd id="cp-subtotal">R$ 89,90</dd></div>
+            <div class="cp-valores__linha">
+              <dt>Frete <span class="cp-valores__nota" id="cp-frete-nota">PAC · 3 a 5 dias úteis</span></dt>
+              <dd id="cp-frete">R$ 10,00</dd>
+            </div>
+            <div class="cp-valores__linha cp-valores__linha--desconto" id="cp-linha-desconto" hidden>
+              <dt>Desconto <span class="cp-chip" id="cp-cupom-chip"><span id="cp-cupom-nome"></span><button type="button" class="cp-chip__remover" id="cp-cupom-remover" aria-label="Remover cupom">×</button></span></dt>
+              <dd id="cp-desconto">− R$ 0,00</dd>
+            </div>
+            <div class="cp-valores__linha cp-valores__linha--total">
+              <dt>Total</dt>
+              <dd><span class="cp-total" id="cp-total">R$ 99,90</span><small class="cp-total__parcelas" id="cp-total-parcelas">ou 3× de R$ 33,30 sem juros</small></dd>
+            </div>
+          </dl>
+
+          <ul class="cp-garantias">
+            <li><svg class="cp-ico" aria-hidden="true"><use href="#cp-i-escudo"/></svg><span><strong>Compra protegida</strong> Dados nunca ficam salvos no navegador</span></li>
+            <li><svg class="cp-ico" aria-hidden="true"><use href="#cp-i-troca"/></svg><span><strong>Troca grátis</strong> Em até 30 dias após o recebimento</span></li>
+            <li><svg class="cp-ico" aria-hidden="true"><use href="#cp-i-caminhao"/></svg><span><strong>Envio rápido</strong> Pedidos no Pix saem no mesmo dia</span></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Avisos rápidos (toast) e confete -->
+  <div class="cp-toast" id="cp-toast" role="status" aria-live="polite"></div>
+  <canvas class="cp-confete" id="cp-confete" aria-hidden="true"></canvas>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1147 @@
+/* ==========================================================================
+   LOGIN AURORA — estilo.css
+   Tela de login + cadastro com aurora boreal animada.
+   Todas as classes usam o prefixo .la- para não colidir com o seu projeto.
+
+   Sumário
+   1. Tokens (:root)  ← troque cores, fontes e raios aqui
+   2. Base
+   3. Fundo: céu, aurora e montanhas
+   4. Layout da página
+   5. Lado da marca
+   6. Painel de vidro
+   7. Abas
+   8. Palco e troca de formulários
+   9. Campos (rótulo flutuante, ícones, olho)
+   10. Medidor de força
+   11. Checkbox, links e linhas auxiliares
+   12. Login social e divisor
+   13. Botão que se transforma
+   14. Recuperar senha e sucesso
+   15. Animações de entrada
+   16. Responsivo
+   17. Movimento reduzido
+   ========================================================================== */
+
+/* 1. TOKENS ---------------------------------------------------------------- */
+:root {
+  /* Céu */
+  --la-fundo: #070b14;          /* azul-noite profundo */
+  --la-fundo-horizonte: #0b1a2c; /* cor perto das montanhas */
+
+  /* Aurora (lidas também pelo script.js — mude aqui e o canvas acompanha) */
+  --la-aurora-1: #3ef2a5;       /* verde */
+  --la-aurora-2: #2fd8e4;       /* turquesa */
+  --la-aurora-3: #ff6fae;       /* toque de rosa */
+  /* Aurora na senha errada (magenta) e no bloqueio (gelo) — também lidas pelo script.js */
+  --la-aurora-erro-1: #ff3d6e;
+  --la-aurora-erro-2: #ff3fd4;
+  --la-aurora-erro-3: #ff7a45;
+  --la-aurora-gelo-1: #8fcaff;
+  --la-aurora-gelo-2: #5f8dff;
+  --la-aurora-gelo-3: #d8efff;
+  --la-gelo: #a9dcff;           /* escudo e textos do bloqueio */
+  --la-gelo-forte: #e8f6ff;
+
+  /* Texto */
+  --la-texto: #eaf1fb;
+  --la-texto-suave: #a5b4ca;
+  --la-texto-fraco: #8193ad;
+
+  /* Acento e estados */
+  --la-acento: #3ef2a5;
+  --la-acento-2: #2fd8e4;
+  --la-acento-texto: #032018;   /* texto sobre o botão principal */
+  --la-erro: #ff8094;
+  --la-forca-1: #ff6b81;        /* fraca */
+  --la-forca-2: #ffa94d;        /* razoável */
+  --la-forca-3: #f5d652;        /* boa */
+  --la-forca-4: #3ef2a5;        /* forte */
+
+  /* Vidro */
+  --la-vidro: rgba(12, 19, 34, 0.58);
+  --la-vidro-borda: rgba(255, 255, 255, 0.10);
+  --la-campo-fundo: rgba(255, 255, 255, 0.045);
+  --la-campo-borda: rgba(255, 255, 255, 0.12);
+  --la-desfoque: 18px;
+
+  /* Forma */
+  --retrato-luz: .2;            /* brilho no disco dos retratos ilustrados */
+  --la-raio: 24px;
+  --la-raio-campo: 14px;
+  --la-altura-campo: 56px;
+
+  /* Tipografia */
+  --la-fonte-titulo: "Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --la-fonte-texto: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Movimento */
+  --la-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --la-ease-mola: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --la-rapido: 0.2s;
+  --la-medio: 0.42s;
+}
+
+/* 2. BASE ------------------------------------------------------------------ */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+.la-body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--la-fundo);
+  color: var(--la-texto);
+  font-family: var(--la-fonte-texto);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.la-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.la-icone {
+  width: 18px; height: 18px;
+  fill: none; stroke: currentColor; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Foco visível padrão (teclado) */
+.la-body :focus-visible {
+  outline: 2px solid var(--la-acento-2);
+  outline-offset: 3px;
+}
+
+/* 3. FUNDO ----------------------------------------------------------------- */
+.la-ceu {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 70% at 50% 110%, var(--la-fundo-horizonte) 0%, transparent 60%),
+    var(--la-fundo);
+  pointer-events: none;
+}
+
+.la-ceu__estrelas,
+.la-ceu__aurora {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* A aurora é desenhada em baixa resolução; o desfoque deixa as faixas sedosas */
+.la-ceu__aurora {
+  filter: blur(9px) saturate(1.2);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: la-surge 2.2s var(--la-ease) 0.05s forwards;
+  transform: scale(1.06); /* esconde a borda clara do blur */
+}
+
+.la-ceu__montanhas {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: min(26vh, 240px);
+}
+
+.la-ceu__crista {
+  fill: none;
+  stroke: var(--la-aurora-2);
+  stroke-opacity: 0.22;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* 4. LAYOUT ---------------------------------------------------------------- */
+.la-pagina {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 460px);
+  gap: clamp(32px, 6vw, 112px);
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px clamp(20px, 5vw, 72px);
+}
+
+/* 5. LADO DA MARCA --------------------------------------------------------- */
+.la-marca {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+  padding-block: 8px;
+  min-width: 0;
+}
+
+.la-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--la-texto);
+  text-decoration: none;
+  font-family: var(--la-fonte-titulo);
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+  width: max-content;
+  border-radius: 8px;
+}
+.la-logo__simbolo { width: 30px; height: 30px; filter: drop-shadow(0 0 12px rgba(62, 242, 165, 0.45)); }
+
+.la-marca__selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  padding: 6px 14px 6px 10px;
+  border: 1px solid var(--la-vidro-borda);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--la-texto-suave);
+  font-size: 13px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.la-marca__ponto {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--la-acento);
+  box-shadow: 0 0 0 4px rgba(62, 242, 165, 0.18), 0 0 14px var(--la-acento);
+}
+
+.la-marca__titulo {
+  margin: 0;
+  font-family: var(--la-fonte-titulo);
+  font-weight: 600;
+  font-size: clamp(38px, 4.6vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  max-width: 11.5em;
+  text-wrap: balance;
+}
+
+.la-marca__brilho {
+  background: linear-gradient(100deg, var(--la-aurora-1) 0%, var(--la-aurora-2) 55%, var(--la-aurora-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.la-marca__texto {
+  margin: 22px 0 0;
+  max-width: 30em;
+  color: var(--la-texto-suave);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.la-depoimento {
+  margin: 0;
+  max-width: 470px;
+  padding: 22px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--la-vidro-borda);
+  background: rgba(10, 16, 30, 0.42);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.la-depoimento__texto { margin: 0; }
+.la-depoimento__texto p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--la-texto); }
+.la-depoimento__autor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 14px;
+}
+.la-depoimento__autor strong { display: block; font-weight: 600; }
+.la-depoimento__cargo { color: var(--la-texto-fraco); font-size: 13px; }
+.la-depoimento__avatar {
+  flex: none;
+  display: grid; place-items: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--la-aurora-1), var(--la-aurora-2) 60%, var(--la-aurora-3));
+  color: var(--la-acento-texto);
+  font-family: var(--la-fonte-titulo);
+  font-weight: 700; font-size: 13px;
+}
+/* Retrato ilustrado: o degradê da aurora aparece atrás, no lugar do disco */
+.la-depoimento__avatar {
+  width: 48px; height: 48px; overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.16), 0 8px 20px -8px rgba(0, 0, 0, 0.6);
+  --retrato-fundo: transparent;
+  --retrato-aro: var(--la-acento);
+}
+.la-depoimento__retrato { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+.la-depoimento__nota {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 5px;
+  font-weight: 600;
+  color: var(--la-texto);
+}
+.la-depoimento__nota svg { width: 16px; height: 16px; fill: #ffd166; }
+
+/* 6. PAINEL DE VIDRO ------------------------------------------------------- */
+.la-painel {
+  position: relative;
+  width: 100%;
+  padding: 34px 34px 30px;
+  border-radius: var(--la-raio);
+  background: var(--la-vidro);
+  border: 1px solid var(--la-vidro-borda);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 30px 80px -20px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(var(--la-desfoque)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--la-desfoque)) saturate(1.4);
+}
+
+/* Fio de luz no topo do vidro */
+.la-painel::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: 14%; right: 14%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(62, 242, 165, 0.7), rgba(47, 216, 228, 0.7), transparent);
+}
+
+.la-painel__topo { margin-bottom: 22px; transition: opacity 0.16s, transform 0.3s var(--la-ease); }
+.la-painel__topo.la-trocando { opacity: 0; transform: translateY(-4px); }
+.la-painel__titulo {
+  margin: 0;
+  font-family: var(--la-fonte-titulo);
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.la-painel__sub { margin: 6px 0 0; color: var(--la-texto-suave); font-size: 14.5px; }
+
+/* 7. ABAS ------------------------------------------------------------------ */
+.la-abas {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  margin-bottom: 22px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.la-abas__indicador {
+  position: absolute;
+  top: 4px; bottom: 4px; left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.07));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 6px 18px -6px rgba(0, 0, 0, 0.6);
+  transition: transform var(--la-medio) var(--la-ease-mola);
+}
+.la-abas[data-ativa="1"] .la-abas__indicador { transform: translateX(100%); }
+
+.la-aba {
+  position: relative;
+  z-index: 1;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--la-texto-suave);
+  font: 500 14.5px/1 var(--la-fonte-texto);
+  cursor: pointer;
+  transition: color var(--la-rapido);
+}
+.la-aba:hover { color: var(--la-texto); }
+.la-aba[aria-selected="true"] { color: var(--la-texto); }
+.la-aba:focus-visible { outline-offset: -2px; }
+/* Na tela de sucesso as abas ficam apagadas */
+.la-abas { transition: opacity 0.3s; }
+.la-painel[data-modo="sucesso"] .la-abas { opacity: 0.35; }
+
+/* 8. PALCO ----------------------------------------------------------------- */
+.la-palco {
+  position: relative;
+  transition: height var(--la-medio) var(--la-ease);
+}
+.la-palco.la-animando { overflow: hidden; }
+
+.la-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: opacity 0.26s var(--la-ease), transform 0.36s var(--la-ease);
+}
+.la-form[hidden] { display: none; }
+
+/* Formulário que está saindo: fica por cima e some */
+.la-form.la-saindo {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  opacity: 0;
+  transform: translateX(calc(var(--la-dir, 1) * -24px));
+  pointer-events: none;
+}
+/* Formulário que está entrando: começa deslocado e transparente */
+.la-form.la-entrando {
+  opacity: 0;
+  transform: translateX(calc(var(--la-dir, 1) * 24px));
+  transition: none;
+}
+
+/* 9. CAMPOS ---------------------------------------------------------------- */
+.la-grupo { display: flex; flex-direction: column; }
+
+.la-campo {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.la-campo__input {
+  width: 100%;
+  height: var(--la-altura-campo);
+  padding: 22px 46px 6px 46px;
+  border-radius: var(--la-raio-campo);
+  border: 1px solid var(--la-campo-borda);
+  background: var(--la-campo-fundo);
+  color: var(--la-texto);
+  font: 500 15px/1.2 var(--la-fonte-texto);
+  outline: none;
+  transition: border-color var(--la-rapido), background var(--la-rapido), box-shadow var(--la-rapido);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.la-campo__input:hover { border-color: rgba(255, 255, 255, 0.2); }
+.la-campo__input:focus {
+  border-color: var(--la-acento-2);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 0 4px rgba(47, 216, 228, 0.16);
+}
+/* Esconde o "revelar senha" nativo do Edge (usamos o nosso) */
+.la-campo__input::-ms-reveal { display: none; }
+
+/* Autofill do Chrome sem fundo amarelo */
+.la-campo__input:-webkit-autofill {
+  -webkit-text-fill-color: var(--la-texto);
+  -webkit-box-shadow: 0 0 0 100px #121c2e inset;
+  caret-color: var(--la-texto);
+}
+
+.la-campo__icone {
+  position: absolute;
+  left: 15px;
+  width: 19px; height: 19px;
+  fill: none; stroke: var(--la-texto-fraco); stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+  pointer-events: none;
+  transition: stroke var(--la-rapido);
+}
+.la-campo:focus-within .la-campo__icone { stroke: var(--la-acento-2); }
+
+/* Rótulo flutuante: centralizado quando vazio, sobe ao focar/preencher */
+.la-campo__rotulo {
+  position: absolute;
+  left: 46px;
+  top: 50%;
+  transform: translateY(-50%);
+  transform-origin: left center;
+  color: var(--la-texto-fraco);
+  font-size: 15px;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: transform var(--la-rapido) var(--la-ease), color var(--la-rapido), top var(--la-rapido) var(--la-ease);
+}
+.la-campo__input:focus + .la-campo__rotulo,
+.la-campo__input:not(:placeholder-shown) + .la-campo__rotulo,
+.la-campo__input:-webkit-autofill + .la-campo__rotulo {
+  top: 16px;
+  transform: translateY(-50%) scale(0.78);
+  color: var(--la-texto-suave);
+}
+.la-campo__input:focus + .la-campo__rotulo { color: var(--la-acento-2); }
+
+/* Ícone de "válido" à direita */
+.la-campo__ok {
+  position: absolute;
+  right: 16px;
+  width: 18px; height: 18px;
+  fill: none; stroke: var(--la-acento); stroke-width: 2.4;
+  stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity var(--la-rapido), transform 0.35s var(--la-ease-mola);
+  pointer-events: none;
+}
+.la-campo.la-valido .la-campo__ok { opacity: 1; transform: scale(1); }
+
+/* Estado inválido: borda de alerta + tremida */
+.la-campo.la-invalido .la-campo__input { border-color: var(--la-erro); box-shadow: 0 0 0 4px rgba(255, 128, 148, 0.14); }
+.la-campo.la-invalido .la-campo__icone,
+.la-campo.la-invalido .la-campo__input:focus + .la-campo__rotulo { stroke: var(--la-erro); color: var(--la-erro); }
+.la-tremer { animation: la-tremer 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+
+.la-erro {
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  display: flex; gap: 6px; align-items: center;
+  color: var(--la-erro);
+  font-size: 13px;
+  line-height: 1.35;
+  opacity: 0;
+  transition: max-height 0.3s var(--la-ease), opacity 0.2s, margin 0.3s var(--la-ease);
+}
+.la-erro.la-visivel { max-height: 40px; opacity: 1; margin-top: 7px; }
+.la-erro svg { flex: none; width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+/* Botão olho (mostrar/ocultar senha) */
+.la-olho {
+  position: absolute;
+  right: 6px;
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  border: 0; border-radius: 10px;
+  background: none;
+  color: var(--la-texto-fraco);
+  cursor: pointer;
+  transition: color var(--la-rapido), background var(--la-rapido);
+}
+.la-olho:hover { color: var(--la-texto); background: rgba(255, 255, 255, 0.06); }
+.la-olho svg {
+  width: 21px; height: 21px;
+  fill: none; stroke: currentColor; stroke-width: 1.7;
+  stroke-linecap: round; stroke-linejoin: round;
+  overflow: visible;
+}
+.la-olho__globo { transform-origin: 12px 12px; transform-box: view-box; }
+.la-olho__risco {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;               /* senha oculta: olho riscado */
+  transition: stroke-dashoffset 0.32s var(--la-ease);
+}
+.la-olho[aria-pressed="true"] { color: var(--la-acento-2); }
+.la-olho[aria-pressed="true"] .la-olho__risco { stroke-dashoffset: 1; } /* senha visível: risco some */
+.la-olho.la-piscar .la-olho__globo { animation: la-piscar 0.34s var(--la-ease); }
+
+/* 10. MEDIDOR DE FORÇA ----------------------------------------------------- */
+.la-forca { margin-top: 10px; }
+.la-forca__barras { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.la-forca__barras span {
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.la-forca__barras span::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--la-forca-cor, transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--la-ease), background 0.3s;
+}
+.la-forca[data-nivel="1"] { --la-forca-cor: var(--la-forca-1); }
+.la-forca[data-nivel="2"] { --la-forca-cor: var(--la-forca-2); }
+.la-forca[data-nivel="3"] { --la-forca-cor: var(--la-forca-3); }
+.la-forca[data-nivel="4"] { --la-forca-cor: var(--la-forca-4); }
+.la-forca[data-nivel="1"] span:nth-child(-n+1)::after,
+.la-forca[data-nivel="2"] span:nth-child(-n+2)::after,
+.la-forca[data-nivel="3"] span:nth-child(-n+3)::after,
+.la-forca[data-nivel="4"] span:nth-child(-n+4)::after { transform: scaleX(1); }
+.la-forca span:nth-child(2)::after { transition-delay: 0.04s; }
+.la-forca span:nth-child(3)::after { transition-delay: 0.08s; }
+.la-forca span:nth-child(4)::after { transition-delay: 0.12s; }
+
+.la-forca__texto { margin: 7px 0 0; font-size: 12.5px; color: var(--la-texto-fraco); transition: color 0.3s; }
+.la-forca[data-nivel="1"] .la-forca__texto,
+.la-forca[data-nivel="2"] .la-forca__texto,
+.la-forca[data-nivel="3"] .la-forca__texto,
+.la-forca[data-nivel="4"] .la-forca__texto { color: var(--la-forca-cor); }
+
+/* 11. CHECKBOX, LINKS, LINHAS ---------------------------------------------- */
+.la-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.la-check {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--la-texto-suave);
+  line-height: 1.45;
+}
+/* O input real fica invisível mas continua focável e lido por leitores de tela */
+.la-check__input {
+  position: absolute;
+  opacity: 0;
+  width: 20px; height: 20px;
+  margin: 0;
+  cursor: pointer;
+}
+.la-check__caixa {
+  flex: none;
+  display: grid; place-items: center;
+  width: 20px; height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+  transition: background var(--la-rapido), border-color var(--la-rapido), transform 0.25s var(--la-ease-mola);
+}
+.la-check__caixa svg {
+  width: 14px; height: 14px;
+  fill: none; stroke: var(--la-acento-texto); stroke-width: 3;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.3s var(--la-ease) 0.05s;
+}
+.la-check__input:checked + .la-check__caixa {
+  background: linear-gradient(135deg, var(--la-acento), var(--la-acento-2));
+  border-color: transparent;
+}
+.la-check__input:checked + .la-check__caixa svg { stroke-dashoffset: 0; }
+.la-check:active .la-check__caixa { transform: scale(0.88); }
+.la-check__input:focus-visible + .la-check__caixa { outline: 2px solid var(--la-acento-2); outline-offset: 3px; }
+.la-check.la-invalido .la-check__caixa { border-color: var(--la-erro); }
+.la-check__texto { padding-top: 0; }
+
+.la-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--la-acento-2);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s var(--la-ease);
+}
+.la-link:hover { background-size: 100% 1px; }
+.la-linha > .la-link { font-size: 14px; }
+
+.la-rodape {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--la-texto-suave);
+}
+
+/* 12. LOGIN SOCIAL E DIVISOR ----------------------------------------------- */
+.la-sociais { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.la-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  min-width: 0;
+  border-radius: 12px;
+  border: 1px solid var(--la-campo-borda);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--la-texto);
+  font: 500 14px/1 var(--la-fonte-texto);
+  cursor: pointer;
+  transition: background var(--la-rapido), border-color var(--la-rapido), transform 0.2s var(--la-ease);
+}
+.la-social svg { flex: none; width: 18px; height: 18px; }
+.la-social:hover { background: rgba(255, 255, 255, 0.09); border-color: rgba(255, 255, 255, 0.22); transform: translateY(-1px); }
+.la-social:active { transform: translateY(0) scale(0.98); }
+.la-social.la-pulsando { animation: la-pulso 0.8s var(--la-ease); }
+
+.la-divisor {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0;
+  color: var(--la-texto-fraco);
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+}
+.la-divisor::before,
+.la-divisor::after { content: ""; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1); }
+
+/* 13. BOTÃO QUE SE TRANSFORMA ---------------------------------------------- */
+/* Estados (data-estado): vazio → "carregando" (encolhe + spinner) → "sucesso" (✓ verde) */
+.la-botao {
+  --la-botao-altura: 52px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: var(--la-botao-altura);
+  margin: 6px auto 0;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(120deg, var(--la-acento), var(--la-acento-2));
+  color: var(--la-acento-texto);
+  font: 600 15.5px/1 var(--la-fonte-titulo);
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -10px rgba(47, 216, 228, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition:
+    width 0.5s var(--la-ease),
+    border-radius 0.5s var(--la-ease),
+    transform 0.2s var(--la-ease),
+    box-shadow 0.3s,
+    filter 0.2s;
+}
+.la-botao > * { grid-area: 1 / 1; }
+.la-botao:hover { filter: brightness(1.06); box-shadow: 0 14px 36px -10px rgba(47, 216, 228, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.la-botao:active { transform: scale(0.985); }
+.la-botao:focus-visible { outline-offset: 4px; }
+
+.la-botao__texto { transition: opacity 0.2s, transform 0.3s var(--la-ease); white-space: nowrap; }
+
+.la-botao__spinner {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(3, 32, 24, 0.25);
+  border-top-color: var(--la-acento-texto);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.2s, transform 0.3s var(--la-ease);
+}
+
+.la-botao__check {
+  width: 26px; height: 26px;
+  fill: none; stroke: var(--la-acento-texto); stroke-width: 3;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.45s var(--la-ease) 0.12s;
+}
+
+.la-botao[data-estado] { width: var(--la-botao-altura); border-radius: 50%; cursor: default; pointer-events: none; }
+.la-botao[data-estado] .la-botao__texto { opacity: 0; transform: scale(0.8); }
+.la-botao[data-estado="carregando"] .la-botao__spinner { opacity: 1; transform: scale(1); animation: la-girar 0.75s linear infinite; }
+.la-botao[data-estado="sucesso"] { background: var(--la-acento); box-shadow: 0 0 0 8px rgba(62, 242, 165, 0.16), 0 0 40px rgba(62, 242, 165, 0.55); }
+.la-botao[data-estado="sucesso"] .la-botao__check { stroke-dashoffset: 0; }
+
+.la-botao--fantasma {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--la-texto);
+  border: 1px solid var(--la-campo-borda);
+  box-shadow: none;
+  font-weight: 500;
+}
+.la-botao--fantasma:hover { background: rgba(255, 255, 255, 0.1); box-shadow: none; }
+
+/* 14. RECUPERAR E SUCESSO -------------------------------------------------- */
+.la-voltar {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 10px 6px 6px;
+  margin: -4px 0 0 -6px;
+  border: 0; border-radius: 10px;
+  background: none;
+  color: var(--la-texto-suave);
+  font: 500 14px/1 var(--la-fonte-texto);
+  cursor: pointer;
+  transition: color var(--la-rapido), background var(--la-rapido);
+}
+.la-voltar:hover { color: var(--la-texto); background: rgba(255, 255, 255, 0.06); }
+.la-voltar:hover .la-icone { transform: translateX(-3px); }
+.la-voltar .la-icone { transition: transform 0.25s var(--la-ease); }
+
+.la-rec__etapa { display: flex; flex-direction: column; gap: 14px; }
+.la-rec__etapa[hidden] { display: none; }
+.la-rec__titulo, .la-sucesso__titulo {
+  margin: 0;
+  font-family: var(--la-fonte-titulo);
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+  outline: none;
+}
+.la-rec__texto, .la-sucesso__texto { margin: -6px 0 4px; color: var(--la-texto-suave); font-size: 14.5px; }
+.la-rec__texto strong, .la-sucesso__texto strong { color: var(--la-texto); font-weight: 600; word-break: break-all; }
+.la-rec__enviado { align-items: center; text-align: center; padding-top: 4px; }
+.la-rec__enviado .la-rec__texto { margin: -4px 0 8px; }
+
+.la-selo-icone {
+  display: grid; place-items: center;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(47, 216, 228, 0.35), rgba(47, 216, 228, 0.08));
+  border: 1px solid rgba(47, 216, 228, 0.4);
+  color: var(--la-acento-2);
+  animation: la-pop 0.6s var(--la-ease-mola);
+}
+.la-selo-icone .la-icone { width: 26px; height: 26px; }
+
+.la-sucesso { align-items: center; text-align: center; padding: 18px 0 4px; }
+.la-sucesso__icone {
+  display: grid; place-items: center;
+  width: 84px; height: 84px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--la-acento), var(--la-acento-2));
+  box-shadow: 0 0 0 10px rgba(62, 242, 165, 0.12), 0 0 60px rgba(62, 242, 165, 0.5);
+  animation: la-pop 0.7s var(--la-ease-mola);
+}
+.la-sucesso__icone svg {
+  width: 40px; height: 40px;
+  fill: none; stroke: var(--la-acento-texto); stroke-width: 2.6;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: la-desenhar 0.6s var(--la-ease) 0.25s forwards;
+}
+.la-sucesso__titulo { font-size: 28px; margin-top: 10px; }
+.la-sucesso__texto { margin: -4px 0 6px; }
+.la-sucesso__barra { width: 100%; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.la-sucesso__barra span {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--la-acento), var(--la-acento-2));
+  transform-origin: left;
+  animation: la-progresso 2.6s var(--la-ease) forwards;
+}
+
+/* Aviso (toast) do login social */
+.la-aviso {
+  position: absolute;
+  left: 50%;
+  bottom: -16px;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(8, 14, 26, 0.92);
+  border: 1px solid var(--la-vidro-borda);
+  color: var(--la-texto);
+  font-size: 13.5px;
+  text-align: center;
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transform: translate(-50%, 100%);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.4s var(--la-ease);
+}
+.la-aviso.la-visivel { opacity: 1; transform: translate(-50%, 70%); }
+
+/* 14b. ESTADOS DE VALIDAÇÃO ------------------------------------------------ */
+/* O painel recebe data-validacao="aprovado | erro | bloqueado | liberando".
+   O ::after é uma camada de luz sobre o vidro (não bloqueia cliques). */
+.la-painel::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+}
+.la-painel::before { transition: background 0.4s, left 0.6s var(--la-ease), right 0.6s var(--la-ease), box-shadow 0.4s; }
+
+/* APROVADO: o fio de luz do topo se estende e um raio de aurora atravessa o vidro */
+.la-painel[data-validacao="aprovado"]::before {
+  left: 0; right: 0;
+  background: linear-gradient(90deg, transparent, var(--la-aurora-1), var(--la-aurora-2), var(--la-aurora-1), transparent);
+  box-shadow: 0 0 18px 2px rgba(62, 242, 165, 0.55);
+}
+.la-painel[data-validacao="aprovado"]::after {
+  background:
+    linear-gradient(100deg, transparent 30%, rgba(62, 242, 165, 0.34) 45%, rgba(232, 255, 246, 0.5) 50%, rgba(47, 216, 228, 0.3) 55%, transparent 70%) 0 0 / 260% 100% no-repeat,
+    radial-gradient(120% 80% at 50% 0%, rgba(62, 242, 165, 0.22), transparent 70%);
+  box-shadow: 0 0 0 1px rgba(62, 242, 165, 0.55), 0 0 70px -6px rgba(62, 242, 165, 0.6), inset 0 0 40px rgba(62, 242, 165, 0.16);
+  mix-blend-mode: screen;
+  animation: la-raio-luz 1.4s var(--la-ease) forwards;
+}
+@keyframes la-raio-luz {
+  0% { opacity: 0; background-position: 120% 0, 0 0; }
+  25% { opacity: 1; }
+  70% { opacity: 1; background-position: -20% 0, 0 0; }
+  100% { opacity: 0; background-position: -60% 0, 0 0; }
+}
+
+/* ERRO: o vidro ganha um reflexo magenta que pulsa e o fio do topo fica vermelho */
+.la-painel[data-validacao="erro"]::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 61, 110, 0.9), rgba(255, 63, 212, 0.9), transparent);
+  box-shadow: 0 0 14px 1px rgba(255, 61, 110, 0.6);
+}
+.la-painel[data-validacao="erro"]::after {
+  background: radial-gradient(90% 60% at 50% 0%, rgba(255, 61, 110, 0.2), transparent 70%);
+  box-shadow: 0 0 0 1px rgba(255, 92, 140, 0.5), 0 0 60px -10px rgba(255, 61, 110, 0.55);
+  animation: la-pulso-erro 1.1s ease-out forwards;
+}
+@keyframes la-pulso-erro {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  30% { opacity: 0.45; }
+  46% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+/* BLOQUEADO: escudo de gelo — borda cristalina, reflexo frio que passa devagar */
+.la-painel[data-validacao="bloqueado"]::before,
+.la-painel[data-validacao="liberando"]::before {
+  left: 6%; right: 6%;
+  background: linear-gradient(90deg, transparent, var(--la-gelo), var(--la-gelo-forte), var(--la-gelo), transparent);
+  box-shadow: 0 0 16px 1px rgba(169, 220, 255, 0.45);
+}
+.la-painel[data-validacao="bloqueado"]::after {
+  background:
+    linear-gradient(115deg, transparent 35%, rgba(200, 235, 255, 0.07) 48%, rgba(200, 235, 255, 0.12) 50%, transparent 62%) 0 0 / 300% 100% no-repeat,
+    radial-gradient(130% 90% at 50% -10%, rgba(143, 202, 255, 0.14), transparent 65%);
+  box-shadow: 0 0 0 1px rgba(169, 220, 255, 0.42), inset 0 0 0 1px rgba(232, 246, 255, 0.06), inset 0 0 50px rgba(143, 202, 255, 0.1), 0 0 60px -14px rgba(143, 202, 255, 0.45);
+  opacity: 1;
+  animation: la-congela 1s var(--la-ease) both, la-reflexo-gelo 6s ease-in-out 1s infinite;
+}
+@keyframes la-congela {
+  from { opacity: 0; transform: scale(1.03); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes la-reflexo-gelo {
+  0%, 100% { background-position: 110% 0, 0 0; }
+  50% { background-position: -10% 0, 0 0; }
+}
+/* LIBERANDO: o gelo derrete e escorre, a luz verde volta */
+.la-painel[data-validacao="liberando"]::after {
+  background: linear-gradient(180deg, rgba(169, 220, 255, 0.16), rgba(62, 242, 165, 0.12) 70%, transparent);
+  box-shadow: 0 0 0 1px rgba(62, 242, 165, 0.45), 0 0 50px -12px rgba(62, 242, 165, 0.5);
+  animation: la-degelo 0.9s ease-in forwards;
+}
+@keyframes la-degelo {
+  0% { opacity: 1; clip-path: inset(0 0 0 0 round var(--la-raio)); }
+  100% { opacity: 0; clip-path: inset(100% 0 0 0 round var(--la-raio)); }
+}
+
+/* Bloco do bloqueio (no lugar do login social) */
+.la-bloqueio {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 16px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(169, 220, 255, 0.28);
+  background: linear-gradient(180deg, rgba(143, 202, 255, 0.1), rgba(143, 202, 255, 0.03));
+  color: var(--la-texto);
+}
+.la-bloqueio[hidden] { display: none; }
+.la-bloqueio__topo { display: flex; gap: 14px; align-items: flex-start; }
+.la-bloqueio__escudo {
+  flex: none;
+  position: relative;
+  width: 54px; height: 54px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(169, 220, 255, 0.3), rgba(169, 220, 255, 0) 70%);
+  animation: la-escudo-surge 0.8s var(--la-ease-mola) both;
+}
+.la-bloqueio__escudo svg { width: 54px; height: 54px; overflow: visible; }
+.la-bloqueio__anel {
+  fill: none; stroke: var(--la-gelo); stroke-width: 1.6; stroke-opacity: 0.8;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  transform-origin: 28px 28px; transform: rotate(-90deg);
+  animation: la-desenhar 0.9s var(--la-ease) 0.15s forwards;
+}
+.la-bloqueio__forma { fill: rgba(169, 220, 255, 0.16); stroke: var(--la-gelo-forte); stroke-width: 1.8; stroke-linejoin: round; }
+.la-bloqueio__corpo { fill: var(--la-gelo-forte); }
+.la-bloqueio__fecho {
+  fill: none; stroke: var(--la-gelo-forte); stroke-width: 1.8; stroke-linecap: round;
+  animation: la-fecho-desce 0.5s var(--la-ease-mola) 0.55s both;
+}
+@keyframes la-escudo-surge {
+  from { opacity: 0; transform: scale(0.5); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes la-fecho-desce { from { transform: translateY(-3px); } to { transform: none; } }
+
+.la-bloqueio__titulo {
+  margin: 2px 0 4px;
+  font-family: var(--la-fonte-titulo);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: var(--la-gelo-forte);
+  outline: none;
+}
+.la-bloqueio__titulo:focus-visible { outline: 2px solid var(--la-gelo); outline-offset: 3px; border-radius: 4px; }
+.la-bloqueio__texto { margin: 0; color: var(--la-texto-suave); font-size: 13.5px; line-height: 1.45; }
+.la-bloqueio__contagem { margin: 2px 0 0; font-size: 14px; color: var(--la-texto-suave); }
+.la-bloqueio__tempo {
+  color: var(--la-gelo-forte);
+  font-family: var(--la-fonte-titulo);
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.la-bloqueio__barra { height: 3px; border-radius: 3px; background: rgba(169, 220, 255, 0.14); overflow: hidden; }
+.la-bloqueio__barra span {
+  display: block; height: 100%;
+  background: linear-gradient(90deg, var(--la-gelo), var(--la-gelo-forte));
+  transform-origin: left;
+  transform: scaleX(var(--la-resta, 1));
+  transition: transform 0.3s linear;
+}
+.la-bloqueio__suporte { align-self: flex-start; font-size: 13.5px; color: var(--la-gelo); }
+
+/* Formulário travado: login social escondido, campos congelados */
+.la-form.la-travado .la-sociais,
+.la-form.la-travado .la-divisor { display: none; }
+.la-campo__input:disabled { cursor: not-allowed; opacity: 0.55; border-color: rgba(169, 220, 255, 0.18); background: rgba(143, 202, 255, 0.04); }
+.la-campo:has(.la-campo__input:disabled) .la-campo__icone { stroke: rgba(169, 220, 255, 0.55); }
+.la-olho:disabled, .la-check__input:disabled { cursor: not-allowed; }
+.la-check:has(.la-check__input:disabled) { opacity: 0.55; cursor: not-allowed; }
+.la-botao:disabled {
+  cursor: not-allowed;
+  background: linear-gradient(120deg, rgba(169, 220, 255, 0.22), rgba(95, 141, 255, 0.2));
+  color: var(--la-gelo-forte);
+  box-shadow: inset 0 0 0 1px rgba(169, 220, 255, 0.3);
+  filter: none;
+}
+.la-demo__usar:disabled { opacity: 0.5; cursor: not-allowed; background-size: 0 1px; }
+/* No degelo, o escudo escorre e some */
+.la-painel[data-validacao="liberando"] .la-bloqueio__escudo { animation: la-derrete 0.8s ease-in forwards; }
+.la-painel[data-validacao="liberando"] .la-bloqueio { transition: opacity 0.6s 0.2s, filter 0.6s 0.2s; opacity: 0.4; filter: blur(2px); }
+@keyframes la-derrete {
+  0% { transform: none; opacity: 1; filter: none; }
+  100% { transform: translateY(14px) scale(0.9, 0.5); opacity: 0; filter: blur(6px); }
+}
+
+/* Dica da conta demo */
+.la-demo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(47, 216, 228, 0.3);
+  background: rgba(47, 216, 228, 0.05);
+  font-size: 13px;
+  color: var(--la-texto-suave);
+}
+.la-demo__texto { margin: 0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.la-demo__rotulo { font-weight: 600; color: var(--la-acento-2); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11.5px; margin-right: 2px; }
+.la-demo code {
+  font: 500 12.5px/1 ui-monospace, "SFMono-Regular", Menlo, monospace;
+  padding: 4px 7px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--la-texto);
+}
+.la-demo__usar { font-size: 13px; }
+.la-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* 15. ANIMAÇÕES ------------------------------------------------------------ */
+/* Entrada: tudo termina até ~1,3 s (a capa é capturada parada) */
+.la-marca > *, .la-painel {
+  opacity: 0;
+  animation: la-subir 0.9s var(--la-ease) forwards;
+}
+.la-logo { animation-delay: 0.05s !important; }
+.la-marca__centro { animation-delay: 0.15s !important; }
+.la-depoimento { animation-delay: 0.3s !important; }
+.la-painel { animation-delay: 0.22s; }
+
+@keyframes la-subir {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes la-surge { to { opacity: 1; } }
+@keyframes la-tremer {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+@keyframes la-piscar {
+  0%, 100% { transform: scaleY(1); }
+  45% { transform: scaleY(0.1); }
+}
+@keyframes la-girar { to { transform: rotate(360deg); } }
+@keyframes la-pop {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes la-desenhar { to { stroke-dashoffset: 0; } }
+@keyframes la-progresso { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes la-pulso {
+  0% { box-shadow: 0 0 0 0 rgba(47, 216, 228, 0.5); }
+  100% { box-shadow: 0 0 0 12px rgba(47, 216, 228, 0); }
+}
+
+/* 16. RESPONSIVO ----------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .la-marca__titulo { font-size: clamp(34px, 4.4vw, 48px); }
+}
+
+/* Tablet e celular: o painel ocupa a tela, a aurora fica atrás */
+@media (max-width: 900px) {
+  .la-pagina {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    justify-items: center;
+    gap: 22px;
+    padding: 22px 16px 40px;
+  }
+  .la-marca {
+    width: 100%;
+    max-width: 480px;
+    align-self: auto;
+    padding: 0;
+  }
+  .la-marca__centro, .la-depoimento { display: none; }
+  .la-painel { max-width: 480px; }
+}
+
+@media (max-width: 480px) {
+  .la-pagina { padding: 18px 12px 32px; gap: 18px; }
+  .la-marca { padding-left: 6px; }
+  .la-painel { padding: 26px 18px 22px; border-radius: 22px; --la-vidro: rgba(12, 19, 34, 0.5); }
+  .la-painel__titulo { font-size: 23px; }
+  .la-sociais { gap: 8px; }
+  .la-social { height: 46px; font-size: 0; gap: 0; } /* só os logos; o nome fica para leitores de tela via aria-label */
+  .la-social svg { width: 20px; height: 20px; }
+  /* Dica da demo numa linha só */
+  .la-demo { padding: 9px 11px; gap: 6px; }
+  .la-demo code { font-size: 11.5px; padding: 4px 6px; }
+}
+
+/* 17. MOVIMENTO REDUZIDO --------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .la-ceu__aurora { opacity: 1; }
+  .la-marca > *, .la-painel { opacity: 1; }
+  /* O spinner continua girando devagar para indicar progresso */
+  .la-botao[data-estado="carregando"] .la-botao__spinner { animation: la-girar 1.4s linear infinite !important; }
+}
+
+/* Com erro visível na senha nova, o texto do medidor dá lugar à mensagem de erro */
+.la-grupo:has(.la-erro.la-visivel) .la-forca__texto { display: none; }
+/* Na confirmação de recuperação, o botão grande já leva de volta */
+.la-form:has([data-etapa="enviado"]:not([hidden])) .la-voltar { display: none; }

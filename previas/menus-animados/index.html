@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Menus Animados — 10 menus com animação em HTML, CSS e JS puros</title>
+  <meta name="description" content="Dez menus animados prontos para copiar: hambúrguer em cascata, pílulas com holofote, mega menu que morfa, barra lateral que expande, sublinhado deslizante, letras que rolam, menu radial, sanfona, menu de contexto e cortina em tela cheia.">
+  <meta name="theme-color" content="#f4f1ea">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <!-- Ícones (sprite). Use: <svg class="ma-icone" aria-hidden="true"><use href="#ma-i-casa"/></svg> -->
+  <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+    <defs>
+      <symbol id="ma-i-casa" viewBox="0 0 24 24"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></symbol>
+      <symbol id="ma-i-grafico" viewBox="0 0 24 24"><path d="M4 19.5h16"/><path d="M7 16V11M12 16V6M17 16v-3"/></symbol>
+      <symbol id="ma-i-pessoas" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M3.5 19c.5-3.5 2.8-5.5 5.5-5.5S14 15.5 14.5 19"/><path d="M16 5.5a3 3 0 0 1 0 6M17.5 13.5c2 .6 3 2.3 3.2 5"/></symbol>
+      <symbol id="ma-i-caixa" viewBox="0 0 24 24"><path d="M4 13.5 6 6h12l2 7.5V18a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18Z"/><path d="M4 13.5h5l1 2h4l1-2h5"/></symbol>
+      <symbol id="ma-i-calendario" viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8 3.5v4M16 3.5v4"/></symbol>
+      <symbol id="ma-i-engrenagem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4 18 18M6 18l1.6-1.6M16.4 7.6 18 6"/></symbol>
+      <symbol id="ma-i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="ma-i-nota" viewBox="0 0 24 24"><path d="M6 4.5h8.5L19 9v10.5H6Z"/><path d="M14 4.5V9h5M9 13h6M9 16.5h4"/></symbol>
+      <symbol id="ma-i-foto" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m5 17 4.5-4.5 3 3 3-2.5L20 17"/></symbol>
+      <symbol id="ma-i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l2.8-2.8a4 4 0 0 0-5.7-5.7l-1.3 1.3"/><path d="M14 10a4 4 0 0 0-5.7 0l-2.8 2.8a4 4 0 0 0 5.7 5.7l1.3-1.3"/></symbol>
+      <symbol id="ma-i-lixeira" viewBox="0 0 24 24"><path d="M5 7h14M9 7V4.5h6V7M7 7l1 13h8l1-13"/></symbol>
+      <symbol id="ma-i-copiar" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></symbol>
+      <symbol id="ma-i-lapis" viewBox="0 0 24 24"><path d="m4.5 19.5 1-4L16 5a2.1 2.1 0 0 1 3 3L8.5 18.5Z"/><path d="m14 7 3 3"/></symbol>
+      <symbol id="ma-i-raio" viewBox="0 0 24 24"><path d="M13 3 5 14h6l-1 7 8-11h-6l1-7z"/></symbol>
+      <symbol id="ma-i-escudo" viewBox="0 0 24 24"><path d="M12 3.5 5 6v6c0 4 3 7 7 8.5 4-1.5 7-4.5 7-8.5V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="ma-i-estrela" viewBox="0 0 24 24"><path d="m12 4 2.4 5 5.6.7-4 3.8 1 5.5-5-2.7-5 2.7 1-5.5-4-3.8L9.6 9Z"/></symbol>
+      <symbol id="ma-i-seta" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+      <symbol id="ma-i-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4"/></symbol>
+      <symbol id="ma-i-fechar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+      <symbol id="ma-i-pino" viewBox="0 0 24 24"><path d="M9 4h6l-1 5 3 3v2H7v-2l3-3Z"/><path d="M12 14v6"/></symbol>
+      <symbol id="ma-i-livro" viewBox="0 0 24 24"><path d="M5 5.5A1.5 1.5 0 0 1 6.5 4H19v15H6.5A1.5 1.5 0 0 0 5 20.5Z"/><path d="M5 17.5h14M9 8h6"/></symbol>
+      <symbol id="ma-i-codigo" viewBox="0 0 24 24"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/></symbol>
+      <symbol id="ma-i-chat" viewBox="0 0 24 24"><path d="M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10l-4.5 3.5v-3.5h-1Z"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="ma-pagina">
+
+    <!-- ========== Cabeçalho da galeria ========== -->
+    <header class="ma-topo">
+      <div class="ma-topo__texto">
+        <p class="ma-topo__eyebrow"><span class="ma-topo__ponto" aria-hidden="true"></span>Coleção · 10 menus</p>
+        <h1 class="ma-topo__titulo">Menus <em>animados</em></h1>
+        <p class="ma-topo__sub">Dez menus com movimento de verdade, cada um com sua animação: cascata, holofote, mega menu que morfa, barra lateral que expande, sublinhado deslizante, letras que rolam, radial, sanfona, contexto e cortina. HTML, CSS e JS puros — passe o mouse, toque, use o teclado e clique em <strong>Copiar HTML</strong>.</p>
+      </div>
+      <ul class="ma-topo__selos" aria-label="Recursos">
+        <li>Teclado</li><li>Toque</li><li>Reduced motion</li><li>Zero dependências</li>
+      </ul>
+    </header>
+
+    <main class="ma-galeria">
+
+      <!-- ========== 01 · Hambúrguer em cascata ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-1">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">01</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-1">Hambúrguer em cascata</h2>
+            <p class="ma-palco__dica">As três barras viram um X e os itens entram um a um</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-1"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area ma-palco__area--topo" id="ma-area-1">
+          <div class="ma-hamb" data-ma="hamburguer">
+            <div class="ma-hamb__barra">
+              <span class="ma-hamb__marca">Norte<i>.</i></span>
+              <button class="ma-hamb__botao" type="button" aria-expanded="true" aria-controls="ma-hamb-painel" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+            </div>
+            <nav class="ma-hamb__painel" id="ma-hamb-painel" aria-label="Menu principal">
+              <ul>
+                <li style="--i:0"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-casa"/></svg>Início</a></li>
+                <li style="--i:1"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-foto"/></svg>Portfólio</a></li>
+                <li style="--i:2"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-pessoas"/></svg>Estúdio</a></li>
+                <li style="--i:3"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-livro"/></svg>Jornal</a></li>
+                <li style="--i:4"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-chat"/></svg>Contato</a></li>
+              </ul>
+              <p class="ma-hamb__rodape" style="--i:5">contato@norte.design</p>
+            </nav>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 02 · Pílulas com holofote ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-2">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">02</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-2">Pílulas com holofote</h2>
+            <p class="ma-palco__dica">Uma luz segue o cursor e a pílula desliza até o item</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-2"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area ma-palco__area--escuro" id="ma-area-2">
+          <nav class="ma-holo" data-ma="holofote" aria-label="Seções">
+            <span class="ma-holo__pilula" aria-hidden="true"></span>
+            <ul>
+              <li><a href="#" aria-current="page">Início</a></li>
+              <li><a href="#">Produtos</a></li>
+              <li><a href="#">Histórias</a></li>
+              <li><a href="#">Preços</a></li>
+              <li><a href="#">Ajuda</a></li>
+            </ul>
+          </nav>
+        </div>
+      </article>
+
+      <!-- ========== 03 · Mega menu que morfa ========== -->
+      <article class="ma-palco ma-palco--largo" aria-labelledby="ma-nome-3">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">03</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-3">Mega menu que morfa</h2>
+            <p class="ma-palco__dica">Um único painel muda de tamanho e posição entre os itens</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-3"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area ma-palco__area--topo ma-palco__area--mega" id="ma-area-3">
+          <nav class="ma-mega" data-ma="mega" data-demo-aberto="0" aria-label="Produto">
+            <ul class="ma-mega__barra">
+              <li><span class="ma-mega__marca">Lume</span></li>
+              <li><button type="button" aria-expanded="false" aria-controls="ma-mega-p1">Produtos</button></li>
+              <li><button type="button" aria-expanded="false" aria-controls="ma-mega-p2">Soluções</button></li>
+              <li><button type="button" aria-expanded="false" aria-controls="ma-mega-p3">Recursos</button></li>
+              <li><a href="#">Preços</a></li>
+              <li class="ma-mega__acao"><a href="#" class="ma-botao-mini">Entrar</a></li>
+            </ul>
+            <div class="ma-mega__flutuante" hidden>
+              <span class="ma-mega__seta" aria-hidden="true"></span>
+              <div class="ma-mega__conteudo">
+                <section class="ma-mega__painel ma-mega__painel--grade" id="ma-mega-p1" data-largura="560">
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-raio"/></svg><b>Automação</b><small>Fluxos que rodam sozinhos</small></a>
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-grafico"/></svg><b>Relatórios</b><small>Painéis em tempo real</small></a>
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-chat"/></svg><b>Inbox</b><small>Todas as conversas num lugar</small></a>
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-escudo"/></svg><b>Segurança</b><small>SSO, logs e permissões</small></a>
+                </section>
+                <section class="ma-mega__painel ma-mega__painel--colunas" id="ma-mega-p2" data-largura="440">
+                  <div><h3>Por área</h3><a href="#">Marketing</a><a href="#">Vendas</a><a href="#">Financeiro</a><a href="#">Suporte</a></div>
+                  <div><h3>Por tamanho</h3><a href="#">Autônomos</a><a href="#">Pequenas equipes</a><a href="#">Empresas</a></div>
+                </section>
+                <section class="ma-mega__painel ma-mega__painel--lista" id="ma-mega-p3" data-largura="300">
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-livro"/></svg>Documentação</a>
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-codigo"/></svg>API</a>
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-pessoas"/></svg>Comunidade</a>
+                  <a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-estrela"/></svg>Novidades</a>
+                </section>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </article>
+
+      <!-- ========== 04 · Barra lateral que expande ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-4">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">04</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-4">Barra lateral que expande</h2>
+            <p class="ma-palco__dica">Só ícones; passe o mouse e os nomes aparecem · pino fixa aberta</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-4"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area ma-palco__area--esquerda" id="ma-area-4">
+          <nav class="ma-lateral" data-ma="lateral" aria-label="Navegação do painel">
+            <div class="ma-lateral__topo">
+              <span class="ma-lateral__logo" aria-hidden="true">L</span>
+              <span class="ma-lateral__nome">Lumen</span>
+              <button class="ma-lateral__pino" type="button" aria-pressed="false" aria-label="Manter aberta"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-pino"/></svg></button>
+            </div>
+            <span class="ma-lateral__marcador" aria-hidden="true"></span>
+            <ul class="ma-lateral__lista">
+              <li style="--i:0"><a href="#" aria-current="page"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-casa"/></svg><span>Visão geral</span></a></li>
+              <li style="--i:1"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-grafico"/></svg><span>Relatórios</span></a></li>
+              <li style="--i:2"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-pessoas"/></svg><span>Clientes</span><em class="ma-lateral__badge">12</em></a></li>
+              <li style="--i:3"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-caixa"/></svg><span>Pedidos</span></a></li>
+              <li style="--i:4"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-calendario"/></svg><span>Agenda</span></a></li>
+              <li style="--i:5"><a href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-engrenagem"/></svg><span>Ajustes</span></a></li>
+            </ul>
+          </nav>
+          <div class="ma-lateral__conteudo" aria-hidden="true"><i></i><i></i><i></i></div>
+        </div>
+      </article>
+
+      <!-- ========== 05 · Sublinhado deslizante ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-5">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">05</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-5">Sublinhado deslizante</h2>
+            <p class="ma-palco__dica">Uma linha só, que corre e estica até o item apontado</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-5"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area" id="ma-area-5">
+          <nav class="ma-sub" data-ma="sublinhado" aria-label="Portfólio">
+            <ul>
+              <li><a href="#" aria-current="page">Trabalhos</a></li>
+              <li><a href="#">Estúdio</a></li>
+              <li><a href="#">Processo</a></li>
+              <li><a href="#">Prêmios</a></li>
+              <li><a href="#">Contato</a></li>
+            </ul>
+            <span class="ma-sub__linha" aria-hidden="true"></span>
+          </nav>
+        </div>
+      </article>
+
+      <!-- ========== 06 · Letras que rolam ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-6">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">06</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-6">Letras que rolam</h2>
+            <p class="ma-palco__dica">No hover, cada letra sobe e a cópia colorida entra por baixo</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-6"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area" id="ma-area-6">
+          <nav class="ma-rol" data-ma="rolagem" aria-label="Menu editorial">
+            <ul>
+              <li><a href="#" data-rolagem>Projetos</a></li>
+              <li><a href="#" data-rolagem>Sobre</a></li>
+              <li><a href="#" data-rolagem>Jornal</a></li>
+              <li><a href="#" data-rolagem>Loja</a></li>
+              <li><a href="#" data-rolagem>Contato</a></li>
+            </ul>
+          </nav>
+        </div>
+      </article>
+
+      <!-- ========== 07 · Menu radial ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-7">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">07</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-7">Menu radial</h2>
+            <p class="ma-palco__dica">O botão gira e cinco ações saltam em arco</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-7"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area" id="ma-area-7">
+          <div class="ma-radial" data-ma="radial">
+            <ul class="ma-radial__itens">
+              <li style="--i:0;--a:-170deg"><button type="button" aria-label="Nova nota"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-nota"/></svg></button></li>
+              <li style="--i:1;--a:-130deg"><button type="button" aria-label="Enviar foto"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-foto"/></svg></button></li>
+              <li style="--i:2;--a:-90deg"><button type="button" aria-label="Novo evento"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-calendario"/></svg></button></li>
+              <li style="--i:3;--a:-50deg"><button type="button" aria-label="Copiar link"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-link"/></svg></button></li>
+              <li style="--i:4;--a:-10deg"><button type="button" aria-label="Convidar pessoa"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-pessoas"/></svg></button></li>
+            </ul>
+            <button class="ma-radial__gatilho" type="button" aria-expanded="true" aria-label="Criar"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-mais"/></svg></button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 08 · Sanfona ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-8">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">08</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-8">Sanfona em árvore</h2>
+            <p class="ma-palco__dica">Grupos abrem com altura animada e itens em cascata</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-8"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area ma-palco__area--esquerda" id="ma-area-8">
+          <nav class="ma-sanfona" data-ma="sanfona" aria-label="Documentação">
+            <ul>
+              <li class="ma-sanfona__grupo">
+                <button type="button" aria-expanded="true" aria-controls="ma-sf-1"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-raio"/></svg><span>Começando</span><svg class="ma-icone ma-sanfona__chevron" aria-hidden="true"><use href="#ma-i-chevron"/></svg></button>
+                <div class="ma-sanfona__sub" id="ma-sf-1"><ul>
+                  <li style="--i:0"><a href="#" aria-current="page">Instalação</a></li>
+                  <li style="--i:1"><a href="#">Primeiro projeto</a></li>
+                  <li style="--i:2"><a href="#">Configuração</a></li>
+                </ul></div>
+              </li>
+              <li class="ma-sanfona__grupo">
+                <button type="button" aria-expanded="false" aria-controls="ma-sf-2"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-codigo"/></svg><span>Componentes</span><svg class="ma-icone ma-sanfona__chevron" aria-hidden="true"><use href="#ma-i-chevron"/></svg></button>
+                <div class="ma-sanfona__sub" id="ma-sf-2"><ul>
+                  <li style="--i:0"><a href="#">Botões</a></li>
+                  <li style="--i:1"><a href="#">Formulários</a></li>
+                  <li style="--i:2"><a href="#">Navegação</a></li>
+                  <li style="--i:3"><a href="#">Modais</a></li>
+                </ul></div>
+              </li>
+              <li class="ma-sanfona__grupo">
+                <button type="button" aria-expanded="false" aria-controls="ma-sf-3"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-escudo"/></svg><span>Boas práticas</span><svg class="ma-icone ma-sanfona__chevron" aria-hidden="true"><use href="#ma-i-chevron"/></svg></button>
+                <div class="ma-sanfona__sub" id="ma-sf-3"><ul>
+                  <li style="--i:0"><a href="#">Acessibilidade</a></li>
+                  <li style="--i:1"><a href="#">Desempenho</a></li>
+                </ul></div>
+              </li>
+              <li><a class="ma-sanfona__solto" href="#"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-chat"/></svg><span>Suporte</span></a></li>
+            </ul>
+          </nav>
+        </div>
+      </article>
+
+      <!-- ========== 09 · Menu de contexto ========== -->
+      <article class="ma-palco" aria-labelledby="ma-nome-9">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">09</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-9">Menu de contexto</h2>
+            <p class="ma-palco__dica">Botão direito (ou toque e segure): abre crescendo a partir do cursor</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-9"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area" id="ma-area-9">
+          <div class="ma-ctx" data-ma="contexto">
+            <div class="ma-ctx__zona" tabindex="0" role="button" aria-haspopup="menu" aria-expanded="false" aria-controls="ma-ctx-menu">
+              <svg class="ma-icone" aria-hidden="true"><use href="#ma-i-foto"/></svg>
+              <strong>capa-final.jpg</strong>
+              <span>Clique com o botão direito, toque e segure ou pressione Enter</span>
+            </div>
+            <ul class="ma-ctx__menu" id="ma-ctx-menu" role="menu" aria-label="Ações do arquivo" hidden>
+              <li role="none"><button type="button" role="menuitem"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-foto"/></svg>Abrir<kbd>↵</kbd></button></li>
+              <li role="none"><button type="button" role="menuitem"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-lapis"/></svg>Renomear<kbd>F2</kbd></button></li>
+              <li role="none"><button type="button" role="menuitem"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg>Duplicar<kbd>⌘D</kbd></button></li>
+              <li role="none"><button type="button" role="menuitem"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-link"/></svg>Copiar link</button></li>
+              <li role="separator"></li>
+              <li role="none"><button type="button" role="menuitem" class="ma-ctx__perigo"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-lixeira"/></svg>Excluir<kbd>⌫</kbd></button></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 10 · Cortina em tela cheia ========== -->
+      <article class="ma-palco ma-palco--largo" aria-labelledby="ma-nome-10">
+        <header class="ma-palco__cab">
+          <span class="ma-palco__num">10</span>
+          <div class="ma-palco__titulos">
+            <h2 class="ma-palco__nome" id="ma-nome-10">Cortina em tela cheia</h2>
+            <p class="ma-palco__dica">Painéis descem em sequência e os links enormes sobem</p>
+          </div>
+          <button class="ma-copiar" type="button" data-copiar="ma-area-10"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-copiar"/></svg><span>Copiar HTML</span></button>
+        </header>
+        <div class="ma-palco__area ma-palco__area--pagina" id="ma-area-10">
+          <div class="ma-cortina" data-ma="cortina">
+            <header class="ma-cortina__cab">
+              <span class="ma-cortina__marca">Atelier Sul</span>
+              <button class="ma-cortina__abrir" type="button" aria-expanded="false" aria-controls="ma-cortina-tela"><span>Menu</span><i aria-hidden="true"></i></button>
+            </header>
+            <div class="ma-cortina__falso" aria-hidden="true">
+              <h3>Arquitetura que respira.</h3>
+              <p>Projetos residenciais e culturais desde 2009.</p>
+            </div>
+            <div class="ma-cortina__tela" id="ma-cortina-tela" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+              <div class="ma-cortina__paineis" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <button class="ma-cortina__fechar" type="button" aria-label="Fechar menu"><svg class="ma-icone" aria-hidden="true"><use href="#ma-i-fechar"/></svg></button>
+              <nav aria-label="Menu principal">
+                <ol>
+                  <li style="--i:0"><a href="#"><small>01</small>Projetos</a></li>
+                  <li style="--i:1"><a href="#"><small>02</small>Escritório</a></li>
+                  <li style="--i:2"><a href="#"><small>03</small>Prêmios</a></li>
+                  <li style="--i:3"><a href="#"><small>04</small>Contato</a></li>
+                </ol>
+              </nav>
+              <p class="ma-cortina__rodape" style="--i:4">São Paulo · Lisboa · <a href="#">ola@ateliersul.com</a></p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <footer class="ma-rodape">
+      <p>Cada menu é independente: copie o HTML pelo botão do palco, o bloco <code>.ma-&lt;nome&gt;</code> do <code>estilo.css</code> e, quando houver, a função correspondente no <code>script.js</code>. Cores, fontes e curvas estão no <code>:root</code>.</p>
+    </footer>
+  </div>
+
+  <div class="ma-toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

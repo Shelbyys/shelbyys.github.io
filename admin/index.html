@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Modelos Prontos</title>
+<meta name="description" content="Código limpo em HTML, CSS e JavaScript puros. Sem dependências, sem build: baixe, abra e adapte.">
+<link rel="canonical" href="https://shelbyys.github.io/admin/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Admin — Modelos Prontos">
+<meta property="og:description" content="Código limpo em HTML, CSS e JavaScript puros. Sem dependências, sem build: baixe, abra e adapte.">
+<meta property="og:url" content="https://shelbyys.github.io/admin/">
+
+<meta name="theme-color" content="#0d0d0c">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/assets/loja.css">
+</head>
+<body>
+<a class="sr" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo">
+  <div class="envelope">
+    <a class="marca" href="/"><span class="marca-sinal" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Modelos Prontos</a>
+    <span class="modo-demo" title="Pagamentos simulados — nada é cobrado">demo</span>
+    <nav class="nav" aria-label="Principal">
+      <a href="/#catalogo" class="">Catálogo</a>
+      <a href="/#gratis" class="">Grátis</a>
+      <a href="/licenca/" class="">Licença</a>
+      <a href="/conta/" class="nav-conta">Minhas compras</a>
+    </nav>
+  </div>
+</header>
+<main id="conteudo">
+
+<div class="pagina admin" id="admin">
+  <div class="envelope">
+    <div class="admin-topo">
+      <div><h1>Admin</h1><p class="lead" id="adm-quem">Carregando…</p></div>
+      <span class="adm-modo" id="adm-modo" hidden></span>
+    </div>
+
+    <div class="painel adm-login" id="adm-login" hidden>
+      <form id="adm-form-login" class="campo" style="gap:14px">
+        <label for="adm-email-login">E-mail de administrador</label>
+        <input id="adm-email-login" name="email" type="email" required autocomplete="email" placeholder="voce@email.com">
+        <button class="btn btn-sinal btn-largo" type="submit">Receber link de acesso<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        <p class="msg" id="adm-login-msg" hidden role="status"></p>
+      </form>
+    </div>
+
+    <div id="adm-app" hidden>
+      <div class="adm-kpis" aria-live="polite">
+        <div><span>Vendas pagas</span><b id="kpi-vendas">—</b></div>
+        <div><span>Receita</span><b id="kpi-receita">—</b></div>
+        <div><span>Aguardando pagamento</span><b id="kpi-pendentes">—</b></div>
+        <div><span>Reembolsos</span><b id="kpi-reembolsos">—</b></div>
+      </div>
+
+      <div class="adm-abas" role="tablist" aria-label="Seções do admin">
+        <button type="button" role="tab" id="aba-pagamentos" aria-controls="painel-pagamentos" aria-selected="true" tabindex="0">Pagamentos · Asaas</button><button type="button" role="tab" id="aba-vendas" aria-controls="painel-vendas" aria-selected="false" tabindex="-1">Vendas</button><button type="button" role="tab" id="aba-produtos" aria-controls="painel-produtos" aria-selected="false" tabindex="-1">Produtos</button><button type="button" role="tab" id="aba-prompts" aria-controls="painel-prompts" aria-selected="false" tabindex="-1">Prompts</button><button type="button" role="tab" id="aba-admins" aria-controls="painel-admins" aria-selected="false" tabindex="-1">Administradores</button>
+      </div>
+
+      <section class="adm-painel" role="tabpanel" id="painel-pagamentos" aria-labelledby="aba-pagamentos">
+        <ol class="adm-passos" id="adm-passos">
+          <li data-passo="chave"><b>1. Chave de API</b><span>Salve a chave do Asaas</span></li>
+          <li data-passo="conexao"><b>2. Conexão</b><span>Teste a chave</span></li>
+          <li data-passo="webhook"><b>3. Webhook</b><span>Confirmação automática dos pagamentos</span></li>
+        </ol>
+        <div class="adm-grade">
+          <form class="painel adm-form" id="adm-form-asaas" novalidate>
+            <h2>Conta Asaas</h2>
+            <fieldset class="adm-amb">
+              <legend>Ambiente</legend>
+              <label><input type="radio" name="ambiente" value="sandbox" checked> <span><b>Sandbox</b><small>testes, dinheiro de mentira</small></span></label>
+              <label><input type="radio" name="ambiente" value="producao"> <span><b>Produção</b><small>cobranças reais</small></span></label>
+            </fieldset>
+            <div class="campo">
+              <label for="adm-chave">Chave de API <a href="https://docs.asaas.com/docs/autenticacao" target="_blank" rel="noopener">onde pegar?</a></label>
+              <input id="adm-chave" name="chave" type="password" autocomplete="off" spellcheck="false" placeholder="$aact_...">
+              <small class="adm-dica" id="adm-chave-dica">No Asaas: Integrações → Chaves de API → Gerar chave. Use a chave do mesmo ambiente escolhido acima.</small>
+            </div>
+            <fieldset class="adm-metodos">
+              <legend>Formas de pagamento no checkout</legend>
+              <label class="aceite"><input type="checkbox" name="metodos" value="PIX" checked> <span>Pix</span></label>
+              <label class="aceite"><input type="checkbox" name="metodos" value="CREDIT_CARD" checked> <span>Cartão de crédito</span></label>
+            </fieldset>
+            <div class="adm-duas">
+              <div class="campo">
+                <label for="adm-min">Link de pagamento expira em (min)</label>
+                <input id="adm-min" name="minutosExpirar" type="number" min="10" max="1440" step="5" value="60">
+              </div>
+              <div class="campo">
+                <label for="adm-email-av">E-mail para avisos do webhook</label>
+                <input id="adm-email-av" name="emailAvisos" type="email" placeholder="voce@email.com">
+              </div>
+            </div>
+            <div class="campo">
+              <label for="adm-site">URL pública da loja</label>
+              <input id="adm-site" name="siteUrl" type="url" placeholder="https://shelbyys.github.io">
+              <small class="adm-dica">Para onde o cliente volta depois de pagar. Em produção, o endereço do seu site.</small>
+            </div>
+            <p class="msg" id="adm-msg-asaas" hidden role="status"></p>
+            <button class="btn btn-sinal" type="submit">Salvar configurações</button>
+          </form>
+
+          <div class="adm-lado">
+            <div class="painel">
+              <h2>Testar conexão</h2>
+              <p class="adm-txt">Confere se a chave funciona e mostra a conta conectada.</p>
+              <button class="btn" type="button" id="adm-testar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M13 3 5 14h6l-1 7 8-11h-6l1-7z"/></svg>Testar conexão</button>
+              <div class="adm-resultado" id="adm-res-teste" hidden></div>
+            </div>
+            <div class="painel">
+              <h2>Webhook</h2>
+              <p class="adm-txt">É por ele que o Asaas avisa a loja quando o Pix ou o cartão é aprovado, e o download é liberado. Configuramos sozinhos na sua conta, com um token secreto.</p>
+              <div class="adm-url"><code id="adm-webhook-url">—</code><button class="icone-btn" type="button" data-copiar="adm-webhook-url" aria-label="Copiar URL do webhook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></svg></button></div>
+              <button class="btn" type="button" id="adm-webhook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M7.5 15.5C5 15.5 3 13.9 3 12s2-3.5 4.5-3.5C11 8.5 13 15.5 16.5 15.5c2.5 0 4.5-1.6 4.5-3.5s-2-3.5-4.5-3.5C13 8.5 11 15.5 7.5 15.5z"/></svg>Configurar webhook no Asaas</button>
+              <div class="adm-resultado" id="adm-res-webhook" hidden></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="adm-painel" role="tabpanel" id="painel-vendas" aria-labelledby="aba-vendas" hidden>
+        <div class="adm-barra">
+          <label class="campo-inline">Status
+            <select id="adm-filtro-status">
+              <option value="">Todos</option><option value="pago">Pago</option><option value="pendente">Pendente</option>
+              <option value="reembolsado">Reembolsado</option><option value="cancelado">Cancelado</option><option value="expirado">Expirado</option><option value="falhou">Falhou</option>
+            </select>
+          </label>
+          <button class="btn" type="button" id="adm-atualizar-vendas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg>Atualizar</button>
+        </div>
+        <div class="adm-tabela"><table>
+          <thead><tr><th>Data</th><th>E-mail</th><th>Produto</th><th>Valor</th><th>Status</th><th><span class="sr">Ações</span></th></tr></thead>
+          <tbody id="adm-vendas"><tr><td colspan="6" class="vazio">Carregando…</td></tr></tbody>
+        </table></div>
+      </section>
+
+      <section class="adm-painel" role="tabpanel" id="painel-produtos" aria-labelledby="aba-produtos" hidden>
+        <p class="adm-txt">Pause a venda de um modelo sem tirá-lo do site. Preço e versão vêm do <code>produto.json</code> e são enviados com <code>npm run publicar</code>.</p>
+        <div class="adm-tabela"><table>
+          <thead><tr><th>Produto</th><th>Preço</th><th>Versão</th><th>À venda</th></tr></thead>
+          <tbody id="adm-produtos"><tr><td colspan="4" class="vazio">Carregando…</td></tr></tbody>
+        </table></div>
+      </section>
+
+      <section class="adm-painel" role="tabpanel" id="painel-prompts" aria-labelledby="aba-prompts" hidden>
+        <p class="adm-txt">Abra a pasta deste projeto no Axyoma, copie um prompt, cole no chat e troque o que está entre [colchetes].</p>
+        <div class="prompts"><article class="prompt">
+      <div class="prompt-cab">
+        <div><h3>Criar um produto novo</h3><p>Do zero até o teste passando, pronto para entrar no catálogo.</p></div>
+        <button class="btn btn-copiar" type="button" data-copiar="pr-admin-novo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></svg><span>Copiar</span></button>
+      </div>
+      <details><summary>Ver prompt</summary><pre id="pr-admin-novo">Crie um produto ORIGINAL para a loja (pasta loja/ deste projeto). Não copie nada de biblioteca/ nem de modelos/ (são de terceiros).
+
+Produto: [nome] — [o que é, em 2 ou 3 frases]
+Categoria: [dashboards, formularios, cards, botoes, navegacao, ecommerce, animacoes, loaders, icones, landing, componentes] · Preço: [valor em reais, 0 = grátis]
+Direção visual: [ex.: escuro grafite com verde-água / claro editorial creme]
+
+Passos:
+1. Rode: cd loja &amp;&amp; npm run novo -- &quot;[nome]&quot; --categoria [categoria] --preco [preço]
+2. Construa em produtos/&lt;slug&gt;/demo/ com HTML, CSS e JS puros, sem dependências (só Google Fonts), tokens no :root, classes prefixadas, prefers-reduced-motion e acessibilidade (foco visível, aria, contraste AA).
+3. A primeira tela em 1440×900 vira a capa: deixe-a cheia e bonita, com as animações de entrada terminando em até 1,5 s.
+4. Escreva o LEIAME.md (como usar, trocar cores, onde ficam os dados) e preencha o produto.json (resumo até 140 caracteres, descrição, destaques, inclui, tags, previa).
+5. Rode npm run testar -- &lt;slug&gt; e corrija tudo; confira com screenshot em 1440 e 390px.
+6. Mude &quot;publicado&quot; para true e me mostre o resultado.</pre></details>
+    </article><article class="prompt">
+      <div class="prompt-cab">
+        <div><h3>Recriar inspirado num modelo antigo</h3><p>Usa só a IDEIA de um modelo da biblioteca e cria um original, seguro para vender.</p></div>
+        <button class="btn btn-copiar" type="button" data-copiar="pr-admin-inspirado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></svg><span>Copiar</span></button>
+      </div>
+      <details><summary>Ver prompt</summary><pre id="pr-admin-inspirado">Quero um produto ORIGINAL para a loja inspirado só no CONCEITO do modelo &quot;[nome da pasta em biblioteca/]&quot;.
+
+Regras: não copie código, textos, ilustrações nem a identidade visual dele. Pegue apenas a ideia da interação (ex.: &quot;campo de código que gira como cofre&quot;) e crie um design, nomes, cores e código seus, melhores e mais completos.
+
+Depois siga o fluxo de produto novo da loja: npm run novo, demo em HTML/CSS/JS puros, LEIAME.md, produto.json, npm run testar -- &lt;slug&gt; passando e capa bonita em 1440×900.
+Categoria: [categoria] · Preço: [preço]</pre></details>
+    </article><article class="prompt">
+      <div class="prompt-cab">
+        <div><h3>Lançar nova versão de um produto</h3><p>Melhora um produto existente e atualiza quem já comprou.</p></div>
+        <button class="btn btn-copiar" type="button" data-copiar="pr-admin-versao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></svg><span>Copiar</span></button>
+      </div>
+      <details><summary>Ver prompt</summary><pre id="pr-admin-versao">Melhore o produto loja/produtos/[slug]/:
+- [o que melhorar: ex.: tema claro, mais um gráfico, correção no celular]
+
+Depois:
+1. Suba a versão no produto.json (1.0.0 → 1.1.0 para novidades, 1.0.1 para correções) e registre as mudanças no LEIAME.md (seção &quot;Novidades&quot;).
+2. Rode npm run testar -- [slug] e corrija tudo.
+3. Rode npm run publicar -- --seco e me mostre o que será enviado (eu confirmo antes do envio real).</pre></details>
+    </article><article class="prompt">
+      <div class="prompt-cab">
+        <div><h3>Escrever os textos de venda</h3><p>Resumo, descrição e destaques mais vendedores (e honestos).</p></div>
+        <button class="btn btn-copiar" type="button" data-copiar="pr-admin-textos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></svg><span>Copiar</span></button>
+      </div>
+      <details><summary>Ver prompt</summary><pre id="pr-admin-textos">Leia o código de loja/produtos/[slug]/demo/ e reescreva no produto.json:
+- &quot;resumo&quot; (até 140 caracteres): o que é e para quem
+- &quot;descricao&quot; (300 a 500 caracteres): o problema que resolve, o que vem no pacote e por que economiza tempo
+- &quot;destaques&quot; (4 a 6 itens curtos): só o que o código realmente faz
+- &quot;tags&quot; (5 a 8)
+Tom: direto, em português do Brasil, sem exageros e sem prometer o que não existe. Rode npm run testar -- [slug] no final.</pre></details>
+    </article><article class="prompt">
+      <div class="prompt-cab">
+        <div><h3>Auditar o catálogo inteiro</h3><p>Roda os testes, revisa capas e aponta o que melhorar.</p></div>
+        <button class="btn btn-copiar" type="button" data-copiar="pr-admin-auditoria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></svg><span>Copiar</span></button>
+      </div>
+      <details><summary>Ver prompt</summary><pre id="pr-admin-auditoria">Faça uma auditoria da loja (pasta loja/):
+1. Rode npm run testar e npm run testar:site e corrija qualquer falha.
+2. Veja as capas (produtos/*/capa.jpg): aponte as que estão vazias, escuras demais ou sem destaque, e melhore a primeira tela desses produtos.
+3. Revise os produto.json: resumos acima de 140 caracteres, destaques genéricos, preços fora do padrão do catálogo.
+4. Sugira 5 produtos novos que faltam no catálogo, com nome, categoria e preço.
+Me entregue um resumo do que foi corrigido e das sugestões.</pre></details>
+    </article></div>
+      </section>
+
+      <section class="adm-painel" role="tabpanel" id="painel-admins" aria-labelledby="aba-admins" hidden>
+        <div class="painel">
+          <ul class="adm-admins" id="adm-admins"></ul>
+          <form class="adm-barra" id="adm-form-admin">
+            <label class="campo-inline" style="flex:1">Novo administrador
+              <input name="email" type="email" required placeholder="email@exemplo.com">
+            </label>
+            <button class="btn btn-sinal" type="submit">Adicionar</button>
+          </form>
+          <p class="msg" id="adm-msg-admins" hidden role="status"></p>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</main>
+<footer class="rodape">
+  <div class="envelope">
+    <span>© 2026 Modelos Prontos · Código original, feito no Brasil.</span>
+    <nav aria-label="Rodapé">
+      <a href="/#catalogo">Catálogo</a><a href="/licenca/">Licença</a><a href="/#perguntas">Perguntas</a><a href="/conta/">Minhas compras</a><a href="/admin/">Admin</a><a href="mailto:contato@modelosprontos.com.br">contato@modelosprontos.com.br</a>
+    </nav>
+  </div>
+</footer>
+<dialog class="dlg" id="dlg-compra" aria-labelledby="dlg-nome">
+  <div class="dlg-cab">
+    <img id="dlg-capa" alt="">
+    <div><b id="dlg-nome"></b><span class="mono" id="dlg-preco"></span></div>
+    <button class="icone-btn dlg-fechar" type="button" data-fechar aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <form id="form-compra" novalidate>
+    <div class="campo">
+      <label for="email-compra">Seu e-mail — o acesso ao download fica ligado a ele</label>
+      <input id="email-compra" name="email" type="email" autocomplete="email" required placeholder="voce@email.com">
+    </div>
+    <label class="aceite"><input type="checkbox" name="aceite" required> <span>Li e aceito a <a href="/licenca/" target="_blank">licença de uso</a>.</span></label>
+    <p class="msg" id="dlg-msg" hidden role="alert"></p>
+    <button class="btn btn-sinal btn-largo" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>Ir para o pagamento</button>
+    <p class="dlg-rodape"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg> Pix ou cartão · pagamento seguro pelo Asaas</p>
+  </form>
+</dialog>
+<dialog class="visor" id="visor" aria-labelledby="visor-nome">
+  <div class="visor-topo">
+    <button class="icone-btn" type="button" data-fechar aria-label="Fechar visualização"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="visor-titulo"><b id="visor-nome"></b><span class="mono" id="visor-meta"></span></div>
+    <span class="mono visor-contador" id="visor-contador" aria-live="polite"></span>
+    <div class="seg" role="group" aria-label="Tamanho da prévia">
+      <button type="button" aria-pressed="true" data-largura="1440"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8m-4-4v4"/></svg><span>Desktop</span></button>
+      <button type="button" aria-pressed="false" data-largura="820" data-altura="1180"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M11 18h2"/></svg><span>Tablet</span></button>
+      <button type="button" aria-pressed="false" data-largura="390" data-altura="844"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></svg><span>Celular</span></button>
+    </div>
+    <a class="icone-btn" id="visor-externo" href="#" target="_blank" rel="noopener" aria-label="Abrir prévia em nova aba" title="Abrir em nova aba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M14 4h6v6m0-6-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
+  </div>
+  <div class="visor-palco">
+    <button class="visor-seta visor-seta--ant" type="button" data-visor-ant aria-label="Modelo anterior" title="Anterior (←)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="m15 5-7 7 7 7"/></svg></button>
+    <div class="tela" data-largura="1440" data-altura="900"><iframe title="Prévia do modelo" src="about:blank"></iframe></div>
+    <button class="visor-seta visor-seta--prox" type="button" data-visor-prox aria-label="Próximo modelo" title="Próximo (→)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="m9 5 7 7-7 7"/></svg></button>
+  </div>
+  <div class="visor-rodape">
+    <p class="visor-resumo" id="visor-resumo"></p>
+    <div class="visor-acoes">
+      <span class="visor-preco" id="visor-preco"></span>
+      <a class="btn" id="visor-detalhes" href="#">Ver detalhes</a>
+      <a class="btn btn-gratis" id="visor-baixar" href="#" download hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Baixar grátis</a>
+      <button class="btn btn-sinal" id="visor-comprar" type="button" data-comprar="" hidden>Comprar<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</dialog>
+<script src="/assets/config.js"></script>
+<script src="/assets/loja.js" defer></script>
+<script src="/assets/admin.js" defer></script>
+</body>
+</html>

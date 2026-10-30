@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="pt-BR" data-periodo="noite">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel Vidro · Casa inteligente</title>
+  <meta name="description" content="Dashboard de casa inteligente e energia em vidro fosco: termostato, dispositivos, iluminação, câmera, cenas e medidores.">
+  <meta name="theme-color" content="#0b1426">
+  <!-- Fontes: Sora (texto) + JetBrains Mono (números). Sem internet, entram os fallbacks do :root. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="pv-corpo">
+  <!-- RETRATOS: retratos ilustrados em SVG (#retrato-bia).
+       Use com <svg class="..." aria-hidden="true"><use href="#retrato-ana"/></svg>.
+       Cores por variável CSS: --retrato-fundo, --retrato-aro, --retrato-luz, --retrato-roupa-<nome>.
+       Para trocar por foto real, veja "Retratos" no LEIAME.md. -->
+  <svg class="retratos-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="rt-disco"><circle cx="60" cy="60" r="60"/></clipPath>
+      <path id="rt-rosto" d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/>
+      <clipPath id="rt-clip-rosto"><path d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-fora-rosto"><path clip-rule="evenodd" d="M0 0H120V120H0ZM60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-clip-torso"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></clipPath>
+      <radialGradient id="rt-luz-fundo" cx=".32" cy=".26" r=".85"><stop offset="0" stop-color="#fff" style="stop-opacity:var(--retrato-luz, .38)"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></radialGradient>
+      <linearGradient id="rt-sombra-corpo" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+      <linearGradient id="rt-sombra-pescoco" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".5" stop-color="#000" stop-opacity=".06"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
+      <linearGradient id="rt-sombra-gola" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".25"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+      <linearGradient id="rt-aro-grad" gradientUnits="userSpaceOnUse" x1="62" y1="40" x2="86" y2="54"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <mask id="rt-aro" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-grad)"/></mask>
+      <radialGradient id="rt-aro-cabeca-grad" gradientUnits="userSpaceOnUse" cx="94" cy="26" r="46"><stop offset=".25" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+      <mask id="rt-aro-cabeca" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-cabeca-grad)"/></mask>
+      <linearGradient id="rt-pele-bia" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#a06646"/><stop offset=".38" stop-color="#c88d64"/><stop offset="1" stop-color="#e0ab84"/></linearGradient>
+      <linearGradient id="rt-cabelo-bia" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4e2a1b"/><stop offset=".6" stop-color="#4e2a1b"/><stop offset="1" stop-color="#a5633b"/></linearGradient>
+      <radialGradient id="rt-volume-bia" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#a5633b"/><stop offset=".6" stop-color="#4e2a1b"/><stop offset="1" stop-color="#4e2a1b"/></radialGradient>
+    </defs>
+    <symbol id="retrato-bia" viewBox="0 0 120 120"><!-- Bia — cabelo cacheado volumoso --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><g fill="url(#rt-volume-bia)"><circle cx="33.2" cy="65.5" r="11.5"/><circle cx="29.9" cy="57.5" r="11.5"/><circle cx="29.0" cy="48.9" r="11.5"/><circle cx="30.5" cy="40.4" r="11.5"/><circle cx="34.3" cy="32.7" r="11.5"/><circle cx="40.1" cy="26.3" r="11.5"/><circle cx="47.4" cy="21.7" r="11.5"/><circle cx="55.7" cy="19.3" r="11.5"/><circle cx="64.3" cy="19.3" r="11.5"/><circle cx="72.6" cy="21.7" r="11.5"/><circle cx="79.9" cy="26.3" r="11.5"/><circle cx="85.7" cy="32.7" r="11.5"/><circle cx="89.5" cy="40.4" r="11.5"/><circle cx="91.0" cy="48.9" r="11.5"/><circle cx="90.1" cy="57.5" r="11.5"/><circle cx="86.8" cy="65.5" r="11.5"/><circle cx="60" cy="50" r="31"/><circle cx="30.5" cy="78.8" r="9"/><circle cx="32.5" cy="69.7" r="9"/><circle cx="43.5" cy="62.6" r="9"/><circle cx="60.0" cy="60.0" r="9"/><circle cx="76.5" cy="62.6" r="9"/><circle cx="87.5" cy="69.7" r="9"/><circle cx="89.5" cy="78.8" r="9"/></g><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#a06646"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-bia, #dfa43a)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M45.5 88.8Q60 104 74.5 88.8Q60 98.5 45.5 88.8Z" fill="url(#rt-pele-bia)"/><path d="M45.5 88.8Q60 104 74.5 88.8" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#a06646"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#e0ab84"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-bia)"/><circle cx="47.5" cy="65" r="5" fill="#d0705a" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#d0705a" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#a06646" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#9a4a3e"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#4e2a1b" stroke-width="2.4" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)" transform="translate(-.6 2.8)" opacity=".16"><g fill="#000"><circle cx="38.3" cy="44.0" r="7.2"/><circle cx="42.4" cy="36.8" r="7.2"/><circle cx="50.1" cy="31.8" r="7.2"/><circle cx="60.0" cy="30.0" r="7.2"/><circle cx="69.9" cy="31.8" r="7.2"/><circle cx="77.6" cy="36.8" r="7.2"/><circle cx="81.7" cy="44.0" r="7.2"/></g></g><g fill="#4e2a1b"><circle cx="38.3" cy="44.0" r="7.2"/><circle cx="42.4" cy="36.8" r="7.2"/><circle cx="50.1" cy="31.8" r="7.2"/><circle cx="60.0" cy="30.0" r="7.2"/><circle cx="69.9" cy="31.8" r="7.2"/><circle cx="77.6" cy="36.8" r="7.2"/><circle cx="81.7" cy="44.0" r="7.2"/></g><g fill="none" stroke="#a5633b" stroke-width="2" stroke-linecap="round" stroke-opacity=".85"><path d="M70 24q4 1 4 5M80 34q4 2 3 6M45 25q-4 2-4 6M86 54q2 3 0 6M34 50q-2 3 0 6M66 34q3 1 3 4M53 33q-3 1-3 4M85 72q2 3 0 5M35 70q-2 3 0 5"/></g></g></symbol>
+  </svg>
+  <!-- /RETRATOS -->
+
+  <!-- ============ CÉU DE FUNDO (CSS + SVG, muda com o horário) ============ -->
+  <div class="pv-ceu" aria-hidden="true">
+    <div class="pv-ceu__camada pv-ceu__camada--manha"></div>
+    <div class="pv-ceu__camada pv-ceu__camada--tarde"></div>
+    <div class="pv-ceu__camada pv-ceu__camada--noite"></div>
+    <svg class="pv-ceu__estrelas" id="pv-estrelas" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"></svg>
+    <div class="pv-ceu__astro"><span class="pv-ceu__halo"></span><span class="pv-ceu__disco"></span></div>
+    <span class="pv-ceu__nuvem pv-ceu__nuvem--a"></span>
+    <span class="pv-ceu__nuvem pv-ceu__nuvem--b"></span>
+    <span class="pv-ceu__nuvem pv-ceu__nuvem--c"></span>
+    <svg class="pv-ceu__montes" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax slice">
+      <path class="pv-monte pv-monte--1" d="M0 250 C120 200 210 170 320 190 C430 210 470 140 590 120 C700 102 760 170 880 160 C1000 150 1060 90 1180 100 C1290 110 1360 170 1440 160 L1440 520 L0 520Z"/>
+      <path class="pv-monte pv-monte--2" d="M0 320 C90 290 170 250 270 262 C380 276 430 230 540 214 C650 198 720 262 830 270 C940 278 1010 220 1120 206 C1230 192 1330 250 1440 240 L1440 520 L0 520Z"/>
+      <path class="pv-monte pv-monte--3" d="M0 380 C110 350 200 318 300 330 C420 344 500 300 610 300 C730 300 790 350 900 352 C1020 354 1100 300 1210 296 C1320 292 1390 330 1440 336 L1440 520 L0 520Z"/>
+      <path class="pv-monte pv-monte--4" d="M0 440 C140 412 260 398 380 410 C520 424 600 392 740 394 C880 396 960 430 1100 426 C1240 422 1330 400 1440 404 L1440 520 L0 520Z"/>
+    </svg>
+    <div class="pv-ceu__vinheta"></div>
+  </div>
+
+  <a class="pv-pular" href="#pv-conteudo">Pular para o conteúdo</a>
+
+  <div class="pv-app">
+
+    <!-- ============ BARRA LATERAL (no celular vira barra inferior) ============ -->
+    <aside class="pv-lateral pv-vidro pv-entra" style="--i:0" aria-label="Cômodos da casa">
+      <div class="pv-marca">
+        <span class="pv-marca__simbolo" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><defs><linearGradient id="pv-marca-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc46b"/><stop offset="1" stop-color="#6fe3ff"/></linearGradient></defs><path d="M16 3 L28 13 V27 a2 2 0 0 1-2 2 H6 a2 2 0 0 1-2-2 V13Z" fill="none" stroke="url(#pv-marca-g)" stroke-width="2.4" stroke-linejoin="round"/><circle cx="16" cy="19" r="4" fill="url(#pv-marca-g)"/></svg>
+        </span>
+        <span class="pv-marca__texto">Vidro<small>Casa da Marina</small></span>
+      </div>
+
+      <p class="pv-lateral__titulo" id="pv-comodos-titulo">Cômodos</p>
+      <nav class="pv-comodos" aria-labelledby="pv-comodos-titulo">
+        <ul class="pv-comodos__lista" id="pv-comodos"><!-- preenchido pelo script.js --></ul>
+      </nav>
+
+      <section class="pv-casa" aria-labelledby="pv-casa-titulo">
+        <p class="pv-lateral__titulo" id="pv-casa-titulo">Casa hoje</p>
+        <p class="pv-casa__total"><span class="pv-num" id="pv-casa-kwh">0</span> <small>kWh</small></p>
+        <div class="pv-casa__barra" id="pv-casa-barra" aria-hidden="true"></div>
+        <ul class="pv-casa__legenda" id="pv-casa-legenda"></ul>
+      </section>
+
+      <div class="pv-lateral__rodape">
+        <button class="pv-alarme" type="button" id="pv-alarme" aria-pressed="true">
+          <span class="pv-alarme__icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.6c0 4.6 3.2 8.2 7.5 9.4 4.3-1.2 7.5-4.8 7.5-9.4V6Z"/><path class="pv-alarme__check" d="m8.6 12.2 2.4 2.4 4.6-4.8"/></svg>
+          </span>
+          <span class="pv-alarme__texto"><strong>Casa protegida</strong><small>Alarme armado · 4 portas</small></span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- ============ CONTEÚDO ============ -->
+    <main class="pv-principal" id="pv-conteudo" tabindex="-1">
+
+      <!-- Topo -->
+      <header class="pv-topo pv-entra" style="--i:1">
+        <div class="pv-topo__saudacao">
+          <h1 class="pv-titulo"><span id="pv-saudacao">Boa noite</span>, <span id="pv-nome">Marina</span></h1>
+          <p class="pv-topo__data"><span id="pv-data">—</span> <span class="pv-ponto" aria-hidden="true">·</span> <span id="pv-resumo-casa">—</span></p>
+        </div>
+
+        <div class="pv-topo__acoes">
+          <button class="pv-clima pv-vidro pv-vidro--leve" type="button" id="pv-clima" aria-label="Clima">
+            <span class="pv-clima__icone" id="pv-clima-icone" aria-hidden="true"></span>
+            <span class="pv-clima__texto"><strong class="pv-num" id="pv-clima-temp">—</strong><small id="pv-clima-desc">—</small></span>
+          </button>
+
+          <div class="pv-segmento pv-segmento--ceu pv-vidro pv-vidro--leve" role="group" aria-label="Horário do céu de fundo" id="pv-periodos">
+            <button type="button" data-periodo="auto" aria-pressed="true">Auto</button>
+            <button type="button" data-periodo="manha" aria-pressed="false">Manhã</button>
+            <button type="button" data-periodo="tarde" aria-pressed="false">Tarde</button>
+            <button type="button" data-periodo="noite" aria-pressed="false">Noite</button>
+          </div>
+
+          <!-- Avatar com retrato ilustrado (#retrato-bia). Foto real: troque o <svg> por
+               <img class="pv-avatar__retrato" src="img/sua-foto.jpg" alt="" width="46" height="46">
+               As iniciais continuam no HTML (preenchidas pelo script.js) como reserva:
+               para usá-las no lugar do retrato, apague o <svg> e o atributo hidden. -->
+          <button class="pv-avatar" type="button" aria-label="Perfil de Marina Alves">
+            <svg class="pv-avatar__retrato" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#retrato-bia"/></svg>
+            <span class="pv-avatar__iniciais" id="pv-iniciais" hidden>MA</span>
+            <span class="pv-avatar__status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Grade de cartões -->
+      <div class="pv-grade">
+
+        <!-- Consumo de energia -->
+        <section class="pv-card pv-card--energia pv-vidro pv-entra" style="--i:2" aria-labelledby="pv-energia-titulo">
+          <header class="pv-card__topo">
+            <div>
+              <h2 class="pv-card__titulo" id="pv-energia-titulo">Consumo de energia</h2>
+              <p class="pv-card__sub"><span data-comodo-nome>Sala</span> · últimas 24 h</p>
+            </div>
+            <ul class="pv-legenda" aria-label="Legenda">
+              <li><span class="pv-legenda__cor pv-legenda__cor--hoje"></span>Hoje</li>
+              <li><span class="pv-legenda__cor pv-legenda__cor--ontem"></span>Ontem</li>
+            </ul>
+          </header>
+          <div class="pv-energia pv-troca">
+            <div class="pv-energia__numeros">
+              <p class="pv-energia__total"><span class="pv-num" id="pv-energia-total">0,0</span><small>kWh</small></p>
+              <p class="pv-energia__custo"><span class="pv-num" id="pv-energia-custo">R$ 0,00</span> <span class="pv-mudo">hoje</span></p>
+              <p class="pv-chip" id="pv-energia-comp">—</p>
+              <dl class="pv-energia__extra">
+                <div><dt>Pico</dt><dd class="pv-num" id="pv-energia-pico">—</dd></div>
+                <div><dt>Tarifa</dt><dd class="pv-num" id="pv-energia-tarifa">—</dd></div>
+              </dl>
+            </div>
+            <div class="pv-grafico" id="pv-grafico" tabindex="0" role="img" aria-label="Gráfico de consumo por hora">
+              <div class="pv-grafico__y" id="pv-grafico-y" aria-hidden="true"></div>
+              <div class="pv-grafico__plot" id="pv-grafico-plot">
+              <svg class="pv-grafico__svg" viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="pv-area-g" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#ffc46b" stop-opacity=".42"/>
+                    <stop offset=".7" stop-color="#ffc46b" stop-opacity=".06"/>
+                    <stop offset="1" stop-color="#ffc46b" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <g class="pv-grafico__grade" id="pv-grafico-grade"></g>
+                <path class="pv-grafico__ontem" id="pv-grafico-ontem" d=""/>
+                <path class="pv-grafico__area" id="pv-grafico-area" d="" fill="url(#pv-area-g)"/>
+                <path class="pv-grafico__linha" id="pv-grafico-linha" d=""/>
+              </svg>
+              <div class="pv-grafico__mira" aria-hidden="true"></div>
+              <div class="pv-grafico__ponto" aria-hidden="true"></div>
+              <div class="pv-grafico__dica" id="pv-grafico-dica" aria-hidden="true"></div>
+              </div>
+              <div class="pv-grafico__x" aria-hidden="true"><span>0h</span><span>6h</span><span>12h</span><span>18h</span><span>23h</span></div>
+            </div>
+          </div>
+          <p class="pv-sr" aria-live="polite" id="pv-grafico-anuncio"></p>
+        </section>
+
+        <!-- Termostato -->
+        <section class="pv-card pv-card--termo pv-vidro pv-entra" style="--i:3" aria-labelledby="pv-termo-titulo">
+          <header class="pv-card__topo">
+            <div>
+              <h2 class="pv-card__titulo" id="pv-termo-titulo">Termostato</h2>
+              <p class="pv-card__sub"><span data-comodo-nome>Sala</span></p>
+            </div>
+            <p class="pv-chip pv-chip--status" id="pv-termo-status">Mantendo</p>
+          </header>
+
+          <div class="pv-termo pv-troca">
+            <div class="pv-termo__anel" id="pv-termo" role="slider" tabindex="0"
+                 aria-label="Temperatura desejada" aria-valuemin="16" aria-valuemax="30" aria-valuenow="22" aria-valuetext="22 graus Celsius">
+              <svg viewBox="0 0 240 240" aria-hidden="true">
+                <g id="pv-termo-marcas"></g>
+                <path class="pv-termo__trilho" id="pv-termo-trilho" d="" pathLength="100"/>
+                <path class="pv-termo__valor" id="pv-termo-valor" d="" pathLength="100"/>
+                <circle class="pv-termo__botao" id="pv-termo-botao" cx="120" cy="24" r="11"/>
+              </svg>
+              <div class="pv-termo__centro">
+                <span class="pv-termo__rotulo">Alvo</span>
+                <span class="pv-termo__alvo"><span class="pv-num" id="pv-termo-alvo">22</span><small>°C</small></span>
+                <span class="pv-termo__atual">Agora <span class="pv-num" id="pv-termo-atual">23,5°</span></span>
+              </div>
+            </div>
+
+            <div class="pv-termo__ajuste">
+              <button class="pv-redondo" type="button" id="pv-termo-menos" aria-label="Diminuir meio grau">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"/></svg>
+              </button>
+              <dl class="pv-termo__info">
+                <div><dt>Umidade</dt><dd class="pv-num" id="pv-termo-umidade">48%</dd></div>
+                <div><dt>Lá fora</dt><dd class="pv-num" id="pv-termo-fora">19°</dd></div>
+              </dl>
+              <button class="pv-redondo" type="button" id="pv-termo-mais" aria-label="Aumentar meio grau">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12M12 6v12"/></svg>
+              </button>
+            </div>
+
+            <div class="pv-segmento pv-segmento--modo" role="group" aria-label="Modo do termostato" id="pv-termo-modos">
+              <button type="button" data-modo="frio" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5 12 7l2.5-2.5M9.5 19.5 12 17l2.5 2.5"/></svg>Frio
+              </button>
+              <button type="button" data-modo="auto" aria-pressed="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 18 10.5 5h3L19 18M7.4 13h9.2"/></svg>Auto
+              </button>
+              <button type="button" data-modo="calor" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.5 1.4-3.8 2.4-5 .3 1.6 1 2.6 2 3 .4-2.8-.4-5.6.6-8Z"/></svg>Calor
+              </button>
+            </div>
+
+            <div class="pv-prog">
+              <p class="pv-campo__rotulo" id="pv-prog-titulo">Programação de hoje</p>
+              <ol class="pv-prog__lista" id="pv-prog" aria-labelledby="pv-prog-titulo"><!-- preenchido pelo script.js --></ol>
+            </div>
+          </div>
+        </section>
+
+        <!-- Câmera de segurança -->
+        <section class="pv-card pv-card--camera pv-vidro pv-entra" style="--i:4" aria-labelledby="pv-camera-titulo">
+          <header class="pv-card__topo">
+            <div>
+              <h2 class="pv-card__titulo" id="pv-camera-titulo">Câmera</h2>
+              <p class="pv-card__sub" id="pv-camera-nome">CAM 01 · Sala</p>
+            </div>
+            <p class="pv-rec" id="pv-rec"><span class="pv-rec__ponto" aria-hidden="true"></span>REC</p>
+          </header>
+          <figure class="pv-feed pv-troca" id="pv-feed">
+            <div class="pv-feed__cena" id="pv-feed-cena" role="img" aria-label="Imagem ao vivo da câmera"></div>
+            <canvas class="pv-feed__ruido" id="pv-feed-ruido" width="160" height="100" aria-hidden="true"></canvas>
+            <span class="pv-feed__varredura" aria-hidden="true"></span>
+            <figcaption class="pv-feed__hud">
+              <span class="pv-feed__ao-vivo">AO VIVO</span>
+              <span class="pv-feed__ir" id="pv-feed-ir">IR</span>
+              <time class="pv-feed__hora pv-num" id="pv-feed-hora">--:--:--</time>
+            </figcaption>
+            <div class="pv-feed__desligada" id="pv-feed-off">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6H15a2 2 0 0 1 2 2v1.5l4-2.5v10M17 17H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2"/></svg>
+              <span>Câmera em modo privacidade</span>
+            </div>
+          </figure>
+        </section>
+
+        <!-- Dispositivos -->
+        <section class="pv-card pv-card--disp pv-vidro pv-entra" style="--i:5" aria-labelledby="pv-disp-titulo">
+          <header class="pv-card__topo">
+            <div>
+              <h2 class="pv-card__titulo" id="pv-disp-titulo">Dispositivos</h2>
+              <p class="pv-card__sub"><span class="pv-num" id="pv-disp-ativos">0</span> de <span class="pv-num" id="pv-disp-total">5</span> ativos em <span data-comodo-nome>Sala</span></p>
+            </div>
+            <button class="pv-botao" type="button" id="pv-desligar-tudo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8M6.4 6.6a8 8 0 1 0 11.2 0"/></svg>
+              Desligar tudo
+            </button>
+          </header>
+          <div class="pv-disps pv-troca" id="pv-disps"><!-- preenchido pelo script.js --></div>
+        </section>
+
+        <!-- Iluminação -->
+        <section class="pv-card pv-card--luz pv-vidro pv-entra" style="--i:6" aria-labelledby="pv-luz-titulo">
+          <header class="pv-card__topo">
+            <div>
+              <h2 class="pv-card__titulo" id="pv-luz-titulo">Iluminação</h2>
+              <p class="pv-card__sub" id="pv-luz-sub">Pendente principal</p>
+            </div>
+            <p class="pv-luz__pct"><span class="pv-num" id="pv-luz-pct">72</span><small>%</small></p>
+          </header>
+          <div class="pv-luz pv-troca" id="pv-luz">
+            <svg class="pv-lampada" viewBox="0 0 200 210" aria-hidden="true">
+              <defs>
+                <radialGradient id="pv-lampada-brilho" cx=".5" cy=".5" r=".5">
+                  <stop offset="0" class="pv-stop-luz" stop-opacity=".95"/>
+                  <stop offset=".35" class="pv-stop-luz" stop-opacity=".35"/>
+                  <stop offset="1" class="pv-stop-luz" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="pv-lampada-cone" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" class="pv-stop-luz" stop-opacity=".5"/>
+                  <stop offset="1" class="pv-stop-luz" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="pv-lampada-cupula" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#3b4a62"/>
+                  <stop offset="1" stop-color="#121a29"/>
+                </linearGradient>
+              </defs>
+              <path class="pv-lampada__cone" d="M78 92 L122 92 L184 210 L16 210Z" fill="url(#pv-lampada-cone)"/>
+              <ellipse class="pv-lampada__poca" cx="100" cy="204" rx="86" ry="7" fill="url(#pv-lampada-brilho)"/>
+              <circle class="pv-lampada__halo" cx="100" cy="98" r="78" fill="url(#pv-lampada-brilho)"/>
+              <line class="pv-lampada__fio" x1="100" y1="0" x2="100" y2="40"/>
+              <rect class="pv-lampada__soquete" x="93" y="38" width="14" height="10" rx="2"/>
+              <path class="pv-lampada__cupula" d="M100 46 C72 46 56 66 52 92 L148 92 C144 66 128 46 100 46Z" fill="url(#pv-lampada-cupula)"/>
+              <path class="pv-lampada__reflexo" d="M70 82 C74 66 84 56 98 53"/>
+              <ellipse class="pv-lampada__bulbo" cx="100" cy="96" rx="20" ry="11"/>
+            </svg>
+
+            <div class="pv-luz__controles">
+              <label class="pv-campo" for="pv-brilho">
+                <span class="pv-campo__rotulo">Brilho</span>
+                <input class="pv-faixa" id="pv-brilho" type="range" min="0" max="100" step="1" value="72">
+              </label>
+              <fieldset class="pv-cores">
+                <legend class="pv-campo__rotulo">Cor da luz</legend>
+                <div class="pv-cores__lista" id="pv-cores"><!-- preenchido pelo script.js --></div>
+              </fieldset>
+            </div>
+          </div>
+        </section>
+
+        <!-- Água e solar -->
+        <section class="pv-card pv-card--medidores pv-vidro pv-entra" style="--i:7" aria-labelledby="pv-med-titulo">
+          <header class="pv-card__topo">
+            <div>
+              <h2 class="pv-card__titulo" id="pv-med-titulo">Água e solar</h2>
+              <p class="pv-card__sub" id="pv-med-sub">Hoje</p>
+            </div>
+          </header>
+          <div class="pv-medidores pv-troca">
+            <figure class="pv-medidor pv-medidor--agua">
+              <div class="pv-medidor__anel">
+                <svg viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="pv-medidor__trilho" cx="50" cy="50" r="42"/>
+                  <circle class="pv-medidor__valor" id="pv-agua-arco" cx="50" cy="50" r="42" pathLength="100" stroke-dasharray="0 100"/>
+                </svg>
+                <div class="pv-medidor__centro">
+                  <svg class="pv-medidor__icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c3 4 5.5 7 5.5 10a5.5 5.5 0 0 1-11 0c0-3 2.5-6 5.5-10Z"/></svg>
+                  <strong class="pv-num" id="pv-agua-valor">0</strong><small>litros</small>
+                </div>
+              </div>
+              <figcaption><span>Água</span> <span class="pv-mudo" id="pv-agua-meta">de 220 L</span></figcaption>
+            </figure>
+            <figure class="pv-medidor pv-medidor--solar">
+              <div class="pv-medidor__anel">
+                <svg viewBox="0 0 100 100" aria-hidden="true">
+                  <circle class="pv-medidor__trilho" cx="50" cy="50" r="42"/>
+                  <circle class="pv-medidor__valor" id="pv-solar-arco" cx="50" cy="50" r="42" pathLength="100" stroke-dasharray="0 100"/>
+                </svg>
+                <div class="pv-medidor__centro">
+                  <svg class="pv-medidor__icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+                  <strong class="pv-num" id="pv-solar-valor">0</strong><small>kWh</small>
+                </div>
+              </div>
+              <figcaption><span>Solar</span> <span class="pv-mudo" id="pv-solar-meta">de 9,5 kWh</span></figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- Cenas rápidas -->
+        <section class="pv-card pv-card--cenas pv-vidro pv-entra" style="--i:8" aria-labelledby="pv-cenas-titulo">
+          <header class="pv-card__topo">
+            <div>
+              <h2 class="pv-card__titulo" id="pv-cenas-titulo">Cenas rápidas</h2>
+              <p class="pv-card__sub">Aplicadas em <span data-comodo-nome>Sala</span></p>
+            </div>
+          </header>
+          <div class="pv-cenas" id="pv-cenas"><!-- preenchido pelo script.js --></div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Aviso flutuante (cenas, desligar tudo) -->
+  <div class="pv-aviso pv-vidro" id="pv-aviso" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

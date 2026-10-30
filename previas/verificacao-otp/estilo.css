@@ -1,0 +1,1268 @@
+/* ==========================================================================
+   Verificação OTP — estilos
+   Todas as classes usam o prefixo .otp- para não colidir com o seu projeto.
+   Mude a identidade visual editando só os tokens do :root.
+   ========================================================================== */
+
+:root {
+  /* Cores */
+  --otp-fundo: #0b0d10;
+  --otp-cartao: #13161b;
+  --otp-cartao-2: #191d23;      /* caixas internas */
+  --otp-linha: #222731;         /* bordas de 1px */
+  --otp-linha-forte: #303744;
+  --otp-texto: #eef0f3;
+  --otp-suave: #9aa3af;         /* texto secundário (AA sobre os cartões) */
+  --otp-ciano: #4fd1ff;         /* sinal / foco / dígito atual */
+  --otp-verde: #3ee08f;         /* sucesso */
+  --otp-erro: #ff6b7a;          /* erro */
+  --otp-ciano-glow: rgba(79, 209, 255, .32);
+  --otp-verde-glow: rgba(62, 224, 143, .3);
+  --otp-erro-glow: rgba(255, 107, 122, .3);
+  /* Sem acesso (bloqueio): aço frio, sem brilho — uma porta fechando, não um alarme */
+  --otp-frio: #8a9cb5;
+  --otp-frio-forte: #c4cfde;
+  --otp-frio-fundo: #10151c;
+  --otp-frio-borda: #344050;
+
+  /* Tipografia */
+  --otp-fonte: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --otp-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Tamanhos dos campos */
+  --otp-slot-l: 52px;           /* largura máxima de cada caixa */
+  --otp-slot-a: 62px;           /* altura de cada caixa */
+  --otp-vao: 10px;              /* espaço entre caixas */
+
+  /* Formas e movimento */
+  --otp-raio: 20px;
+  --otp-raio-slot: 12px;
+  --otp-ease: cubic-bezier(.2, .75, .2, 1);
+  --otp-mola: cubic-bezier(.34, 1.5, .5, 1);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+.otp-corpo {
+  margin: 0;
+  min-height: 100vh;
+  padding: 28px 40px 22px;
+  color: var(--otp-texto);
+  font-family: var(--otp-fonte);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  background:
+    radial-gradient(900px 420px at 50% -120px, rgba(79, 209, 255, .09), transparent 70%),
+    radial-gradient(rgba(255, 255, 255, .045) 1px, transparent 1.2px) 0 0 / 22px 22px,
+    var(--otp-fundo);
+}
+/* :where() zera a especificidade: qualquer classe .otp- vence este reset */
+:where(.otp-corpo) :where(h1, h2, p) { margin: 0; }
+:where(.otp-corpo) :where(button, input) { font: inherit; color: inherit; }
+.otp-corpo [hidden] { display: none !important; }
+.otp-corpo :focus-visible { outline: 2px solid var(--otp-ciano); outline-offset: 3px; }
+
+kbd {
+  font-family: var(--otp-mono); font-size: .86em;
+  padding: 1px 6px; border-radius: 6px;
+  background: var(--otp-cartao-2); border: 1px solid var(--otp-linha-forte);
+  color: var(--otp-texto);
+}
+
+/* ---------- Topo ---------- */
+.otp-topo {
+  max-width: 1360px; margin: 0 auto 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap;
+  animation: otp-sobe .6s var(--otp-ease) both;
+}
+.otp-topo__marca { display: flex; align-items: center; gap: 14px; }
+.otp-topo__icone {
+  width: 44px; height: 44px; border-radius: 13px; flex: none;
+  display: grid; place-items: center;
+  background: linear-gradient(160deg, #1a2029, #12161c);
+  border: 1px solid var(--otp-linha-forte);
+  box-shadow: 0 0 0 4px rgba(79, 209, 255, .06), 0 10px 24px -12px rgba(79, 209, 255, .5);
+}
+.otp-topo__icone svg { width: 22px; height: 22px; fill: none; stroke: var(--otp-ciano); stroke-width: 1.8; stroke-linecap: round; }
+.otp-topo__icone circle { fill: var(--otp-ciano); stroke: none; }
+.otp-topo__titulo { font-size: 24px; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+.otp-topo__sub { color: var(--otp-suave); font-size: 14px; }
+
+.otp-dica {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 14px 8px 12px; border-radius: 99px;
+  background: rgba(79, 209, 255, .07); border: 1px solid rgba(79, 209, 255, .22);
+  color: var(--otp-suave); font-size: 13.5px;
+}
+.otp-dica__ponto { width: 7px; height: 7px; border-radius: 50%; background: var(--otp-ciano); box-shadow: 0 0 10px var(--otp-ciano); }
+.otp-dica__codigo { color: var(--otp-ciano); border-color: rgba(79, 209, 255, .35); letter-spacing: .12em; font-weight: 700; }
+
+/* ---------- Abas (só no celular/tablet) ---------- */
+.otp-abas {
+  position: relative;
+  display: none; gap: 2px;
+  width: min(100%, 720px); margin: 0 auto 16px; padding: 4px;
+  background: var(--otp-cartao); border: 1px solid var(--otp-linha); border-radius: 14px;
+  overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+}
+.otp-abas::-webkit-scrollbar { display: none; }
+.otp-abas__indicador {
+  position: absolute; top: 4px; bottom: 4px; left: 0;
+  width: var(--otp-ind-l, 0); transform: translateX(var(--otp-ind-x, 4px));
+  border-radius: 10px; background: var(--otp-cartao-2);
+  border: 1px solid rgba(79, 209, 255, .35);
+  box-shadow: 0 0 18px -6px var(--otp-ciano-glow);
+  transition: transform .45s var(--otp-ease), width .45s var(--otp-ease);
+}
+.otp-aba {
+  position: relative; z-index: 1; flex: 0 0 auto; height: 40px; padding: 0 14px;
+  border: 0; background: none; border-radius: 10px; white-space: nowrap;
+  color: var(--otp-suave); font-weight: 600; font-size: 14px; cursor: pointer; transition: color .25s;
+}
+.otp-aba[aria-selected="true"] { color: var(--otp-texto); }
+
+/* ---------- Grade 2×2 ---------- */
+.otp-grade {
+  max-width: 1360px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px;
+}
+
+/* ---------- Cartão de cada estilo ---------- */
+.otp-cartao {
+  position: relative; min-width: 0;
+  display: grid; grid-template-rows: auto 1fr auto;
+  min-height: 340px; padding: 24px 26px 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .025), transparent 40%), var(--otp-cartao);
+  border: 1px solid var(--otp-linha); border-radius: var(--otp-raio);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .04) inset, 0 24px 48px -30px rgba(0, 0, 0, .8);
+  transition: border-color .4s, box-shadow .4s;
+  animation: otp-sobe .65s var(--otp-ease) both;
+  animation-delay: var(--otp-atraso, 0s);
+}
+@keyframes otp-sobe { from { opacity: 0; transform: translateY(16px); } }
+.otp-cartao:focus-within { border-color: var(--otp-linha-forte); }
+.otp-cartao[data-estado="sucesso"] { border-color: rgba(62, 224, 143, .45); box-shadow: 0 0 0 1px rgba(62, 224, 143, .15), 0 24px 60px -30px var(--otp-verde-glow); }
+.otp-cartao[data-estado="erro"] { border-color: rgba(255, 107, 122, .5); }
+/* Bloqueado: o cartão esfria (borda de aço e um véu azulado, sem brilho) */
+.otp-cartao[data-estado="bloqueado"] { border-color: var(--otp-frio-borda); }
+.otp-cartao::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(138, 156, 181, .07), transparent 55%);
+  opacity: 0; transition: opacity .8s;
+}
+.otp-cartao[data-estado="bloqueado"]::before { opacity: 1; }
+
+.otp-cartao__cabeca { display: flex; gap: 14px; align-items: flex-start; }
+.otp-cartao__num {
+  flex: none; font-family: var(--otp-mono); font-size: 12px; font-weight: 700;
+  color: var(--otp-ciano); padding: 3px 7px; border-radius: 7px;
+  background: rgba(79, 209, 255, .08); border: 1px solid rgba(79, 209, 255, .2);
+  margin-top: 2px;
+}
+.otp-cartao__titulo { font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+.otp-cartao__desc { color: var(--otp-suave); font-size: 14px; }
+.otp-cartao__desc strong { color: var(--otp-texto); font-weight: 600; font-family: var(--otp-mono); font-size: 13px; }
+
+.otp-cartao__corpo { display: grid; place-items: center; padding: 22px 0 18px; min-width: 0; }
+
+.otp-cartao__rodape {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap;
+  padding-top: 14px; border-top: 1px solid var(--otp-linha); min-height: 52px;
+}
+
+/* Mensagem de status (aria-live) */
+.otp-status { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--otp-suave); min-height: 22px; }
+.otp-status::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%; flex: none;
+  background: var(--otp-linha-forte); transition: background .3s, box-shadow .3s;
+}
+/* O tom da mensagem vem de data-tom (o script.js põe junto com o texto) */
+.otp-status[data-tom="verificando"]::before { background: var(--otp-ciano); box-shadow: 0 0 10px var(--otp-ciano); animation: otp-piscar .8s ease-in-out infinite; }
+.otp-status[data-tom="sucesso"] { color: var(--otp-verde); }
+.otp-status[data-tom="sucesso"]::before { background: var(--otp-verde); box-shadow: 0 0 10px var(--otp-verde); }
+.otp-status[data-tom="erro"] { color: var(--otp-erro); }
+.otp-status[data-tom="erro"]::before { background: var(--otp-erro); box-shadow: 0 0 10px var(--otp-erro); }
+.otp-status[data-tom="bloqueado"] { color: var(--otp-frio-forte); flex-wrap: wrap; column-gap: 6px; }
+/* No bloqueio o ponto vira um cadeadinho */
+.otp-status[data-tom="bloqueado"]::before {
+  width: 12px; height: 13px; border-radius: 0; background: var(--otp-frio);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 26'%3E%3Cpath d='M7 12V8a5 5 0 0 1 10 0v4' fill='none' stroke='%23000' stroke-width='2.6'/%3E%3Crect x='3' y='11' width='18' height='14' rx='3'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 26'%3E%3Cpath d='M7 12V8a5 5 0 0 1 10 0v4' fill='none' stroke='%23000' stroke-width='2.6'/%3E%3Crect x='3' y='11' width='18' height='14' rx='3'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.otp-status[data-tom="liberado"] { color: var(--otp-texto); }
+.otp-status[data-tom="liberado"]::before { background: var(--otp-ciano); box-shadow: 0 0 10px var(--otp-ciano); }
+/* Contagem regressiva do bloqueio */
+.otp-status__tempo {
+  display: inline-block; min-width: 3.6em; text-align: center;
+  font-family: var(--otp-mono); font-size: 12.5px; font-weight: 700; color: var(--otp-texto);
+  font-variant-numeric: tabular-nums; padding: 1px 7px; border-radius: 7px;
+  background: rgba(138, 156, 181, .1); border: 1px solid var(--otp-frio-borda);
+}
+@keyframes otp-piscar { 50% { opacity: .3; } }
+
+/* Texto só para leitores de tela */
+.otp-sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* "Falar com o suporte": discreto, só aparece no bloqueio */
+.otp-suporte {
+  display: inline-flex; align-items: center; height: 36px; padding: 0 6px; border-radius: 8px;
+  color: var(--otp-suave); font-size: 13.5px; font-weight: 600;
+  text-decoration: underline; text-decoration-color: rgba(154, 163, 175, .4); text-underline-offset: 4px;
+  transition: color .2s, text-decoration-color .2s;
+  animation: otp-surge .5s .35s var(--otp-ease) both;
+}
+.otp-suporte:hover { color: var(--otp-texto); text-decoration-color: currentColor; }
+@keyframes otp-surge { from { opacity: 0; transform: translateY(4px); } }
+
+.otp-acoes { display: flex; gap: 8px; margin-left: auto; }
+.otp-reenviar, .otp-reiniciar {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 14px; border-radius: 10px; cursor: pointer;
+  background: var(--otp-cartao-2); border: 1px solid var(--otp-linha-forte);
+  font-size: 13.5px; font-weight: 600; color: var(--otp-texto);
+  transition: border-color .2s, color .2s, background .2s;
+}
+.otp-reenviar:hover:not(:disabled), .otp-reiniciar:hover { border-color: var(--otp-ciano); color: var(--otp-ciano); }
+.otp-reenviar:disabled { cursor: default; color: var(--otp-suave); background: transparent; }
+.otp-reenviar__tempo { font-family: var(--otp-mono); font-size: 12.5px; color: var(--otp-texto); }
+.otp-reenviar__anel { width: 16px; height: 16px; transform: rotate(-90deg); flex: none; }
+.otp-reenviar__anel circle { fill: none; stroke-width: 2.4; }
+.otp-reenviar__anel .otp-anel-fundo { stroke: var(--otp-linha-forte); }
+.otp-reenviar__anel .otp-anel-barra { stroke: var(--otp-ciano); stroke-linecap: round; stroke-dasharray: 37.7; transition: stroke-dashoffset 1s linear; }
+.otp-reiniciar { border-color: rgba(62, 224, 143, .4); color: var(--otp-verde); }
+
+/* ==========================================================================
+   Base do campo (gerado por CampoOTP.criar)
+   ========================================================================== */
+.otp-campo {
+  display: grid;
+  grid-template-columns: repeat(var(--otp-tamanho, 6), minmax(0, var(--otp-slot-l)));
+  gap: var(--otp-vao);
+  justify-content: center;
+  width: 100%;
+}
+.otp-slot { position: relative; height: var(--otp-slot-a); min-width: 0; }
+.otp-slot__entrada {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  margin: 0; padding: 0; border: 0; outline: none; background: transparent;
+  text-align: center; font-family: var(--otp-mono); font-size: 26px; font-weight: 500;
+  color: var(--otp-texto); caret-color: transparent;
+  border-radius: var(--otp-raio-slot);
+  z-index: 2;
+}
+.otp-slot__entrada::selection { background: transparent; }
+.otp-slot__entrada:disabled { cursor: default; -webkit-text-fill-color: currentColor; opacity: 1; }
+/* Foco visível (teclado): a borda do slot fica ciano em todos os estilos */
+.otp-slot__entrada:focus-visible { outline: none; }
+
+/* Cursor animado (no slot focado e vazio) */
+.otp-slot::after {
+  content: ""; position: absolute; left: 50%; top: 50%; z-index: 1;
+  width: 2px; height: 26px; margin: -13px 0 0 -1px; border-radius: 2px;
+  background: var(--otp-ciano); opacity: 0;
+}
+.otp-slot--ativo:not(.otp-slot--cheio)::after { animation: otp-cursor 1.05s steps(1) infinite; }
+@keyframes otp-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Campo bloqueado: nada de cursor de texto */
+.otp-campo--bloqueado, .otp-campo--bloqueado input { cursor: not-allowed; }
+
+/* ---------- Cadeado (comum a vários estilos no bloqueio) ----------
+   .otp-trava é o selo redondo; .otp-cadeado é o desenho. A haste (__arco)
+   começa aberta e "estala" fechando; na liberação ela sobe e o selo sai. */
+.otp-trava {
+  position: absolute; left: 50%; top: 50%; z-index: 5;
+  width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%;
+  display: grid; place-items: center; pointer-events: none;
+  background: radial-gradient(circle at 50% 28%, #252e3a, #131920 70%);
+  border: 1px solid var(--otp-frio-borda);
+  box-shadow: 0 0 0 6px rgba(11, 13, 16, .6), 0 14px 28px -12px rgba(0, 0, 0, .9);
+  opacity: 0; visibility: hidden;
+}
+.otp-cadeado { width: 26px; height: 26px; overflow: visible; }
+.otp-cadeado__arco {
+  fill: none; stroke: var(--otp-frio-forte); stroke-width: 2.2; stroke-linecap: round;
+  transform: translateY(-3.5px);
+}
+.otp-cadeado__corpo { fill: var(--otp-frio); }
+.otp-cadeado__furo { fill: none; stroke: #121820; stroke-width: 2; stroke-linecap: round; }
+
+.otp-cartao[data-estado="bloqueado"] .otp-trava { visibility: visible; animation: otp-trava-entra .55s .15s var(--otp-ease) forwards; }
+.otp-cartao[data-estado="bloqueado"] .otp-cadeado__arco { animation: otp-arco-fecha .3s .6s cubic-bezier(.6, 0, .7, 1.7) forwards; }
+.otp-cartao[data-estado="liberado"] .otp-trava { visibility: visible; opacity: 1; animation: otp-trava-sai .45s .3s var(--otp-ease) forwards; }
+.otp-cartao[data-estado="liberado"] .otp-cadeado__arco { animation: otp-arco-abre .3s var(--otp-mola) forwards; }
+@keyframes otp-trava-entra { from { opacity: 0; transform: translateY(-16px) scale(.86); } to { opacity: 1; transform: none; } }
+@keyframes otp-arco-fecha { from { transform: translateY(-3.5px); } to { transform: translateY(0); } }
+@keyframes otp-arco-abre { from { transform: translateY(0); } to { transform: translateY(-4.5px); } }
+@keyframes otp-trava-sai { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-12px) scale(.9); } }
+
+/* Desenho de traço (check, anel, cadeado de linha) */
+@keyframes otp-desenha { to { stroke-dashoffset: 0; } }
+
+/* Tremida (usada só pelo Clássico: é a recusa "de sempre") */
+@keyframes otp-treme {
+  15% { transform: translateX(-9px); } 30% { transform: translateX(8px); }
+  45% { transform: translateX(-6px); } 60% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+}
+@keyframes otp-pop { 0% { transform: scale(.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* ==========================================================================
+   1. Clássico — caixas que se acendem
+   ========================================================================== */
+.otp-cartao--classico .otp-slot {
+  border-radius: var(--otp-raio-slot);
+  background: var(--otp-cartao-2);
+  border: 1px solid var(--otp-linha-forte);
+  transition: border-color .25s, box-shadow .25s, background .25s, transform .25s var(--otp-mola);
+}
+.otp-cartao--classico .otp-slot--cheio { border-color: #45505f; }
+.otp-cartao--classico .otp-slot--cheio .otp-slot__entrada { animation: otp-pop .28s var(--otp-mola); }
+.otp-cartao--classico .otp-slot--ativo {
+  border-color: var(--otp-ciano);
+  background: #16202a;
+  box-shadow: 0 0 0 4px rgba(79, 209, 255, .14), 0 0 24px -4px var(--otp-ciano-glow);
+  transform: translateY(-2px);
+}
+.otp-cartao--classico .otp-campo--verificando .otp-slot { animation: otp-onda 1s ease-in-out infinite; animation-delay: calc(var(--otp-i) * 90ms); }
+@keyframes otp-onda { 50% { border-color: var(--otp-ciano); } }
+
+/* Caixa que abraça só as 6 casas (para o selo e o cadeado se posicionarem nelas) */
+.otp-classico { position: relative; width: fit-content; max-width: 100%; }
+
+/* APROVADO — uma onda verde percorre as caixas (cada uma sobe e um brilho a atravessa)
+   e um selo de check é carimbado no canto */
+.otp-cartao--classico .otp-campo--sucesso .otp-slot {
+  overflow: hidden;
+  animation: otp-classico-ok .55s calc(var(--otp-i) * 70ms) var(--otp-mola) both;
+}
+@keyframes otp-classico-ok {
+  40% { transform: translateY(-7px); border-color: var(--otp-verde); background: #183428; box-shadow: 0 0 0 4px rgba(62, 224, 143, .16), 0 0 26px -4px var(--otp-verde-glow); }
+  to { border-color: var(--otp-verde); background: #12231b; box-shadow: 0 0 18px -6px var(--otp-verde-glow); }
+}
+.otp-cartao--classico .otp-campo--sucesso .otp-slot::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(105deg, transparent 35%, rgba(170, 255, 210, .38) 50%, transparent 65%) 120% 0 / 260% 100% no-repeat;
+  animation: otp-varre .55s calc(var(--otp-i) * 70ms + 60ms) ease-out both;
+}
+@keyframes otp-varre { from { background-position: 120% 0; } to { background-position: -20% 0; } }
+.otp-cartao--classico .otp-campo--sucesso .otp-slot__entrada { color: var(--otp-verde); transition: color .3s; }
+
+.otp-selo {
+  position: absolute; right: -15px; top: -15px; z-index: 4; width: 34px; height: 34px;
+  overflow: visible; pointer-events: none; opacity: 0;
+}
+.otp-selo__anel { fill: #12231b; stroke: var(--otp-verde); stroke-width: 2.2; stroke-dasharray: 100; stroke-dashoffset: 100; transform: rotate(-90deg); transform-origin: center; }
+.otp-selo__check { fill: none; stroke: var(--otp-verde); stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.otp-cartao--classico[data-estado="sucesso"] .otp-selo { animation: otp-carimbo .45s .5s var(--otp-mola) forwards; filter: drop-shadow(0 0 10px var(--otp-verde-glow)); }
+.otp-cartao--classico[data-estado="sucesso"] .otp-selo__anel { animation: otp-desenha .4s .55s var(--otp-ease) forwards; }
+.otp-cartao--classico[data-estado="sucesso"] .otp-selo__check { animation: otp-desenha .3s .8s var(--otp-ease) forwards; }
+@keyframes otp-carimbo { from { opacity: 0; transform: scale(1.7) rotate(-18deg); } to { opacity: 1; transform: rotate(-8deg); } }
+
+/* ERRO — a recusa clássica: o grupo treme e as caixas acendem em vermelho */
+.otp-cartao--classico .otp-campo--erro { animation: otp-treme .5s ease; }
+.otp-cartao--classico .otp-campo--erro .otp-slot {
+  border-color: var(--otp-erro); background: #241519; box-shadow: 0 0 0 3px rgba(255, 107, 122, .12);
+  animation: otp-classico-nao .45s calc(var(--otp-i) * 30ms) ease-out;
+}
+@keyframes otp-classico-nao { 30% { background: #3a1b22; box-shadow: 0 0 0 4px rgba(255, 107, 122, .22), 0 0 22px -4px var(--otp-erro-glow); } }
+.otp-cartao--classico .otp-campo--erro .otp-slot__entrada { color: var(--otp-erro); }
+
+/* SEM ACESSO — as caixas esfriam uma a uma e o cadeado desce no meio delas */
+.otp-cartao--classico .otp-campo--bloqueado .otp-slot { animation: otp-classico-frio .5s calc(var(--otp-i) * 55ms) var(--otp-ease) forwards; }
+@keyframes otp-classico-frio { to { background: var(--otp-frio-fundo); border-color: #28313d; opacity: .5; transform: scale(.95); } }
+/* LIBERADO — as caixas reacendem em onda (com um toque de ciano) */
+.otp-cartao--classico .otp-campo--liberado .otp-slot { animation: otp-classico-volta .55s calc(var(--otp-i) * 55ms + .2s) var(--otp-ease) both; }
+@keyframes otp-classico-volta {
+  from { background: var(--otp-frio-fundo); border-color: #28313d; opacity: .5; transform: scale(.95); }
+  55% { border-color: rgba(79, 209, 255, .6); opacity: 1; transform: none; }
+}
+
+/* ==========================================================================
+   2. Letreiro — placas que tombam (split-flap de aeroporto)
+   ========================================================================== */
+.otp-cartao--painel .otp-campo { --otp-slot-l: 56px; --otp-slot-a: 74px; --otp-vao: 9px; }
+.otp-cartao--painel .otp-slot {
+  --otp-fp-a: var(--otp-slot-a);
+  border-radius: 10px; overflow: hidden;
+  background: #0a0c0f;
+  border: 1px solid var(--otp-linha-forte);
+  box-shadow: 0 10px 20px -14px #000, inset 0 0 0 1px rgba(255, 255, 255, .03);
+  transition: border-color .25s, box-shadow .25s;
+}
+.otp-cartao--painel .otp-slot--ativo {
+  border-color: var(--otp-ciano);
+  box-shadow: 0 0 0 3px rgba(79, 209, 255, .13), 0 0 22px -6px var(--otp-ciano-glow);
+}
+.otp-cartao--painel .otp-slot__entrada { color: transparent; }  /* o caractere aparece nas placas */
+.otp-cartao--painel .otp-slot::after { height: 30px; margin-top: -15px; }
+
+.otp-flap { position: absolute; inset: 0; z-index: 1; perspective: 320px; pointer-events: none; }
+.otp-flap__meia, .otp-flap__folha {
+  position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; backface-visibility: hidden;
+}
+.otp-flap__meia span, .otp-flap__folha span {
+  display: block; height: var(--otp-fp-a); line-height: var(--otp-fp-a); text-align: center;
+  font-family: var(--otp-mono); font-size: 32px; font-weight: 700; color: #eaeff6;
+  transition: color .3s;
+}
+.otp-flap__meia--cima, .otp-flap__folha--cima { top: 0; background: linear-gradient(180deg, #272e38, #1b2129); }
+.otp-flap__meia--baixo, .otp-flap__folha--baixo { bottom: 0; background: linear-gradient(180deg, #151a21, #0e1217); }
+.otp-flap__meia--baixo span, .otp-flap__folha--baixo span { transform: translateY(-50%); }
+.otp-flap__folha--cima { z-index: 3; transform-origin: 50% 100%; }
+.otp-flap__folha--baixo { z-index: 3; transform-origin: 50% 0; transform: rotateX(90deg); }
+/* vinco central, sempre por cima das placas */
+.otp-flap::after {
+  content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 1px); height: 2px; z-index: 4;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .8), rgba(255, 255, 255, .05));
+}
+.otp-slot--vira .otp-flap__folha--cima { animation: otp-fp-cima .26s cubic-bezier(.5, 0, .9, .55) forwards; }
+.otp-slot--vira .otp-flap__folha--baixo { animation: otp-fp-baixo .3s .26s cubic-bezier(.2, .7, .3, 1.08) forwards; }
+@keyframes otp-fp-cima { to { transform: rotateX(-90deg); } }
+@keyframes otp-fp-baixo { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
+
+.otp-cartao--painel .otp-slot[data-flap-valor="✓"] .otp-flap span { font-size: 1.55em; font-weight: 700; font-family: var(--otp-fonte); }
+
+/* Tombo curto: a placa "embaralha" várias letras antes de parar */
+.otp-slot--rapido.otp-slot--vira .otp-flap__folha--cima { animation-duration: .1s; }
+.otp-slot--rapido.otp-slot--vira .otp-flap__folha--baixo { animation-duration: .12s; animation-delay: .1s; }
+
+.otp-cartao--painel .otp-campo--verificando .otp-slot { animation: otp-onda 1s ease-in-out infinite; animation-delay: calc(var(--otp-i) * 90ms); }
+
+/* APROVADO — as placas giram até formar "✓ OK" (script.js) e o painel pisca
+   como o letreiro confirmando o embarque */
+.otp-cartao--painel .otp-campo--sucesso .otp-flap span { color: var(--otp-verde); text-shadow: 0 0 14px rgba(62, 224, 143, .45); }
+.otp-cartao--painel .otp-campo--sucesso .otp-slot { border-color: rgba(62, 224, 143, .45); }
+.otp-cartao--painel .otp-campo--sucesso .otp-slot:not([data-flap-valor=""]) {
+  border-color: var(--otp-verde);
+  animation: otp-fp-embarque .9s 1s ease-in-out 2;
+}
+.otp-cartao--painel .otp-campo--sucesso .otp-slot[data-flap-valor=""] { opacity: .55; transition: opacity .4s .9s; }
+@keyframes otp-fp-embarque {
+  0%, 100% { box-shadow: 0 10px 20px -14px #000; }
+  45% { box-shadow: 0 0 0 3px rgba(62, 224, 143, .2), 0 0 26px -2px var(--otp-verde-glow); }
+}
+
+/* ERRO — as placas embaralham letras em vermelho (script.js) e voltam ao vazio */
+.otp-cartao--painel .otp-campo--erro .otp-flap span { color: var(--otp-erro); }
+.otp-cartao--painel .otp-campo--erro .otp-slot { border-color: var(--otp-erro); box-shadow: 0 0 0 3px rgba(255, 107, 122, .1), 0 10px 20px -14px #000; }
+
+/* SEM ACESSO — o painel vira um relógio de partida: a contagem aparece nas placas,
+   em aço frio, e só a placa que muda tomba a cada segundo */
+.otp-cartao--painel .otp-campo--bloqueado .otp-flap span { color: var(--otp-frio-forte); }
+.otp-cartao--painel .otp-campo--bloqueado .otp-slot { border-color: var(--otp-frio-borda); }
+.otp-cartao--painel .otp-campo--bloqueado .otp-slot[data-flap-valor=""] { opacity: .45; transition: opacity .6s .4s; }
+.otp-cartao--painel .otp-campo--bloqueado .otp-flap__meia--cima,
+.otp-cartao--painel .otp-campo--bloqueado .otp-flap__folha--cima { background: linear-gradient(180deg, #212833, #181e26); }
+/* LIBERADO — as placas voltam ao vazio em cascata, com um contorno ciano passando */
+.otp-cartao--painel .otp-campo--liberado .otp-slot { animation: otp-fp-libera .6s calc(var(--otp-i) * 60ms) ease-out; }
+@keyframes otp-fp-libera { 40% { border-color: rgba(79, 209, 255, .7); box-shadow: 0 0 0 3px rgba(79, 209, 255, .12), 0 10px 20px -14px #000; } }
+
+/* ==========================================================================
+   3. Cofre — roletas de cadeado + porta que abre
+   ========================================================================== */
+.otp-cofre { grid-template-columns: auto auto; gap: 32px; justify-content: center; }
+.otp-cofre .otp-campo { --otp-slot-a: 72px; --otp-vao: 8px; width: auto; }
+.otp-cartao--cofre .otp-slot {
+  --otp-celula: 36px;
+  border-radius: 10px; overflow: hidden;
+  background: linear-gradient(180deg, #0c0e11, #1c2128 50%, #0c0e11);
+  border: 1px solid var(--otp-linha-forte);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, .6), inset 0 -2px 6px rgba(0, 0, 0, .6);
+  transition: border-color .25s, box-shadow .25s;
+}
+/* Faixa central e sombras de "cilindro" */
+.otp-cartao--cofre .otp-slot::before {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(11, 13, 16, .95), transparent 34%, transparent 66%, rgba(11, 13, 16, .95)),
+    linear-gradient(180deg, transparent calc(50% - 19px), rgba(79, 209, 255, .06) calc(50% - 19px), rgba(79, 209, 255, .06) calc(50% + 19px), transparent calc(50% + 19px));
+}
+.otp-cartao--cofre .otp-slot__entrada { color: transparent; }
+.otp-cartao--cofre .otp-slot::after { display: none; }
+.otp-cartao--cofre .otp-slot--ativo { border-color: var(--otp-ciano); box-shadow: inset 0 2px 6px rgba(0, 0, 0, .6), 0 0 0 3px rgba(79, 209, 255, .14), 0 0 20px -4px var(--otp-ciano-glow); }
+
+.otp-rolo { position: absolute; inset: 0; pointer-events: none; }
+.otp-rolo__fita {
+  position: absolute; left: 0; right: 0; top: 50%;
+  display: flex; flex-direction: column;
+  transform: translateY(calc(var(--otp-celula) * -.5 - var(--otp-pos, 10) * var(--otp-celula)));
+  transition: transform .75s cubic-bezier(.18, .8, .24, 1.06), opacity .3s;
+  opacity: .32;
+}
+.otp-rolo__fita--sem-transicao { transition: none; }
+.otp-rolo__fita span {
+  height: var(--otp-celula); flex: none;
+  display: grid; place-items: center;
+  font-family: var(--otp-mono); font-size: 25px; font-weight: 700; color: var(--otp-texto);
+}
+.otp-slot--cheio .otp-rolo__fita { opacity: 1; }
+.otp-cartao--cofre .otp-campo--erro .otp-rolo__fita span { color: var(--otp-erro); }
+.otp-cartao--cofre .otp-campo--erro .otp-slot { border-color: var(--otp-erro); }
+.otp-cartao--cofre .otp-campo--sucesso .otp-rolo__fita span { color: var(--otp-verde); transition: color .3s; }
+.otp-cartao--cofre .otp-campo--sucesso .otp-slot { border-color: rgba(62, 224, 143, .55); }
+
+/* Desenho do cofre */
+.otp-cofre__caixa { position: relative; width: 116px; height: 116px; perspective: 600px; }
+.otp-cofre__caixa svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.otp-cofre__vao { fill: #07090b; stroke: var(--otp-linha-forte); stroke-width: 1.5; }
+.otp-cofre__prateleira { fill: #1b2027; }
+.otp-cofre__ok-anel { fill: rgba(62, 224, 143, .12); stroke: var(--otp-verde); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.otp-cofre__ok { fill: none; stroke: var(--otp-verde); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 30; stroke-dashoffset: 30; }
+
+.otp-cofre__porta {
+  transform-origin: 6% 50%;
+  transition: transform .9s cubic-bezier(.5, 0, .2, 1);
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .55));
+}
+.otp-cofre__chapa { fill: #20262e; stroke: #3a4350; stroke-width: 1.5; }
+.otp-cofre__borda { fill: none; stroke: rgba(255, 255, 255, .06); stroke-width: 1.5; }
+.otp-cofre__dobradica { fill: #3a4350; }
+.otp-cofre__aro { fill: #171b21; stroke: #3a4350; stroke-width: 2; }
+.otp-cofre__marcas path { stroke: #4b5563; stroke-width: 1.6; stroke-linecap: round; }
+.otp-cofre__volante {
+  transform-box: view-box; transform-origin: 62px 60px;
+  transform: rotate(var(--otp-giro, 0deg));
+  transition: transform .7s var(--otp-mola);
+}
+.otp-cofre__raio { stroke: #8b96a5; stroke-width: 3.4; stroke-linecap: round; }
+.otp-cofre__pino { fill: #8b96a5; }
+.otp-cofre__miolo { fill: #2a313b; stroke: #8b96a5; stroke-width: 2; }
+.otp-cofre__miolo-ponto { fill: var(--otp-ciano); }
+.otp-cofre__led { fill: var(--otp-ciano); filter: drop-shadow(0 0 4px var(--otp-ciano)); transition: fill .3s; }
+
+/* Facho de luz (atrás da porta) e ferrolho do bloqueio (na frente) */
+.otp-cofre__luz {
+  position: absolute; inset: -38%; border-radius: 50%; pointer-events: none; opacity: 0;
+  background:
+    radial-gradient(closest-side, rgba(205, 255, 228, .7), rgba(62, 224, 143, .3) 36%, rgba(62, 224, 143, .07) 64%, transparent 76%),
+    repeating-conic-gradient(from 6deg, rgba(150, 255, 200, .2) 0 4deg, transparent 4deg 19deg);
+  -webkit-mask: radial-gradient(closest-side, #000 30%, transparent 100%);
+  mask: radial-gradient(closest-side, #000 30%, transparent 100%);
+  mix-blend-mode: screen;
+}
+.otp-cofre__trava { opacity: 0; visibility: hidden; pointer-events: none; }
+.otp-cofre__barra { fill: #5d6b7e; stroke: #8796aa; stroke-width: 1; }
+.otp-cofre__suporte { fill: #2b333e; stroke: #4c5868; stroke-width: 1.2; }
+.otp-cofre__trava .otp-cadeado__arco { stroke-width: 3.2; transform: translateY(-5px); }
+.otp-cofre__trava .otp-cadeado__furo { stroke-width: 2.4; }
+
+/* APROVADO — o volante dá a última volta, a porta abre e um facho de luz sai de dentro */
+.otp-cartao--cofre[data-estado="sucesso"] .otp-cofre__led { fill: var(--otp-verde); filter: drop-shadow(0 0 4px var(--otp-verde)); }
+.otp-cartao--cofre[data-estado="sucesso"] .otp-cofre__volante { transform: rotate(calc(var(--otp-giro, 0deg) + 270deg)); transition-duration: .45s; }
+.otp-cartao--cofre[data-estado="sucesso"] .otp-cofre__porta { transform: rotateY(-78deg); transition: transform .7s .3s cubic-bezier(.5, 0, .2, 1); }
+.otp-cartao--cofre[data-estado="sucesso"] .otp-cofre__vao { fill: #0b1a13; transition: fill .5s .45s; }
+.otp-cartao--cofre[data-estado="sucesso"] .otp-cofre__luz { animation: otp-cofre-luz 1.1s .42s ease-out forwards; }
+.otp-cartao--cofre[data-estado="sucesso"] .otp-cofre__ok-anel { animation: otp-pop .4s .72s var(--otp-mola) forwards; }
+.otp-cartao--cofre[data-estado="sucesso"] .otp-cofre__ok { animation: otp-desenha .35s .86s var(--otp-ease) forwards; }
+.otp-cartao--cofre .otp-campo--sucesso .otp-slot { animation: otp-cofre-rolo-ok .5s calc(var(--otp-i) * 60ms) ease-out; }
+@keyframes otp-cofre-luz {
+  0% { opacity: 0; transform: scale(.3) rotate(0deg); }
+  35% { opacity: 1; }
+  100% { opacity: .5; transform: scale(1) rotate(24deg); }
+}
+@keyframes otp-cofre-rolo-ok { 45% { box-shadow: inset 0 2px 6px rgba(0, 0, 0, .6), 0 0 0 3px rgba(62, 224, 143, .18), 0 0 22px -4px var(--otp-verde-glow); } }
+
+/* ERRO — o volante gira, ESBARRA no batente (tranco) e volta; a porta sacode
+   de leve, as roletas engasgam e o LED pisca vermelho */
+.otp-cartao--cofre[data-estado="erro"] .otp-cofre__led { fill: var(--otp-erro); filter: drop-shadow(0 0 4px var(--otp-erro)); animation: otp-led-pisca .5s steps(1) 2; }
+.otp-cartao--cofre[data-estado="erro"] .otp-cofre__volante { animation: otp-cofre-esbarro .7s cubic-bezier(.3, 0, .3, 1); }
+.otp-cartao--cofre[data-estado="erro"] .otp-cofre__porta { animation: otp-cofre-tranco .7s linear; }
+.otp-cartao--cofre .otp-campo--erro .otp-slot { animation: otp-cofre-engasga .7s linear; }
+@keyframes otp-cofre-esbarro {
+  0% { transform: rotate(var(--otp-giro, 0deg)); }
+  26% { transform: rotate(calc(var(--otp-giro, 0deg) + 40deg)); }   /* bate no batente */
+  33% { transform: rotate(calc(var(--otp-giro, 0deg) + 31deg)); }   /* tranco de volta */
+  40% { transform: rotate(calc(var(--otp-giro, 0deg) + 36deg)); }
+  100% { transform: rotate(var(--otp-giro, 0deg)); }
+}
+@keyframes otp-cofre-tranco {
+  0%, 25%, 46%, 100% { transform: none; }
+  28% { transform: translate(2px, -1px); }
+  35% { transform: translate(-1.5px, .5px); }
+  41% { transform: translate(.6px, 0); }
+}
+@keyframes otp-cofre-engasga {
+  0%, 25%, 46%, 100% { transform: none; }
+  29% { transform: translateY(-3px); }
+  36% { transform: translateY(2px); }
+}
+@keyframes otp-led-pisca { 50% { fill: #3a1f26; filter: none; } }
+
+/* SEM ACESSO — o ferrolho de aço atravessa a porta, o cadeado fecha nele,
+   o LED apaga e as roletas ficam foscas */
+.otp-cartao--cofre[data-estado="bloqueado"] .otp-cofre__led { fill: #3a4350; filter: none; }
+.otp-cartao--cofre[data-estado="bloqueado"] .otp-cofre__trava { visibility: visible; opacity: 1; }
+.otp-cartao--cofre[data-estado="bloqueado"] .otp-cofre__ferrolho { animation: otp-ferrolho-entra .55s var(--otp-ease) both; }
+.otp-cartao--cofre[data-estado="bloqueado"] .otp-cofre__cadeado { animation: otp-cofre-cadeado .5s .4s var(--otp-ease) both; }
+.otp-cartao--cofre[data-estado="bloqueado"] .otp-cofre__trava .otp-cadeado__arco { animation: otp-arco-fecha-cofre .28s .85s cubic-bezier(.6, 0, .7, 1.7) forwards; }
+.otp-cartao--cofre .otp-campo--bloqueado .otp-slot { animation: otp-cofre-fosco .5s calc(var(--otp-i) * 50ms) forwards; }
+@keyframes otp-ferrolho-entra { from { opacity: 0; transform: translateX(44px); } }
+@keyframes otp-cofre-cadeado { from { opacity: 0; transform: translateY(-10px); } }
+@keyframes otp-arco-fecha-cofre { from { transform: translateY(-5px); } to { transform: translateY(0); } }
+@keyframes otp-cofre-fosco { to { border-color: var(--otp-frio-borda); opacity: .45; box-shadow: inset 0 2px 6px rgba(0, 0, 0, .6); } }
+/* LIBERADO — o cadeado abre, cai, o ferrolho recua e o LED volta a acender */
+.otp-cartao--cofre[data-estado="liberado"] .otp-cofre__trava { visibility: visible; opacity: 1; }
+.otp-cartao--cofre[data-estado="liberado"] .otp-cofre__trava .otp-cadeado__arco { transform: none; animation: otp-arco-abre-cofre .25s var(--otp-mola) forwards; }
+.otp-cartao--cofre[data-estado="liberado"] .otp-cofre__cadeado { animation: otp-cofre-cadeado-sai .4s .22s ease-in forwards; }
+.otp-cartao--cofre[data-estado="liberado"] .otp-cofre__ferrolho { animation: otp-ferrolho-sai .45s .4s var(--otp-ease) forwards; }
+.otp-cartao--cofre[data-estado="liberado"] .otp-cofre__led { animation: otp-led-volta .6s .5s steps(1) both; }
+.otp-cartao--cofre .otp-campo--liberado .otp-slot { animation: otp-cofre-volta .5s calc(var(--otp-i) * 50ms + .35s) both; }
+@keyframes otp-arco-abre-cofre { to { transform: translateY(-6px); } }
+@keyframes otp-cofre-cadeado-sai { to { opacity: 0; transform: translateY(14px); } }
+@keyframes otp-ferrolho-sai { to { opacity: 0; transform: translateX(44px); } }
+@keyframes otp-led-volta { 0%, 30% { fill: #3a4350; filter: none; } 15%, 45%, 100% { fill: var(--otp-ciano); } }
+@keyframes otp-cofre-volta { from { border-color: var(--otp-frio-borda); opacity: .45; } 60% { border-color: rgba(79, 209, 255, .6); } }
+
+/* ==========================================================================
+   4. Campo único — um <input> só por trás de 6 casas
+   (gerado por CampoOTP com campoUnico: true)
+   ========================================================================== */
+/* O corpo do cartão centraliza pelo conteúdo; aqui queremos a largura toda,
+   para as casas de 1fr terem uma referência definida. */
+.otp-cartao--unico .otp-cartao__corpo, .otp-cartao--terminal .otp-cartao__corpo { justify-items: stretch; }
+.otp-campo--unico {
+  position: relative;
+  grid-template-columns: repeat(var(--otp-tamanho, 6), 1fr);
+  width: min(100%, 340px); margin-inline: auto; gap: 0; padding: 6px;
+  background: var(--otp-cartao-2);
+  border: 1px solid var(--otp-linha-forte); border-radius: 16px;
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+.otp-campo--unico.otp-campo--focado {
+  border-color: var(--otp-ciano);
+  box-shadow: 0 0 0 4px rgba(79, 209, 255, .12);
+}
+/* Realce que desliza até a casa que será preenchida */
+.otp-campo--unico::before {
+  content: ""; position: absolute; top: 6px; bottom: 6px; left: 6px; z-index: 0;
+  width: calc((100% - 12px) / var(--otp-tamanho, 6));
+  transform: translateX(calc(var(--otp-ativo, 0) * 100%));
+  border-radius: 11px; background: #16202a;
+  border: 1px solid rgba(79, 209, 255, .5);
+  box-shadow: 0 0 20px -6px var(--otp-ciano-glow);
+  opacity: 0; transition: transform .34s var(--otp-mola), opacity .22s;
+}
+.otp-campo--unico.otp-campo--focado::before { opacity: 1; }
+.otp-campo--unico .otp-slot {
+  height: 54px; display: grid; place-items: center; pointer-events: none; z-index: 1;
+}
+/* Divisórias de 1px entre as casas */
+.otp-campo--unico .otp-slot + .otp-slot .otp-slot__glifo::before {
+  content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 1px;
+  background: var(--otp-linha-forte); transition: opacity .2s;
+}
+.otp-slot__glifo {
+  font-family: var(--otp-mono); font-size: 26px; font-weight: 500; color: var(--otp-texto);
+  line-height: 1; transition: color .3s;
+}
+.otp-slot--cheio .otp-slot__glifo { animation: otp-pop .28s var(--otp-mola); }
+.otp-unico__entrada {
+  position: absolute; inset: 0; z-index: 3;
+  width: 100%; height: 100%; margin: 0; padding: 0; border: 0; border-radius: 15px;
+  background: transparent; color: transparent; caret-color: transparent;
+  text-align: center; font-size: 16px; /* 16px evita o zoom do iOS */
+  letter-spacing: 1em;
+}
+.otp-unico__entrada::selection { background: transparent; }
+.otp-unico__entrada:disabled { cursor: default; }
+.otp-campo--unico.otp-campo--verificando .otp-slot__glifo { animation: otp-onda-verif 1s ease-in-out infinite; animation-delay: calc(var(--otp-i) * 100ms); }
+
+/* APROVADO — o realce da última casa se estica até virar uma barra de
+   confirmação verde, e um brilho corre por ela */
+.otp-campo--unico.otp-campo--sucesso { border-color: rgba(62, 224, 143, .55); background: #11201a; box-shadow: 0 0 0 4px rgba(62, 224, 143, .08), 0 0 26px -10px var(--otp-verde-glow); }
+.otp-campo--unico.otp-campo--sucesso::before {
+  opacity: 1; transform: none; left: 6px; width: calc(100% - 12px);
+  background: rgba(62, 224, 143, .13); border-color: rgba(62, 224, 143, .6);
+  box-shadow: 0 0 22px -6px var(--otp-verde-glow);
+  animation: otp-unico-barra .5s var(--otp-ease) both;
+}
+@keyframes otp-unico-barra {
+  from {
+    transform: none; opacity: 1;
+    left: calc(6px + (100% - 12px) * var(--otp-ativo, 5) / var(--otp-tamanho, 6));
+    width: calc((100% - 12px) / var(--otp-tamanho, 6));
+    background: #16202a; border-color: rgba(79, 209, 255, .5);
+  }
+}
+.otp-campo--unico.otp-campo--sucesso::after {
+  content: ""; position: absolute; inset: 6px; z-index: 2; border-radius: 11px; pointer-events: none;
+  background: linear-gradient(100deg, transparent 38%, rgba(200, 255, 225, .3) 50%, transparent 62%) 130% 0 / 280% 100% no-repeat;
+  animation: otp-varre .7s .42s ease-out both;
+}
+.otp-campo--unico.otp-campo--sucesso .otp-slot__glifo {
+  color: var(--otp-verde);
+  animation: otp-pula .55s var(--otp-mola) both; animation-delay: calc(var(--otp-i) * 60ms + .3s);
+}
+.otp-campo--unico.otp-campo--sucesso .otp-slot__glifo::before { opacity: 0; }
+
+/* ERRO — a barra "recusa" o código (encolhe e volta como borracha)
+   e os caracteres se desfazem de trás para frente */
+.otp-campo--unico.otp-campo--erro { border-color: var(--otp-erro); background: #211418; animation: otp-unico-recusa .5s var(--otp-mola); }
+.otp-campo--unico.otp-campo--erro::before { opacity: 0; }
+.otp-campo--unico.otp-campo--erro .otp-slot__glifo {
+  color: var(--otp-erro);
+  animation: otp-glifo-some .38s calc((var(--otp-tamanho, 6) - 1 - var(--otp-i)) * 45ms + 220ms) ease-in forwards;
+}
+@keyframes otp-unico-recusa {
+  25% { transform: scale(.955, 1.05); }
+  55% { transform: scale(1.015, .99); }
+}
+@keyframes otp-glifo-some { to { opacity: 0; transform: translateY(7px) scale(.7); filter: blur(3px); } }
+
+/* SEM ACESSO — uma persiana de aço desce sobre o campo e trava com um cadeado */
+.otp-unico-caixa { position: relative; width: min(100%, 340px); margin-inline: auto; }
+.otp-unico-caixa .otp-campo--unico { width: 100%; }
+.otp-campo--unico.otp-campo--bloqueado { border-color: var(--otp-frio-borda); background: var(--otp-frio-fundo); }
+.otp-persiana {
+  position: absolute; inset: 0; z-index: 4; border-radius: 16px; overflow: hidden;
+  pointer-events: none; visibility: hidden;
+}
+.otp-persiana__laminas {
+  position: absolute; inset: 0; transform: translateY(-101%);
+  background:
+    linear-gradient(180deg, transparent calc(100% - 5px), #4a5666 calc(100% - 5px), #2b333e),
+    repeating-linear-gradient(180deg, #232b36 0 6px, #1a2029 6px 8px, #0e1217 8px 9px);
+  border: 1px solid var(--otp-frio-borda); border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 8px 18px -6px rgba(0, 0, 0, .7);
+}
+.otp-persiana__rotulo {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px;
+  font: 700 12px var(--otp-mono); letter-spacing: .2em; text-transform: uppercase; color: var(--otp-frio-forte);
+  opacity: 0;
+}
+.otp-persiana__rotulo .otp-cadeado { width: 18px; height: 18px; }
+.otp-persiana__rotulo::before, .otp-persiana__rotulo::after {   /* frisos ao lado do rótulo */
+  content: ""; width: 22px; height: 1px; background: var(--otp-frio-borda);
+}
+.otp-cartao--unico[data-estado="bloqueado"] .otp-persiana,
+.otp-cartao--unico[data-estado="liberado"] .otp-persiana { visibility: visible; }
+.otp-cartao--unico[data-estado="bloqueado"] .otp-persiana__laminas { animation: otp-persiana-desce .8s cubic-bezier(.5, 0, .25, 1) forwards; }
+.otp-cartao--unico[data-estado="bloqueado"] .otp-persiana__rotulo { animation: otp-surge-fim .4s .75s ease-out forwards; }
+.otp-cartao--unico[data-estado="bloqueado"] .otp-persiana .otp-cadeado__arco { animation-delay: 1.05s; }
+@keyframes otp-persiana-desce {
+  0% { transform: translateY(-101%); }
+  86% { transform: translateY(1.5%); }
+  100% { transform: translateY(0); }
+}
+@keyframes otp-surge-fim { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+/* LIBERADO — o rótulo some e a persiana sobe */
+.otp-cartao--unico[data-estado="liberado"] .otp-persiana__laminas { transform: none; animation: otp-persiana-sobe .65s .15s cubic-bezier(.6, 0, .3, 1) forwards; }
+.otp-cartao--unico[data-estado="liberado"] .otp-persiana__rotulo { opacity: 1; animation: otp-trava-sai .25s ease-in forwards; }
+@keyframes otp-persiana-sobe { to { transform: translateY(-101%); } }
+/* Dica de preenchimento automático, abaixo do campo */
+.otp-cartao--unico .otp-cartao__corpo { gap: 12px; }
+.otp-cartao--unico .otp-cartao__desc code {
+  font-family: var(--otp-mono); font-size: 12.5px; color: var(--otp-texto);
+  background: var(--otp-cartao-2); border: 1px solid var(--otp-linha); border-radius: 6px; padding: 1px 5px;
+}
+
+/* ==========================================================================
+   5. Pontos — cada dígito vira um ponto que pulsa
+   ========================================================================== */
+.otp-cartao--pontos .otp-campo { --otp-slot-l: 44px; --otp-slot-a: 56px; --otp-vao: 14px; }
+.otp-cartao--pontos .otp-slot { display: grid; place-items: center; border-radius: 50%; }
+.otp-cartao--pontos .otp-slot__entrada { color: transparent; border-radius: 14px; }
+.otp-cartao--pontos .otp-slot::after { display: none; }
+.otp-ponto {
+  position: relative; width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--otp-linha-forte);
+  transition: border-color .25s, background .25s, transform .3s var(--otp-mola), box-shadow .25s;
+  pointer-events: none;
+}
+.otp-ponto::after {
+  content: ""; position: absolute; inset: -2px; border-radius: 50%;
+  border: 2px solid var(--otp-ciano); opacity: 0;
+}
+.otp-slot--ativo .otp-ponto { border-color: var(--otp-ciano); transform: scale(1.15); box-shadow: 0 0 0 6px rgba(79, 209, 255, .1); animation: otp-espera 1.4s ease-in-out infinite; }
+@keyframes otp-espera { 50% { box-shadow: 0 0 0 10px rgba(79, 209, 255, .04); } }
+.otp-slot--cheio .otp-ponto {
+  border-color: var(--otp-ciano); background: var(--otp-ciano);
+  box-shadow: 0 0 16px var(--otp-ciano-glow);
+  animation: otp-ponto-entra .35s var(--otp-mola), otp-respira 2.4s .4s ease-in-out infinite;
+}
+.otp-slot--cheio .otp-ponto::after { animation: otp-onda-ponto .7s ease-out; }
+@keyframes otp-ponto-entra { 0% { transform: scale(.2); } 60% { transform: scale(1.3); } }
+@keyframes otp-respira { 50% { transform: scale(.82); box-shadow: 0 0 8px var(--otp-ciano-glow); } }
+@keyframes otp-onda-ponto { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(2.8); } }
+
+@keyframes otp-pula { 40% { transform: translateY(-12px) scale(1.1); } }
+.otp-cartao--pontos .otp-campo--verificando .otp-ponto { animation: otp-onda-verif 1s ease-in-out infinite; animation-delay: calc(var(--otp-i) * 110ms); }
+@keyframes otp-onda-verif { 50% { transform: translateY(-6px); opacity: .6; } }
+
+.otp-pontos-caixa { position: relative; width: 100%; }
+/* distância entre os centros de dois pontos (usada para juntá-los no meio) */
+.otp-cartao--pontos .otp-campo { --otp-passo: calc(var(--otp-slot-l) + var(--otp-vao)); }
+/* Onde cada ponto pousa para desenhar o check (relativo ao centro da fileira) */
+.otp-cartao--pontos .otp-slot:nth-child(1) { --otp-alvo-x: -29px; --otp-alvo-y: 0px; }
+.otp-cartao--pontos .otp-slot:nth-child(2) { --otp-alvo-x: -18px; --otp-alvo-y: 10px; }
+.otp-cartao--pontos .otp-slot:nth-child(3) { --otp-alvo-x: -7px;  --otp-alvo-y: 20px; }
+.otp-cartao--pontos .otp-slot:nth-child(4) { --otp-alvo-x: 6px;   --otp-alvo-y: 6px; }
+.otp-cartao--pontos .otp-slot:nth-child(5) { --otp-alvo-x: 19px;  --otp-alvo-y: -8px; }
+.otp-cartao--pontos .otp-slot:nth-child(6) { --otp-alvo-x: 32px;  --otp-alvo-y: -22px; }
+
+/* APROVADO — os pontos voam para o centro, pousam formando um check
+   e um anel verde se fecha em volta deles */
+.otp-cartao--pontos .otp-campo--sucesso .otp-ponto {
+  border-color: var(--otp-verde); background: var(--otp-verde); box-shadow: 0 0 14px var(--otp-verde-glow);
+  animation: otp-pontos-check .6s calc(var(--otp-i) * 55ms) cubic-bezier(.5, 0, .2, 1.15) forwards;
+}
+@keyframes otp-pontos-check {
+  to { transform: translate(calc(var(--otp-alvo-x) - (var(--otp-i) - 2.5) * var(--otp-passo)), var(--otp-alvo-y)) scale(.6); }
+}
+.otp-pontos__anel {
+  position: absolute; left: 50%; top: 50%; width: 100px; height: 100px; margin: -50px 0 0 -49px;
+  overflow: visible; pointer-events: none; opacity: 0;
+}
+.otp-pontos__anel circle {
+  fill: transparent; stroke: var(--otp-verde); stroke-width: 2; stroke-linecap: round;
+  stroke-dasharray: 100; stroke-dashoffset: 100; transform: rotate(-90deg); transform-origin: center;
+}
+.otp-cartao--pontos[data-estado="sucesso"] .otp-pontos__anel { opacity: 1; filter: drop-shadow(0 0 8px var(--otp-verde-glow)); }
+.otp-cartao--pontos[data-estado="sucesso"] .otp-pontos__anel circle { animation: otp-anel-fecha .5s .62s var(--otp-ease) forwards; }
+@keyframes otp-anel-fecha { to { stroke-dashoffset: 0; fill: rgba(62, 224, 143, .07); } }
+
+/* ERRO — os pontos ficam vermelhos, se espalham e caem (como contas soltas) */
+.otp-cartao--pontos .otp-campo--erro .otp-ponto {
+  border-color: var(--otp-erro); background: var(--otp-erro); box-shadow: 0 0 14px var(--otp-erro-glow);
+  animation: otp-pontos-caem .72s calc(var(--otp-i) * 45ms + 80ms) cubic-bezier(.45, 0, .85, .55) forwards;
+}
+@keyframes otp-pontos-caem {
+  0% { transform: none; opacity: 1; }
+  28% { transform: translate(calc((var(--otp-i) - 2.5) * 6px), -13px) scale(1.12); opacity: 1; }
+  100% { transform: translate(calc((var(--otp-i) - 2.5) * 15px), 34px) scale(.55); opacity: 0; }
+}
+
+/* SEM ACESSO — os pontos viram elos de corrente (aço), ligados por elos
+   laterais, e um cadeado desce e fica pendurado no meio, balançando */
+.otp-cartao--pontos .otp-campo--bloqueado .otp-ponto {
+  background: transparent; box-shadow: none;
+  animation: otp-elo .5s calc(var(--otp-i) * 60ms) var(--otp-ease) forwards;
+}
+@keyframes otp-elo { to { width: calc(var(--otp-passo) * .64); height: 20px; border-width: 3px; border-color: var(--otp-frio); } }
+.otp-cartao--pontos .otp-slot:not(:last-child)::before {   /* elo lateral (visto de lado) */
+  content: ""; position: absolute; top: 50%; z-index: 1; pointer-events: none;
+  left: calc(50% + var(--otp-passo) * .25); width: calc(var(--otp-passo) * .5); height: 8px; margin-top: -4px;
+  border-radius: 4px;
+  background: linear-gradient(#0f141a, #0f141a) center / calc(100% - 12px) 2px no-repeat, linear-gradient(180deg, #c0ccdb, #66768b);
+  transform: scaleX(0); opacity: 0;
+}
+.otp-cartao--pontos .otp-campo--bloqueado .otp-slot:not(:last-child)::before { animation: otp-elo-liga .3s calc(var(--otp-i) * 60ms + .32s) var(--otp-ease) forwards; }
+@keyframes otp-elo-liga { to { transform: none; opacity: 1; } }
+.otp-pontos__cadeado {
+  position: absolute; left: 50%; top: calc(50% - 5px); z-index: 2; width: 26px; height: 33px; margin-left: -13px;
+  transform-origin: 50% 3px; pointer-events: none; opacity: 0; visibility: hidden;
+}
+.otp-pontos__cadeado .otp-cadeado__arco { stroke-width: 2.4; }
+.otp-cartao--pontos[data-estado="bloqueado"] .otp-pontos__cadeado { visibility: visible; animation: otp-pendura 1.1s .6s var(--otp-ease) forwards; }
+.otp-cartao--pontos[data-estado="bloqueado"] .otp-pontos__cadeado .otp-cadeado__arco { animation-delay: 1.05s; }
+@keyframes otp-pendura {
+  0% { opacity: 0; transform: translateY(-14px); }
+  25% { opacity: 1; transform: rotate(10deg); }
+  50% { transform: rotate(-6deg); }
+  75% { transform: rotate(3deg); }
+  100% { opacity: 1; transform: none; }
+}
+/* LIBERADO — o cadeado abre e cai; os elos encolhem de volta a pontos */
+.otp-cartao--pontos[data-estado="liberado"] .otp-pontos__cadeado { visibility: visible; opacity: 1; animation: otp-cofre-cadeado-sai .4s .25s ease-in forwards; }
+.otp-cartao--pontos .otp-campo--liberado .otp-ponto { animation: otp-elo-solta .45s calc(var(--otp-i) * 50ms + .35s) var(--otp-ease) both; }
+.otp-cartao--pontos .otp-campo--liberado .otp-slot:not(:last-child)::before { opacity: 1; transform: none; animation: otp-elo-desliga .25s .3s ease-in forwards; }
+@keyframes otp-elo-solta { from { width: calc(var(--otp-passo) * .64); height: 20px; border-width: 3px; border-color: var(--otp-frio); } }
+@keyframes otp-elo-desliga { to { opacity: 0; transform: scaleX(.2); } }
+
+/* ==========================================================================
+   6. Terminal — código alfanumérico numa janela de console
+   ========================================================================== */
+.otp-term {
+  width: min(100%, 420px); margin-inline: auto; border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--otp-linha-forte); background: #07090c;
+  box-shadow: 0 20px 44px -28px #000, inset 0 1px 0 rgba(255, 255, 255, .04);
+  transition: border-color .3s, box-shadow .3s;
+}
+.otp-term__barra {
+  display: flex; align-items: center; gap: 6px; padding: 9px 12px;
+  background: #11151b; border-bottom: 1px solid var(--otp-linha);
+}
+.otp-term__barra i { width: 9px; height: 9px; border-radius: 50%; background: #2c333d; }
+.otp-term__barra em {
+  margin-left: 8px; font: 400 11.5px var(--otp-mono); font-style: normal;
+  color: var(--otp-suave); letter-spacing: .04em;
+}
+/* Janela de altura fixa (linha de comando + campo + 1 linha de log);
+   as linhas novas rolam o conteúdo para cima, como num terminal de verdade */
+.otp-term { --otp-term-slot: 52px; }
+.otp-term__corpo {
+  position: relative; padding: 14px 16px 14px; overflow: hidden;
+  height: calc(28px + 20px + 10px + var(--otp-term-slot) + 8px + 20px);
+}
+.otp-term__linha { transition: opacity .25s; }
+.otp-term__rolo--rolou .otp-term__linha { opacity: 0; }   /* rolou para fora da janela */
+.otp-term__rolo { transform: translateY(calc(var(--otp-rolagem, 0) * -20px)); transition: transform .32s var(--otp-ease); }
+.otp-term__corpo::after {   /* scanlines bem leves */
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 3px);
+}
+.otp-term__linha { font: 400 12.5px/1.6 var(--otp-mono); color: var(--otp-suave); }
+.otp-term__prompt { color: var(--otp-verde); }
+.otp-term__saida { margin-top: 8px; min-height: 20px; }
+.otp-term__log {
+  font: 400 12.5px/20px var(--otp-mono); color: var(--otp-suave);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  animation: otp-term-digita .34s steps(16, end) both;   /* "datilografa" a linha */
+}
+@keyframes otp-term-digita { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.otp-term__log--ok { color: var(--otp-verde); }
+.otp-term__log--erro { color: var(--otp-erro); }
+.otp-term__log--frio { color: var(--otp-frio-forte); }
+/* Cursor de bloco verde no fim do log do aprovado */
+.otp-term__cursor {
+  display: inline-block; width: .62em; height: 1.1em; margin-left: 6px; vertical-align: -3px;
+  background: var(--otp-verde); box-shadow: 0 0 10px var(--otp-verde-glow);
+  animation: otp-cursor 1.05s .5s steps(1) infinite;
+}
+.otp-cartao--terminal[data-estado="sucesso"] .otp-term { border-color: rgba(62, 224, 143, .45); box-shadow: 0 0 26px -12px var(--otp-verde-glow); }
+.otp-cartao--terminal[data-estado="erro"] .otp-term { border-color: rgba(255, 107, 122, .5); }
+.otp-cartao--terminal[data-estado="bloqueado"] .otp-term { border-color: var(--otp-frio-borda); }
+.otp-cartao--terminal[data-estado="bloqueado"] .otp-term__barra i { background: #222932; }
+
+.otp-cartao--terminal .otp-campo { --otp-slot-l: 42px; --otp-slot-a: var(--otp-term-slot); --otp-vao: 6px; margin-top: 10px; }
+.otp-cartao--terminal .otp-slot {
+  border-bottom: 2px solid var(--otp-linha-forte);
+  transition: border-color .25s, background .25s;
+}
+.otp-cartao--terminal .otp-slot--ativo { border-bottom-color: var(--otp-ciano); background: rgba(79, 209, 255, .05); }
+.otp-cartao--terminal .otp-slot__entrada {
+  font-size: 25px; font-weight: 700; color: var(--otp-ciano); text-transform: uppercase;
+  text-shadow: 0 0 14px var(--otp-ciano-glow);
+}
+.otp-cartao--terminal .otp-slot--cheio .otp-slot__entrada { animation: otp-term-entra .22s var(--otp-ease); }
+@keyframes otp-term-entra { from { opacity: 0; transform: translateY(-6px); } }
+/* cursor de terminal: um traço embaixo, piscando */
+.otp-cartao--terminal .otp-slot::after {
+  width: 60%; height: 3px; left: 50%; top: auto; bottom: 7px; margin: 0 0 0 -30%; border-radius: 2px;
+}
+.otp-cartao--terminal .otp-campo--verificando .otp-slot { animation: otp-onda-term 1s ease-in-out infinite; animation-delay: calc(var(--otp-i) * 90ms); }
+@keyframes otp-onda-term { 50% { border-bottom-color: var(--otp-ciano); } }
+
+/* APROVADO — o log imprime as etapas (script.js), os caracteres ficam verdes
+   num "compilar" da esquerda para a direita e o cursor vira um bloco verde */
+.otp-cartao--terminal .otp-campo--sucesso .otp-slot { border-bottom-color: var(--otp-verde); transition: border-color .2s calc(var(--otp-i) * 50ms); }
+.otp-cartao--terminal .otp-campo--sucesso .otp-slot__entrada {
+  color: var(--otp-verde); text-shadow: 0 0 14px var(--otp-verde-glow);
+  animation: otp-term-compila .35s calc(var(--otp-i) * 50ms) steps(2) both;
+}
+@keyframes otp-term-compila { from { color: var(--otp-ciano); background: rgba(62, 224, 143, .18); } }
+
+/* ERRO — os caracteres dão um "glitch" vermelho (fatias deslocadas) e o log
+   escreve a linha de erro com as tentativas que restam */
+.otp-cartao--terminal .otp-campo--erro .otp-slot { border-bottom-color: var(--otp-erro); }
+.otp-cartao--terminal .otp-campo--erro .otp-slot__entrada {
+  color: var(--otp-erro); text-shadow: 0 0 14px var(--otp-erro-glow);
+  animation: otp-term-glitch .5s steps(1) both;
+}
+@keyframes otp-term-glitch {
+  0% { transform: none; clip-path: inset(0); }
+  15% { transform: translate(-3px, 1px) skewX(-10deg); clip-path: inset(8% 0 52% 0); }
+  30% { transform: translate(3px, -1px); clip-path: inset(48% 0 8% 0); }
+  45% { transform: translate(-2px, 0) skewX(8deg); clip-path: inset(28% 0 30% 0); }
+  60% { transform: translate(1px, 0); clip-path: inset(0); text-shadow: -2px 0 rgba(79, 209, 255, .7), 2px 0 rgba(255, 107, 122, .8); }
+  75%, 100% { transform: none; clip-path: inset(0); }
+}
+
+/* SEM ACESSO — o log avisa o bloqueio e mostra uma barra ASCII de espera;
+   as casas ficam tracejadas e apagadas */
+.otp-cartao--terminal .otp-campo--bloqueado .otp-slot {
+  border-bottom-style: dashed; border-bottom-color: var(--otp-frio-borda);
+  animation: otp-term-apaga .4s calc(var(--otp-i) * 40ms) forwards;
+}
+@keyframes otp-term-apaga { to { opacity: .45; } }
+/* LIBERADO — as casas voltam acesas da esquerda para a direita */
+.otp-cartao--terminal .otp-campo--liberado .otp-slot { animation: otp-term-acende .4s calc(var(--otp-i) * 50ms) both; }
+@keyframes otp-term-acende { from { opacity: .45; border-bottom-color: var(--otp-frio-borda); } 50% { border-bottom-color: var(--otp-ciano); } }
+
+/* ==========================================================================
+   7. Linha — sublinhado que se desenha e vira check
+   ========================================================================== */
+.otp-linha-wrap { position: relative; width: min(100%, 380px); padding-bottom: 16px; }
+.otp-cartao--linha .otp-campo { --otp-slot-l: 48px; --otp-slot-a: 58px; --otp-vao: 6px; }
+.otp-cartao--linha .otp-slot__entrada { font-size: 34px; font-weight: 400; transition: color .3s, transform .3s var(--otp-mola); }
+.otp-cartao--linha .otp-slot--cheio .otp-slot__entrada { animation: otp-linha-digito .3s var(--otp-ease); }
+@keyframes otp-linha-digito { from { transform: translateY(10px); opacity: 0; } }
+/* Ponto-guia nos espaços vazios */
+.otp-cartao--linha .otp-slot::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%; background: var(--otp-linha-forte); transition: opacity .2s;
+}
+.otp-cartao--linha .otp-slot--cheio::before, .otp-cartao--linha .otp-slot--ativo::before { opacity: 0; }
+
+/* 40px de altura = mesma escala vertical do viewBox: o traço tem a espessura certa sem
+   vector-effect (que, junto com pathLength, faz o Chrome medir o tracejado em pixels de tela) */
+.otp-linha__svg { position: absolute; left: 0; right: 0; bottom: -8px; width: 100%; height: 40px; overflow: visible; pointer-events: none; }
+.otp-linha__base { stroke: var(--otp-linha-forte); stroke-width: 2; vector-effect: non-scaling-stroke; transition: opacity .4s; }
+.otp-linha__traco {
+  fill: none; stroke: var(--otp-ciano); stroke-width: 2.5; stroke-linecap: round;
+  stroke-dasharray: 100; stroke-dashoffset: 100; /* o script.js atualiza conforme os dígitos */
+  transform-box: fill-box; transform-origin: center;
+  filter: drop-shadow(0 0 6px var(--otp-ciano-glow));
+  transition: stroke-dashoffset .45s var(--otp-ease), stroke .3s, opacity .3s;
+}
+.otp-linha__check {
+  position: absolute; left: 50%; bottom: -14px; width: 60px; height: 40px; margin-left: -30px;
+  overflow: visible; pointer-events: none;
+}
+.otp-linha__check path {
+  fill: none; stroke: var(--otp-verde); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 100; stroke-dashoffset: 100;
+  filter: drop-shadow(0 0 8px var(--otp-verde-glow));
+}
+.otp-cartao--linha[data-estado="verificando"] .otp-linha__traco { animation: otp-piscar .8s ease-in-out infinite; }
+@keyframes otp-recolhe { to { transform: scaleX(0); opacity: 0; } }
+.otp-linha__base { transform-box: fill-box; transform-origin: center; }
+.otp-linha__brilho {
+  fill: none; stroke: #e4fff0; stroke-width: 3.5; stroke-linecap: round;
+  stroke-dasharray: 14 200; stroke-dashoffset: 14; opacity: 0;
+  filter: drop-shadow(0 0 6px var(--otp-verde)) drop-shadow(0 0 12px var(--otp-verde-glow));
+}
+
+/* APROVADO — um brilho corre pela linha de ponta a ponta, a linha se recolhe
+   para o centro e se redesenha como um check */
+.otp-cartao--linha[data-estado="sucesso"] .otp-linha__traco { stroke: var(--otp-verde); animation: otp-recolhe .4s .45s var(--otp-ease) forwards; }
+.otp-cartao--linha[data-estado="sucesso"] .otp-linha__brilho { animation: otp-linha-brilho .5s cubic-bezier(.5, 0, .5, 1) forwards; }
+.otp-cartao--linha[data-estado="sucesso"] .otp-linha__base { opacity: 0; }
+.otp-cartao--linha[data-estado="sucesso"] .otp-linha__check path { animation: otp-desenha .45s .7s var(--otp-ease) forwards, otp-check-brilha .6s 1.15s ease-out; }
+.otp-cartao--linha .otp-campo--sucesso .otp-slot__entrada { color: var(--otp-verde); transform: translateY(-8px); transition: color .3s, transform .4s .45s var(--otp-mola); }
+@keyframes otp-linha-brilho {
+  0% { stroke-dashoffset: 14; opacity: 1; }
+  90% { opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+@keyframes otp-check-brilha { 40% { filter: drop-shadow(0 0 14px var(--otp-verde)); } }
+
+/* ERRO — a linha fica vermelha e ARREBENTA no meio (as duas pontas recuam)
+   e os dígitos caem soltos */
+.otp-cartao--linha[data-estado="erro"] .otp-linha__traco {
+  stroke: var(--otp-erro); filter: drop-shadow(0 0 6px var(--otp-erro-glow));
+  animation: otp-linha-parte .55s cubic-bezier(.2, .8, .3, 1) forwards;
+}
+@keyframes otp-linha-parte {
+  0%, 18% { stroke-dasharray: 50 0 100; }
+  100% { stroke-dasharray: 31 38 100; }
+}
+.otp-cartao--linha[data-estado="erro"] .otp-linha__svg { animation: otp-linha-estala .4s .1s ease-out; }
+@keyframes otp-linha-estala { 30% { transform: translateY(3px); } 60% { transform: translateY(-1.5px); } }
+.otp-cartao--linha .otp-campo--erro .otp-slot__entrada {
+  color: var(--otp-erro);
+  animation: otp-linha-cai .55s calc(var(--otp-i) * 40ms + 120ms) cubic-bezier(.5, 0, .9, .6) forwards;
+}
+@keyframes otp-linha-cai { to { transform: translateY(18px) rotate(calc((var(--otp-i) - 2.5) * 7deg)); opacity: 0; } }
+
+/* SEM ACESSO — a linha esfria, se recolhe para o centro e desenha um cadeado
+   (o mesmo gesto do check, ao contrário) */
+.otp-linha__cadeado {
+  position: absolute; left: 50%; top: 7px; width: 40px; height: 44px; margin-left: -20px;   /* centro da fileira (58px) */
+  overflow: visible; pointer-events: none; visibility: hidden;
+}
+.otp-linha__cadeado path, .otp-linha__cadeado rect {
+  fill: none; stroke: var(--otp-frio-forte); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 100; stroke-dashoffset: 100;
+}
+.otp-cartao--linha[data-estado="bloqueado"] .otp-linha__cadeado,
+.otp-cartao--linha[data-estado="liberado"] .otp-linha__cadeado { visibility: visible; }
+.otp-cartao--linha[data-estado="bloqueado"] .otp-linha__base { stroke: var(--otp-frio); animation: otp-recolhe .5s var(--otp-ease) forwards; }
+.otp-cartao--linha[data-estado="bloqueado"] .otp-linha__corpo { animation: otp-desenha .5s .4s var(--otp-ease) forwards; }
+.otp-cartao--linha[data-estado="bloqueado"] .otp-linha__arco { animation: otp-desenha .35s .8s var(--otp-ease) forwards; }
+.otp-cartao--linha[data-estado="bloqueado"] .otp-linha__furo { animation: otp-desenha .2s 1.1s ease-out forwards; }
+.otp-cartao--linha .otp-campo--bloqueado .otp-slot::before { opacity: .2; }
+/* LIBERADO — a haste do cadeado sobe, ele some e a linha volta a se abrir do centro */
+.otp-cartao--linha[data-estado="liberado"] .otp-linha__cadeado path,
+.otp-cartao--linha[data-estado="liberado"] .otp-linha__cadeado rect { stroke-dashoffset: 0; }
+.otp-cartao--linha[data-estado="liberado"] .otp-linha__arco { animation: otp-arco-abre .28s var(--otp-mola) forwards; }
+.otp-cartao--linha[data-estado="liberado"] .otp-linha__cadeado { animation: otp-trava-sai .4s .25s ease-in forwards; }
+.otp-cartao--linha[data-estado="liberado"] .otp-linha__base { animation: otp-linha-abre .5s .4s var(--otp-ease) both; }
+@keyframes otp-linha-abre { from { transform: scaleX(0); opacity: 0; } }
+
+/* ==========================================================================
+   8. Teclado seguro — números embaralhados, dígito que some depois de digitado
+   ========================================================================== */
+.otp-teclado-wrap { grid-template-rows: auto auto; gap: 18px; justify-items: center; align-content: center; }
+.otp-cartao--teclado .otp-campo { --otp-slot-l: 44px; --otp-slot-a: 54px; --otp-vao: 9px; }
+.otp-cartao--teclado .otp-slot {
+  display: grid; place-items: center; border-radius: 12px;
+  background: var(--otp-cartao-2); border: 1px solid var(--otp-linha-forte);
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+.otp-cartao--teclado .otp-slot--ativo {
+  border-color: var(--otp-ciano); background: #16202a;
+  box-shadow: 0 0 0 3px rgba(79, 209, 255, .12);
+}
+.otp-cartao--teclado .otp-slot__entrada { font-size: 22px; transition: color .25s; }
+.otp-cartao--teclado .otp-slot--cheio .otp-slot__entrada { animation: otp-pop .26s var(--otp-mola); }
+/* depois de ~0,8 s o dígito some e fica só o ponto */
+.otp-cartao--teclado .otp-slot--mascara .otp-slot__entrada { color: transparent; }
+.otp-cartao--teclado .otp-slot::before {
+  content: ""; width: 11px; height: 11px; border-radius: 50%;
+  background: var(--otp-ciano); box-shadow: 0 0 14px var(--otp-ciano-glow);
+  opacity: 0; transform: scale(.4); transition: opacity .25s, transform .3s var(--otp-mola);
+}
+.otp-cartao--teclado .otp-slot--mascara::before { opacity: 1; transform: scale(1); }
+.otp-cartao--teclado .otp-campo--verificando .otp-slot { animation: otp-onda 1s ease-in-out infinite; animation-delay: calc(var(--otp-i) * 90ms); }
+
+.otp-teclado { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(100%, 252px); }
+.otp-tecla {
+  height: 46px; display: grid; place-items: center; cursor: pointer;
+  border-radius: 12px; border: 1px solid var(--otp-linha-forte);
+  background: linear-gradient(180deg, #1e242c, #161a20);
+  color: var(--otp-texto); font: 600 19px var(--otp-mono);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .05);
+  transition: transform .12s var(--otp-ease), border-color .2s, background .2s, color .2s;
+  animation: otp-tecla-entra .26s var(--otp-mola) both;
+  animation-delay: calc(var(--otp-i, 0) * 18ms);
+}
+@keyframes otp-tecla-entra { from { opacity: 0; transform: scale(.82); } }
+.otp-tecla:hover { border-color: var(--otp-ciano); color: var(--otp-ciano); }
+.otp-tecla:active { transform: translateY(2px) scale(.96); background: #16202a; box-shadow: none; }
+.otp-tecla--acao { color: var(--otp-suave); }
+.otp-tecla--acao svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.otp-tecla:disabled { cursor: not-allowed; }
+
+/* Caixa do teclado: segura o escudo (aprovado) e o cadeado (bloqueio) por cima das teclas */
+.otp-teclado-caixa { position: relative; width: min(100%, 252px); display: grid; justify-items: center; }
+.otp-teclado-caixa .otp-teclado { width: 100%; perspective: 700px; }
+
+/* APROVADO — as teclas se apagam em cascata e um escudo se fecha por cima:
+   os dois lados se desenham do topo até a ponta, ele se enche e ganha um check */
+.otp-cartao--teclado .otp-campo--sucesso .otp-slot { border-color: rgba(62, 224, 143, .5); }
+.otp-cartao--teclado .otp-campo--sucesso .otp-slot::before { background: var(--otp-verde); box-shadow: 0 0 14px var(--otp-verde-glow); }
+.otp-cartao--teclado .otp-campo--sucesso .otp-slot__entrada { color: var(--otp-verde); }
+.otp-cartao--teclado[data-estado="sucesso"] .otp-tecla { animation: otp-tecla-apaga .35s calc(var(--otp-i) * 35ms) ease-in forwards; }
+@keyframes otp-tecla-apaga { to { opacity: .1; transform: scale(.92); } }
+.otp-escudo {
+  position: absolute; left: 50%; top: 50%; z-index: 4; width: 92px; height: 92px; margin: -46px 0 0 -46px;
+  overflow: visible; pointer-events: none; visibility: hidden;
+}
+.otp-escudo__fundo { fill: rgba(62, 224, 143, .14); opacity: 0; }
+.otp-escudo__lado { fill: none; stroke: var(--otp-verde); stroke-width: 2.6; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.otp-escudo__check { fill: none; stroke: var(--otp-verde); stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; }
+.otp-cartao--teclado[data-estado="sucesso"] .otp-escudo { visibility: visible; filter: drop-shadow(0 0 14px var(--otp-verde-glow)); animation: otp-escudo-pousa .5s .3s var(--otp-mola) both; }
+.otp-cartao--teclado[data-estado="sucesso"] .otp-escudo__lado { animation: otp-desenha .45s .32s var(--otp-ease) forwards; }
+.otp-cartao--teclado[data-estado="sucesso"] .otp-escudo__fundo { animation: otp-escudo-enche .35s .72s ease-out forwards; }
+.otp-cartao--teclado[data-estado="sucesso"] .otp-escudo__check { animation: otp-desenha .3s .85s var(--otp-ease) forwards; }
+@keyframes otp-escudo-pousa { from { transform: scale(1.25); opacity: 0; } }
+@keyframes otp-escudo-enche { to { opacity: 1; } }
+
+/* ERRO — os números trocam de lugar NA HORA: o teclado gira as teclas
+   (script.js) e os pontos das casas estouram em vermelho */
+.otp-cartao--teclado .otp-campo--erro .otp-slot { border-color: var(--otp-erro); background: #211418; }
+.otp-cartao--teclado .otp-campo--erro .otp-slot::before {
+  background: var(--otp-erro); box-shadow: 0 0 14px var(--otp-erro-glow);
+  animation: otp-ponto-estoura .45s calc(var(--otp-i) * 50ms + 150ms) ease-in forwards;
+}
+@keyframes otp-ponto-estoura { 35% { transform: scale(1.5); } to { transform: scale(0); opacity: 0; } }
+.otp-cartao--teclado .otp-campo--erro .otp-slot__entrada { color: var(--otp-erro); }
+/* Dígito já mascarado continua escondido no aprovado e no erro (só o ponto muda de cor) */
+.otp-cartao--teclado .otp-campo .otp-slot--mascara .otp-slot__entrada { color: transparent; }
+.otp-tecla--gira { animation: otp-tecla-gira .45s calc(var(--otp-i, 0) * 28ms) var(--otp-ease) both; }
+@keyframes otp-tecla-gira { from { transform: rotateY(180deg); opacity: .2; } }
+.otp-cartao--teclado[data-estado="erro"] .otp-tecla { border-color: rgba(255, 107, 122, .35); }
+
+/* SEM ACESSO — as teclas viram de costas (lisas, sem número) uma a uma,
+   ficam desabilitadas e o cadeado fecha no meio do teclado */
+.otp-teclado--bloqueado .otp-tecla { animation: otp-tecla-vira .5s calc(var(--otp-i, 0) * 35ms) ease-in-out forwards; }
+@keyframes otp-tecla-vira {
+  0% { transform: none; }
+  50% { transform: rotateX(90deg); color: var(--otp-texto); }
+  51% { color: transparent; background: var(--otp-frio-fundo); border-color: #232b36; box-shadow: none; }
+  100% { transform: none; color: transparent; background: var(--otp-frio-fundo); border-color: #232b36; box-shadow: none; }
+}
+.otp-cartao--teclado .otp-campo--bloqueado .otp-slot { animation: otp-classico-frio .45s calc(var(--otp-i) * 45ms) var(--otp-ease) forwards; }
+/* LIBERADO — o cadeado abre e as teclas voltam já embaralhadas, girando (script.js) */
+.otp-cartao--teclado .otp-campo--liberado .otp-slot { animation: otp-classico-volta .5s calc(var(--otp-i) * 45ms + .2s) var(--otp-ease) both; }
+
+/* ---------- Rodapé ---------- */
+.otp-rodape { max-width: 1360px; margin: 18px auto 0; text-align: center; color: var(--otp-suave); font-size: 13px; }
+.otp-rodape kbd { font-size: 11.5px; }
+
+/* ==========================================================================
+   Responsivo
+   ========================================================================== */
+@media (max-width: 1180px) {
+  .otp-corpo { padding: 24px 24px 20px; }
+  .otp-cofre { gap: 20px; }
+  .otp-cofre__caixa { width: 96px; height: 96px; }
+}
+
+/* Abaixo de 1000 px: abas + um cartão por vez */
+@media (max-width: 999px) {
+  .otp-abas { display: flex; }
+  .otp-grade { grid-template-columns: minmax(0, 1fr); max-width: 560px; }
+  .otp-topo { justify-content: center; text-align: left; }
+  .otp-cartao { min-height: 0; }
+}
+
+@media (max-width: 560px) {
+  .otp-corpo { padding: 18px 16px 18px; font-size: 14.5px; }
+  .otp-topo { flex-direction: column; align-items: flex-start; margin-bottom: 16px; }
+  .otp-topo__titulo { font-size: 21px; }
+  .otp-topo__sub { font-size: 13px; }
+  .otp-dica { font-size: 12.5px; }
+  .otp-dica__extra { display: none; }
+  .otp-cartao { padding: 20px 16px 16px; border-radius: 18px; }
+  .otp-campo { --otp-vao: 7px; --otp-slot-a: 56px; }
+  .otp-slot__entrada { font-size: 23px; }
+  .otp-cofre { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: 18px; }
+  .otp-cofre .otp-campo { --otp-vao: 6px; --otp-slot-a: 68px; }
+  .otp-cartao--pontos .otp-campo { --otp-vao: 10px; }
+  .otp-cartao--linha .otp-campo { --otp-vao: 4px; }
+  .otp-cartao--linha .otp-slot__entrada { font-size: 30px; }
+  .otp-cartao__rodape { flex-direction: column; align-items: stretch; }
+  .otp-acoes { margin-left: 0; }
+  .otp-acoes > * { flex: 1; justify-content: center; }
+  .otp-rodape { font-size: 12px; }
+}
+
+/* Ajustes dos estilos novos em telas médias e pequenas */
+@media (max-width: 1180px) {
+  .otp-cartao--painel .otp-campo { --otp-slot-l: 50px; --otp-slot-a: 68px; --otp-vao: 7px; }
+  .otp-flap__meia span, .otp-flap__folha span { font-size: 29px; }
+}
+@media (max-width: 560px) {
+  .otp-cartao--painel .otp-campo { --otp-slot-l: 46px; --otp-slot-a: 64px; --otp-vao: 6px; }
+  .otp-flap__meia span, .otp-flap__folha span { font-size: 26px; }
+  .otp-campo--unico { width: 100%; }
+  .otp-campo--unico .otp-slot { height: 50px; }
+  .otp-slot__glifo { font-size: 23px; }
+  .otp-cartao--terminal .otp-campo { --otp-slot-l: 38px; --otp-vao: 3px; }
+  .otp-cartao--terminal .otp-slot__entrada { font-size: 22px; }
+  .otp-term__corpo { padding: 12px 12px 12px; }
+  .otp-term__barra em { font-size: 11px; }
+  .otp-cartao--teclado .otp-campo { --otp-vao: 8px; --otp-slot-l: 42px; }
+  .otp-teclado { width: min(100%, 280px); gap: 10px; }
+  .otp-teclado-caixa { width: min(100%, 280px); }
+  .otp-tecla { height: 52px; font-size: 20px; }
+}
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .otp-corpo *, .otp-corpo *::before, .otp-corpo *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important;
+    animation-delay: 0s !important; transition-duration: .01ms !important; transition-delay: 0s !important;
+  }
+  .otp-slot--ativo:not(.otp-slot--cheio)::after { opacity: 1; }
+  /* Os estados ficam no quadro final, já legíveis: selo, check, escudo, cadeado
+     fechado, persiana baixada, corrente montada e a contagem no rodapé.
+     O que só faz sentido em movimento é escondido: */
+  .otp-cofre__luz { display: none; }                         /* facho de luz */
+  .otp-linha__brilho { display: none; }                      /* brilho correndo */
+  .otp-cartao--painel .otp-campo--sucesso .otp-slot:not([data-flap-valor=""]) { box-shadow: 0 0 0 3px rgba(62, 224, 143, .2); }
+  .otp-cartao--pontos .otp-campo--erro .otp-ponto,           /* sem "queda": ficam vermelhos no lugar */
+  .otp-cartao--unico .otp-campo--erro .otp-slot__glifo,
+  .otp-cartao--linha .otp-campo--erro .otp-slot__entrada,
+  .otp-cartao--teclado .otp-campo--erro .otp-slot::before { animation: none !important; }
+  .otp-term__cursor { animation: none !important; }
+}

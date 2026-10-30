@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loaders Essenciais — 22 loaders em CSS puro (grátis)</title>
+  <meta name="description" content="22 loaders e spinners em CSS puro, sem JavaScript: anel, blob líquido, moeda e cubo 3D, pêndulo de Newton, percentual e mais. Cor, tamanho e velocidade por variáveis.">
+
+  <!-- Única dependência externa: fonte Outfit do Google (opcional — há fallback do sistema) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <main class="pg">
+
+    <!-- ===== Topo: apresentação + painel de controle ===== -->
+    <header class="pg-topo">
+      <div>
+        <div class="pg-selos">
+          <span class="pg-selo pg-selo--gratis">Gratuito</span>
+          <span class="pg-selo">22 loaders</span>
+          <span class="pg-selo">CSS puro</span>
+        </div>
+        <h1>Loaders <span>essenciais</span></h1>
+        <p class="pg-lead">Vinte e dois indicadores de carregamento <strong>sem uma linha de JavaScript</strong> — do anel clássico a moeda e cubo em 3D, água com ondas e pêndulo de Newton. Cor, tamanho e velocidade vêm de variáveis CSS. Ajuste ao lado e clique em um cartão para copiar o HTML.</p>
+      </div>
+
+      <!-- Controles: o script.js só escreve as variáveis --ld-* em :root -->
+      <section class="pg-painel" aria-labelledby="painel-titulo">
+        <h2 class="pg-painel__titulo" id="painel-titulo">
+          <span>Personalize ao vivo</span>
+          <button type="button" class="pg-reset" id="restaurar">Restaurar</button>
+        </h2>
+
+        <div class="pg-linha">
+          <label for="cor">Cor</label>
+          <div class="pg-cores" id="amostras">
+            <input type="color" id="cor" value="#ee4d2a" aria-label="Escolher cor dos loaders">
+            <button type="button" class="pg-amostra" style="--amostra:#ee4d2a" data-cor="#ee4d2a" aria-label="Laranja" aria-pressed="true"></button>
+            <button type="button" class="pg-amostra" style="--amostra:#2f6bff" data-cor="#2f6bff" aria-label="Azul" aria-pressed="false"></button>
+            <button type="button" class="pg-amostra" style="--amostra:#12926a" data-cor="#12926a" aria-label="Verde" aria-pressed="false"></button>
+            <button type="button" class="pg-amostra" style="--amostra:#e59a0c" data-cor="#e59a0c" aria-label="Âmbar" aria-pressed="false"></button>
+            <button type="button" class="pg-amostra" style="--amostra:#d6336c" data-cor="#d6336c" aria-label="Rosa" aria-pressed="false"></button>
+            <button type="button" class="pg-amostra" style="--amostra:#1c1b18" data-cor="#1c1b18" aria-label="Tinta" aria-pressed="false"></button>
+          </div>
+        </div>
+
+        <div class="pg-linha">
+          <label for="velocidade">Velocidade</label>
+          <input type="range" id="velocidade" min="0.5" max="2" step="0.05" value="1">
+          <output class="pg-valor" for="velocidade" id="velocidade-valor">1×</output>
+        </div>
+
+        <div class="pg-linha">
+          <label for="tamanho">Tamanho</label>
+          <input type="range" id="tamanho" min="28" max="80" step="2" value="56">
+          <output class="pg-valor" for="tamanho" id="tamanho-valor">56 px</output>
+        </div>
+      </section>
+    </header>
+
+    <!-- ===== Galeria: 22 cartões ===== -->
+    <section class="pg-grade" aria-label="Galeria de loaders">
+
+      <!-- 01 · Anel -->
+      <article class="pg-cartao" data-nome="Anel">
+        <div class="pg-palco">
+          <div class="ld-anel" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Anel</h2><code>.ld-anel</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Anel"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 02 · Pontos pulsando -->
+      <article class="pg-cartao" data-nome="Pontos pulsando">
+        <div class="pg-palco">
+          <div class="ld-pontos" role="status"><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Pontos pulsando</h2><code>.ld-pontos</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Pontos pulsando"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 03 · Equalizador -->
+      <article class="pg-cartao" data-nome="Equalizador">
+        <div class="pg-palco">
+          <div class="ld-barras" role="status"><i></i><i></i><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Equalizador</h2><code>.ld-barras</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Equalizador"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 04 · Órbita -->
+      <article class="pg-cartao" data-nome="Órbita">
+        <div class="pg-palco">
+          <div class="ld-orbita" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Órbita</h2><code>.ld-orbita</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Órbita"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 05 · Quadrado dobrando -->
+      <article class="pg-cartao" data-nome="Quadrado dobrando">
+        <div class="pg-palco">
+          <div class="ld-quadrado" role="status"><i></i><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Quadrado dobrando</h2><code>.ld-quadrado</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Quadrado dobrando"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 06 · Onda -->
+      <article class="pg-cartao" data-nome="Onda">
+        <div class="pg-palco">
+          <div class="ld-onda" role="status"><i></i><i></i><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Onda</h2><code>.ld-onda</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Onda"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 07 · Progresso indeterminado -->
+      <article class="pg-cartao" data-nome="Progresso indeterminado">
+        <div class="pg-palco">
+          <div class="ld-progresso" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Progresso</h2><code>.ld-progresso</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Progresso indeterminado"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 08 · Ampulheta -->
+      <article class="pg-cartao" data-nome="Ampulheta">
+        <div class="pg-palco">
+          <div class="ld-ampulheta" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Ampulheta</h2><code>.ld-ampulheta</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Ampulheta"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 09 · Coração batendo -->
+      <article class="pg-cartao" data-nome="Coração batendo">
+        <div class="pg-palco">
+          <div class="ld-coracao" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Coração batendo</h2><code>.ld-coracao</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Coração batendo"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 10 · Radar -->
+      <article class="pg-cartao" data-nome="Radar">
+        <div class="pg-palco">
+          <div class="ld-radar" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Radar</h2><code>.ld-radar</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Radar"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 11 · Gota -->
+      <article class="pg-cartao" data-nome="Gota">
+        <div class="pg-palco">
+          <div class="ld-gota" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Gota</h2><code>.ld-gota</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Gota"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 12 · Contorno desenhando (SVG) -->
+      <article class="pg-cartao" data-nome="Contorno desenhando">
+        <div class="pg-palco">
+          <div class="ld-contorno" role="status">
+            <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+              <path pathLength="1" d="M24 24C20 17 16 14 12 14a10 10 0 0 0 0 20C16 34 20 31 24 24C28 17 32 14 36 14a10 10 0 0 1 0 20C32 34 28 31 24 24Z"/>
+            </svg>
+            <span class="ld-sr">Carregando…</span>
+          </div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Contorno SVG</h2><code>.ld-contorno</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Contorno desenhando"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 13 · Esqueleto -->
+      <article class="pg-cartao" data-nome="Esqueleto">
+        <div class="pg-palco">
+          <div class="ld-esqueleto" role="status"><i></i><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Esqueleto</h2><code>.ld-esqueleto</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Esqueleto"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 14 · Blob líquido -->
+      <article class="pg-cartao" data-nome="Blob líquido">
+        <div class="pg-palco">
+          <div class="ld-blob" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Blob líquido</h2><code>.ld-blob</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Blob líquido"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 15 · Anel cônico -->
+      <article class="pg-cartao" data-nome="Anel cônico">
+        <div class="pg-palco">
+          <div class="ld-conico" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Anel cônico</h2><code>.ld-conico</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Anel cônico"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 16 · Enchendo -->
+      <article class="pg-cartao" data-nome="Enchendo">
+        <div class="pg-palco">
+          <div class="ld-enchendo" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Enchendo</h2><code>.ld-enchendo</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Enchendo"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 17 · Pêndulo de Newton -->
+      <article class="pg-cartao" data-nome="Pêndulo de Newton">
+        <div class="pg-palco">
+          <div class="ld-newton" role="status"><i></i><i></i><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Pêndulo de Newton</h2><code>.ld-newton</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Pêndulo de Newton"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 18 · Moeda 3D -->
+      <article class="pg-cartao" data-nome="Moeda 3D">
+        <div class="pg-palco">
+          <div class="ld-moeda" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Moeda 3D</h2><code>.ld-moeda</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Moeda 3D"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 19 · Cubo 3D -->
+      <article class="pg-cartao" data-nome="Cubo 3D">
+        <div class="pg-palco">
+          <div class="ld-cubo" role="status"><i></i><i></i><i></i><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Cubo 3D</h2><code>.ld-cubo</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Cubo 3D"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 20 · Hélice DNA -->
+      <article class="pg-cartao" data-nome="Hélice DNA">
+        <div class="pg-palco">
+          <div class="ld-dna" role="status"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Hélice DNA</h2><code>.ld-dna</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Hélice DNA"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 21 · Percentual -->
+      <article class="pg-cartao" data-nome="Percentual">
+        <div class="pg-palco">
+          <div class="ld-percentual" role="status"><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Percentual</h2><code>.ld-percentual</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Percentual"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+      <!-- 22 · Digitando -->
+      <article class="pg-cartao" data-nome="Digitando">
+        <div class="pg-palco">
+          <div class="ld-digitando" role="status"><i></i><i></i><i></i><span class="ld-sr">Carregando…</span></div>
+        </div>
+        <div class="pg-rodape-cartao">
+          <div class="pg-nome"><h2>Digitando</h2><code>.ld-digitando</code></div>
+          <button type="button" class="pg-copiar" aria-label="Copiar HTML do loader Digitando"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="2"/><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg><span>Copiar</span></button>
+        </div>
+      </article>
+
+    </section>
+
+    <footer class="pg-rodape">
+      <p>Para usar: copie o bloco <strong>2. Base</strong> e o bloco do loader escolhido do <code>estilo.css</code> — e cole o HTML. Os loaders não dependem do <code>script.js</code>.</p>
+    </footer>
+  </main>
+
+  <!-- Aviso de "copiado" (acessível: role="status") -->
+  <div class="pg-toast" role="status" aria-live="polite"><i aria-hidden="true"></i><span class="pg-toast__texto"></span></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

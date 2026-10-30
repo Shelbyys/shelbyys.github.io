@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crachá Pendurado — credencial interativa com física</title>
+  <meta name="description" content="Crachá de evento pendurado por uma fita com física de corda (Verlet). Arraste, solte e vire.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="cr-corpo">
+
+  <main class="cr-app">
+    <!-- ===== PALCO: onde a fita e o crachá vivem ===== -->
+    <section class="cr-palco" id="cr-palco" aria-label="Crachá interativo">
+      <div class="cr-palco__luz" aria-hidden="true"></div>
+      <div class="cr-palco__foco" id="cr-foco" aria-hidden="true"></div>
+      <p class="cr-palco__marca-dagua" aria-hidden="true">BRASA&nbsp;26</p>
+
+      <header class="cr-topo">
+        <span class="cr-topo__logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2 20 9.5 16.4 22H7.6L4 9.5Z" fill="#ff5a1f"/><path d="M12 9 15.6 12.4 14 18H10L8.4 12.4Z" fill="#0d0e12"/></svg>
+        </span>
+        <span class="cr-topo__nome">Summit Brasa 26</span>
+        <span class="cr-topo__sep" aria-hidden="true">/</span>
+        <span class="cr-topo__sub">credencial interativa</span>
+      </header>
+
+      <!-- Canvas da fita (cordão). Desenhado a cada quadro pelo script. -->
+      <canvas class="cr-fita" id="cr-fita" aria-hidden="true"></canvas>
+
+      <!-- O crachá: posicionado pela física (transform). -->
+      <div class="cr-cracha" id="cr-cracha" data-tipo="vip">
+        <div class="cr-cracha__sombra" aria-hidden="true"></div>
+
+        <div class="cr-cracha__giro">
+          <!-- ---------- FRENTE ---------- -->
+          <div class="cr-face cr-face--frente">
+            <span class="cr-ilhos" aria-hidden="true"></span>
+            <div class="cr-face__linha cr-mono">
+              <span>Nº <b id="cr-numero">0426</b></span>
+              <span>29—30.10.2026</span>
+            </div>
+
+            <div class="cr-evento">
+              <svg class="cr-evento__marca" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 20 9.5 16.4 22H7.6L4 9.5Z"/><path class="cr-evento__miolo" d="M12 9 15.6 12.4 14 18H10L8.4 12.4Z"/></svg>
+              <div>
+                <p class="cr-evento__nome">SUMMIT BRASA <em>26</em></p>
+                <p class="cr-evento__local cr-mono">São Paulo · Pavilhão Norte</p>
+              </div>
+            </div>
+
+            <div class="cr-pessoa">
+              <!-- Foto do participante (troque img/retrato.jpg). O CSS aplica uma
+                   tintura leve com a cor do tipo de ingresso e um brilho de laminação. -->
+              <span class="cr-avatar" aria-hidden="true">
+                <img src="img/retrato.jpg" width="512" height="512" alt="" draggable="false">
+              </span>
+
+              <div class="cr-pessoa__meta cr-mono">
+                <span class="cr-rotulo">Credencial</span>
+                <span id="cr-codigo">SB26-VIP-0426</span>
+                <span class="cr-rotulo">Dia</span>
+                <span>Qua · Qui</span>
+                <span class="cr-rotulo">Assento</span>
+                <span id="cr-assento">Fila A · 12</span>
+              </div>
+            </div>
+
+            <p class="cr-nome" id="cr-nome">Marina Duarte</p>
+            <p class="cr-cargo cr-mono" id="cr-cargo">Designer de Produto</p>
+
+            <ul class="cr-chips" aria-label="Trilhas">
+              <li>Design</li>
+              <li>Produto</li>
+              <li>IA aplicada</li>
+            </ul>
+
+            <div class="cr-rodape">
+              <div class="cr-acesso cr-mono">
+                <span class="cr-rotulo">Acesso</span>
+                <span id="cr-acesso">Palcos A·B · Lounge · Backstage</span>
+              </div>
+              <svg class="cr-qr" id="cr-qr" viewBox="0 0 25 25" aria-hidden="true" shape-rendering="crispEdges"><path id="cr-qr-path"/></svg>
+            </div>
+
+            <div class="cr-faixa">
+              <span class="cr-faixa__tipo" id="cr-tipo-txt">VIP</span>
+              <span class="cr-faixa__extra cr-mono" id="cr-tipo-extra">acesso total</span>
+            </div>
+          </div>
+
+          <!-- ---------- VERSO: programação do dia ---------- -->
+          <div class="cr-face cr-face--verso">
+            <span class="cr-ilhos" aria-hidden="true"></span>
+            <div class="cr-face__linha cr-mono">
+              <span>Programação</span>
+              <span>Qua · 29 OUT</span>
+            </div>
+            <ol class="cr-agenda">
+              <li><time class="cr-mono">08:30</time><span>Credenciamento &amp; café</span></li>
+              <li><time class="cr-mono">09:30</time><span>Abertura — Palco A</span></li>
+              <li><time class="cr-mono">10:15</time><span>Keynote: produtos que aquecem</span></li>
+              <li><time class="cr-mono">12:00</time><span>Almoço no Pátio</span></li>
+              <li><time class="cr-mono">13:30</time><span>Workshops simultâneos</span></li>
+              <li><time class="cr-mono">16:00</time><span>Painel: design + dados</span></li>
+              <li><time class="cr-mono">18:30</time><span>Happy hour Brasa</span></li>
+            </ol>
+            <div class="cr-verso__info cr-mono">
+              <span><span class="cr-rotulo">Wi-Fi</span> BRASA-26</span>
+              <span><span class="cr-rotulo">Senha</span> faisca2026</span>
+              <span><span class="cr-rotulo">Ajuda</span> ramal 2626</span>
+            </div>
+            <div class="cr-faixa cr-faixa--verso">
+              <span class="cr-faixa__tipo">Até já!</span>
+              <span class="cr-faixa__extra cr-mono">guarde este crachá</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão real e focável cobrindo o crachá: clique/Enter/Espaço viram; setas empurram -->
+        <button class="cr-cracha__botao" id="cr-botao-cracha" type="button" aria-describedby="cr-dica-teclado">
+          <span class="cr-oculto" id="cr-botao-rotulo">Virar crachá para ver o verso</span>
+        </button>
+      </div>
+
+      <p class="cr-dica" id="cr-dica-teclado">
+        <span class="cr-dica__item"><kbd>Arraste</kbd> o crachá</span>
+        <span class="cr-dica__item"><kbd class="cr-so-mouse">Clique</kbd><kbd class="cr-so-toque">Toque 2×</kbd> para virar</span>
+        <span class="cr-dica__item cr-dica__item--tecla"><kbd>← →</kbd> empurram</span>
+      </p>
+    </section>
+
+    <!-- ===== PAINEL: personalização ao vivo ===== -->
+    <aside class="cr-painel" aria-labelledby="cr-painel-titulo">
+      <p class="cr-painel__selo cr-mono">editor ao vivo</p>
+      <h1 class="cr-painel__titulo" id="cr-painel-titulo">Monte sua credencial</h1>
+
+      <form class="cr-form" id="cr-form" autocomplete="off">
+        <label class="cr-campo">
+          <span class="cr-campo__rotulo">Nome</span>
+          <input class="cr-campo__entrada" id="cr-in-nome" name="nome" type="text" maxlength="28" value="Marina Duarte">
+        </label>
+        <label class="cr-campo">
+          <span class="cr-campo__rotulo">Cargo</span>
+          <input class="cr-campo__entrada" id="cr-in-cargo" name="cargo" type="text" maxlength="34" value="Designer de Produto">
+        </label>
+
+        <fieldset class="cr-tipos">
+          <legend class="cr-campo__rotulo">Tipo de ingresso</legend>
+          <label class="cr-tipo"><input type="radio" name="tipo" value="vip" checked><span class="cr-tipo__pilula" data-cor="vip">VIP</span></label>
+          <label class="cr-tipo"><input type="radio" name="tipo" value="palestrante"><span class="cr-tipo__pilula" data-cor="palestrante">Palestrante</span></label>
+          <label class="cr-tipo"><input type="radio" name="tipo" value="participante"><span class="cr-tipo__pilula" data-cor="participante">Participante</span></label>
+        </fieldset>
+
+        <div class="cr-acoes">
+          <button class="cr-btn cr-btn--secundario" id="cr-btn-virar" type="button">Virar</button>
+          <button class="cr-btn cr-btn--primario" id="cr-btn-soltar" type="button">Soltar de novo</button>
+        </div>
+      </form>
+    </aside>
+
+    <!-- Anúncios para leitores de tela -->
+    <p class="cr-oculto" id="cr-aviso" aria-live="polite"></p>
+  </main>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cards Holográficos — Série 01 · Elementos</title>
+  <meta name="description" content="Cards Holográficos: cartas colecionáveis em CSS/SVG com inclinação 3D, brilho holográfico, reflexo e verso com estatísticas.">
+  <meta name="theme-color" content="#07070c">
+  <link rel="icon" href="data:,">
+
+  <!-- Fontes (única dependência externa): Chakra Petch para números e rótulos, Manrope para leitura -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;800&display=swap">
+
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="ch-body">
+
+  <main class="ch-pagina">
+
+    <!-- =========================================================
+         CABEÇALHO DA DEMONSTRAÇÃO
+         ========================================================= -->
+    <header class="ch-cabecalho">
+      <p class="ch-cabecalho__selo"><span aria-hidden="true">◆</span> Série 01 · Elementos</p>
+      <h1 class="ch-cabecalho__titulo">Cartas que brilham <span>quando você olha.</span></h1>
+      <p class="ch-cabecalho__texto">Passe o mouse ou o dedo para inclinar. Clique ou pressione <kbd>Enter</kbd> para ver o verso.</p>
+    </header>
+
+    <!-- =========================================================
+         GALERIA
+         Para criar uma carta nova: copie um bloco <div class="ch-slot">…</div>,
+         troque --hue (cor da carta) e --foil (var(--ch-foil-arco | -prata | -dourado)),
+         os textos, as estatísticas (--valor) e a ilustração SVG.
+         ========================================================= -->
+    <section class="ch-galeria" aria-label="Coleção de cartas">
+
+      <!-- ===================== CARTA 1 · COMETA (foil arco-íris) ===================== -->
+      <div class="ch-slot" style="--i: 0; --hue: 238; --foil: var(--ch-foil-arco);" data-pose="6,-14">
+        <article class="ch-carta" aria-labelledby="ch-cometa-nome">
+          <div class="ch-carta__rotor">
+            <div class="ch-carta__giro">
+
+              <!-- Frente -->
+              <div class="ch-face ch-face--frente">
+                <div class="ch-face__conteudo">
+                  <header class="ch-topo">
+                    <h2 class="ch-nome" id="ch-cometa-nome">Cometa</h2>
+                    <span class="ch-poder" aria-label="Poder 87"><small>PWR</small>87</span>
+                  </header>
+
+                  <div class="ch-arte" aria-hidden="true">
+                    <svg viewBox="0 0 260 196" preserveAspectRatio="xMidYMid slice">
+                      <defs>
+                        <linearGradient id="ch-cometa-ceu" x1="0" y1="0" x2=".3" y2="1">
+                          <stop offset="0" stop-color="#05061c"/><stop offset=".42" stop-color="#14114a"/><stop offset=".76" stop-color="#3b176e"/><stop offset="1" stop-color="#7a2a7c"/>
+                        </linearGradient>
+                        <radialGradient id="ch-cometa-neb-1"><stop offset="0" stop-color="#ff5fc8" stop-opacity=".55"/><stop offset=".5" stop-color="#c03fae" stop-opacity=".2"/><stop offset="1" stop-color="#c03fae" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="ch-cometa-neb-2"><stop offset="0" stop-color="#4f8bff" stop-opacity=".5"/><stop offset=".55" stop-color="#3b56d9" stop-opacity=".16"/><stop offset="1" stop-color="#3b56d9" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="ch-cometa-neb-3"><stop offset="0" stop-color="#9d6bff" stop-opacity=".45"/><stop offset="1" stop-color="#9d6bff" stop-opacity="0"/></radialGradient>
+                        <linearGradient id="ch-cometa-poeira" x1="1" y1="0" x2="0" y2="1">
+                          <stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#ffd6f4" stop-opacity=".8"/><stop offset=".55" stop-color="#ff7fd1" stop-opacity=".25"/><stop offset="1" stop-color="#ff7fd1" stop-opacity="0"/>
+                        </linearGradient>
+                        <linearGradient id="ch-cometa-ion" x1="1" y1="0" x2="0" y2=".8">
+                          <stop offset="0" stop-color="#fff"/><stop offset=".2" stop-color="#9ff3ff" stop-opacity=".85"/><stop offset=".7" stop-color="#4f7bff" stop-opacity=".2"/><stop offset="1" stop-color="#4f7bff" stop-opacity="0"/>
+                        </linearGradient>
+                        <radialGradient id="ch-cometa-coma"><stop offset="0" stop-color="#fff"/><stop offset=".14" stop-color="#fff"/><stop offset=".3" stop-color="#c9f6ff" stop-opacity=".75"/><stop offset=".62" stop-color="#8a7bff" stop-opacity=".2"/><stop offset="1" stop-color="#8a7bff" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="ch-cometa-planeta" cx=".3" cy=".26" r=".85">
+                          <stop offset="0" stop-color="#ffd9f1"/><stop offset=".2" stop-color="#ff98d4"/><stop offset=".5" stop-color="#9446d8"/><stop offset=".8" stop-color="#2e1166"/><stop offset="1" stop-color="#14072f"/>
+                        </radialGradient>
+                        <radialGradient id="ch-cometa-atmos"><stop offset=".84" stop-color="#ff9ee0" stop-opacity="0"/><stop offset=".93" stop-color="#ffb3ea" stop-opacity=".55"/><stop offset="1" stop-color="#ff9ee0" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="ch-cometa-lua" cx=".35" cy=".3"><stop offset="0" stop-color="#e6f1ff"/><stop offset=".6" stop-color="#8aa2e6"/><stop offset="1" stop-color="#2a2a6e"/></radialGradient>
+                        <clipPath id="ch-cometa-recorte"><circle cx="50" cy="172" r="54"/></clipPath>
+                      </defs>
+                      <rect x="-20" y="-20" width="300" height="236" fill="url(#ch-cometa-ceu)"/>
+                      <!-- nebulosas -->
+                      <g class="ch-plano" style="--prof:.5">
+                        <ellipse cx="96" cy="70" rx="130" ry="52" fill="url(#ch-cometa-neb-1)" transform="rotate(-24 96 70)"/>
+                        <ellipse cx="200" cy="128" rx="100" ry="54" fill="url(#ch-cometa-neb-2)" transform="rotate(-18 200 128)"/>
+                        <ellipse cx="34" cy="30" rx="70" ry="40" fill="url(#ch-cometa-neb-3)"/>
+                        <path d="M-20 120 C40 92 90 98 140 70 S230 30 280 40" fill="none" stroke="#ffb3ea" stroke-opacity=".07" stroke-width="18" stroke-linecap="round"/>
+                      </g>
+                      <!-- campo de estrelas + constelação -->
+                      <g class="ch-plano" style="--prof:1">
+                        <circle cx="2.6" cy="175.9" r="0.3" fill="#fff" opacity="0.64"/><circle cx="122.2" cy="50.8" r="0.4" fill="#fff" opacity="0.69"/><circle cx="96.5" cy="117" r="0.3" fill="#fff" opacity="0.81"/><circle class="ch-cintila" style="--d:0.7s" cx="195.9" cy="117.9" r="0.9" fill="#fff" opacity="0.60"/><circle cx="76.2" cy="162" r="0.5" fill="#fff" opacity="0.66"/><circle cx="189.7" cy="-7.1" r="0.3" fill="#fff" opacity="0.48"/><circle cx="17.1" cy="121.9" r="0.4" fill="#fff" opacity="0.93"/><circle cx="-4.8" cy="145" r="1.2" fill="#fff" opacity="0.56"/><circle cx="36.7" cy="162.7" r="0.9" fill="#fff" opacity="0.97"/><circle cx="214.1" cy="83.2" r="1.2" fill="#fff" opacity="0.83"/><circle class="ch-cintila" style="--d:2.9s" cx="222.8" cy="66" r="0.3" fill="#fff" opacity="0.75"/><circle cx="256.3" cy="108.7" r="1" fill="#fff" opacity="0.35"/><circle cx="111.4" cy="190.4" r="0.7" fill="#fff" opacity="0.68"/><circle cx="132.2" cy="38.7" r="1.3" fill="#fff" opacity="0.63"/><circle cx="20.5" cy="65.8" r="0.3" fill="#fff" opacity="0.38"/><circle cx="19.7" cy="71.9" r="0.5" fill="#fff" opacity="0.59"/><circle cx="249" cy="11.3" r="0.3" fill="#fff" opacity="0.72"/><circle cx="148.2" cy="69.8" r="1.3" fill="#fff" opacity="1.00"/><circle cx="75.6" cy="105.1" r="1" fill="#fff" opacity="0.77"/><circle cx="244.9" cy="21.8" r="0.3" fill="#fff" opacity="0.98"/><circle cx="70.7" cy="168.5" r="0.3" fill="#fff" opacity="0.98"/><circle cx="132.5" cy="39.9" r="0.4" fill="#fff" opacity="0.92"/><circle cx="63.5" cy="153.6" r="0.3" fill="#fff" opacity="0.87"/><circle cx="-9.7" cy="-5.6" r="0.3" fill="#fff" opacity="0.91"/><circle cx="216.2" cy="58.4" r="0.3" fill="#fff" opacity="0.71"/><circle cx="201.9" cy="27.3" r="0.6" fill="#fff" opacity="0.99"/><circle cx="64.2" cy="97.4" r="0.7" fill="#fff" opacity="0.67"/><circle cx="127.5" cy="100.1" r="0.6" fill="#fff" opacity="0.65"/><circle cx="129" cy="111" r="0.3" fill="#fff" opacity="0.76"/><circle cx="19.2" cy="113.6" r="0.3" fill="#fff" opacity="0.85"/><circle cx="248.1" cy="75.1" r="0.4" fill="#fff" opacity="0.48"/><circle cx="193.4" cy="42" r="0.3" fill="#fff" opacity="0.89"/><circle cx="247.2" cy="139.4" r="0.3" fill="#fff" opacity="0.50"/><circle cx="114.1" cy="150.3" r="0.5" fill="#fff" opacity="0.62"/><circle cx="-4.8" cy="159.3" r="0.3" fill="#fff" opacity="0.86"/><circle class="ch-cintila" style="--d:2.5s" cx="263.1" cy="184.1" r="0.5" fill="#fff" opacity="0.75"/><circle cx="123.1" cy="205.6" r="0.3" fill="#fff" opacity="0.46"/><circle cx="148.3" cy="120.5" r="0.8" fill="#fff" opacity="0.66"/><circle class="ch-cintila" style="--d:1.4s" cx="258.8" cy="169.8" r="1.3" fill="#fff" opacity="0.55"/><circle cx="230.4" cy="97.7" r="0.3" fill="#fff" opacity="0.73"/><circle cx="174.5" cy="19.8" r="0.4" fill="#fff" opacity="0.47"/><circle cx="225.3" cy="-4.1" r="0.5" fill="#fff" opacity="0.57"/><circle cx="206.1" cy="24.3" r="0.5" fill="#fff" opacity="0.92"/><circle cx="17" cy="144.9" r="0.3" fill="#fff" opacity="0.84"/><circle cx="130.7" cy="32.1" r="1" fill="#fff" opacity="0.60"/><circle cx="265.4" cy="104.7" r="0.3" fill="#fff" opacity="0.69"/><circle cx="243.8" cy="92.2" r="1.2" fill="#fff" opacity="0.92"/><circle cx="30" cy="178.6" r="0.7" fill="#fff" opacity="0.80"/><circle cx="183.1" cy="192" r="0.3" fill="#fff" opacity="0.56"/><circle class="ch-cintila" style="--d:1.5s" cx="-9.8" cy="100.4" r="0.9" fill="#fff" opacity="0.35"/><circle cx="62.2" cy="33.3" r="0.6" fill="#fff" opacity="0.68"/><circle class="ch-cintila" style="--d:2.7s" cx="103.1" cy="189.9" r="0.9" fill="#fff" opacity="0.43"/><circle cx="67.6" cy="92.3" r="0.4" fill="#fff" opacity="0.58"/><circle cx="161.9" cy="16.9" r="0.4" fill="#fff" opacity="0.54"/><circle cx="19" cy="18.9" r="0.5" fill="#fff" opacity="0.75"/><circle cx="181.7" cy="-6.3" r="0.3" fill="#fff" opacity="0.42"/><circle cx="254.8" cy="14.2" r="0.5" fill="#fff" opacity="0.60"/><circle cx="149.5" cy="15.5" r="0.8" fill="#fff" opacity="0.91"/><circle cx="197.9" cy="132.3" r="0.4" fill="#fff" opacity="0.99"/><circle cx="163.8" cy="115.4" r="0.3" fill="#fff" opacity="0.59"/><circle cx="71.7" cy="73.9" r="0.5" fill="#fff" opacity="0.68"/><circle cx="165.4" cy="148.3" r="0.9" fill="#fff" opacity="0.41"/><circle cx="119.5" cy="194.3" r="0.6" fill="#fff" opacity="0.86"/><circle cx="126.8" cy="165.8" r="0.3" fill="#fff" opacity="0.43"/><circle cx="197" cy="173" r="0.4" fill="#fff" opacity="0.66"/><circle cx="55.8" cy="47.5" r="0.3" fill="#fff" opacity="0.56"/><circle class="ch-cintila" style="--d:2.4s" cx="99.1" cy="84.7" r="0.3" fill="#fff" opacity="0.91"/><circle cx="99.8" cy="4.6" r="0.7" fill="#fff" opacity="0.36"/><circle class="ch-cintila" style="--d:2.1s" cx="67" cy="80.8" r="0.3" fill="#fff" opacity="0.70"/><circle cx="93.9" cy="158.9" r="0.7" fill="#fff" opacity="0.90"/><circle cx="36" cy="-6.5" r="1.2" fill="#fff" opacity="0.84"/><circle class="ch-cintila" style="--d:2.8s" cx="177.9" cy="144.2" r="0.3" fill="#fff" opacity="0.35"/><circle class="ch-cintila" style="--d:3.0s" cx="58" cy="155.9" r="0.3" fill="#fff" opacity="0.76"/><circle cx="103.9" cy="48.1" r="0.9" fill="#fff" opacity="0.86"/><circle class="ch-cintila" style="--d:0.9s" cx="237.2" cy="0.1" r="1.1" fill="#fff" opacity="0.77"/><circle cx="252.2" cy="122.4" r="0.4" fill="#fff" opacity="0.92"/><circle class="ch-cintila" style="--d:1.3s" cx="186.9" cy="148.8" r="0.3" fill="#fff" opacity="0.87"/><circle cx="58.2" cy="183.4" r="1.3" fill="#fff" opacity="0.54"/><circle cx="13.3" cy="200.7" r="0.3" fill="#fff" opacity="0.87"/><circle cx="18.8" cy="20.6" r="0.3" fill="#fff" opacity="0.71"/><circle cx="160.3" cy="157.8" r="0.8" fill="#fff" opacity="0.70"/><circle cx="145.9" cy="45.3" r="0.8" fill="#fff" opacity="0.97"/><circle cx="173" cy="21.4" r="0.3" fill="#fff" opacity="0.82"/><circle cx="128" cy="128.9" r="0.3" fill="#fff" opacity="0.77"/><circle cx="-4.9" cy="80.3" r="0.6" fill="#fff" opacity="0.91"/><circle cx="84.6" cy="17.8" r="0.3" fill="#fff" opacity="0.45"/><circle cx="87.3" cy="142.7" r="0.5" fill="#fff" opacity="0.93"/><circle cx="181.4" cy="73.2" r="0.3" fill="#fff" opacity="0.91"/><circle cx="51.4" cy="144.8" r="0.3" fill="#fff" opacity="0.67"/><circle cx="254.2" cy="179.4" r="1" fill="#fff" opacity="0.85"/>
+                        <g fill="none" stroke="#cfd8ff" stroke-opacity=".28" stroke-width=".6"><path d="M18 28 L44 18 L66 36 L58 58 M66 36 L92 30"/></g>
+                        <g fill="#fff"><circle cx="18" cy="28" r="1.3"/><circle cx="44" cy="18" r="1.1"/><circle cx="66" cy="36" r="1.5"/><circle cx="58" cy="58" r="1"/><circle cx="92" cy="30" r="1.1"/></g>
+                        <path class="ch-cintila" d="M232 17C232.6 21.4 232.6 21.4 237 22C232.6 22.6 232.6 22.6 232 27C231.4 22.6 231.4 22.6 227 22C231.4 21.4 231.4 21.4 232 17Z" fill="#fff" opacity="0.95"/><path class="ch-cintila" style="--d:1.2s" d="M128 100.5C128.4 103.6 128.4 103.6 131.5 104C128.4 104.4 128.4 104.4 128 107.5C127.6 104.4 127.6 104.4 124.5 104C127.6 103.6 127.6 103.6 128 100.5Z" fill="#fff" opacity="0.7"/><path d="M104 11C104.4 13.6 104.4 13.6 107 14C104.4 14.4 104.4 14.4 104 17C103.6 14.4 103.6 14.4 101 14C103.6 13.6 103.6 13.6 104 11Z" fill="#fff" opacity="0.8"/>
+                      </g>
+                      <!-- lua distante -->
+                      <g class="ch-plano" style="--prof:1.4">
+                        <circle cx="232" cy="156" r="9" fill="url(#ch-cometa-lua)"/>
+                        <circle cx="232" cy="156" r="12" fill="none" stroke="#b9c8ff" stroke-opacity=".2"/>
+                      </g>
+                      <!-- cometa: cauda de poeira, cauda iônica, coma e núcleo -->
+                      <g class="ch-plano" style="--prof:2.2">
+                        <path d="M204 50 C164 68 96 116 -14 204 L34 214 C112 146 168 92 210 58 Z" fill="url(#ch-cometa-poeira)" opacity=".85"/>
+                        <path d="M203 48 C150 74 80 112 -16 158 L-14 170 C86 126 156 84 206 54 Z" fill="url(#ch-cometa-ion)" opacity=".9"/>
+                        <g fill="none" stroke-linecap="round">
+                          <path d="M200 52 C150 82 104 116 46 170" stroke="#fff" stroke-opacity=".55" stroke-width="1.1"/>
+                          <path d="M204 52 C168 74 128 104 84 146" stroke="#ffe3f7" stroke-opacity=".5" stroke-width=".8"/>
+                          <path d="M202 49 C160 70 110 94 30 134" stroke="#bff6ff" stroke-opacity=".55" stroke-width=".8"/>
+                          <path d="M204 50 C176 62 140 80 96 104" stroke="#fff" stroke-opacity=".35" stroke-width=".6"/>
+                        </g>
+                        <g fill="#fff"><circle cx="79.2" cy="138.6" r="1.2" opacity="0.84"/><circle cx="139.8" cy="85.4" r="0.5" opacity="0.31"/><circle cx="200" cy="62.4" r="1" opacity="0.84"/><circle cx="94.9" cy="111.5" r="0.6" opacity="0.72"/><circle cx="154.6" cy="89.5" r="0.7" opacity="0.46"/><circle cx="84.1" cy="141.2" r="0.7" opacity="0.45"/><circle cx="133.5" cy="94.3" r="0.7" opacity="0.62"/><circle cx="117.4" cy="96.3" r="1" opacity="0.35"/><circle cx="121.5" cy="100.5" r="1" opacity="0.41"/><circle cx="71.9" cy="137.2" r="0.6" opacity="0.56"/><circle cx="153.2" cy="79.5" r="0.5" opacity="0.62"/><circle cx="39.1" cy="167.2" r="1.1" opacity="0.73"/><circle cx="122.2" cy="120.6" r="1" opacity="0.39"/><circle cx="105.2" cy="117.9" r="0.5" opacity="0.83"/><circle cx="179.1" cy="66.7" r="1" opacity="0.76"/><circle cx="145.9" cy="102.3" r="0.9" opacity="0.39"/><circle cx="144.7" cy="87.1" r="0.8" opacity="0.81"/><circle cx="143.8" cy="89.2" r="0.5" opacity="0.72"/><circle cx="146.9" cy="89.8" r="1.2" opacity="0.86"/><circle cx="196.9" cy="56.5" r="1.1" opacity="0.68"/><circle cx="158.5" cy="66.6" r="0.6" opacity="0.79"/><circle cx="60" cy="148.2" r="0.9" opacity="0.80"/></g>
+                        <circle cx="205" cy="50" r="34" fill="url(#ch-cometa-coma)"/>
+                        <circle cx="205" cy="50" r="4.6" fill="#fff"/>
+                        <path d="M205 35C206.8 48.2 206.8 48.2 220 50C206.8 51.8 206.8 51.8 205 65C203.2 51.8 203.2 51.8 190 50C203.2 48.2 203.2 48.2 205 35Z" fill="#fff" opacity="0.9"/>
+                      </g>
+                      <!-- planeta anelado em primeiro plano -->
+                      <g class="ch-plano" style="--prof:3.4">
+                        <ellipse cx="50" cy="172" rx="92" ry="15" fill="none" stroke="#ffc8ec" stroke-opacity=".35" stroke-width="5" transform="rotate(-16 50 172)"/>
+                        <circle cx="50" cy="172" r="62" fill="url(#ch-cometa-atmos)"/>
+                        <circle cx="50" cy="172" r="54" fill="url(#ch-cometa-planeta)"/>
+                        <g clip-path="url(#ch-cometa-recorte)" fill="none" stroke-linecap="round">
+                          <path d="M-10 140 C20 128 60 126 110 136" stroke="#ffd2f0" stroke-opacity=".22" stroke-width="5"/>
+                          <path d="M-10 156 C30 146 70 146 110 154" stroke="#3a0f6a" stroke-opacity=".35" stroke-width="7"/>
+                          <path d="M-10 176 C30 168 70 168 110 176" stroke="#ff9ad5" stroke-opacity=".15" stroke-width="4"/>
+                          <circle cx="78" cy="196" r="70" fill="#0b0322" fill-opacity=".55" stroke="none"/>
+                        </g>
+                        <path d="M-42 172 A92 15 0 0 0 142 172" transform="rotate(-16 50 172)" fill="none" stroke="#ffe0f5" stroke-opacity=".85" stroke-width="2.4"/>
+                        <path d="M-36 174 A86 13 0 0 0 136 174" transform="rotate(-16 50 172)" fill="none" stroke="#c77dff" stroke-opacity=".6" stroke-width="1.2"/>
+                      </g>
+                    </svg>
+                  </div>
+
+                  <p class="ch-tipo"><span>◆ Corpo celeste</span><span>Raro</span></p>
+                  <p class="ch-texto">Risca o céu uma vez por geração e sempre encontra o caminho de volta.</p>
+                  <footer class="ch-rodape"><span>CH·01</span><span>Arco-íris</span><span>001/003</span></footer>
+                </div>
+                <div class="ch-foil" aria-hidden="true"></div>
+                <div class="ch-glare" aria-hidden="true"></div>
+              </div>
+
+              <!-- Verso -->
+              <div class="ch-face ch-face--verso" aria-hidden="true">
+                <div class="ch-face__conteudo">
+                  <header class="ch-topo">
+                    <h3 class="ch-nome">Cometa</h3>
+                    <span class="ch-num">#001</span>
+                  </header>
+                  <div class="ch-emblema" aria-hidden="true">
+                    <svg viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+                      <circle cx="60" cy="60" r="30" fill="none" stroke="currentColor" stroke-opacity=".2" stroke-dasharray="3 5"/>
+                      <path d="M86 34 C70 48 52 64 26 92" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-opacity=".5"/>
+                      <circle cx="86" cy="34" r="8" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <ul class="ch-stats">
+                    <li class="ch-stat" style="--valor: 94"><span class="ch-stat__nome">Velocidade</span><span class="ch-stat__valor">94</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 88"><span class="ch-stat__nome">Brilho</span><span class="ch-stat__valor">88</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 71"><span class="ch-stat__nome">Órbita</span><span class="ch-stat__valor">71</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 46"><span class="ch-stat__nome">Defesa</span><span class="ch-stat__valor">46</span><span class="ch-stat__barra"></span></li>
+                  </ul>
+                  <dl class="ch-ficha">
+                    <div><dt>Elemento</dt><dd>Éter</dd></div>
+                    <div><dt>Foil</dt><dd>Arco-íris</dd></div>
+                    <div><dt>Ciclo</dt><dd>76 anos</dd></div>
+                  </dl>
+                </div>
+                <div class="ch-foil" aria-hidden="true"></div>
+                <div class="ch-glare" aria-hidden="true"></div>
+              </div>
+
+            </div>
+          </div>
+          <!-- Botão real, transparente, que cobre a carta: foco por teclado e Enter/Espaço viram a carta -->
+          <button class="ch-carta__virar" type="button" aria-pressed="false" aria-label="Virar a carta Cometa"></button>
+        </article>
+        <div class="ch-sombra" aria-hidden="true"></div>
+      </div>
+
+      <!-- ===================== CARTA 2 · MARÉ (foil prata) ===================== -->
+      <div class="ch-slot" style="--i: 1; --hue: 186; --foil: var(--ch-foil-prata);" data-pose="5,2">
+        <article class="ch-carta" aria-labelledby="ch-mare-nome">
+          <div class="ch-carta__rotor">
+            <div class="ch-carta__giro">
+
+              <div class="ch-face ch-face--frente">
+                <div class="ch-face__conteudo">
+                  <header class="ch-topo">
+                    <h2 class="ch-nome" id="ch-mare-nome">Maré</h2>
+                    <span class="ch-poder" aria-label="Poder 92"><small>PWR</small>92</span>
+                  </header>
+
+                  <div class="ch-arte" aria-hidden="true">
+                    <svg viewBox="0 0 260 196" preserveAspectRatio="xMidYMid slice">
+                      <defs>
+                        <linearGradient id="ch-mare-ceu" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0" stop-color="#02101a"/><stop offset=".35" stop-color="#062a3a"/><stop offset=".55" stop-color="#0d4a5a"/><stop offset=".62" stop-color="#2c8a8e"/><stop offset="1" stop-color="#2c8a8e"/>
+                        </linearGradient>
+                        <radialGradient id="ch-mare-halo"><stop offset="0" stop-color="#d9fff9" stop-opacity=".6"/><stop offset=".35" stop-color="#9ff0e6" stop-opacity=".2"/><stop offset="1" stop-color="#9ff0e6" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="ch-mare-lua" cx=".38" cy=".34"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#d7f4f2"/><stop offset="1" stop-color="#93cfd2"/></radialGradient>
+                        <linearGradient id="ch-mare-aurora" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5dffc4" stop-opacity="0"/><stop offset=".4" stop-color="#5dffc4" stop-opacity=".35"/><stop offset=".75" stop-color="#7fd9ff" stop-opacity=".25"/><stop offset="1" stop-color="#7fd9ff" stop-opacity="0"/></linearGradient>
+                        <linearGradient id="ch-mare-mar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b7781"/><stop offset=".4" stop-color="#0c4655"/><stop offset="1" stop-color="#031822"/></linearGradient>
+                        <radialGradient id="ch-mare-trilha" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#d9fff9" stop-opacity=".45"/><stop offset="1" stop-color="#d9fff9" stop-opacity="0"/></radialGradient>
+                        <linearGradient id="ch-mare-onda-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3fc7c4"/><stop offset="1" stop-color="#0b4b5a"/></linearGradient>
+                        <linearGradient id="ch-mare-onda-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f9aa3"/><stop offset="1" stop-color="#06303d"/></linearGradient>
+                        <linearGradient id="ch-mare-vaga" x1=".2" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#6fe0d6"/><stop offset=".3" stop-color="#2299a3"/><stop offset=".75" stop-color="#0a4e5e"/><stop offset="1" stop-color="#03202b"/></linearGradient>
+                        <linearGradient id="ch-mare-dentro" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#03202b" stop-opacity=".9"/><stop offset="1" stop-color="#0a4e5e" stop-opacity=".2"/></linearGradient>
+                      </defs>
+                      <rect x="-20" y="-20" width="300" height="236" fill="url(#ch-mare-ceu)"/>
+                      <!-- céu: aurora e estrelas -->
+                      <g class="ch-plano" style="--prof:.4">
+                        <path d="M-20 64 C30 40 70 58 110 40 S190 10 280 26 L280 44 C200 30 160 58 112 66 S30 66 -20 86 Z" fill="url(#ch-mare-aurora)" opacity=".7"/>
+                        <circle cx="224.9" cy="62.6" r="0.9" fill="#e9fffd" opacity="0.84"/><circle cx="166.9" cy="90.5" r="0.8" fill="#e9fffd" opacity="0.87"/><circle cx="227" cy="7.2" r="0.5" fill="#e9fffd" opacity="0.42"/><circle cx="173.2" cy="31.1" r="0.6" fill="#e9fffd" opacity="0.97"/><circle cx="64.1" cy="8.4" r="0.8" fill="#e9fffd" opacity="0.60"/><circle cx="118.7" cy="37.5" r="0.3" fill="#e9fffd" opacity="0.86"/><circle cx="96" cy="-1.5" r="0.3" fill="#e9fffd" opacity="0.39"/><circle cx="58.8" cy="30.7" r="0.6" fill="#e9fffd" opacity="0.67"/><circle class="ch-cintila" style="--d:2.7s" cx="121.7" cy="48.2" r="0.6" fill="#e9fffd" opacity="0.73"/><circle cx="258" cy="19.5" r="0.3" fill="#e9fffd" opacity="0.58"/><circle cx="21.8" cy="75.9" r="0.3" fill="#e9fffd" opacity="0.89"/><circle cx="264.3" cy="50.8" r="0.5" fill="#e9fffd" opacity="0.61"/><circle class="ch-cintila" style="--d:0.1s" cx="210.4" cy="73.1" r="0.4" fill="#e9fffd" opacity="0.46"/><circle cx="172.8" cy="72.2" r="0.3" fill="#e9fffd" opacity="0.74"/><circle class="ch-cintila" style="--d:0.5s" cx="236.4" cy="55.2" r="0.3" fill="#e9fffd" opacity="0.55"/><circle cx="232" cy="97.5" r="0.4" fill="#e9fffd" opacity="0.95"/><circle cx="43.7" cy="94.9" r="0.9" fill="#e9fffd" opacity="0.87"/><circle class="ch-cintila" style="--d:2.1s" cx="127.1" cy="42.6" r="0.5" fill="#e9fffd" opacity="0.91"/><circle cx="161.7" cy="87.3" r="0.3" fill="#e9fffd" opacity="0.62"/><circle cx="9.1" cy="-4.1" r="0.3" fill="#e9fffd" opacity="0.45"/><circle cx="94.4" cy="28.5" r="0.6" fill="#e9fffd" opacity="0.82"/><circle class="ch-cintila" style="--d:0.8s" cx="-6.2" cy="26.2" r="0.3" fill="#e9fffd" opacity="0.74"/><circle cx="202.5" cy="15.2" r="0.4" fill="#e9fffd" opacity="0.72"/><circle cx="141" cy="1.5" r="0.3" fill="#e9fffd" opacity="0.41"/><circle cx="37.3" cy="23.1" r="0.7" fill="#e9fffd" opacity="0.69"/><circle cx="187.4" cy="82" r="0.7" fill="#e9fffd" opacity="0.46"/><circle class="ch-cintila" style="--d:0.5s" cx="31.2" cy="50" r="1.1" fill="#e9fffd" opacity="0.52"/><circle cx="134.3" cy="-5.5" r="1" fill="#e9fffd" opacity="0.94"/><circle cx="108.6" cy="81.2" r="0.3" fill="#e9fffd" opacity="0.96"/><circle cx="145" cy="83.5" r="0.4" fill="#e9fffd" opacity="0.90"/><circle cx="156.9" cy="61.1" r="0.7" fill="#e9fffd" opacity="0.73"/><circle cx="49.1" cy="17.6" r="0.4" fill="#e9fffd" opacity="0.73"/><circle cx="105.4" cy="93.5" r="1" fill="#e9fffd" opacity="0.80"/><circle class="ch-cintila" style="--d:1.0s" cx="75.9" cy="79.9" r="0.4" fill="#e9fffd" opacity="0.37"/><circle cx="77.4" cy="66.9" r="0.5" fill="#e9fffd" opacity="0.42"/><circle cx="212.1" cy="47.9" r="0.4" fill="#e9fffd" opacity="0.98"/><circle cx="2" cy="35.1" r="0.6" fill="#e9fffd" opacity="0.52"/><circle class="ch-cintila" style="--d:1.3s" cx="84.9" cy="96.8" r="0.3" fill="#e9fffd" opacity="0.87"/><circle cx="200.2" cy="78.5" r="0.3" fill="#e9fffd" opacity="0.61"/><circle class="ch-cintila" style="--d:0.4s" cx="116" cy="95.5" r="0.3" fill="#e9fffd" opacity="0.46"/><circle cx="259.9" cy="89.5" r="0.5" fill="#e9fffd" opacity="0.68"/><circle cx="99" cy="40.9" r="0.4" fill="#e9fffd" opacity="0.45"/><circle cx="27.5" cy="14.5" r="0.7" fill="#e9fffd" opacity="0.71"/><circle cx="11.2" cy="20.9" r="0.4" fill="#e9fffd" opacity="0.99"/><circle cx="222.8" cy="8.7" r="0.6" fill="#e9fffd" opacity="0.80"/><circle cx="65.4" cy="42.1" r="1.1" fill="#e9fffd" opacity="0.68"/><circle cx="70.9" cy="66" r="0.5" fill="#e9fffd" opacity="0.46"/><circle cx="123" cy="-5.7" r="0.5" fill="#e9fffd" opacity="0.56"/><circle cx="63.4" cy="18.7" r="0.6" fill="#e9fffd" opacity="0.79"/><circle cx="219.2" cy="83.2" r="1.1" fill="#e9fffd" opacity="0.76"/><circle class="ch-cintila" style="--d:0.4s" cx="263" cy="92.2" r="0.4" fill="#e9fffd" opacity="0.56"/><circle cx="67.4" cy="36.5" r="0.7" fill="#e9fffd" opacity="0.96"/><circle cx="186" cy="64.3" r="1" fill="#e9fffd" opacity="0.86"/><circle cx="99.9" cy="-2.8" r="0.6" fill="#e9fffd" opacity="0.67"/><circle cx="162.1" cy="56.2" r="0.3" fill="#e9fffd" opacity="0.79"/>
+                        <path class="ch-cintila" d="M40 26C40.5 29.5 40.5 29.5 44 30C40.5 30.5 40.5 30.5 40 34C39.5 30.5 39.5 30.5 36 30C39.5 29.5 39.5 29.5 40 26Z" fill="#fff" opacity="0.9"/><path class="ch-cintila" style="--d:1.6s" d="M236 83C236.4 85.6 236.4 85.6 239 86C236.4 86.4 236.4 86.4 236 89C235.6 86.4 235.6 86.4 233 86C235.6 85.6 235.6 85.6 236 83Z" fill="#fff" opacity="0.7"/>
+                      </g>
+                      <!-- lua cheia com halo e crateras -->
+                      <g class="ch-plano" style="--prof:.8">
+                        <circle cx="184" cy="56" r="78" fill="url(#ch-mare-halo)"/>
+                        <circle cx="184" cy="56" r="38" fill="none" stroke="#e6fffb" stroke-opacity=".12"/>
+                        <circle cx="184" cy="56" r="50" fill="none" stroke="#e6fffb" stroke-opacity=".07"/>
+                        <circle cx="184" cy="56" r="25" fill="url(#ch-mare-lua)"/>
+                        <g fill="#6fb3b8" opacity=".35"><circle cx="176" cy="50" r="5"/><circle cx="191" cy="63" r="3.4"/><circle cx="190" cy="45" r="2.2"/><circle cx="174" cy="64" r="2"/><circle cx="197" cy="54" r="1.6"/></g>
+                      </g>
+                      <!-- ilhas no horizonte -->
+                      <g class="ch-plano" style="--prof:1.2">
+                        <path d="M-20 113 L-20 102 C-4 98 6 88 20 89 C32 90 38 100 52 103 C62 105 72 108 84 113 Z" fill="#06303b"/>
+                        <path d="M206 113 C214 106 222 98 236 99 C248 100 254 106 280 110 L280 113 Z" fill="#082f3a"/>
+                        <path d="M28 96 l1.6 -10 l1.6 10 Z M24 98 l1.2 -7 l1.2 7 Z" fill="#06303b"/>
+                      </g>
+                      <!-- mar com a trilha de luz da lua -->
+                      <g class="ch-plano" style="--prof:1.8">
+                        <rect x="-20" y="112" width="300" height="104" fill="url(#ch-mare-mar)"/>
+                        <path d="M-20 112.5 H280" stroke="#bff7f0" stroke-opacity=".5" stroke-width=".8"/>
+                        <path d="M140 112.5 A44 64 0 0 0 228 112.5 Z" fill="url(#ch-mare-trilha)"/>
+                        <g stroke="#effffd" stroke-width="1.3" stroke-linecap="round"><path d="M179.1 116h6" opacity="0.91"/><path d="M179.1 119.2h7.6" opacity="0.83"/><path d="M180.5 122.4h8.2" opacity="0.88"/><path d="M180.5 125.6h10.6" opacity="0.90"/><path d="M180.6 128.8h10.5" opacity="0.77"/><path d="M177.6 132h12" opacity="0.73"/><path d="M175.6 135.2h17.3" opacity="0.76"/><path d="M174.8 138.4h19" opacity="0.70"/><path d="M171.9 141.6h18" opacity="0.63"/><path d="M176.9 144.8h15.4" opacity="0.61"/><path d="M171.2 148h26.2" opacity="0.56"/><path d="M179.2 151.2h18.1" opacity="0.61"/><path d="M170.4 154.4h25.2" opacity="0.62"/><path d="M173.7 157.6h24.7" opacity="0.56"/><path d="M167.3 160.8h29.4" opacity="0.59"/><path d="M168.4 164h31.9" opacity="0.46"/><path d="M164.9 167.2h26.7" opacity="0.48"/><path d="M163 170.4h41.2" opacity="0.40"/><path d="M173.9 173.6h29.1" opacity="0.35"/></g>
+                        <path d="M-20 138 C20 130 50 132 80 138 S150 146 190 136 240 128 280 134 V216 H-20 Z" fill="url(#ch-mare-onda-b)" opacity=".9"/>
+                        <path d="M80 138 C110 142 150 146 190 136" fill="none" stroke="#bff7f0" stroke-opacity=".35" stroke-width="1"/>
+                      </g>
+                      <!-- grande vaga em primeiro plano, com a crista enrolando -->
+                      <g class="ch-plano" style="--prof:3.2">
+                        <path d="M120 216 C150 176 190 160 230 166 C252 170 268 162 284 154 V216 Z" fill="url(#ch-mare-onda-a)"/>
+                        <path d="M150 182 C176 168 204 164 230 168" fill="none" stroke="#dffffb" stroke-opacity=".55" stroke-width="1.4" stroke-linecap="round"/>
+                        <path d="M-20 216 V150 C6 126 44 108 84 108 C116 108 138 124 136 142 C134 156 118 162 108 154 C100 148 104 138 114 140 C110 128 92 124 78 132 C58 144 56 172 76 216 Z" fill="url(#ch-mare-vaga)"/>
+                        <path d="M78 132 C58 144 56 172 76 216 L40 216 C36 180 46 146 78 132 Z" fill="url(#ch-mare-dentro)"/>
+                        <path d="M-20 150 C6 126 44 108 84 108 C116 108 138 124 136 142 C134 156 118 162 108 154 C100 148 104 138 114 140" fill="none" stroke="#f2fffd" stroke-width="2.6" stroke-linecap="round" stroke-opacity=".9"/>
+                        <path d="M0 140 C24 124 52 116 80 116" fill="none" stroke="#c9fff7" stroke-opacity=".4" stroke-width="1.2" stroke-linecap="round"/>
+                        <path d="M-10 170 C10 156 26 150 44 148" fill="none" stroke="#9ff0e6" stroke-opacity=".25" stroke-width="1" stroke-linecap="round"/>
+                        <g fill="#f2fffd"><circle cx="119.8" cy="116.3" r="1.8" opacity="0.76"/><circle cx="126.9" cy="114.3" r="1.1" opacity="0.47"/><circle cx="81.3" cy="98.4" r="1.3" opacity="0.90"/><circle cx="89.3" cy="115.4" r="1.6" opacity="0.79"/><circle cx="81.6" cy="99.3" r="0.6" opacity="0.93"/><circle cx="100.2" cy="98" r="1.3" opacity="0.96"/><circle cx="123.4" cy="116.1" r="1.1" opacity="0.43"/><circle cx="80.5" cy="100.4" r="1.2" opacity="0.69"/><circle cx="90.5" cy="106.9" r="1.1" opacity="0.86"/><circle cx="105.8" cy="112.3" r="0.7" opacity="0.67"/><circle cx="118.7" cy="117" r="2.1" opacity="0.53"/><circle cx="121.1" cy="118.9" r="1.1" opacity="0.80"/><circle cx="129.5" cy="107.9" r="0.6" opacity="0.59"/><circle cx="76.4" cy="99.8" r="1" opacity="0.74"/><circle cx="100.8" cy="115.7" r="1.1" opacity="1.00"/><circle cx="104" cy="101.9" r="2" opacity="0.70"/><circle cx="97.4" cy="110" r="1.4" opacity="0.98"/><circle cx="122.3" cy="114.3" r="1.1" opacity="0.56"/><circle cx="141.1" cy="126.7" r="1.6" opacity="0.46"/><circle cx="132" cy="122.4" r="1.3" opacity="0.95"/><circle cx="133.2" cy="121.2" r="1.6" opacity="0.97"/><circle cx="136.8" cy="116.7" r="1.7" opacity="0.89"/><circle cx="93.1" cy="107.7" r="0.5" opacity="0.62"/><circle cx="82.5" cy="100.4" r="1.1" opacity="0.89"/><circle cx="71.7" cy="103.8" r="0.6" opacity="0.64"/><circle cx="110.4" cy="102.4" r="2" opacity="0.78"/></g>
+                      </g>
+                    </svg>
+                  </div>
+
+                  <p class="ch-tipo"><span>◆ Força das águas</span><span>Épico</span></p>
+                  <p class="ch-texto">Vai e volta sem pressa. Leva o que não serve e devolve o que importa.</p>
+                  <footer class="ch-rodape"><span>CH·01</span><span>Prata</span><span>002/003</span></footer>
+                </div>
+                <div class="ch-foil" aria-hidden="true"></div>
+                <div class="ch-glare" aria-hidden="true"></div>
+              </div>
+
+              <div class="ch-face ch-face--verso" aria-hidden="true">
+                <div class="ch-face__conteudo">
+                  <header class="ch-topo">
+                    <h3 class="ch-nome">Maré</h3>
+                    <span class="ch-num">#002</span>
+                  </header>
+                  <div class="ch-emblema" aria-hidden="true">
+                    <svg viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="46" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+                      <circle cx="60" cy="42" r="14" fill="currentColor"/>
+                      <g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round">
+                        <path d="M26 72 C36 64 46 64 56 72 S76 80 94 70" stroke-opacity=".7"/>
+                        <path d="M30 86 C40 78 50 78 60 86 S80 94 90 86" stroke-opacity=".4"/>
+                      </g>
+                    </svg>
+                  </div>
+                  <ul class="ch-stats">
+                    <li class="ch-stat" style="--valor: 78"><span class="ch-stat__nome">Fluxo</span><span class="ch-stat__valor">78</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 96"><span class="ch-stat__nome">Resistência</span><span class="ch-stat__valor">96</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 64"><span class="ch-stat__nome">Profundidade</span><span class="ch-stat__valor">64</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 82"><span class="ch-stat__nome">Calma</span><span class="ch-stat__valor">82</span><span class="ch-stat__barra"></span></li>
+                  </ul>
+                  <dl class="ch-ficha">
+                    <div><dt>Elemento</dt><dd>Água</dd></div>
+                    <div><dt>Foil</dt><dd>Prata</dd></div>
+                    <div><dt>Ciclo</dt><dd>12 h 25</dd></div>
+                  </dl>
+                </div>
+                <div class="ch-foil" aria-hidden="true"></div>
+                <div class="ch-glare" aria-hidden="true"></div>
+              </div>
+
+            </div>
+          </div>
+          <button class="ch-carta__virar" type="button" aria-pressed="false" aria-label="Virar a carta Maré"></button>
+        </article>
+        <div class="ch-sombra" aria-hidden="true"></div>
+      </div>
+
+      <!-- ===================== CARTA 3 · BRASA (foil dourado) ===================== -->
+      <div class="ch-slot" style="--i: 2; --hue: 18; --foil: var(--ch-foil-dourado);" data-pose="6,14">
+        <article class="ch-carta" aria-labelledby="ch-brasa-nome">
+          <div class="ch-carta__rotor">
+            <div class="ch-carta__giro">
+
+              <div class="ch-face ch-face--frente">
+                <div class="ch-face__conteudo">
+                  <header class="ch-topo">
+                    <h2 class="ch-nome" id="ch-brasa-nome">Brasa</h2>
+                    <span class="ch-poder" aria-label="Poder 99"><small>PWR</small>99</span>
+                  </header>
+
+                  <div class="ch-arte" aria-hidden="true">
+                    <svg viewBox="0 0 260 196" preserveAspectRatio="xMidYMid slice">
+                      <defs>
+                        <radialGradient id="ch-brasa-fundo" cx=".5" cy=".78" r=".95">
+                          <stop offset="0" stop-color="#9a3410"/><stop offset=".3" stop-color="#5a170b"/><stop offset=".65" stop-color="#240808"/><stop offset="1" stop-color="#0c0304"/>
+                        </radialGradient>
+                        <radialGradient id="ch-brasa-calor"><stop offset="0" stop-color="#ffb35c" stop-opacity=".75"/><stop offset=".45" stop-color="#ff6a2a" stop-opacity=".25"/><stop offset="1" stop-color="#ff6a2a" stop-opacity="0"/></radialGradient>
+                        <linearGradient id="ch-brasa-raio" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffcf7a" stop-opacity=".35"/><stop offset="1" stop-color="#ffcf7a" stop-opacity="0"/></linearGradient>
+                        <linearGradient id="ch-brasa-chama-1" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e2361a"/><stop offset=".45" stop-color="#ff6a1f"/><stop offset="1" stop-color="#ff9a2e" stop-opacity=".9"/></linearGradient>
+                        <linearGradient id="ch-brasa-chama-2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff8a24"/><stop offset=".6" stop-color="#ffb347"/><stop offset="1" stop-color="#ffd166"/></linearGradient>
+                        <linearGradient id="ch-brasa-chama-3" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffe7a3"/><stop offset="1" stop-color="#fffbe8"/></linearGradient>
+                        <radialGradient id="ch-brasa-carvao" cy=".2"><stop offset="0" stop-color="#ffb24a"/><stop offset=".4" stop-color="#e2461a"/><stop offset="1" stop-color="#3a0c08"/></radialGradient>
+                        <linearGradient id="ch-brasa-fumaca" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffb27a" stop-opacity=".18"/><stop offset="1" stop-color="#ffb27a" stop-opacity="0"/></linearGradient>
+                      </defs>
+                      <rect x="-20" y="-20" width="300" height="236" fill="url(#ch-brasa-fundo)"/>
+                      <!-- selo: hexágonos e anel de runas -->
+                      <g class="ch-plano" style="--prof:.5" fill="none" stroke="#ffb27a">
+                        <path d="M130 8 L204 50 L204 134 L130 176 L56 134 L56 50 Z" stroke-opacity=".16"/>
+                        <path d="M130 26 L188 60 L188 124 L130 158 L72 124 L72 60 Z" stroke-opacity=".24"/>
+                        <circle cx="130" cy="92" r="96" stroke-opacity=".14" stroke-dasharray="1 6" stroke-width="3"/>
+                        <circle cx="130" cy="92" r="104" stroke-opacity=".1"/>
+                        <path d="M130 8 V26 M204 50 L188 60 M204 134 L188 124 M130 176 V158 M56 134 L72 124 M56 50 L72 60" stroke-opacity=".3"/>
+                      </g>
+                      <!-- calor, raios e fumaça -->
+                      <g class="ch-plano" style="--prof:1">
+                        <circle cx="130" cy="128" r="96" fill="url(#ch-brasa-calor)"/>
+                        <g fill="url(#ch-brasa-raio)">
+                          <path d="M126 130 L60 -10 L84 -10 Z"/><path d="M130 130 L130 -10 L146 -10 Z" opacity=".8"/><path d="M134 130 L200 -10 L222 -10 Z"/><path d="M128 130 L14 20 L24 8 Z" opacity=".6"/><path d="M132 130 L250 24 L244 10 Z" opacity=".6"/>
+                        </g>
+                        <path d="M118 30 C104 14 122 2 110 -14 L124 -14 C134 0 118 12 130 30 Z" fill="url(#ch-brasa-fumaca)"/>
+                        <path d="M146 24 C160 10 142 -2 156 -16 L168 -16 C152 -2 170 10 154 26 Z" fill="url(#ch-brasa-fumaca)" opacity=".7"/>
+                      </g>
+                      <!-- chama em três camadas, com facetas -->
+                      <g class="ch-plano" style="--prof:2">
+                        <path d="M130 18 C136 42 156 58 164 82 C168 94 166 106 160 114 C168 110 174 102 176 94 C186 114 182 140 168 154 C158 164 144 170 130 170 C114 170 100 164 92 154 C78 140 76 116 84 98 C86 108 90 114 96 116 C92 104 94 90 102 78 C108 68 112 58 114 46 C120 56 122 64 122 72 C126 58 130 40 130 18 Z" fill="url(#ch-brasa-chama-1)"/>
+                        <path d="M131 56 C136 76 152 86 156 106 C159 120 154 134 146 142 C150 132 148 122 142 116 C142 136 136 152 130 160 C120 158 108 150 104 136 C100 122 106 110 112 102 C112 110 114 116 118 118 C116 100 124 88 128 76 C130 70 131 64 131 56 Z" fill="url(#ch-brasa-chama-2)"/>
+                        <path d="M130 100 C134 114 146 122 146 138 C146 152 138 162 130 162 C121 162 114 154 114 142 C114 128 124 120 130 100 Z" fill="url(#ch-brasa-chama-3)"/>
+                        <g fill="none" stroke="#fff3d6" stroke-linejoin="round">
+                          <path d="M130 18 L122 72 L130 100 L131 56 Z" stroke-opacity=".22"/>
+                          <path d="M114 46 L102 78 L118 118 M164 82 L156 106 L146 142 M176 94 L168 154" stroke-opacity=".2"/>
+                          <path d="M84 98 L104 136 L130 160 L156 106" stroke-opacity=".16"/>
+                        </g>
+                        <ellipse cx="130" cy="150" rx="10" ry="14" fill="#fff" opacity=".55"/>
+                      </g>
+                      <!-- chão de carvão com rachaduras incandescentes -->
+                      <g class="ch-plano" style="--prof:3">
+                        <ellipse cx="130" cy="168" rx="70" ry="10" fill="#ff7a2a" opacity=".35"/>
+                        <path d="M-20 216 V176 L8 168 L30 174 L52 164 L78 172 L100 164 L118 170 L142 166 L164 172 L188 162 L212 172 L236 166 L280 174 V216 Z" fill="#160506"/>
+                        <g fill="url(#ch-brasa-carvao)">
+                          <path d="M88 176 L100 166 L118 170 L122 182 L104 186 Z"/><path d="M136 168 L160 172 L166 184 L146 188 L132 180 Z"/><path d="M112 184 L128 178 L140 190 L118 194 Z" opacity=".9"/>
+                          <path d="M58 180 L74 172 L84 184 L68 190 Z" opacity=".6"/><path d="M178 176 L194 168 L206 180 L188 188 Z" opacity=".6"/>
+                        </g>
+                        <g fill="none" stroke="#ff8a3d" stroke-linecap="round" stroke-width=".9">
+                          <path d="M20 182 L34 188 L46 184 M210 184 L226 190 L244 184" stroke-opacity=".6"/>
+                          <path d="M0 194 L18 198 M232 196 L256 192" stroke-opacity=".4"/>
+                        </g>
+                      </g>
+                      <!-- fagulhas subindo -->
+                      <g class="ch-plano" style="--prof:3.8"><circle cx="20.1" cy="65" r="1.3" fill="#ff9a4a" opacity="0.96"/><rect x="202.4" y="132.7" width="1.9" height="1.9" transform="rotate(45 203.4 133.7)" fill="#ffd38a" opacity="0.71"/><circle cx="62.2" cy="113.7" r="1.2" fill="#ff9a4a" opacity="0.47"/><circle cx="54.7" cy="28.2" r="0.7" fill="#ff9a4a" opacity="0.89"/><rect class="ch-cintila" style="--d:1.9s" x="31.5" y="117.5" width="1.6" height="1.6" transform="rotate(45 32.3 118.3)" fill="#ff9a4a" opacity="0.73"/><rect x="225.3" y="6.8" width="2.3" height="2.3" transform="rotate(45 226.4 7.9)" fill="#ffd38a" opacity="0.81"/><rect x="213.6" y="111.2" width="3.3" height="3.3" transform="rotate(45 215.3 112.8)" fill="#ffd38a" opacity="0.95"/><circle class="ch-cintila" style="--d:1.8s" cx="113.8" cy="94.1" r="2.1" fill="#ff9a4a" opacity="0.88"/><rect x="80.4" y="77.8" width="1.3" height="1.3" transform="rotate(45 81.1 78.5)" fill="#ffd38a" opacity="0.73"/><circle cx="75.7" cy="142.8" r="1.7" fill="#ffd38a" opacity="0.85"/><rect class="ch-cintila" style="--d:1.5s" x="97.4" y="74.1" width="3.8" height="3.8" transform="rotate(45 99.3 76)" fill="#ffd38a" opacity="0.79"/><rect class="ch-cintila" style="--d:1.5s" x="225.8" y="25.9" width="2.3" height="2.3" transform="rotate(45 226.9 27)" fill="#ff9a4a" opacity="0.87"/><rect x="234.1" y="69.7" width="2" height="2" transform="rotate(45 235.1 70.7)" fill="#ffd38a" opacity="0.62"/><rect class="ch-cintila" style="--d:0.1s" x="169.3" y="138.9" width="2.8" height="2.8" transform="rotate(45 170.8 140.3)" fill="#ffd38a" opacity="0.89"/><circle cx="88.5" cy="51.4" r="1.3" fill="#ffd38a" opacity="0.66"/><circle cx="57.4" cy="108" r="1.5" fill="#ff9a4a" opacity="0.73"/><rect x="177.9" y="50.4" width="2.2" height="2.2" transform="rotate(45 179 51.5)" fill="#ffd38a" opacity="0.99"/><rect x="41.4" y="20.4" width="2" height="2" transform="rotate(45 42.4 21.4)" fill="#ffd38a" opacity="0.68"/><circle cx="181.6" cy="30.6" r="2" fill="#ff9a4a" opacity="0.43"/><rect class="ch-cintila" style="--d:2.0s" x="35.7" y="105.6" width="1.4" height="1.4" transform="rotate(45 36.4 106.3)" fill="#ffd38a" opacity="0.88"/><rect class="ch-cintila" style="--d:0.1s" x="198.2" y="29.2" width="1.9" height="1.9" transform="rotate(45 199.2 30.1)" fill="#ffd38a" opacity="0.60"/><circle cx="39.6" cy="126" r="0.7" fill="#ffd38a" opacity="0.50"/><circle class="ch-cintila" style="--d:2.4s" cx="137.4" cy="150.3" r="1.3" fill="#ffd38a" opacity="0.91"/><circle cx="201" cy="62.8" r="0.9" fill="#ff9a4a" opacity="0.99"/><circle cx="102.6" cy="86.9" r="0.7" fill="#ffd38a" opacity="0.50"/><rect x="62" y="111.9" width="3.4" height="3.4" transform="rotate(45 63.7 113.6)" fill="#ffd38a" opacity="0.65"/><circle cx="90.8" cy="117.6" r="1.6" fill="#ff9a4a" opacity="0.40"/><rect class="ch-cintila" style="--d:2.0s" x="226" y="6.6" width="2.6" height="2.6" transform="rotate(45 227.3 7.9)" fill="#ffd38a" opacity="0.95"/><circle class="ch-cintila" style="--d:2.4s" cx="209.6" cy="11.2" r="0.6" fill="#ff9a4a" opacity="0.42"/><rect x="221.5" y="101.1" width="1.7" height="1.7" transform="rotate(45 222.3 102)" fill="#ff9a4a" opacity="0.89"/><rect x="89.7" y="82.3" width="4.7" height="4.7" transform="rotate(45 92 84.7)" fill="#ffd38a" opacity="0.69"/><rect x="231.1" y="32.2" width="2.1" height="2.1" transform="rotate(45 232.1 33.3)" fill="#ffd38a" opacity="0.85"/><rect class="ch-cintila" style="--d:2.4s" x="119.7" y="88.2" width="4.8" height="4.8" transform="rotate(45 122.1 90.6)" fill="#ffd38a" opacity="0.51"/><rect x="55.3" y="15.1" width="3.6" height="3.6" transform="rotate(45 57.1 16.9)" fill="#ff9a4a" opacity="0.93"/></g>
+                    </svg>
+                  </div>
+
+                  <p class="ch-tipo"><span>◆ Fogo contido</span><span>Lendário</span></p>
+                  <p class="ch-texto">Parece apagada até alguém soprar. Depois disso, ninguém segura.</p>
+                  <footer class="ch-rodape"><span>CH·01</span><span>Dourado</span><span>003/003</span></footer>
+                </div>
+                <div class="ch-foil" aria-hidden="true"></div>
+                <div class="ch-glare" aria-hidden="true"></div>
+              </div>
+
+              <div class="ch-face ch-face--verso" aria-hidden="true">
+                <div class="ch-face__conteudo">
+                  <header class="ch-topo">
+                    <h3 class="ch-nome">Brasa</h3>
+                    <span class="ch-num">#003</span>
+                  </header>
+                  <div class="ch-emblema" aria-hidden="true">
+                    <svg viewBox="0 0 120 120">
+                      <path d="M60 14 L100 37 L100 83 L60 106 L20 83 L20 37 Z" fill="none" stroke="currentColor" stroke-opacity=".35"/>
+                      <path d="M60 30 C66 46 80 54 79 72 C78 86 70 94 60 94 C50 94 41 86 41 72 C41 58 52 52 54 40 C58 48 58 50 60 30 Z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <ul class="ch-stats">
+                    <li class="ch-stat" style="--valor: 99"><span class="ch-stat__nome">Calor</span><span class="ch-stat__valor">99</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 84"><span class="ch-stat__nome">Ataque</span><span class="ch-stat__valor">84</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 58"><span class="ch-stat__nome">Controle</span><span class="ch-stat__valor">58</span><span class="ch-stat__barra"></span></li>
+                    <li class="ch-stat" style="--valor: 73"><span class="ch-stat__nome">Faísca</span><span class="ch-stat__valor">73</span><span class="ch-stat__barra"></span></li>
+                  </ul>
+                  <dl class="ch-ficha">
+                    <div><dt>Elemento</dt><dd>Fogo</dd></div>
+                    <div><dt>Foil</dt><dd>Dourado</dd></div>
+                    <div><dt>Pico</dt><dd>1.200 °C</dd></div>
+                  </dl>
+                </div>
+                <div class="ch-foil" aria-hidden="true"></div>
+                <div class="ch-glare" aria-hidden="true"></div>
+              </div>
+
+            </div>
+          </div>
+          <button class="ch-carta__virar" type="button" aria-pressed="false" aria-label="Virar a carta Brasa"></button>
+        </article>
+        <div class="ch-sombra" aria-hidden="true"></div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================
+         LEGENDA
+         ========================================================= -->
+    <footer class="ch-legenda">
+      <ul class="ch-legenda__foils" aria-label="Acabamentos de foil">
+        <li><span class="ch-amostra ch-amostra--arco" aria-hidden="true"></span>Arco-íris</li>
+        <li><span class="ch-amostra ch-amostra--prata" aria-hidden="true"></span>Prata</li>
+        <li><span class="ch-amostra ch-amostra--dourado" aria-hidden="true"></span>Dourado</li>
+      </ul>
+      <p class="ch-legenda__dica"><kbd>Tab</kbd> navega · <kbd>Enter</kbd> vira a carta</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Navegação Fluida — 6 componentes de navegação</title>
+  <meta name="description" content="Seis componentes de navegação com movimento: abas com mola, pílula gooey, dock com magnificação, barra inferior com recorte, navbar que encolhe e menu em tela cheia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <!-- RETRATOS: retratos ilustrados em SVG (#retrato-bia, #retrato-caio, #retrato-lia).
+       Use com <svg class="..." aria-hidden="true"><use href="#retrato-ana"/></svg>.
+       Cores por variável CSS: --retrato-fundo, --retrato-aro, --retrato-luz, --retrato-roupa-<nome>.
+       Para trocar por foto real, veja "Retratos" no LEIAME.md. -->
+  <svg class="retratos-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="rt-disco"><circle cx="60" cy="60" r="60"/></clipPath>
+      <path id="rt-rosto" d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/>
+      <clipPath id="rt-clip-rosto"><path d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-fora-rosto"><path clip-rule="evenodd" d="M0 0H120V120H0ZM60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-clip-torso"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></clipPath>
+      <radialGradient id="rt-luz-fundo" cx=".32" cy=".26" r=".85"><stop offset="0" stop-color="#fff" style="stop-opacity:var(--retrato-luz, .38)"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></radialGradient>
+      <linearGradient id="rt-sombra-corpo" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+      <linearGradient id="rt-sombra-pescoco" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".5" stop-color="#000" stop-opacity=".06"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
+      <linearGradient id="rt-sombra-gola" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".25"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+      <linearGradient id="rt-aro-grad" gradientUnits="userSpaceOnUse" x1="62" y1="40" x2="86" y2="54"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <mask id="rt-aro" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-grad)"/></mask>
+      <radialGradient id="rt-aro-cabeca-grad" gradientUnits="userSpaceOnUse" cx="94" cy="26" r="46"><stop offset=".25" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+      <mask id="rt-aro-cabeca" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-cabeca-grad)"/></mask>
+      <linearGradient id="rt-pele-bia" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#a06646"/><stop offset=".38" stop-color="#c88d64"/><stop offset="1" stop-color="#e0ab84"/></linearGradient>
+      <linearGradient id="rt-cabelo-bia" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4e2a1b"/><stop offset=".6" stop-color="#4e2a1b"/><stop offset="1" stop-color="#a5633b"/></linearGradient>
+      <radialGradient id="rt-volume-bia" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#a5633b"/><stop offset=".6" stop-color="#4e2a1b"/><stop offset="1" stop-color="#4e2a1b"/></radialGradient>
+      <linearGradient id="rt-pele-caio" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#3e261a"/><stop offset=".38" stop-color="#5e3b29"/><stop offset="1" stop-color="#80563d"/></linearGradient>
+      <linearGradient id="rt-cabelo-caio" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#161010"/><stop offset=".6" stop-color="#161010"/><stop offset="1" stop-color="#3a2a24"/></linearGradient>
+      <radialGradient id="rt-volume-caio" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#3a2a24"/><stop offset=".6" stop-color="#161010"/><stop offset="1" stop-color="#161010"/></radialGradient>
+      <linearGradient id="rt-pele-lia" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#d1a27f"/><stop offset=".38" stop-color="#f0caa5"/><stop offset="1" stop-color="#f9e0c6"/></linearGradient>
+      <linearGradient id="rt-cabelo-lia" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#15141a"/><stop offset=".6" stop-color="#15141a"/><stop offset="1" stop-color="#454b63"/></linearGradient>
+      <radialGradient id="rt-volume-lia" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#454b63"/><stop offset=".6" stop-color="#15141a"/><stop offset="1" stop-color="#15141a"/></radialGradient>
+      <clipPath id="rt-clip-cabelo-lia"><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z"/></clipPath>
+    </defs>
+    <symbol id="retrato-bia" viewBox="0 0 120 120"><!-- Bia — cabelo cacheado volumoso --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><g fill="url(#rt-volume-bia)"><circle cx="33.2" cy="65.5" r="11.5"/><circle cx="29.9" cy="57.5" r="11.5"/><circle cx="29.0" cy="48.9" r="11.5"/><circle cx="30.5" cy="40.4" r="11.5"/><circle cx="34.3" cy="32.7" r="11.5"/><circle cx="40.1" cy="26.3" r="11.5"/><circle cx="47.4" cy="21.7" r="11.5"/><circle cx="55.7" cy="19.3" r="11.5"/><circle cx="64.3" cy="19.3" r="11.5"/><circle cx="72.6" cy="21.7" r="11.5"/><circle cx="79.9" cy="26.3" r="11.5"/><circle cx="85.7" cy="32.7" r="11.5"/><circle cx="89.5" cy="40.4" r="11.5"/><circle cx="91.0" cy="48.9" r="11.5"/><circle cx="90.1" cy="57.5" r="11.5"/><circle cx="86.8" cy="65.5" r="11.5"/><circle cx="60" cy="50" r="31"/><circle cx="30.5" cy="78.8" r="9"/><circle cx="32.5" cy="69.7" r="9"/><circle cx="43.5" cy="62.6" r="9"/><circle cx="60.0" cy="60.0" r="9"/><circle cx="76.5" cy="62.6" r="9"/><circle cx="87.5" cy="69.7" r="9"/><circle cx="89.5" cy="78.8" r="9"/></g><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#a06646"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-bia, #dfa43a)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M45.5 88.8Q60 104 74.5 88.8Q60 98.5 45.5 88.8Z" fill="url(#rt-pele-bia)"/><path d="M45.5 88.8Q60 104 74.5 88.8" fill="none" stroke="#000" stroke-opacity=".2" stroke-width="2.2"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#a06646"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#e0ab84"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-bia)"/><circle cx="47.5" cy="65" r="5" fill="#d0705a" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#d0705a" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#a06646" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#9a4a3e"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#4e2a1b" stroke-width="2.4" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)" transform="translate(-.6 2.8)" opacity=".16"><g fill="#000"><circle cx="38.3" cy="44.0" r="7.2"/><circle cx="42.4" cy="36.8" r="7.2"/><circle cx="50.1" cy="31.8" r="7.2"/><circle cx="60.0" cy="30.0" r="7.2"/><circle cx="69.9" cy="31.8" r="7.2"/><circle cx="77.6" cy="36.8" r="7.2"/><circle cx="81.7" cy="44.0" r="7.2"/></g></g><g fill="#4e2a1b"><circle cx="38.3" cy="44.0" r="7.2"/><circle cx="42.4" cy="36.8" r="7.2"/><circle cx="50.1" cy="31.8" r="7.2"/><circle cx="60.0" cy="30.0" r="7.2"/><circle cx="69.9" cy="31.8" r="7.2"/><circle cx="77.6" cy="36.8" r="7.2"/><circle cx="81.7" cy="44.0" r="7.2"/></g><g fill="none" stroke="#a5633b" stroke-width="2" stroke-linecap="round" stroke-opacity=".85"><path d="M70 24q4 1 4 5M80 34q4 2 3 6M45 25q-4 2-4 6M86 54q2 3 0 6M34 50q-2 3 0 6M66 34q3 1 3 4M53 33q-3 1-3 4M85 72q2 3 0 5M35 70q-2 3 0 5"/></g></g></symbol>
+    <symbol id="retrato-caio" viewBox="0 0 120 120"><!-- Caio — cabeça raspada, barba cheia --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#3e261a"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-caio, #3c679a)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M47 87.5L60 99L52.5 106L43.5 92Z" fill="#fff" fill-opacity=".2"/><path d="M73 87.5L60 99L67.5 106L76.5 92Z" fill="#fff" fill-opacity=".14"/><path d="M47 87.5L60 99L52.5 106L43.5 92Z M73 87.5L60 99L67.5 106L76.5 92Z" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1.4" stroke-linejoin="round"/><path d="M60 99V124" stroke="#000" stroke-opacity=".22" stroke-width="1.6"/><circle cx="62.6" cy="108" r="1.3" fill="#fff" fill-opacity=".55"/><circle cx="62.6" cy="117" r="1.3" fill="#fff" fill-opacity=".55"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#3e261a"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#80563d"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-caio)"/><circle cx="47.5" cy="65" r="5" fill="#8a4434" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#8a4434" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><ellipse cx="67" cy="33.5" rx="8" ry="3.6" transform="rotate(18 67 33.5)" fill="#fff" fill-opacity=".16"/><path d="M38.6 54C39.5 67 45 79.5 60 83.5C75 79.5 80.5 67 81.4 54C79.5 60.5 77 64.5 73 66.8C69 65 64.5 64.4 60 64.8C55.5 64.4 51 65 47 66.8C43 64.5 40.5 60.5 38.6 54Z" fill="#161010"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#3e261a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M49.5 68.6C53 64.8 57.5 64.6 60 66.6C62.5 64.6 67 64.8 70.5 68.6C66.6 68.4 63 67.9 60 68.6C57 67.9 53.4 68.4 49.5 68.6Z" fill="#161010"/><path d="M55.2 70.8Q60 72.4 64.8 70.8Q63.2 74.8 60 74.8Q56.8 74.8 55.2 70.8Z" fill="#7a3f33"/><path d="M54 70.4Q60 72.6 66 70.4" fill="none" stroke="#000" stroke-opacity=".28" stroke-width="1.1" stroke-linecap="round"/><ellipse cx="61.4" cy="73" rx="2" ry=".9" fill="#fff" fill-opacity=".18"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#1a1210" stroke-width="2.8" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g></g></symbol>
+    <symbol id="retrato-lia" viewBox="0 0 120 120"><!-- Lia — cabelo preto preso em coque --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><circle cx="60" cy="15.5" r="11.5" fill="url(#rt-cabelo-lia)"/><path d="M53 11.5Q58 6.5 65 9" fill="none" stroke="#454b63" stroke-width="2.2" stroke-linecap="round" stroke-opacity=".9"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#d1a27f"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-lia, #24272f)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M46 88.6Q60 97 74 88.6L72 124H48Z" fill="#f2efe8"/><path d="M46.5 89Q60 97.5 73.5 89" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2"/><path d="M44 90.5L54 124H38L33 97Z" style="fill:var(--retrato-roupa-lia, #24272f)"/><path d="M76 90.5L66 124H82L87 97Z" style="fill:var(--retrato-roupa-lia, #24272f)"/><path d="M44 90.5L54 124 M76 90.5L66 124" stroke="#fff" stroke-opacity=".18" stroke-width="1.4"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#d1a27f"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#f9e0c6"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-lia)"/><circle cx="47.5" cy="65" r="5" fill="#ef8a7c" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#ef8a7c" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#d1a27f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#c95a5c"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="56.2" rx="3.2" ry="2.6" fill="#1d1412"/><circle cx="51.5" cy="55.2" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="56.2" rx="3.2" ry="2.6" fill="#1d1412"/><circle cx="70.5" cy="55.2" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#15141a" stroke-width="2.3" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)"><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z" transform="translate(-.6 2.8)" fill="#000" fill-opacity=".16"/></g><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z" fill="url(#rt-volume-lia)"/><path d="M48.6 31.6Q53.6 27.4 58.4 27M71.4 31.6Q66.4 27.4 61.6 27" fill="none" stroke="#454b63" stroke-width="2.6" stroke-linecap="round" stroke-opacity=".8"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-fora-rosto)"><g clip-path="url(#rt-clip-cabelo-lia)"><path d="M37.6 53C36.4 33.5 46 23.5 60 23.5C74 23.5 83.6 33.5 82.4 53C81 45 77.5 39 71.5 35.6C67.5 33.6 63 33.6 60 36.2C57 33.6 52.5 33.6 48.5 35.6C42.5 39 39 45 37.6 53Z"/></g></g></g><circle cx="38.4" cy="63.6" r="2.2" fill="#e9b949"/><circle cx="81.6" cy="63.6" r="2.2" fill="#f4cd63"/></g></symbol>
+  </svg>
+  <!-- /RETRATOS -->
+  <div class="nf-pagina">
+
+    <!-- ========== Cabeçalho da galeria ========== -->
+    <header class="nf-topo">
+      <div class="nf-topo__marca">
+        <span class="nf-topo__logo" aria-hidden="true"><span></span><span></span><span></span></span>
+        <div>
+          <h1 class="nf-topo__titulo">Navegação Fluida</h1>
+          <p class="nf-topo__sub">6 componentes de navegação com movimento de verdade — HTML, CSS e JS puros.</p>
+        </div>
+      </div>
+      <ul class="nf-topo__selos" aria-label="Recursos">
+        <li>Teclado</li>
+        <li>Toque</li>
+        <li>Reduced motion</li>
+        <li>Zero dependências</li>
+      </ul>
+    </header>
+
+    <main class="nf-galeria">
+
+      <!-- ========== 01 · Abas com indicador deslizante ========== -->
+      <article class="nf-palco" aria-labelledby="nf-nome-1">
+        <header class="nf-palco__cab">
+          <span class="nf-palco__num">01</span>
+          <div class="nf-palco__titulos">
+            <h2 class="nf-palco__nome" id="nf-nome-1">Abas com mola</h2>
+            <p class="nf-palco__dica">Indicador que estica · use ← →</p>
+          </div>
+          <button class="nf-copiar" type="button" data-copiar="nf-area-1">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span>Copiar HTML</span>
+          </button>
+        </header>
+        <div class="nf-palco__area" id="nf-area-1">
+          <div class="nf-abas" data-nf="abas">
+            <div class="nf-abas__lista" role="tablist" aria-label="Seções do projeto" data-direcao="direita">
+              <span class="nf-abas__indicador" aria-hidden="true"></span>
+              <button class="nf-abas__aba" type="button" role="tab" id="nf-aba-1" aria-selected="true" aria-controls="nf-painel-1" tabindex="0">Visão geral</button>
+              <button class="nf-abas__aba" type="button" role="tab" id="nf-aba-2" aria-selected="false" aria-controls="nf-painel-2" tabindex="-1">Atividade</button>
+              <button class="nf-abas__aba" type="button" role="tab" id="nf-aba-3" aria-selected="false" aria-controls="nf-painel-3" tabindex="-1">Equipe</button>
+              <button class="nf-abas__aba" type="button" role="tab" id="nf-aba-4" aria-selected="false" aria-controls="nf-painel-4" tabindex="-1">Ajustes</button>
+            </div>
+            <div class="nf-abas__paineis">
+              <div class="nf-abas__painel" role="tabpanel" id="nf-painel-1" aria-labelledby="nf-aba-1" tabindex="0">
+                <div class="nf-abas__stats">
+                  <div><span>Receita</span><strong>R$ 48,2k</strong><em class="is-sobe">+12,4%</em></div>
+                  <div><span>Pedidos</span><strong>1.284</strong><em class="is-sobe">+8,1%</em></div>
+                  <div><span>Conversão</span><strong>3,9%</strong><em class="is-desce">−0,2</em></div>
+                </div>
+              </div>
+              <div class="nf-abas__painel" role="tabpanel" id="nf-painel-2" aria-labelledby="nf-aba-2" tabindex="0" hidden>
+                <ul class="nf-abas__feed">
+                  <li><i></i><span>Marina publicou a versão 2.4</span><time>3 min</time></li>
+                  <li><i></i><span>Deploy concluído em produção</span><time>18 min</time></li>
+                  <li><i></i><span>Novo comentário em Checkout</span><time>1 h</time></li>
+                </ul>
+              </div>
+              <div class="nf-abas__painel" role="tabpanel" id="nf-painel-3" aria-labelledby="nf-aba-3" tabindex="0" hidden>
+                <div class="nf-abas__equipe">
+                  <!-- Retratos ilustrados (bloco RETRATOS no topo do <body>). Foto real: troque o <svg> por
+                       <img src="img/foto.jpg" alt="" width="36" height="36">. Sem imagem: volte às iniciais, <span>MA</span>. -->
+                  <div class="nf-abas__avatares" aria-hidden="true"><span><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-bia"/></svg></span><span><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-caio"/></svg></span><span><svg viewBox="0 0 120 120" focusable="false"><use href="#retrato-lia"/></svg></span><span>+4</span></div>
+                  <p><strong>7 pessoas</strong> trabalham neste projeto.</p>
+                  <button class="nf-abas__convite" type="button">Convidar</button>
+                </div>
+              </div>
+              <div class="nf-abas__painel" role="tabpanel" id="nf-painel-4" aria-labelledby="nf-aba-4" tabindex="0" hidden>
+                <div class="nf-abas__ajuste">
+                  <span id="nf-chave-1">Avisos por e-mail</span>
+                  <button class="nf-abas__chave" type="button" role="switch" aria-checked="true" aria-labelledby="nf-chave-1"></button>
+                </div>
+                <div class="nf-abas__ajuste">
+                  <span id="nf-chave-2">Modo foco</span>
+                  <button class="nf-abas__chave" type="button" role="switch" aria-checked="false" aria-labelledby="nf-chave-2"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 02 · Pílula gooey ========== -->
+      <article class="nf-palco" aria-labelledby="nf-nome-2">
+        <header class="nf-palco__cab">
+          <span class="nf-palco__num">02</span>
+          <div class="nf-palco__titulos">
+            <h2 class="nf-palco__nome" id="nf-nome-2">Pílula gooey</h2>
+            <p class="nf-palco__dica">A seleção escorre como líquido</p>
+          </div>
+          <button class="nf-copiar" type="button" data-copiar="nf-area-2">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span>Copiar HTML</span>
+          </button>
+        </header>
+        <div class="nf-palco__area" id="nf-area-2">
+          <div class="nf-goo" data-nf="goo">
+            <!-- Filtro "goo": desfoca as gotas e aumenta o contraste do alfa, fundindo-as -->
+            <svg class="nf-goo__svg" aria-hidden="true" focusable="false">
+              <defs>
+                <filter id="nf-filtro-goo">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="borrado"/>
+                  <feColorMatrix in="borrado" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8"/>
+                </filter>
+              </defs>
+            </svg>
+            <div class="nf-goo__pilula" role="tablist" aria-label="Período do relatório">
+              <div class="nf-goo__gotas" aria-hidden="true">
+                <span class="nf-goo__gota"></span><span class="nf-goo__gota"></span><span class="nf-goo__gota"></span>
+              </div>
+              <button class="nf-goo__opcao" type="button" role="tab" id="nf-goo-1" aria-selected="false" aria-controls="nf-goo-painel" tabindex="-1" data-valores="30,52,41,66,48,74,58" data-total="312 visitas">Dia</button>
+              <button class="nf-goo__opcao" type="button" role="tab" id="nf-goo-2" aria-selected="true" aria-controls="nf-goo-painel" tabindex="0" data-valores="44,61,38,82,70,93,64" data-total="2.148 visitas">Semana</button>
+              <button class="nf-goo__opcao" type="button" role="tab" id="nf-goo-3" aria-selected="false" aria-controls="nf-goo-painel" tabindex="-1" data-valores="62,48,77,58,88,72,96" data-total="9.870 visitas">Mês</button>
+              <button class="nf-goo__opcao" type="button" role="tab" id="nf-goo-4" aria-selected="false" aria-controls="nf-goo-painel" tabindex="-1" data-valores="35,58,70,64,82,90,100" data-total="118 mil visitas">Ano</button>
+            </div>
+            <div class="nf-goo__painel" role="tabpanel" id="nf-goo-painel" aria-labelledby="nf-goo-2" tabindex="0">
+              <div class="nf-goo__resumo">
+                <span>Visitas no período</span>
+                <strong class="nf-goo__total" aria-live="polite">2.148 visitas</strong>
+              </div>
+              <div class="nf-goo__barras" aria-hidden="true">
+                <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 03 · Dock com magnificação ========== -->
+      <article class="nf-palco" aria-labelledby="nf-nome-3">
+        <header class="nf-palco__cab">
+          <span class="nf-palco__num">03</span>
+          <div class="nf-palco__titulos">
+            <h2 class="nf-palco__nome" id="nf-nome-3">Dock com magnificação</h2>
+            <p class="nf-palco__dica">Passe o ponteiro ou arraste o dedo</p>
+          </div>
+          <button class="nf-copiar" type="button" data-copiar="nf-area-3">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span>Copiar HTML</span>
+          </button>
+        </header>
+        <div class="nf-palco__area" id="nf-area-3">
+          <div class="nf-dock" data-nf="dock">
+            <div class="nf-dock__tela" aria-hidden="true">
+              <span class="nf-dock__hora">09:41</span>
+              <span class="nf-dock__data">quinta-feira, 29 de outubro</span>
+            </div>
+            <div class="nf-dock__barra" role="toolbar" aria-label="Aplicativos">
+              <button class="nf-dock__app" type="button" aria-label="Início" aria-pressed="true" tabindex="0">
+                <span class="nf-dock__icone nf-dock__icone--sol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z"/></svg></span>
+                <span class="nf-dock__tip" aria-hidden="true">Início</span><span class="nf-dock__ponto" aria-hidden="true"></span>
+              </button>
+              <button class="nf-dock__app" type="button" aria-label="Arquivos" aria-pressed="false" tabindex="-1">
+                <span class="nf-dock__icone nf-dock__icone--azul"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 10.5h17"/></svg></span>
+                <span class="nf-dock__tip" aria-hidden="true">Arquivos</span><span class="nf-dock__ponto" aria-hidden="true"></span>
+              </button>
+              <button class="nf-dock__app" type="button" aria-label="Mensagens" aria-pressed="true" tabindex="-1">
+                <span class="nf-dock__icone nf-dock__icone--verde"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5h-9l-4.5 3.5v-3.5H5A1.5 1.5 0 0 1 3.5 15V7A1.5 1.5 0 0 1 5 5.5z"/><path d="M8 10h8M8 13h5"/></svg></span>
+                <span class="nf-dock__tip" aria-hidden="true">Mensagens</span><span class="nf-dock__ponto" aria-hidden="true"></span>
+              </button>
+              <button class="nf-dock__app" type="button" aria-label="Agenda" aria-pressed="false" tabindex="-1">
+                <span class="nf-dock__icone nf-dock__icone--coral"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M8.5 14h2M13.5 14h2"/></svg></span>
+                <span class="nf-dock__tip" aria-hidden="true">Agenda</span><span class="nf-dock__ponto" aria-hidden="true"></span>
+              </button>
+              <button class="nf-dock__app" type="button" aria-label="Fotos" aria-pressed="false" tabindex="-1">
+                <span class="nf-dock__icone nf-dock__icone--lilas"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m4 17 5-4.5 3.5 3 3-2.5L20 17"/></svg></span>
+                <span class="nf-dock__tip" aria-hidden="true">Fotos</span><span class="nf-dock__ponto" aria-hidden="true"></span>
+              </button>
+              <button class="nf-dock__app" type="button" aria-label="Ajustes" aria-pressed="false" tabindex="-1">
+                <span class="nf-dock__icone nf-dock__icone--grafite"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7h8.5M17 7h2.5M4.5 12h3M12 12h7.5M4.5 17h10M19 17h.5"/><circle cx="15" cy="7" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></svg></span>
+                <span class="nf-dock__tip" aria-hidden="true">Ajustes</span><span class="nf-dock__ponto" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 04 · Barra inferior com recorte ========== -->
+      <article class="nf-palco" aria-labelledby="nf-nome-4">
+        <header class="nf-palco__cab">
+          <span class="nf-palco__num">04</span>
+          <div class="nf-palco__titulos">
+            <h2 class="nf-palco__nome" id="nf-nome-4">Barra com recorte</h2>
+            <p class="nf-palco__dica">O recorte segue o item ativo</p>
+          </div>
+          <button class="nf-copiar" type="button" data-copiar="nf-area-4">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span>Copiar HTML</span>
+          </button>
+        </header>
+        <div class="nf-palco__area" id="nf-area-4">
+          <div class="nf-notch" data-nf="notch">
+            <div class="nf-notch__tela" role="tabpanel" id="nf-notch-painel" aria-labelledby="nf-notch-1" tabindex="0">
+              <span class="nf-notch__rotulo">Seção</span>
+              <strong class="nf-notch__titulo">Início</strong>
+              <p class="nf-notch__texto-tela">Seu resumo do dia está pronto.</p>
+              <div class="nf-notch__cartoes" aria-hidden="true"><i></i><i></i></div>
+            </div>
+            <nav class="nf-notch__barra" aria-label="Navegação do app">
+              <svg class="nf-notch__fundo" aria-hidden="true" focusable="false"><path class="nf-notch__caminho" d=""/></svg>
+              <span class="nf-notch__bolha" aria-hidden="true"></span>
+              <div class="nf-notch__itens" role="tablist" aria-label="Seções do app">
+                <button class="nf-notch__item" type="button" role="tab" id="nf-notch-1" aria-selected="true" aria-controls="nf-notch-painel" tabindex="0" data-texto="Seu resumo do dia está pronto.">
+                  <span class="nf-notch__icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z"/></svg></span>
+                  <span class="nf-notch__texto">Início</span>
+                </button>
+                <button class="nf-notch__item" type="button" role="tab" id="nf-notch-2" aria-selected="false" aria-controls="nf-notch-painel" tabindex="-1" data-texto="Encontre pessoas, temas e lugares.">
+                  <span class="nf-notch__icone"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.2-4.2"/></svg></span>
+                  <span class="nf-notch__texto">Buscar</span>
+                </button>
+                <button class="nf-notch__item" type="button" role="tab" id="nf-notch-3" aria-selected="false" aria-controls="nf-notch-painel" tabindex="-1" data-texto="Comece uma publicação nova.">
+                  <span class="nf-notch__icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+                  <span class="nf-notch__texto">Criar</span>
+                </button>
+                <button class="nf-notch__item" type="button" role="tab" id="nf-notch-4" aria-selected="false" aria-controls="nf-notch-painel" tabindex="-1" data-texto="Você tem 3 avisos não lidos.">
+                  <span class="nf-notch__icone"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/></svg></span>
+                  <span class="nf-notch__texto">Alertas</span>
+                </button>
+                <button class="nf-notch__item" type="button" role="tab" id="nf-notch-5" aria-selected="false" aria-controls="nf-notch-painel" tabindex="-1" data-texto="Edite sua foto, nome e bio.">
+                  <span class="nf-notch__icone"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>
+                  <span class="nf-notch__texto">Perfil</span>
+                </button>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 05 · Navbar que encolhe ao rolar ========== -->
+      <article class="nf-palco" aria-labelledby="nf-nome-5">
+        <header class="nf-palco__cab">
+          <span class="nf-palco__num">05</span>
+          <div class="nf-palco__titulos">
+            <h2 class="nf-palco__nome" id="nf-nome-5">Navbar que vira ilha</h2>
+            <p class="nf-palco__dica">Role dentro do palco</p>
+          </div>
+          <button class="nf-copiar" type="button" data-copiar="nf-area-5">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span>Copiar HTML</span>
+          </button>
+        </header>
+        <div class="nf-palco__area" id="nf-area-5">
+          <div class="nf-encolhe" data-nf="encolhe">
+            <div class="nf-encolhe__tela" tabindex="0" aria-label="Página de exemplo com rolagem">
+              <header class="nf-encolhe__cab">
+                <nav class="nf-encolhe__barra" aria-label="Navegação do site">
+                  <a class="nf-encolhe__marca" href="#">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 21 12 12 21 3 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span>Lume</span>
+                  </a>
+                  <ul class="nf-encolhe__links">
+                    <li><a href="#" aria-current="page">Início</a></li>
+                    <li><a href="#">Recursos</a></li>
+                    <li><a href="#">Preços</a></li>
+                  </ul>
+                  <a class="nf-encolhe__cta" href="#">Começar</a>
+                  <span class="nf-encolhe__progresso" aria-hidden="true"></span>
+                </nav>
+              </header>
+              <div class="nf-encolhe__conteudo">
+                <span class="nf-encolhe__olho">Role aqui dentro ↓</span>
+                <h3>Uma barra que sai do caminho.</h3>
+                <p>Ao rolar, a navegação se transforma em uma ilha compacta que flutua sobre o conteúdo — com progresso de leitura.</p>
+                <div class="nf-encolhe__grade" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <p>Volte ao topo e ela se abre de novo, ocupando toda a largura.</p>
+                <div class="nf-encolhe__grade" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ========== 06 · Menu hambúrguer em tela cheia ========== -->
+      <article class="nf-palco" aria-labelledby="nf-nome-6">
+        <header class="nf-palco__cab">
+          <span class="nf-palco__num">06</span>
+          <div class="nf-palco__titulos">
+            <h2 class="nf-palco__nome" id="nf-nome-6">Menu em tela cheia</h2>
+            <p class="nf-palco__dica">Hambúrguer → X · Esc fecha</p>
+          </div>
+          <button class="nf-copiar" type="button" data-copiar="nf-area-6">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+            <span>Copiar HTML</span>
+          </button>
+        </header>
+        <div class="nf-palco__area" id="nf-area-6">
+          <div class="nf-menu" data-nf="menu">
+            <div class="nf-menu__site">
+              <div class="nf-menu__cab">
+                <span class="nf-menu__marca">Atlas<b>.</b></span>
+                <button class="nf-menu__botao" type="button" aria-expanded="false" aria-controls="nf-menu-overlay" aria-label="Abrir menu">
+                  <span class="nf-menu__linha"></span><span class="nf-menu__linha"></span><span class="nf-menu__linha"></span>
+                </button>
+              </div>
+              <div class="nf-menu__hero">
+                <span class="nf-menu__olho">Estúdio de produto</span>
+                <strong>Design que se move com você.</strong>
+                <i aria-hidden="true"></i><i aria-hidden="true"></i>
+              </div>
+            </div>
+            <nav class="nf-menu__overlay" id="nf-menu-overlay" aria-label="Menu principal" inert>
+              <ol class="nf-menu__links">
+                <li style="--i:0"><a href="#"><span>01</span>Trabalhos</a></li>
+                <li style="--i:1"><a href="#"><span>02</span>Estúdio</a></li>
+                <li style="--i:2"><a href="#"><span>03</span>Serviços</a></li>
+                <li style="--i:3"><a href="#"><span>04</span>Diário</a></li>
+                <li style="--i:4"><a href="#"><span>05</span>Contato</a></li>
+              </ol>
+              <p class="nf-menu__rodape"><a href="#">ola@atlas.studio</a><span>São Paulo · Lisboa</span></p>
+            </nav>
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <footer class="nf-rodape">
+      <p>Navegação Fluida · v1.1.0 · Clique em <strong>Copiar HTML</strong> em qualquer palco e cole no seu projeto junto com o CSS e o JS do componente (e o bloco RETRATOS, se usar os retratos).</p>
+    </footer>
+  </div>
+
+  <!-- Aviso de cópia -->
+  <div class="nf-toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

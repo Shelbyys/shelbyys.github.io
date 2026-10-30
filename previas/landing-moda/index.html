@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier Norte — Coleção Barro &amp; Linho</title>
+  <meta name="description" content="Atelier Norte apresenta Barro & Linho: peças em linho, algodão orgânico e tricô, feitas no Brasil em pequenos lotes.">
+  <meta name="theme-color" content="#f5f2ec">
+  <!-- Fontes: Syne (títulos) + Inter (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700;800&display=swap">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <!-- Ícones reutilizáveis -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-sacola" viewBox="0 0 24 24"><path d="M5 8h14l-1 12.5H6L5 8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-seta" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-esq" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dir" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-olho" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-lixo" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-folha" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14m0 0 7-7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mapa" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="i-agulha" viewBox="0 0 24 24"><path d="M4 20 18.5 5.5a2 2 0 0 1 2.8 2.8L6.8 22.8M15 9l1.8 1.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M3 13c3-1 5 1 8-1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-troca" viewBox="0 0 24 24"><path d="M4 9h13l-3.5-3.5M20 15H7l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-ok" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-2.2 11.6L8.5 21l3.5-3 3.5 3-1.3-6.4A6 6 0 0 0 12 3Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-estrela" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  </svg>
+
+  <a class="lm-pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- ============ CABEÇALHO ============ -->
+  <header class="lm-topo" id="topo">
+    <div class="lm-topo__in">
+      <a class="lm-logo" href="#inicio" aria-label="Atelier Norte — início">Atelier<span>Norte</span></a>
+      <nav class="lm-nav" aria-label="Principal">
+        <ul>
+          <li><a href="#colecao">Coleção</a></li>
+          <li><a href="#lookbook">Lookbook</a></li>
+          <li><a href="#manifesto">Manifesto</a></li>
+          <li><a href="#lista">Lista do drop</a></li>
+        </ul>
+      </nav>
+      <button class="lm-sacola-btn" type="button" aria-controls="sacola" aria-expanded="false" data-abrir-sacola>
+        <svg aria-hidden="true"><use href="#i-sacola"/></svg>
+        <span class="lm-sacola-btn__txt">Sacola</span>
+        <span class="lm-sacola-btn__conta" data-contador aria-hidden="true">0</span>
+        <span class="lm-sr" data-contador-sr>Sacola vazia</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <!-- ============ HERO EDITORIAL ============ -->
+    <section class="lm-hero" id="inicio" aria-labelledby="hero-titulo">
+      <div class="lm-hero__grade">
+        <div class="lm-hero__texto">
+          <p class="lm-rotulo lm-entra" style="--atraso:.05s"><span>Coleção 04</span> Outono · Inverno 2026</p>
+          <h1 class="lm-hero__titulo lm-entra" id="hero-titulo" style="--atraso:.1s">
+            <span class="lm-hero__linha">Barro</span>
+            <span class="lm-hero__linha lm-hero__linha--recuo">&amp; Linho</span>
+          </h1>
+          <p class="lm-hero__lead lm-entra" style="--atraso:.2s">Doze peças em linho, algodão orgânico e tricô de lã brasileira. Tons de terra, cortes amplos e costura feita à mão em pequenos lotes.</p>
+
+          <div class="lm-drop lm-entra" style="--atraso:.28s" data-drop>
+            <p class="lm-drop__titulo" data-drop-titulo>O drop abre em</p>
+            <div class="lm-contagem" role="timer" aria-live="off" aria-atomic="true" data-contagem>
+              <div><span data-unidade="dias">00</span><small>dias</small></div>
+              <div><span data-unidade="horas">00</span><small>horas</small></div>
+              <div><span data-unidade="min">00</span><small>min</small></div>
+              <div><span data-unidade="seg">00</span><small>seg</small></div>
+            </div>
+            <p class="lm-sr" data-contagem-sr></p>
+          </div>
+
+          <div class="lm-hero__acoes lm-entra" style="--atraso:.34s">
+            <a class="lm-btn lm-btn--tinta" href="#lista" data-cta-drop>Entrar na lista do drop <svg aria-hidden="true"><use href="#i-seta"/></svg></a>
+            <a class="lm-btn lm-btn--linha" href="#colecao">Ver as peças</a>
+          </div>
+        </div>
+
+        <div class="lm-hero__midia">
+          <figure class="lm-hero__foto lm-entra-foto">
+            <img src="img/hero.jpg" width="1200" height="1600" alt="Modelo de suéter de tricô terracota e calça pantalona preta diante de um arco cor de barro" fetchpriority="high">
+          </figure>
+          <figure class="lm-hero__mini lm-entra" style="--atraso:.45s">
+            <div class="lm-hero__mini-foto"><img src="img/look-2.jpg" width="1067" height="1600" alt="Detalhe do look com vestido midi oliva, faixa amarrada e bolsa tote de couro no ombro"></div>
+            <figcaption>Vestido Midi Oliva</figcaption>
+          </figure>
+          <p class="lm-hero__vertical" aria-hidden="true">Atelier Norte — feito no Brasil — 2026</p>
+          <span class="lm-hero__selo lm-entra" style="--atraso:.5s" aria-hidden="true">
+            <svg viewBox="0 0 120 120"><defs><path id="circulo" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"/></defs><text textLength="270" lengthAdjust="spacing"><textPath href="#circulo" textLength="270" lengthAdjust="spacing">feito à mão · pequenos lotes ·</textPath></text></svg>
+            <b>12</b>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAIXA DE ANÚNCIOS (marquee) ============ -->
+    <section class="lm-faixa" aria-label="Vantagens">
+      <div class="lm-faixa__trilho">
+        <ul class="lm-faixa__grupo">
+          <li>Frete grátis acima de R$ 299</li>
+          <li>Troca fácil em 30 dias</li>
+          <li>Parcele em até 6× sem juros</li>
+          <li>Feito no Brasil</li>
+          <li>Algodão orgânico certificado</li>
+        </ul>
+        <ul class="lm-faixa__grupo" aria-hidden="true">
+          <li>Frete grátis acima de R$ 299</li>
+          <li>Troca fácil em 30 dias</li>
+          <li>Parcele em até 6× sem juros</li>
+          <li>Feito no Brasil</li>
+          <li>Algodão orgânico certificado</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ PRODUTOS ============ -->
+    <section class="lm-secao lm-colecao" id="colecao" aria-labelledby="colecao-titulo">
+      <div class="lm-container">
+        <div class="lm-cabeca lm-revela">
+          <div>
+            <p class="lm-rotulo"><span>01</span> A coleção</p>
+            <h2 class="lm-titulo" id="colecao-titulo">Peças para durar <em>muitas estações</em></h2>
+          </div>
+          <p class="lm-cabeca__texto">Pré-venda com entrega a partir do drop. Passe o mouse para ver a peça vestida ou em detalhe.</p>
+        </div>
+
+        <div class="lm-ferramentas lm-revela">
+          <div class="lm-filtros" role="group" aria-label="Filtrar por categoria" data-filtros>
+            <button type="button" class="lm-chip-filtro" data-categoria="todos" aria-pressed="true">Tudo</button>
+            <button type="button" class="lm-chip-filtro" data-categoria="casacos" aria-pressed="false">Casacos</button>
+            <button type="button" class="lm-chip-filtro" data-categoria="cima" aria-pressed="false">Blusas</button>
+            <button type="button" class="lm-chip-filtro" data-categoria="baixo" aria-pressed="false">Calças e saias</button>
+            <button type="button" class="lm-chip-filtro" data-categoria="vestidos" aria-pressed="false">Vestidos</button>
+            <button type="button" class="lm-chip-filtro" data-categoria="acessorios" aria-pressed="false">Acessórios</button>
+          </div>
+          <div class="lm-ordenar">
+            <label for="ordenar">Ordenar</label>
+            <select id="ordenar" data-ordenar>
+              <option value="destaque">Destaques</option>
+              <option value="menor">Menor preço</option>
+              <option value="maior">Maior preço</option>
+            </select>
+          </div>
+        </div>
+        <p class="lm-sr" aria-live="polite" data-grade-aviso></p>
+
+        <!-- Os cartões são gerados pelo script.js a partir da lista PRODUTOS -->
+        <ul class="lm-grade" data-grade></ul>
+      </div>
+    </section>
+
+    <!-- ============ LOOKBOOK ============ -->
+    <section class="lm-secao lm-lookbook" id="lookbook" aria-labelledby="lookbook-titulo">
+      <div class="lm-container lm-cabeca lm-revela">
+        <div>
+          <p class="lm-rotulo"><span>02</span> Lookbook</p>
+          <h2 class="lm-titulo" id="lookbook-titulo">Quatro jeitos de <em>vestir o barro</em></h2>
+        </div>
+        <div class="lm-lookbook__nav">
+          <button class="lm-icone-btn" type="button" data-look-ant aria-label="Looks anteriores"><svg aria-hidden="true"><use href="#i-esq"/></svg></button>
+          <button class="lm-icone-btn" type="button" data-look-prox aria-label="Próximos looks"><svg aria-hidden="true"><use href="#i-dir"/></svg></button>
+        </div>
+      </div>
+      <div class="lm-lookbook__trilho" tabindex="0" role="region" aria-label="Lookbook — role para os lados ou arraste" data-lookbook>
+        <article class="lm-look lm-look--intro">
+          <p>Fotografado em ateliê, com luz de fim de tarde. Arraste para o lado →</p>
+        </article>
+        <figure class="lm-look">
+          <div class="lm-look__moldura"><img src="img/look-1.jpg" width="1067" height="1600" loading="lazy" alt="Look 01 em preto e branco: modelo com suéter de tricô oversized e calça pantalona"></div>
+          <figcaption><b>Look 01</b> Retrato · Tricô Barro · Calça Noite</figcaption>
+        </figure>
+        <figure class="lm-look">
+          <div class="lm-look__moldura"><img src="img/look-2.jpg" width="1067" height="1600" loading="lazy" alt="Look 02 em detalhe: vestido midi oliva com faixa amarrada e bolsa tote de couro no ombro"></div>
+          <figcaption><b>Look 02</b> Detalhe · Vestido Oliva · Tote Cacau</figcaption>
+        </figure>
+        <figure class="lm-look">
+          <div class="lm-look__moldura"><img src="img/look-3.jpg" width="1067" height="1600" loading="lazy" alt="Look 03: vestido midi verde-oliva com cinto e bolsa tote marrom"></div>
+          <figcaption><b>Look 03</b> Vestido Midi Oliva · Bolsa Tote Cacau</figcaption>
+        </figure>
+        <figure class="lm-look">
+          <div class="lm-look__moldura"><img src="img/hero.jpg" width="1200" height="1600" loading="lazy" alt="Look 04: suéter de tricô terracota com calça pantalona preta"></div>
+          <figcaption><b>Look 04</b> Tricô Barro · Calça Pantalona Noite</figcaption>
+        </figure>
+        <figure class="lm-look lm-look--largo">
+          <div class="lm-look__moldura"><img src="img/pecas-1.jpg" width="1600" height="1600" loading="lazy" alt="Peças da coleção dispostas lado a lado: casaco camelo, camisa creme, calça preta e suéter terracota"></div>
+          <figcaption><b>Still</b> As bases da coleção</figcaption>
+        </figure>
+      </div>
+      <div class="lm-container">
+        <div class="lm-lookbook__barra" aria-hidden="true"><span data-look-progresso></span></div>
+      </div>
+    </section>
+
+    <!-- ============ VALORES / MANIFESTO ============ -->
+    <section class="lm-secao lm-valores" id="manifesto" aria-labelledby="manifesto-titulo">
+      <div class="lm-container">
+        <p class="lm-rotulo lm-revela"><span>03</span> Manifesto</p>
+        <h2 class="lm-manifesto lm-revela" id="manifesto-titulo">Fazemos <em>menos</em> peças, com mais cuidado — e contamos de onde cada uma vem.</h2>
+        <ul class="lm-valores__lista">
+          <li class="lm-valor lm-revela">
+            <svg aria-hidden="true"><use href="#i-folha"/></svg>
+            <h3>Fibras naturais</h3>
+            <p>Linho europeu certificado, algodão orgânico do sertão paraibano e lã de ovelhas do Sul.</p>
+          </li>
+          <li class="lm-valor lm-revela">
+            <svg aria-hidden="true"><use href="#i-mapa"/></svg>
+            <h3>Feito no Brasil</h3>
+            <p>Três ateliês parceiros em Minas Gerais e Santa Catarina, com remuneração acima do piso.</p>
+          </li>
+          <li class="lm-valor lm-revela">
+            <svg aria-hidden="true"><use href="#i-agulha"/></svg>
+            <h3>Pequenos lotes</h3>
+            <p>Produzimos sob demanda e em séries curtas. Nada de estoque parado virando descarte.</p>
+          </li>
+          <li class="lm-valor lm-revela">
+            <svg aria-hidden="true"><use href="#i-troca"/></svg>
+            <h3>Reparo para sempre</h3>
+            <p>Botão caiu? Costura abriu? Consertamos qualquer peça Atelier Norte sem custo.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ NEWSLETTER / LISTA DO DROP ============ -->
+    <section class="lm-secao lm-lista" id="lista" aria-labelledby="lista-titulo">
+      <div class="lm-container lm-lista__grade">
+        <div class="lm-revela">
+          <p class="lm-rotulo lm-rotulo--claro"><span>04</span> Lista do drop</p>
+          <h2 class="lm-titulo lm-titulo--claro" id="lista-titulo">Chegue antes. As peças são <em>poucas</em>.</h2>
+          <p class="lm-lista__texto">Quem está na lista recebe o link da coleção 24 horas antes e frete grátis na primeira compra.</p>
+        </div>
+        <div class="lm-lista__caixa lm-revela">
+          <form class="lm-form" novalidate data-form-lista>
+            <label class="lm-form__rotulo" for="email">Seu e-mail</label>
+            <div class="lm-form__linha">
+              <input class="lm-form__input" type="email" id="email" name="email" autocomplete="email" placeholder="voce@exemplo.com" required aria-describedby="email-erro">
+              <button class="lm-btn lm-btn--papel" type="submit" data-enviar><span data-enviar-txt>Quero entrar</span></button>
+            </div>
+            <p class="lm-form__erro" id="email-erro" data-erro></p>
+            <label class="lm-check">
+              <input type="checkbox" name="aceite" required aria-describedby="aceite-erro">
+              <span>Aceito receber e-mails do Atelier Norte. Dá para sair quando quiser.</span>
+            </label>
+            <p class="lm-form__erro" id="aceite-erro" data-erro-aceite></p>
+          </form>
+          <div class="lm-lista__sucesso" data-sucesso hidden tabindex="-1">
+            <span class="lm-lista__ok" aria-hidden="true"><svg><use href="#i-ok"/></svg></span>
+            <h3>Você está na lista.</h3>
+            <p>Mandamos um e-mail de boas-vindas para <strong data-email-final></strong>. Fique de olho no dia do drop.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ RODAPÉ ============ -->
+  <footer class="lm-rodape">
+    <div class="lm-container">
+      <p class="lm-rodape__marca" aria-hidden="true">Atelier Norte</p>
+      <div class="lm-rodape__grade">
+        <div class="lm-rodape__sobre">
+          <p>Roupas atemporais em fibras naturais, desenhadas em São Paulo e costuradas em ateliês parceiros pelo Brasil.</p>
+          <a class="lm-social" href="#inicio" aria-label="Instagram do Atelier Norte"><svg aria-hidden="true"><use href="#i-insta"/></svg>@ateliernorte</a>
+        </div>
+        <nav aria-label="Loja">
+          <h2 class="lm-rodape__titulo">Loja</h2>
+          <ul>
+            <li><a href="#colecao">Coleção 04</a></li>
+            <li><a href="#lookbook">Lookbook</a></li>
+            <li><a href="#colecao">Acessórios</a></li>
+            <li><a href="#lista">Lista do drop</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Ajuda">
+          <h2 class="lm-rodape__titulo">Ajuda</h2>
+          <ul>
+            <li><a href="#inicio">Trocas e devoluções</a></li>
+            <li><a href="#inicio">Prazos de entrega</a></li>
+            <li><a href="#inicio">Guia de medidas</a></li>
+            <li><a href="mailto:ola@ateliernorte.exemplo">Fale com a gente</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="Atelier">
+          <h2 class="lm-rodape__titulo">Atelier</h2>
+          <ul>
+            <li><a href="#manifesto">Manifesto</a></li>
+            <li><a href="#manifesto">Nossos ateliês</a></li>
+            <li><a href="#manifesto">Programa de reparo</a></li>
+            <li><a href="#inicio">Trabalhe conosco</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="lm-rodape__base">
+        <p>© <span data-ano>2026</span> Atelier Norte — marca fictícia para demonstração. CNPJ 00.000.000/0001-00.</p>
+        <p>Pix · cartão em até 6× · boleto</p>
+        <a href="#inicio">Voltar ao topo ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ SACOLA (gaveta lateral) ============ -->
+  <div class="lm-veu" data-fechar-sacola hidden></div>
+  <aside class="lm-sacola" id="sacola" role="dialog" aria-modal="true" aria-labelledby="sacola-titulo" hidden>
+    <header class="lm-sacola__topo">
+      <h2 id="sacola-titulo">Sua sacola <span data-sacola-qtd></span></h2>
+      <button class="lm-icone-btn" type="button" data-fechar-sacola aria-label="Fechar sacola"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </header>
+    <div class="lm-frete" data-frete>
+      <p data-frete-txt></p>
+      <div class="lm-frete__barra"><span data-frete-barra></span></div>
+    </div>
+    <ul class="lm-sacola__itens" data-sacola-itens></ul>
+    <div class="lm-sacola__vazia" data-sacola-vazia>
+      <p>Sua sacola está vazia.</p>
+      <button class="lm-btn lm-btn--linha" type="button" data-fechar-sacola data-ir-colecao>Ver a coleção</button>
+    </div>
+    <footer class="lm-sacola__rodape" data-sacola-rodape>
+      <div class="lm-sacola__subtotal"><span>Subtotal</span><strong data-subtotal>R$ 0,00</strong></div>
+      <p class="lm-sacola__nota">Frete e cupons calculados na finalização.</p>
+      <button class="lm-btn lm-btn--tinta lm-btn--bloco" type="button" data-finalizar>Finalizar compra</button>
+      <p class="lm-sacola__aviso" data-finalizar-aviso aria-live="polite"></p>
+    </footer>
+  </aside>
+
+  <!-- ============ QUICK VIEW (modal) ============ -->
+  <div class="lm-modal" id="quickview" role="dialog" aria-modal="true" aria-labelledby="qv-nome" hidden>
+    <div class="lm-modal__fundo" data-fechar-modal></div>
+    <div class="lm-modal__caixa">
+      <button class="lm-icone-btn lm-modal__fechar" type="button" data-fechar-modal aria-label="Fechar visualização rápida"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+      <div class="lm-modal__midia">
+        <div class="lm-modal__foto lm-recorte" data-qv-foto></div>
+        <div class="lm-modal__miniaturas" role="group" aria-label="Fotos da peça" data-qv-minis></div>
+      </div>
+      <div class="lm-modal__info">
+        <p class="lm-modal__cat" data-qv-cat></p>
+        <h2 id="qv-nome" data-qv-nome></h2>
+        <p class="lm-modal__preco" data-qv-preco></p>
+        <p class="lm-modal__desc" data-qv-desc></p>
+        <div data-qv-opcoes></div>
+        <ul class="lm-modal__detalhes" data-qv-detalhes></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso flutuante -->
+  <div class="lm-toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

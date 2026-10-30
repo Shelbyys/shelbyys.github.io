@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verificação OTP — 8 estilos de campo de código</title>
+  <meta name="description" content="Kit com 8 estilos de campo de código de verificação (OTP) em HTML, CSS e JS puros: caixas, letreiro mecânico, cofre, campo único, pontos, terminal, linha e teclado seguro.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="otp-corpo">
+
+  <header class="otp-topo">
+    <div class="otp-topo__marca">
+      <span class="otp-topo__icone" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7"/><circle cx="12" cy="15.5" r="1.3"/></svg>
+      </span>
+      <div>
+        <h1 class="otp-topo__titulo">Verificação OTP</h1>
+        <p class="otp-topo__sub">8 estilos de campo de código · 1 biblioteca · 0 dependências</p>
+      </div>
+    </div>
+    <p class="otp-dica">
+      <span class="otp-dica__ponto" aria-hidden="true"></span>
+      <span>Código da demo: <kbd class="otp-dica__codigo">123456</kbd><span class="otp-dica__extra"> — erre 3× para ver o bloqueio</span></span>
+    </p>
+  </header>
+
+  <!-- Abas (aparecem no celular/tablet; no desktop os estilos ficam em grade de 2 colunas) -->
+  <div class="otp-abas" role="tablist" aria-label="Estilos de campo de código">
+    <span class="otp-abas__indicador" aria-hidden="true"></span>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-classico" aria-controls="otp-painel-classico" aria-selected="true">Clássico</button>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-painel" aria-controls="otp-painel-painel" aria-selected="false" tabindex="-1">Letreiro</button>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-cofre" aria-controls="otp-painel-cofre" aria-selected="false" tabindex="-1">Cofre</button>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-unico" aria-controls="otp-painel-unico" aria-selected="false" tabindex="-1">Campo único</button>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-pontos" aria-controls="otp-painel-pontos" aria-selected="false" tabindex="-1">Pontos</button>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-terminal" aria-controls="otp-painel-terminal" aria-selected="false" tabindex="-1">Terminal</button>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-linha" aria-controls="otp-painel-linha" aria-selected="false" tabindex="-1">Linha</button>
+    <button class="otp-aba" type="button" role="tab" id="otp-aba-teclado" aria-controls="otp-painel-teclado" aria-selected="false" tabindex="-1">Teclado</button>
+  </div>
+
+  <main class="otp-grade">
+
+    <!-- ================= 1. CLÁSSICO ================= -->
+    <section class="otp-cartao otp-cartao--classico" id="otp-painel-classico" role="tabpanel" aria-labelledby="otp-aba-classico" style="--otp-atraso: .05s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">01</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-classico">Clássico</h2>
+          <p class="otp-cartao__desc" id="otp-desc-classico">Enviamos um código de 6 dígitos para <strong>(11) •••••-4321</strong>.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo">
+        <div class="otp-classico">
+          <div class="otp-campo-wrap" data-otp="classico" data-rotulo="otp-titulo-classico" data-descricao="otp-desc-classico"></div>
+          <!-- Aprovado: selo carimbado no canto -->
+          <svg class="otp-selo" viewBox="0 0 36 36" aria-hidden="true">
+            <circle class="otp-selo__anel" cx="18" cy="18" r="15" pathLength="100"/>
+            <path class="otp-selo__check" d="m11.5 18.5 4.5 4.5 8.5-9" pathLength="100"/>
+          </svg>
+          <!-- Sem acesso: cadeado que desce e fecha -->
+          <span class="otp-trava" aria-hidden="true">
+            <svg class="otp-cadeado" viewBox="0 0 24 24"><path class="otp-cadeado__arco" d="M8 11V8a4 4 0 0 1 8 0v3"/><rect class="otp-cadeado__corpo" x="5" y="11" width="14" height="10" rx="2.6"/><path class="otp-cadeado__furo" d="M12 14.6v2.6"/></svg>
+          </span>
+        </div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Tentar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ================= 2. LETREIRO (split-flap) ================= -->
+    <section class="otp-cartao otp-cartao--painel" id="otp-painel-painel" role="tabpanel" aria-labelledby="otp-aba-painel" style="--otp-atraso: .1s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">02</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-painel">Letreiro</h2>
+          <p class="otp-cartao__desc" id="otp-desc-painel">Cada dígito tomba como a placa de um aeroporto.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo">
+        <div class="otp-campo-wrap" data-otp="painel" data-rotulo="otp-titulo-painel" data-descricao="otp-desc-painel"></div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Tentar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ================= 3. COFRE ================= -->
+    <section class="otp-cartao otp-cartao--cofre" id="otp-painel-cofre" role="tabpanel" aria-labelledby="otp-aba-cofre" style="--otp-atraso: .15s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">03</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-cofre">Cofre</h2>
+          <p class="otp-cartao__desc" id="otp-desc-cofre">Cada dígito gira como a roleta de um cadeado.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo otp-cofre">
+        <!-- Porta do cofre: abre no sucesso -->
+        <div class="otp-cofre__caixa" aria-hidden="true">
+          <!-- Interior do cofre (aparece quando a porta abre) -->
+          <svg class="otp-cofre__interior" viewBox="0 0 120 120">
+            <rect class="otp-cofre__vao" x="8" y="8" width="104" height="104" rx="16"/>
+            <rect class="otp-cofre__prateleira" x="22" y="74" width="76" height="4" rx="2"/>
+            <circle class="otp-cofre__ok-anel" cx="60" cy="48" r="17"/>
+            <path class="otp-cofre__ok" d="m51.5 48.5 6 6 11.5-12.5"/>
+          </svg>
+          <!-- Facho de luz que sai de dentro quando a porta abre -->
+          <span class="otp-cofre__luz"></span>
+          <!-- Porta: gira o volante a cada dígito e abre no sucesso -->
+          <svg class="otp-cofre__porta" viewBox="0 0 120 120">
+            <rect class="otp-cofre__chapa" x="8" y="8" width="104" height="104" rx="16"/>
+            <rect class="otp-cofre__borda" x="15" y="15" width="90" height="90" rx="11"/>
+            <rect class="otp-cofre__dobradica" x="4" y="28" width="7" height="16" rx="2.5"/>
+            <rect class="otp-cofre__dobradica" x="4" y="76" width="7" height="16" rx="2.5"/>
+            <circle class="otp-cofre__aro" cx="62" cy="60" r="29"/>
+            <g class="otp-cofre__marcas">
+              <path d="M62 34v4M62 82v4M36 60h4M84 60h4M43.6 41.6l2.8 2.8M77.6 75.6l2.8 2.8M43.6 78.4l2.8-2.8M77.6 44.4l2.8-2.8"/>
+            </g>
+            <g class="otp-cofre__volante">
+              <path class="otp-cofre__raio" d="M62 52V41M62 68v11M54 60H43M70 60h11"/>
+              <circle class="otp-cofre__pino" cx="62" cy="40" r="3.4"/>
+              <circle class="otp-cofre__pino" cx="62" cy="80" r="3.4"/>
+              <circle class="otp-cofre__pino" cx="42" cy="60" r="3.4"/>
+              <circle class="otp-cofre__pino" cx="82" cy="60" r="3.4"/>
+              <circle class="otp-cofre__miolo" cx="62" cy="60" r="8.5"/>
+              <circle class="otp-cofre__miolo-ponto" cx="62" cy="55" r="1.6"/>
+            </g>
+            <circle class="otp-cofre__led" cx="97" cy="23" r="3.2"/>
+          </svg>
+          <!-- Sem acesso: ferrolho atravessa a porta e um cadeado fecha nele -->
+          <svg class="otp-cofre__trava" viewBox="0 0 120 120">
+            <g class="otp-cofre__ferrolho">
+              <rect class="otp-cofre__barra" x="-4" y="55" width="128" height="10" rx="3"/>
+              <rect class="otp-cofre__suporte" x="1" y="50" width="9" height="20" rx="2.5"/>
+              <rect class="otp-cofre__suporte" x="110" y="50" width="9" height="20" rx="2.5"/>
+            </g>
+            <g class="otp-cofre__cadeado">
+              <path class="otp-cadeado__arco" d="M55 73V57.5a5 5 0 0 1 10 0V73"/>
+              <rect class="otp-cadeado__corpo" x="49.5" y="70" width="21" height="17" rx="3.5"/>
+              <path class="otp-cadeado__furo" d="M60 75.5v5"/>
+            </g>
+          </svg>
+        </div>
+        <div class="otp-campo-wrap" data-otp="cofre" data-rotulo="otp-titulo-cofre" data-descricao="otp-desc-cofre"></div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Trancar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ================= 4. CAMPO ÚNICO ================= -->
+    <section class="otp-cartao otp-cartao--unico" id="otp-painel-unico" role="tabpanel" aria-labelledby="otp-aba-unico" style="--otp-atraso: .2s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">04</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-unico">Campo único</h2>
+          <p class="otp-cartao__desc" id="otp-desc-unico">Um só <code>&lt;input&gt;</code> por trás de 6 casas: o melhor para o preenchimento automático do SMS.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo">
+        <div class="otp-unico-caixa">
+          <div class="otp-campo-wrap" data-otp="unico" data-rotulo="otp-titulo-unico" data-descricao="otp-desc-unico"></div>
+          <!-- Sem acesso: persiana de aço que desce sobre o campo -->
+          <span class="otp-persiana" aria-hidden="true">
+            <span class="otp-persiana__laminas"></span>
+            <span class="otp-persiana__rotulo">
+              <svg class="otp-cadeado" viewBox="0 0 24 24"><path class="otp-cadeado__arco" d="M8 11V8a4 4 0 0 1 8 0v3"/><rect class="otp-cadeado__corpo" x="5" y="11" width="14" height="10" rx="2.6"/><path class="otp-cadeado__furo" d="M12 14.6v2.6"/></svg>
+              bloqueado
+            </span>
+          </span>
+        </div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Tentar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ================= 5. PONTOS ================= -->
+    <section class="otp-cartao otp-cartao--pontos" id="otp-painel-pontos" role="tabpanel" aria-labelledby="otp-aba-pontos" style="--otp-atraso: .25s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">05</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-pontos">Pontos</h2>
+          <p class="otp-cartao__desc" id="otp-desc-pontos">Discreto como um PIN: cada dígito vira um ponto que pulsa.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo">
+        <div class="otp-pontos-caixa">
+          <div class="otp-campo-wrap" data-otp="pontos" data-rotulo="otp-titulo-pontos" data-descricao="otp-desc-pontos"></div>
+          <!-- Aprovado: os pontos formam um check e este anel se fecha em volta -->
+          <svg class="otp-pontos__anel" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" pathLength="100"/></svg>
+          <!-- Sem acesso: os pontos viram corrente e o cadeado fica pendurado -->
+          <svg class="otp-pontos__cadeado otp-cadeado" viewBox="0 0 24 30" aria-hidden="true"><path class="otp-cadeado__arco" d="M7.5 14V7a4.5 4.5 0 0 1 9 0v7"/><rect class="otp-cadeado__corpo" x="3.5" y="13" width="17" height="14" rx="3"/><path class="otp-cadeado__furo" d="M12 17.5v4"/></svg>
+        </div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Tentar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ================= 6. TERMINAL (alfanumérico) ================= -->
+    <section class="otp-cartao otp-cartao--terminal" id="otp-painel-terminal" role="tabpanel" aria-labelledby="otp-aba-terminal" style="--otp-atraso: .3s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">06</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-terminal">Terminal</h2>
+          <p class="otp-cartao__desc" id="otp-desc-terminal">Código alfanumérico de 6 caracteres. Demo: <strong>AXY42K</strong>.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo">
+        <div class="otp-term">
+          <div class="otp-term__barra" aria-hidden="true">
+            <i></i><i></i><i></i>
+            <em>verificacao — seguranca</em>
+          </div>
+          <!-- A janela tem altura fixa: as linhas de log empurram o conteúdo para cima -->
+          <div class="otp-term__corpo">
+            <div class="otp-term__rolo">
+              <p class="otp-term__linha" aria-hidden="true"><span class="otp-term__prompt">$</span> auth verify --canal=email</p>
+              <div class="otp-campo-wrap" data-otp="terminal" data-rotulo="otp-titulo-terminal" data-descricao="otp-desc-terminal"></div>
+              <div class="otp-term__saida" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Tentar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ================= 7. LINHA ================= -->
+    <section class="otp-cartao otp-cartao--linha" id="otp-painel-linha" role="tabpanel" aria-labelledby="otp-aba-linha" style="--otp-atraso: .35s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">07</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-linha">Linha</h2>
+          <p class="otp-cartao__desc" id="otp-desc-linha">Minimalista: a linha se desenha a cada dígito.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo">
+        <div class="otp-linha-wrap">
+          <div class="otp-campo-wrap" data-otp="linha" data-rotulo="otp-titulo-linha" data-descricao="otp-desc-linha"></div>
+          <svg class="otp-linha__svg" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+            <path class="otp-linha__base" d="M2 20H298"/>
+            <path class="otp-linha__traco" d="M2 20H298" pathLength="100"/>
+            <!-- Aprovado: um brilho corre pela linha antes de ela virar check -->
+            <path class="otp-linha__brilho" d="M2 20H298" pathLength="100"/>
+          </svg>
+          <svg class="otp-linha__check" viewBox="0 0 60 40" aria-hidden="true">
+            <path d="M14 21l11 10 21-22" pathLength="100"/>
+          </svg>
+          <!-- Sem acesso: a linha se recolhe e desenha um cadeado -->
+          <svg class="otp-linha__cadeado" viewBox="0 0 40 44" aria-hidden="true">
+            <path class="otp-linha__arco" d="M13 20v-6a7 7 0 0 1 14 0v6" pathLength="100"/>
+            <rect class="otp-linha__corpo" x="8" y="20" width="24" height="18" rx="4" pathLength="100"/>
+            <path class="otp-linha__furo" d="M20 27v4" pathLength="100"/>
+          </svg>
+        </div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Tentar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ================= 8. TECLADO SEGURO ================= -->
+    <section class="otp-cartao otp-cartao--teclado" id="otp-painel-teclado" role="tabpanel" aria-labelledby="otp-aba-teclado" style="--otp-atraso: .4s">
+      <header class="otp-cartao__cabeca">
+        <span class="otp-cartao__num" aria-hidden="true">08</span>
+        <div>
+          <h2 class="otp-cartao__titulo" id="otp-titulo-teclado">Teclado seguro</h2>
+          <p class="otp-cartao__desc" id="otp-desc-teclado">Como no app do banco: números embaralhados e dígito que some depois de digitado.</p>
+        </div>
+      </header>
+      <div class="otp-cartao__corpo otp-teclado-wrap">
+        <div class="otp-campo-wrap" data-otp="teclado" data-rotulo="otp-titulo-teclado" data-descricao="otp-desc-teclado"></div>
+        <div class="otp-teclado-caixa">
+          <div class="otp-teclado" id="otp-teclas" role="group" aria-label="Teclado numérico embaralhado"></div>
+          <!-- Aprovado: as teclas se apagam e um escudo se fecha por cima -->
+          <svg class="otp-escudo" viewBox="0 0 64 64" aria-hidden="true">
+            <path class="otp-escudo__fundo" d="M32 5c-7 4-16 6-24 6v18c0 15 10 25 24 31 14-6 24-16 24-31V11c-8 0-17-2-24-6Z"/>
+            <path class="otp-escudo__lado" d="M32 5c-7 4-16 6-24 6v18c0 15 10 25 24 31" pathLength="100"/>
+            <path class="otp-escudo__lado" d="M32 5c7 4 16 6 24 6v18c0 15-10 25-24 31" pathLength="100"/>
+            <path class="otp-escudo__check" d="m22.5 32.5 6.5 6.5 13-14" pathLength="100"/>
+          </svg>
+          <!-- Sem acesso: teclas de costas + cadeado -->
+          <span class="otp-trava" aria-hidden="true">
+            <svg class="otp-cadeado" viewBox="0 0 24 24"><path class="otp-cadeado__arco" d="M8 11V8a4 4 0 0 1 8 0v3"/><rect class="otp-cadeado__corpo" x="5" y="11" width="14" height="10" rx="2.6"/><path class="otp-cadeado__furo" d="M12 14.6v2.6"/></svg>
+          </span>
+        </div>
+      </div>
+      <footer class="otp-cartao__rodape">
+        <p class="otp-status" role="status" aria-live="polite"></p>
+        <div class="otp-acoes">
+          <button class="otp-reenviar" type="button" data-reenviar>Reenviar código</button>
+          <button class="otp-reiniciar" type="button" data-reiniciar hidden>Tentar de novo</button>
+          <a class="otp-suporte" href="#" data-suporte hidden>Falar com o suporte</a>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <footer class="otp-rodape">
+    <p>Teclado: <kbd>←</kbd> <kbd>→</kbd> navegam · <kbd>Backspace</kbd> volta · <kbd>Ctrl/⌘ V</kbd> cola o código inteiro</p>
+  </footer>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

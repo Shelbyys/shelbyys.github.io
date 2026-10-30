@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt-BR" data-tema="escuro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel Órbita — Analytics</title>
+  <meta name="description" content="Painel Órbita: dashboard de analytics para SaaS em HTML, CSS e JavaScript puros.">
+  <meta name="color-scheme" content="dark light">
+
+  <!-- Fontes: Manrope (texto) + JetBrains Mono (números). Única dependência externa. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap">
+
+  <link rel="stylesheet" href="estilo.css">
+
+  <!-- Aplica o tema salvo ANTES da primeira pintura (evita "piscar" ao recarregar). -->
+  <script>
+    try {
+      var temaSalvo = localStorage.getItem('orbita-tema');
+      if (temaSalvo === 'claro' || temaSalvo === 'escuro') document.documentElement.setAttribute('data-tema', temaSalvo);
+    } catch (e) { /* localStorage indisponível: segue no tema padrão */ }
+  </script>
+</head>
+<body>
+  <!-- RETRATOS: retratos ilustrados em SVG (#retrato-ana).
+       Use com <svg class="..." aria-hidden="true"><use href="#retrato-ana"/></svg>.
+       Cores por variável CSS: --retrato-fundo, --retrato-aro, --retrato-luz, --retrato-roupa-<nome>.
+       Para trocar por foto real, veja "Retratos" no LEIAME.md. -->
+  <svg class="retratos-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="rt-disco"><circle cx="60" cy="60" r="60"/></clipPath>
+      <path id="rt-rosto" d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/>
+      <clipPath id="rt-clip-rosto"><path d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-fora-rosto"><path clip-rule="evenodd" d="M0 0H120V120H0ZM60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-clip-torso"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></clipPath>
+      <radialGradient id="rt-luz-fundo" cx=".32" cy=".26" r=".85"><stop offset="0" stop-color="#fff" style="stop-opacity:var(--retrato-luz, .38)"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></radialGradient>
+      <linearGradient id="rt-sombra-corpo" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+      <linearGradient id="rt-sombra-pescoco" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".5" stop-color="#000" stop-opacity=".06"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
+      <linearGradient id="rt-sombra-gola" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".25"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+      <linearGradient id="rt-aro-grad" gradientUnits="userSpaceOnUse" x1="62" y1="40" x2="86" y2="54"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <mask id="rt-aro" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-grad)"/></mask>
+      <radialGradient id="rt-aro-cabeca-grad" gradientUnits="userSpaceOnUse" cx="94" cy="26" r="46"><stop offset=".25" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+      <mask id="rt-aro-cabeca" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-cabeca-grad)"/></mask>
+      <linearGradient id="rt-pele-ana" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#c98c69"/><stop offset=".38" stop-color="#eab894"/><stop offset="1" stop-color="#f7d4b8"/></linearGradient>
+      <linearGradient id="rt-cabelo-ana" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a2218"/><stop offset=".6" stop-color="#3a2218"/><stop offset="1" stop-color="#7a4b33"/></linearGradient>
+      <radialGradient id="rt-volume-ana" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#7a4b33"/><stop offset=".6" stop-color="#3a2218"/><stop offset="1" stop-color="#3a2218"/></radialGradient>
+      <clipPath id="rt-clip-tras-ana"><path d="M60 18.5C37.5 18.5 29.5 34 30.5 54C31.5 72 29 88 24 104L96 104C91 88 88.5 72 89.5 54C90.5 34 82.5 18.5 60 18.5Z"/></clipPath>
+      <clipPath id="rt-clip-cabelo-ana"><path d="M37 56C34.5 34 45.5 22 61 22C77 22 85.5 33.5 83 56C81.5 47 79 41 73.5 36.5C71.5 34.8 69.8 33 68.6 31C62 39.5 50.5 43.5 42.5 46C40.2 49 38.4 52.5 37 56Z"/></clipPath>
+    </defs>
+    <symbol id="retrato-ana" viewBox="0 0 120 120"><!-- Ana — cabelo liso longo, repartido de lado --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><path d="M60 18.5C37.5 18.5 29.5 34 30.5 54C31.5 72 29 88 24 104L96 104C91 88 88.5 72 89.5 54C90.5 34 82.5 18.5 60 18.5Z" fill="url(#rt-volume-ana)"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-tras-ana)"><path d="M60 18.5C37.5 18.5 29.5 34 30.5 54C31.5 72 29 88 24 104L96 104C91 88 88.5 72 89.5 54C90.5 34 82.5 18.5 60 18.5Z"/></g></g><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#c98c69"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-ana, #c8674a)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M46.5 88.6Q60 97.6 73.5 88.6" fill="none" stroke="#000" stroke-opacity=".22" stroke-width="4.4" stroke-linecap="round"/><path d="M46.5 87.4Q60 96.4 73.5 87.4" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="1.6" stroke-linecap="round"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><path d="M37.6 52C35.5 66 36.5 82 30.5 101C36 104.5 44 104 48.5 100C46 88 45 72 45.5 58Z M82.4 52C84.5 66 83.5 82 89.5 101C84 104.5 76 104 71.5 100C74 88 75 72 74.5 58Z" fill="url(#rt-cabelo-ana)"/><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#c98c69"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#f7d4b8"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-ana)"/><circle cx="47.5" cy="65" r="5" fill="#e8826e" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#e8826e" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#c98c69" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#b65450"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#3a2218" stroke-width="2.5" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)"><path d="M37 56C34.5 34 45.5 22 61 22C77 22 85.5 33.5 83 56C81.5 47 79 41 73.5 36.5C71.5 34.8 69.8 33 68.6 31C62 39.5 50.5 43.5 42.5 46C40.2 49 38.4 52.5 37 56Z" transform="translate(-.6 2.8)" fill="#000" fill-opacity=".16"/></g><path d="M37 56C34.5 34 45.5 22 61 22C77 22 85.5 33.5 83 56C81.5 47 79 41 73.5 36.5C71.5 34.8 69.8 33 68.6 31C62 39.5 50.5 43.5 42.5 46C40.2 49 38.4 52.5 37 56Z" fill="url(#rt-volume-ana)"/><path d="M46 36Q53 28.6 64 27.4M76 33Q79.5 38 80.5 44" fill="none" stroke="#7a4b33" stroke-width="2.6" stroke-linecap="round" stroke-opacity=".8"/></g></symbol>
+  </svg>
+  <!-- /RETRATOS -->
+  <a class="pular-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- ================================================================
+       BARRA SUPERIOR MÓVEL (aparece só abaixo de 900px)
+       ================================================================ -->
+  <header class="barra-movel">
+    <a class="marca" href="#" aria-label="Órbita — início">
+      <svg class="marca__logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect class="logo-fundo" x="0.5" y="0.5" width="31" height="31" rx="9" />
+        <ellipse class="logo-orbita" cx="16" cy="16" rx="11" ry="5" transform="rotate(-28 16 16)" />
+        <circle class="logo-nucleo" cx="16" cy="16" r="4" />
+        <circle class="logo-satelite" cx="23.2" cy="9.3" r="2" />
+      </svg>
+      <span class="marca__nome">Órbita</span>
+    </a>
+    <button class="botao-icone" id="botao-menu" type="button" aria-controls="menu-lateral" aria-expanded="false" aria-label="Abrir menu">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+    </button>
+  </header>
+
+  <div class="app">
+    <!-- ================================================================
+         MENU LATERAL (vira gaveta/drawer abaixo de 900px)
+         ================================================================ -->
+    <aside class="lateral" id="menu-lateral" aria-label="Menu lateral">
+      <div class="lateral__topo">
+        <a class="marca" href="#" aria-label="Órbita — início">
+          <svg class="marca__logo" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+            <rect class="logo-fundo" x="0.5" y="0.5" width="31" height="31" rx="9" />
+            <ellipse class="logo-orbita" cx="16" cy="16" rx="11" ry="5" transform="rotate(-28 16 16)" />
+            <circle class="logo-nucleo" cx="16" cy="16" r="4" />
+            <circle class="logo-satelite" cx="23.2" cy="9.3" r="2" />
+          </svg>
+          <span class="marca__nome">Órbita</span>
+        </a>
+        <span class="marca__selo">v1.0</span>
+        <button class="botao-icone lateral__fechar" id="fechar-menu" type="button" aria-label="Fechar menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18" /></svg>
+        </button>
+      </div>
+
+      <nav class="lateral__nav" aria-label="Navegação principal">
+        <p class="lateral__secao">Analytics</p>
+        <ul class="nav">
+          <li>
+            <a class="nav__link" href="#" aria-current="page">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="9" rx="1.5" /><rect x="14" y="3" width="7" height="5" rx="1.5" /><rect x="14" y="12" width="7" height="9" rx="1.5" /><rect x="3" y="16" width="7" height="5" rx="1.5" /></svg>
+              Visão geral
+            </a>
+          </li>
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3v18h18" /><path d="m7 15 4-4 3 3 5-6" /></svg>
+              Relatórios
+            </a>
+          </li>
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0" /><path d="M16 4.5a3.5 3.5 0 0 1 0 7" /><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5" /></svg>
+              Clientes
+              <span class="nav__selo">2,4 mil</span>
+            </a>
+          </li>
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M15 9.2c-.6-.8-1.7-1.2-3-1.2-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.3 0-2.4-.4-3-1.2M12 6.5v11" /></svg>
+              Receita
+            </a>
+          </li>
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5z" /></svg>
+              Funis
+            </a>
+          </li>
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 12h4l3-8 4 16 3-8h4" /></svg>
+              Eventos
+              <span class="nav__selo nav__selo--alerta">3</span>
+            </a>
+          </li>
+        </ul>
+
+        <p class="lateral__secao">Workspace</p>
+        <ul class="nav">
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-10 0V7zM12 16v5" /></svg>
+              Integrações
+            </a>
+          </li>
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12" /><circle cx="16" cy="6" r="2" /><circle cx="10" cy="12" r="2" /><circle cx="18" cy="18" r="2" /></svg>
+              Configurações
+            </a>
+          </li>
+          <li>
+            <a class="nav__link" href="#">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M9.5 9.5a2.5 2.5 0 0 1 4.9.7c0 1.7-2.4 2.1-2.4 3.8" /><path d="M12 17h.01" /></svg>
+              Ajuda
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Card do plano (rodapé do menu) -->
+      <div class="plano">
+        <div class="plano__topo">
+          <p class="plano__nome">Plano Growth</p>
+          <p class="plano__renova">Renova em 12 nov</p>
+        </div>
+        <div class="plano__uso">
+          <div class="plano__numeros"><span>Eventos do mês</span><span class="num">84%</span></div>
+          <div class="progresso" role="progressbar" aria-label="Uso de eventos no mês" aria-valuemin="0" aria-valuemax="100" aria-valuenow="84">
+            <span class="progresso__barra" style="--progresso: .842"></span>
+          </div>
+          <p class="plano__detalhe"><span class="num">84.200</span> de <span class="num">100 mil</span></p>
+        </div>
+        <a class="botao botao--primario" href="#">Fazer upgrade</a>
+      </div>
+    </aside>
+
+    <!-- Fundo escurecido atrás da gaveta (clique fecha) -->
+    <div class="fundo-gaveta" id="fundo-gaveta" aria-hidden="true"></div>
+
+    <div class="conteudo">
+      <!-- ==============================================================
+           BARRA DO TOPO: título, busca, período, tema, conta
+           ============================================================== -->
+      <header class="topo">
+        <div class="topo__titulo">
+          <h1>Visão geral</h1>
+          <p class="topo__sub" id="subtitulo-periodo">Últimos 30 dias</p>
+        </div>
+
+        <label class="busca">
+          <span class="sr-only">Buscar páginas</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          <input id="campo-busca" type="search" placeholder="Buscar páginas…" autocomplete="off" aria-controls="tabela-paginas">
+          <kbd class="busca__atalho" aria-hidden="true">/</kbd>
+        </label>
+
+        <div class="segmentado" role="group" aria-label="Período" style="--indice: 1">
+          <span class="segmentado__indicador" aria-hidden="true"></span>
+          <button type="button" data-periodo="7d" aria-pressed="false">7d</button>
+          <button type="button" data-periodo="30d" aria-pressed="true">30d</button>
+          <button type="button" data-periodo="90d" aria-pressed="false">90d</button>
+        </div>
+
+        <div class="topo__acoes">
+          <button class="botao-icone" id="botao-tema" type="button" aria-label="Ativar tema claro">
+            <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+            <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" /></svg>
+          </button>
+          <button class="botao-icone botao-icone--aviso" type="button" aria-label="Notificações (3 novas)">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15L6 16z" /><path d="M10 20a2 2 0 0 0 4 0" /></svg>
+          </button>
+          <!-- Avatar com retrato ilustrado (#retrato-ana). Foto real: troque o <svg> por
+               <img class="avatar__retrato" src="img/sua-foto.jpg" alt="" width="36" height="36">
+               Sem imagem? Use as iniciais como texto: <button class="avatar" ...>MC</button> -->
+          <button class="avatar" type="button" aria-label="Conta de Marina Costa">
+            <svg class="avatar__retrato" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#retrato-ana" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- ==============================================================
+           CONTEÚDO DO PAINEL
+           ============================================================== -->
+      <main class="painel" id="conteudo" tabindex="-1">
+
+        <!-- KPIs: o script preenche [data-valor], [data-variacao], [data-comparacao] e [data-spark] -->
+        <section class="kpis" aria-label="Indicadores principais">
+          <article class="cartao kpi" data-kpi="mrr">
+            <div class="kpi__grade">
+              <div class="kpi__topo">
+                <h2 class="kpi__rotulo">Receita recorrente</h2>
+                <span class="kpi__icone" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M15 9.2c-.6-.8-1.7-1.2-3-1.2-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.3 0-2.4-.4-3-1.2M12 6.5v11" /></svg></span>
+              </div>
+              <p class="kpi__valor num" data-valor>R$ 0</p>
+              <div class="kpi__spark" data-spark></div>
+              <p class="kpi__rodape"><span class="variacao" data-variacao></span><span class="kpi__comparacao" data-comparacao></span></p>
+            </div>
+          </article>
+
+          <article class="cartao kpi" data-kpi="usuarios">
+            <div class="kpi__grade">
+              <div class="kpi__topo">
+                <h2 class="kpi__rotulo">Usuários ativos</h2>
+                <span class="kpi__icone" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20a6.5 6.5 0 0 1 13 0" /><path d="M16 4.5a3.5 3.5 0 0 1 0 7" /><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5" /></svg></span>
+              </div>
+              <p class="kpi__valor num" data-valor>0</p>
+              <div class="kpi__spark" data-spark></div>
+              <p class="kpi__rodape"><span class="variacao" data-variacao></span><span class="kpi__comparacao" data-comparacao></span></p>
+            </div>
+          </article>
+
+          <article class="cartao kpi" data-kpi="conversao">
+            <div class="kpi__grade">
+              <div class="kpi__topo">
+                <h2 class="kpi__rotulo">Conversão</h2>
+                <span class="kpi__icone" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></svg></span>
+              </div>
+              <p class="kpi__valor num" data-valor>0%</p>
+              <div class="kpi__spark" data-spark></div>
+              <p class="kpi__rodape"><span class="variacao" data-variacao></span><span class="kpi__comparacao" data-comparacao></span></p>
+            </div>
+          </article>
+
+          <article class="cartao kpi" data-kpi="churn">
+            <div class="kpi__grade">
+              <div class="kpi__topo">
+                <h2 class="kpi__rotulo">Churn</h2>
+                <span class="kpi__icone" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M7 7l10 10M17 9v8H9" /></svg></span>
+              </div>
+              <p class="kpi__valor num" data-valor>0%</p>
+              <div class="kpi__spark" data-spark></div>
+              <p class="kpi__rodape"><span class="variacao" data-variacao></span><span class="kpi__comparacao" data-comparacao></span></p>
+            </div>
+          </article>
+        </section>
+
+        <!-- Gráfico principal (SVG desenhado pelo script) -->
+        <section class="cartao cartao-grafico" aria-labelledby="titulo-receita">
+          <header class="cartao__cabecalho">
+            <div>
+              <h2 class="cartao__titulo" id="titulo-receita">Receita diária</h2>
+              <p class="resumo-grafico">
+                <strong class="resumo-grafico__total num" id="total-receita">R$ 0</strong>
+                <span class="variacao" id="variacao-receita"></span>
+                <span class="resumo-grafico__texto">no período</span>
+              </p>
+            </div>
+            <ul class="legenda" aria-label="Legenda">
+              <li><span class="legenda__marca legenda__marca--atual" aria-hidden="true"></span>Período atual</li>
+              <li><span class="legenda__marca legenda__marca--anterior" aria-hidden="true"></span>Período anterior</li>
+            </ul>
+          </header>
+          <div class="grafico-area" id="grafico-receita" tabindex="0" role="figure" aria-label="Gráfico de receita diária. Use as setas para percorrer os dias.">
+            <div class="tooltip" aria-hidden="true"></div>
+          </div>
+          <p class="sr-only" id="grafico-anuncio" aria-live="polite"></p>
+        </section>
+
+        <!-- Feed ao vivo -->
+        <section class="cartao cartao-feed" aria-labelledby="titulo-feed">
+          <header class="cartao__cabecalho">
+            <div class="ao-vivo">
+              <span class="ao-vivo__pulso" aria-hidden="true"></span>
+              <h2 class="cartao__titulo" id="titulo-feed">Ao vivo</h2>
+              <span class="ao-vivo__online"><span class="num" id="usuarios-online">214</span> online agora</span>
+            </div>
+            <button class="botao-texto" id="pausar-feed" type="button" aria-pressed="false">
+              <svg class="icone-pausa" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12" /></svg>
+              <svg class="icone-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10-6.5z" /></svg>
+              <span>Pausar</span>
+            </button>
+          </header>
+          <ol class="feed" id="feed" aria-label="Eventos recentes"></ol>
+        </section>
+
+        <!-- Tabela de páginas -->
+        <section class="cartao cartao-tabela" aria-labelledby="titulo-paginas">
+          <header class="cartao__cabecalho">
+            <div>
+              <h2 class="cartao__titulo" id="titulo-paginas">Páginas mais vistas</h2>
+              <p class="cartao__sub">Clique no cabeçalho para ordenar</p>
+            </div>
+            <a class="link-cartao" href="#">Ver relatório</a>
+          </header>
+          <div class="tabela-rolagem">
+            <table class="tabela" id="tabela-paginas">
+              <thead>
+                <tr>
+                  <th scope="col" data-coluna="caminho"><button type="button">Página<span class="seta-ordem" aria-hidden="true"></span></button></th>
+                  <th scope="col" data-coluna="visualizacoes" aria-sort="descending"><button type="button">Visualizações<span class="seta-ordem" aria-hidden="true"></span></button></th>
+                  <th scope="col" class="direita" data-coluna="visitantes"><button type="button">Únicos<span class="seta-ordem" aria-hidden="true"></span></button></th>
+                  <th scope="col" class="direita" data-coluna="tempoMedio"><button type="button">Tempo<span class="seta-ordem" aria-hidden="true"></span></button></th>
+                  <th scope="col" class="direita" data-coluna="rejeicao"><button type="button">Rejeição<span class="seta-ordem" aria-hidden="true"></span></button></th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Barras por canal -->
+        <section class="cartao cartao-canais" aria-labelledby="titulo-canais">
+          <header class="cartao__cabecalho">
+            <div>
+              <h2 class="cartao__titulo" id="titulo-canais">Aquisição por canal</h2>
+              <p class="cartao__sub"><span class="num" id="total-cadastros">0</span> novos cadastros</p>
+            </div>
+          </header>
+          <ol class="canais" id="canais" aria-label="Cadastros por canal"></ol>
+        </section>
+
+        <!-- Donut de dispositivos -->
+        <section class="cartao cartao-dispositivos" aria-labelledby="titulo-dispositivos">
+          <header class="cartao__cabecalho">
+            <div>
+              <h2 class="cartao__titulo" id="titulo-dispositivos">Dispositivos</h2>
+              <p class="cartao__sub">Sessões por tipo</p>
+            </div>
+          </header>
+          <div class="donut" id="donut-dispositivos">
+            <div class="donut__grafico">
+              <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"></svg>
+              <div class="donut__centro">
+                <span class="donut__valor num" id="donut-valor">0</span>
+                <span class="donut__rotulo" id="donut-rotulo">sessões</span>
+              </div>
+            </div>
+            <ul class="legenda-donut" id="legenda-dispositivos" aria-label="Sessões por dispositivo"></ul>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

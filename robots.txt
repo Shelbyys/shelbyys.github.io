@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /previas/
+Disallow: /conta/
+Disallow: /obrigado/
+Disallow: /admin/
+Sitemap: https://shelbyys.github.io/sitemap.xml

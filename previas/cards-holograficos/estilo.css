@@ -1,0 +1,665 @@
+/* ==========================================================================
+   CARDS HOLOGRÁFICOS — estilo.css
+   Cartas colecionáveis em CSS/SVG com inclinação 3D, foil holográfico e verso.
+   Todas as classes usam o prefixo .ch- para não colidir com o seu projeto.
+
+   Sumário
+   1. Tokens (:root)  ← cores, fontes, tamanho e acabamentos de foil
+   2. Base e página
+   3. Cabeçalho e legenda
+   4. Galeria e slots (leque)
+   5. Carta: estrutura 3D (rotor, giro, faces)
+   6. Frente da carta
+   7. Verso da carta
+   8. Camadas holográficas: foil e reflexo (glare)
+   9. Foco, sombra e entrada
+   10. Responsivo
+   11. Movimento reduzido
+   ========================================================================== */
+
+/* 1. TOKENS ---------------------------------------------------------------- */
+:root {
+  --ch-fundo: #07070c;
+  --ch-texto: #f1f2f8;
+  --ch-texto-suave: #a7abc0;
+  --ch-destaque: #c9b8ff;
+
+  --ch-fonte-rotulo: "Chakra Petch", ui-monospace, "SFMono-Regular", monospace;
+  --ch-fonte-texto: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Tamanho da carta (proporção de carta colecionável 63 × 88) */
+  --ch-largura-carta: clamp(260px, 20.5vw, 290px);
+  --ch-raio: 18px;
+
+  /* Inclinação máxima ao seguir o ponteiro (graus) — lida pelo script.js */
+  --ch-inclinacao-max: 16;
+
+  /* Acabamentos de foil: use em cada carta com style="--foil: var(--ch-foil-…)" */
+  --ch-foil-arco: repeating-linear-gradient(
+    118deg,
+    hsl(352 100% 72%) 0%, hsl(36 100% 66%) 5%, hsl(72 95% 64%) 10%,
+    hsl(150 90% 62%) 15%, hsl(190 100% 64%) 20%, hsl(232 100% 72%) 25%,
+    hsl(282 100% 74%) 30%, hsl(352 100% 72%) 35%
+  );
+  --ch-foil-prata: repeating-linear-gradient(
+    118deg,
+    #6f7a8c 0%, #e9eef6 4%, #8d97a8 8%, #c9d6e6 12%, #f7fbff 15%,
+    #7c879a 19%, #b8c4d4 24%, #eef3fa 28%, #6f7a8c 33%
+  );
+  --ch-foil-dourado: repeating-linear-gradient(
+    118deg,
+    #7a4a10 0%, #f7d27a 5%, #b97b1f 10%, #ffe9a8 14%, #fff6d8 16%,
+    #c98c2c 21%, #8a5514 26%, #f1c766 30%, #7a4a10 34%
+  );
+
+  --ch-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 2. BASE ------------------------------------------------------------------ */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+.ch-body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ch-fundo);
+  color: var(--ch-texto);
+  font-family: var(--ch-fonte-texto);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Fundo: holofote suave + grade de pontos que some nas bordas */
+.ch-body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 50% 55%, hsl(255 45% 16% / 0.9), transparent 70%),
+    radial-gradient(30% 30% at 20% 60%, hsl(238 70% 30% / 0.25), transparent 70%),
+    radial-gradient(30% 30% at 80% 60%, hsl(18 80% 30% / 0.22), transparent 70%);
+}
+.ch-body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(hsl(0 0% 100% / 0.07) 1px, transparent 1.2px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(70% 60% at 50% 50%, #000 30%, transparent 80%);
+}
+
+.ch-pagina {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(28px, 4.5vh, 48px);
+  padding: 40px 24px 36px;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 7px 2px;
+  border-radius: 6px;
+  border: 1px solid hsl(0 0% 100% / 0.18);
+  border-bottom-width: 2px;
+  background: hsl(0 0% 100% / 0.05);
+  font-family: var(--ch-fonte-rotulo);
+  font-size: 0.85em;
+  color: var(--ch-texto);
+}
+
+/* 3. CABEÇALHO E LEGENDA --------------------------------------------------- */
+.ch-cabecalho {
+  max-width: 720px;
+  text-align: center;
+  animation: ch-aparece 0.9s var(--ch-ease) both;
+}
+.ch-cabecalho__selo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-family: var(--ch-fonte-rotulo);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ch-destaque);
+}
+.ch-cabecalho__titulo {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(30px, 3.6vw, 50px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.ch-cabecalho__titulo span {
+  background: linear-gradient(100deg, #ff8fb1, #ffd36e 30%, #7cf0c5 55%, #7fb2ff 78%, #c69bff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.ch-cabecalho__texto {
+  margin: 14px auto 0;
+  max-width: 40em;
+  color: var(--ch-texto-suave);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.ch-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px 32px;
+  color: var(--ch-texto-suave);
+  font-size: 14px;
+  animation: ch-aparece 0.9s var(--ch-ease) 0.6s both;
+}
+.ch-legenda__foils {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ch-legenda__foils li { display: inline-flex; align-items: center; gap: 8px; }
+.ch-legenda__dica { margin: 0; }
+.ch-amostra {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1px solid hsl(0 0% 100% / 0.3);
+  background-size: 300% 300%;
+}
+.ch-amostra--arco { background-image: var(--ch-foil-arco); }
+.ch-amostra--prata { background-image: var(--ch-foil-prata); }
+.ch-amostra--dourado { background-image: var(--ch-foil-dourado); }
+
+/* 4. GALERIA E SLOTS ------------------------------------------------------- */
+.ch-galeria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(28px, 4vw, 64px);
+  width: 100%;
+  max-width: 1200px;
+  padding: 24px 0 18px;
+}
+
+/* Cada slot segura uma carta. --rz e --ty montam o "leque" no estado inicial */
+.ch-slot {
+  --rz: 0deg;
+  --ty: 0px;
+  position: relative;
+  width: var(--ch-largura-carta);
+  transform: translateY(var(--ty)) rotate(var(--rz));
+  transition: transform 0.7s var(--ch-ease);
+  animation: ch-entra 1s var(--ch-ease) both;
+  animation-delay: calc(0.12s + var(--i, 0) * 0.13s);
+}
+.ch-slot:nth-child(3n + 1) { --rz: -5deg; --ty: 16px; }
+.ch-slot:nth-child(3n + 2) { --rz: 0deg; --ty: -12px; }
+.ch-slot:nth-child(3n + 3) { --rz: 5deg; --ty: 16px; }
+
+/* Brilho colorido atrás de cada carta (usa o --hue dela) */
+.ch-slot::before {
+  content: "";
+  position: absolute;
+  inset: 12% -8% 6%;
+  z-index: -1;
+  border-radius: 40%;
+  background: hsl(var(--hue) 85% 55% / 0.28);
+  filter: blur(46px);
+  opacity: 0.75;
+  transition: opacity 0.5s, transform 0.5s var(--ch-ease);
+}
+
+/* Em interação, a carta endireita e sobe um pouco */
+.ch-slot.ch-ativo,
+.ch-slot:focus-within { --rz: 0deg; --ty: -18px; z-index: 2; }
+.ch-slot.ch-ativo::before { opacity: 1; transform: scale(1.08); }
+
+/* 5. CARTA: ESTRUTURA 3D --------------------------------------------------- */
+/* Variáveis escritas pelo script.js a cada quadro (sem unidade):
+   --rx / --ry  inclinação em graus      --px / --py  ponteiro em % (0–100)
+   --ativo      intensidade do brilho 0–1 --flut       flutuação em px        */
+.ch-carta {
+  --rx: 5;
+  --ry: -10;
+  --px: 30;
+  --py: 30;
+  --ativo: 0.4;
+  --flut: 0;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 63 / 88;
+  perspective: 1000px;
+  container-type: inline-size; /* textos da carta escalam com a largura (unidade cqi) */
+  touch-action: pan-y; /* no celular a rolagem vertical continua funcionando */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ch-carta__rotor {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform:
+    translateY(calc(var(--flut) * 1px))
+    rotateX(calc(var(--rx) * 1deg))
+    rotateY(calc(var(--ry) * 1deg))
+    scale(calc(1 + var(--ativo) * 0.025));
+  pointer-events: none; /* os eventos ficam na caixa plana da carta: sem tremedeira nas bordas */
+  will-change: transform;
+}
+
+.ch-carta__giro {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.3, 1.25, 0.4, 1);
+}
+.ch-carta.ch-virada .ch-carta__giro { transform: rotateY(180deg); }
+
+.ch-face {
+  /* --gx/--gy: posição do ponteiro na face (no verso, espelhada) */
+  --gx: var(--px);
+  --gy: var(--py);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--ch-raio);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: rotateY(0deg);
+  isolation: isolate;
+  background:
+    linear-gradient(165deg, hsl(var(--hue) 50% 20%), hsl(var(--hue) 55% 8%) 70%);
+  box-shadow:
+    inset 0 0 0 1px hsl(var(--hue) 80% 80% / 0.35),
+    inset 0 0 0 7px hsl(var(--hue) 45% 11%),
+    inset 0 0 0 8px hsl(var(--hue) 80% 75% / 0.3);
+}
+.ch-face--verso {
+  --gx: calc(100 - var(--px));
+  transform: rotateY(180deg);
+  background:
+    repeating-linear-gradient(45deg, hsl(var(--hue) 60% 60% / 0.05) 0 2px, transparent 2px 10px),
+    linear-gradient(165deg, hsl(var(--hue) 45% 16%), hsl(var(--hue) 55% 7%) 75%);
+}
+
+.ch-face__conteudo {
+  position: absolute;
+  inset: 5.2cqi;
+  display: flex;
+  flex-direction: column;
+  gap: 3.1cqi;
+  z-index: 1;
+}
+
+/* Botão transparente que cobre a carta (clique, Enter e Espaço) */
+.ch-carta__virar {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ch-raio);
+  background: transparent;
+  cursor: pointer;
+}
+
+/* 6. FRENTE ---------------------------------------------------------------- */
+.ch-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ch-nome {
+  margin: 0;
+  font-family: var(--ch-fonte-rotulo);
+  font-weight: 700;
+  font-size: 7.2cqi;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 10px hsl(var(--hue) 90% 60% / 0.6);
+}
+.ch-poder, .ch-num {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 1.4cqi 2.8cqi;
+  border-radius: 8px;
+  background: hsl(var(--hue) 60% 70% / 0.14);
+  border: 1px solid hsl(var(--hue) 80% 80% / 0.3);
+  font-family: var(--ch-fonte-rotulo);
+  font-weight: 700;
+  font-size: 5.5cqi;
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.ch-poder small {
+  font-size: 3.3cqi;
+  letter-spacing: 0.12em;
+  color: hsl(var(--hue) 80% 86%);
+}
+
+.ch-arte {
+  position: relative;
+  aspect-ratio: 260 / 196;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px hsl(var(--hue) 80% 80% / 0.35),
+    0 10px 24px -10px hsl(var(--hue) 80% 10% / 0.9);
+}
+.ch-arte svg { display: block; width: 100%; height: 100%; }
+
+/* Profundidade da ilustração: cada camada (.ch-plano) desliza conforme o
+   ponteiro (--px/--py, 0–100). --prof = distância até o "vidro":
+   0 = fundo parado, 4 = primeiríssimo plano. As formas de fundo passam da
+   borda do viewBox para nunca abrir buraco. */
+.ch-plano {
+  transform: translate(
+    calc((var(--px) - 50) * var(--prof, 1) * -0.055px),
+    calc((var(--py) - 50) * var(--prof, 1) * -0.04px)
+  );
+}
+
+/* Vinheta + granulado sobre a arte (o ruído é um SVG em data URI: nada
+   externo, renderizado uma vez e reaproveitado) */
+.ch-arte::before,
+.ch-arte::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.ch-arte::before {
+  z-index: 1;
+  background: radial-gradient(120% 95% at 50% 40%, transparent 55%, hsl(var(--hue) 70% 4% / 0.55) 100%);
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.18);
+}
+.ch-arte::after {
+  z-index: 2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url%28%23g%29'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  mix-blend-mode: overlay;
+  opacity: 0.32;
+}
+
+/* Estrelas e fagulhas que cintilam (--d = atraso). Só opacidade: algumas
+   fagulhas já usam o atributo transform (losango girado). */
+.ch-cintila {
+  animation: ch-cintila 2.8s ease-in-out var(--d, 0s) infinite alternate;
+}
+@keyframes ch-cintila {
+  from { opacity: 1; }
+  to { opacity: 0.2; }
+}
+
+.ch-tipo {
+  display: flex;
+  justify-content: space-between;
+  margin: 2px 0 0;
+  padding-bottom: 7px;
+  border-bottom: 1px solid hsl(var(--hue) 70% 80% / 0.18);
+  font-family: var(--ch-fonte-rotulo);
+  font-size: 3.8cqi;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(var(--hue) 80% 86%);
+}
+.ch-texto {
+  margin: 0;
+  font-size: 4.5cqi;
+  line-height: 1.5;
+  color: hsl(var(--hue) 25% 88%);
+}
+.ch-rodape {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  font-family: var(--ch-fonte-rotulo);
+  font-size: 3.45cqi;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: hsl(var(--hue) 30% 74%);
+}
+
+/* 7. VERSO ----------------------------------------------------------------- */
+.ch-emblema {
+  display: grid;
+  place-items: center;
+  height: 27%;
+  color: hsl(var(--hue) 85% 78%);
+  filter: drop-shadow(0 0 14px hsl(var(--hue) 90% 60% / 0.55));
+}
+.ch-emblema svg { height: 100%; width: auto; }
+
+.ch-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3.1cqi;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ch-stat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 8px;
+  font-family: var(--ch-fonte-rotulo);
+  font-size: 4cqi;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ch-stat__nome { color: hsl(var(--hue) 30% 80%); }
+.ch-stat__valor { color: #fff; font-variant-numeric: tabular-nums; }
+.ch-stat__barra {
+  grid-column: 1 / -1;
+  height: 5px;
+  border-radius: 5px;
+  background: hsl(0 0% 100% / 0.1);
+  overflow: hidden;
+  position: relative;
+}
+.ch-stat__barra::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: calc(var(--valor) * 1%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, hsl(var(--hue) 85% 55%), hsl(calc(var(--hue) + 40) 95% 72%));
+  box-shadow: 0 0 10px hsl(var(--hue) 90% 60% / 0.7);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.8s var(--ch-ease) 0.35s;
+}
+/* As barras crescem quando a carta vira */
+.ch-carta.ch-virada .ch-stat__barra::after { transform: scaleX(1); }
+.ch-carta.ch-virada .ch-stat:nth-child(2) .ch-stat__barra::after { transition-delay: 0.42s; }
+.ch-carta.ch-virada .ch-stat:nth-child(3) .ch-stat__barra::after { transition-delay: 0.49s; }
+.ch-carta.ch-virada .ch-stat:nth-child(4) .ch-stat__barra::after { transition-delay: 0.56s; }
+
+.ch-ficha {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: auto 0 0;
+}
+.ch-ficha div {
+  padding: 7px 6px;
+  border-radius: 8px;
+  background: hsl(var(--hue) 60% 70% / 0.08);
+  border: 1px solid hsl(var(--hue) 80% 80% / 0.16);
+  text-align: center;
+  min-width: 0;
+}
+.ch-ficha dt {
+  font-family: var(--ch-fonte-rotulo);
+  font-size: 3.1cqi;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(var(--hue) 30% 74%);
+}
+.ch-ficha dd {
+  margin: 2px 0 0;
+  font-size: 4.1cqi;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 8. CAMADAS HOLOGRÁFICAS -------------------------------------------------- */
+/* Foil: faixas de cor repetidas (var(--foil)) que deslizam com o ângulo,
+   raios cônicos centrados no ponteiro e mistura color-dodge. */
+.ch-foil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background-image:
+    repeating-conic-gradient(
+      from calc(var(--ry) * 3deg) at calc(var(--gx) * 1%) calc(var(--gy) * 1%),
+      hsl(0 0% 100% / 0) 0deg, hsl(0 0% 100% / 0.16) 2.5deg, hsl(0 0% 100% / 0) 5deg
+    ),
+    repeating-linear-gradient(0deg, hsl(0 0% 0% / 0.18) 0 1px, transparent 1px 3px),
+    var(--foil, var(--ch-foil-arco));
+  background-size: 100% 100%, 100% 100%, 260% 260%;
+  background-position:
+    center,
+    center,
+    calc(var(--gx) * 1%) calc(var(--gy) * 1%);
+  background-blend-mode: overlay, multiply, normal;
+  mix-blend-mode: color-dodge;
+  opacity: calc(0.2 + var(--ativo) * 0.6);
+  filter: brightness(0.75) contrast(1.6) saturate(1.15);
+  /* O foil é mais forte na moldura e na arte, mais suave sobre o texto */
+  -webkit-mask-image: linear-gradient(180deg, #000 0 64%, rgb(0 0 0 / 0.55) 74%, rgb(0 0 0 / 0.75) 100%);
+  mask-image: linear-gradient(180deg, #000 0 64%, rgb(0 0 0 / 0.55) 74%, rgb(0 0 0 / 0.75) 100%);
+}
+
+/* Segunda passada do foil em overlay: dá cor também às áreas escuras */
+.ch-foil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--foil, var(--ch-foil-arco));
+  background-size: 300% 300%;
+  background-position: calc(100% - var(--gx) * 1%) calc(var(--gy) * 1%);
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+
+/* Reflexo especular que segue o ponteiro */
+.ch-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      farthest-corner circle at calc(var(--gx) * 1%) calc(var(--gy) * 1%),
+      hsl(0 0% 100% / 0.85) 0%, hsl(0 0% 100% / 0.28) 18%, hsl(0 0% 0% / 0.0) 45%, hsl(0 0% 0% / 0.45) 100%
+    );
+  mix-blend-mode: overlay;
+  opacity: calc(0.2 + var(--ativo) * 0.65);
+}
+/* Ponto de luz mais nítido, em soft-light */
+.ch-glare::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at calc(var(--gx) * 1%) calc(var(--gy) * 1%),
+    hsl(0 0% 100% / 0.6) 0%, hsl(0 0% 100% / 0) 30%
+  );
+  mix-blend-mode: soft-light;
+  opacity: var(--ativo);
+}
+
+/* 9. FOCO, SOMBRA E ENTRADA ------------------------------------------------ */
+.ch-carta__virar:focus { outline: none; }
+.ch-carta__virar:focus-visible {
+  outline: 2px solid hsl(var(--hue) 90% 72%);
+  outline-offset: 8px;
+}
+
+.ch-sombra {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -30px;
+  height: 34px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, hsl(var(--hue) 60% 4% / 0.95), transparent);
+  filter: blur(6px);
+  transform:
+    translateX(calc(var(--sx, 0) * 1px))
+    scale(calc(1 - var(--sf, 0) * 0.012));
+  opacity: 0.85;
+}
+
+@keyframes ch-entra {
+  from { opacity: 0; translate: 0 70px; scale: 0.9; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
+}
+@keyframes ch-aparece {
+  from { opacity: 0; translate: 0 14px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+/* 10. RESPONSIVO ----------------------------------------------------------- */
+@media (max-width: 960px) {
+  .ch-galeria { gap: 56px 40px; }
+}
+
+@media (max-width: 640px) {
+  :root { --ch-largura-carta: min(300px, 80vw); }
+  .ch-pagina { padding: 32px 16px 40px; gap: 24px; justify-content: flex-start; }
+  .ch-cabecalho__texto { font-size: 15px; }
+  .ch-galeria { flex-direction: column; gap: 64px; padding-top: 16px; }
+  /* Sem leque na coluna: as cartas ficam retas, alternando levemente */
+  .ch-slot:nth-child(n) { --ty: 0px; --rz: 0deg; }
+  .ch-slot.ch-ativo, .ch-slot:focus-within { --ty: -6px; }
+}
+
+/* 11. MOVIMENTO REDUZIDO --------------------------------------------------- */
+/* Sem inclinação, sem flutuação: uma pose estática bonita com o foil visível. */
+@media (prefers-reduced-motion: reduce) {
+  .ch-slot, .ch-cabecalho, .ch-legenda { animation: none; }
+  .ch-slot { transition: none; }
+  .ch-carta__giro { transition: transform 0.01ms; }
+  .ch-stat__barra::after { transition: none; }
+  .ch-cintila { animation: none; }
+}

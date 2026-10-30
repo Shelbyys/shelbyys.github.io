@@ -1,0 +1,381 @@
+/* ==========================================================================
+   MENUS ANIMADOS — estilo.css
+   --------------------------------------------------------------------------
+   1. Tokens (:root)              → cores, fontes, curvas. Troque aqui.
+   2. Página da galeria (.ma-pagina, .ma-palco…) → só a moldura da demo.
+   3. Os 10 menus, um bloco por prefixo:
+      .ma-hamb · .ma-holo · .ma-mega · .ma-lateral · .ma-sub ·
+      .ma-rol · .ma-radial · .ma-sanfona · .ma-ctx · .ma-cortina
+      Cada bloco é independente: copie só o que usar.
+   4. Movimento reduzido
+   ========================================================================== */
+
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+:root {
+  --ma-fundo: #f4f1ea;          /* fundo creme da página */
+  --ma-papel: #ffffff;          /* superfícies */
+  --ma-papel-2: #faf8f3;
+  --ma-tinta: #15141a;          /* texto e superfícies escuras */
+  --ma-tinta-2: #3a3842;
+  --ma-suave: #6d6a78;          /* texto secundário */
+  --ma-linha: #e4e0d6;
+  --ma-linha-forte: #cfcabd;
+  --ma-azul: #2b4cff;           /* acento principal */
+  --ma-azul-escuro: #1d37c9;
+  --ma-azul-claro: #e6ebff;
+  --ma-coral: #ff5a36;          /* acento 2 (perigo, detalhes) */
+  --ma-limao: #dcff4d;          /* acento 3 (superfícies escuras) */
+
+  --ma-fonte: "Plus Jakarta Sans", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --ma-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --ma-raio: 14px;
+  --ma-raio-g: 22px;
+  --ma-mola: cubic-bezier(0.34, 1.56, 0.64, 1);     /* passa do ponto e volta */
+  --ma-suave-saida: cubic-bezier(0.16, 1, 0.3, 1);  /* chega rápido, assenta devagar */
+  --ma-sombra: 0 24px 50px -24px rgba(21, 20, 26, 0.35), 0 2px 6px rgba(21, 20, 26, 0.06);
+}
+
+/* ==========================================================================
+   2. PÁGINA DA GALERIA
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--ma-fundo);
+  color: var(--ma-tinta);
+  font: 400 16px/1.5 var(--ma-fonte);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p, ul, ol { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--ma-azul); outline-offset: 3px; border-radius: 6px; }
+.ma-icone { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.ma-pagina { width: min(100% - 32px, 1280px); margin-inline: auto; padding: 36px 0 40px; }
+
+/* --- Cabeçalho --- */
+.ma-topo { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 40px; align-items: end; margin-bottom: 28px; }
+.ma-topo__eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ma-suave); }
+.ma-topo__ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--ma-azul); box-shadow: 0 0 0 4px var(--ma-azul-claro); }
+.ma-topo__titulo { font-size: clamp(2.6rem, 5.4vw, 4.6rem); font-weight: 800; line-height: 0.98; letter-spacing: -0.04em; }
+.ma-topo__titulo em { font-style: normal; color: var(--ma-azul); }
+.ma-topo__sub { max-width: 68ch; margin-top: 14px; font-size: 1.05rem; color: var(--ma-suave); }
+.ma-topo__sub strong { color: var(--ma-tinta); font-weight: 600; }
+.ma-topo__selos { display: flex; flex-wrap: wrap; gap: 8px; }
+.ma-topo__selos li { padding: 6px 12px; border: 1px solid var(--ma-linha); border-radius: 999px; background: var(--ma-papel); font-size: 12.5px; font-weight: 600; color: var(--ma-suave); white-space: nowrap; }
+
+/* --- Palcos --- */
+.ma-galeria { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.ma-palco { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--ma-linha); border-radius: var(--ma-raio-g); background: var(--ma-papel); }
+.ma-palco--largo { grid-column: 1 / -1; }
+.ma-palco__cab { display: flex; align-items: center; gap: 14px; padding: 14px 16px 14px 18px; border-bottom: 1px solid var(--ma-linha); }
+.ma-palco__num { flex: none; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--ma-tinta); color: var(--ma-limao); font: 700 12.5px var(--ma-mono); }
+.ma-palco__titulos { min-width: 0; flex: 1; }
+.ma-palco__nome { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+.ma-palco__dica { margin-top: 2px; font-size: 13px; color: var(--ma-suave); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ma-copiar { flex: none; display: inline-flex; align-items: center; gap: 7px; padding: 8px 12px 8px 10px; border: 1px solid var(--ma-linha); border-radius: 999px; background: var(--ma-papel); font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+.ma-copiar .ma-icone { width: 16px; height: 16px; }
+.ma-copiar:hover { background: var(--ma-tinta); border-color: var(--ma-tinta); color: #fff; }
+.ma-copiar.is-copiado { background: var(--ma-azul-claro); border-color: var(--ma-azul); color: var(--ma-azul); }
+
+.ma-palco__area {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 360px;
+  padding: 28px;
+  overflow: hidden;
+  background: radial-gradient(rgba(21, 20, 26, 0.07) 1px, transparent 1.2px) 0 0 / 18px 18px, var(--ma-papel-2);
+}
+.ma-palco__area--topo { align-items: flex-start; min-height: 420px; }
+.ma-palco__area--mega { min-height: 330px; }
+.ma-palco__area--esquerda { justify-content: flex-start; align-items: stretch; padding: 0; }
+.ma-palco__area--escuro { background: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.2px) 0 0 / 18px 18px, #17161d; }
+.ma-palco__area--pagina { align-items: stretch; padding: 0; min-height: 440px; }
+
+.ma-rodape { margin-top: 22px; font-size: 14px; color: var(--ma-suave); }
+.ma-rodape code { padding: 1px 6px; border-radius: 5px; background: #e9e6dd; color: var(--ma-tinta); font: 500 0.9em var(--ma-mono); }
+
+.ma-toast { position: fixed; left: 50%; bottom: 22px; z-index: 90; padding: 11px 18px; border-radius: 999px; background: var(--ma-tinta); color: #fff; font-size: 14px; font-weight: 500; box-shadow: var(--ma-sombra); opacity: 0; visibility: hidden; transform: translate(-50%, 14px); transition: opacity 0.25s, transform 0.25s, visibility 0s 0.25s; pointer-events: none; }
+.ma-toast.is-visivel { opacity: 1; visibility: visible; transform: translate(-50%, 0); transition: opacity 0.25s, transform 0.25s; }
+
+.ma-botao-mini { display: inline-flex; align-items: center; height: 34px; padding: 0 14px; border-radius: 999px; background: var(--ma-tinta); color: #fff; font-size: 13.5px; font-weight: 600; text-decoration: none; }
+
+/* ==========================================================================
+   3. OS MENUS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01 · HAMBÚRGUER EM CASCATA · .ma-hamb
+   O botão troca de estado por aria-expanded (o JS só alterna o atributo).
+   -------------------------------------------------------------------------- */
+.ma-hamb { position: relative; width: 100%; max-width: 420px; }
+.ma-hamb__barra { display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 8px 0 20px; border-radius: 999px; background: var(--ma-papel); border: 1px solid var(--ma-linha); box-shadow: 0 10px 30px -20px rgba(21, 20, 26, 0.35); }
+.ma-hamb__marca { font-weight: 800; letter-spacing: -0.03em; font-size: 20px; }
+.ma-hamb__marca i { font-style: normal; color: var(--ma-azul); }
+.ma-hamb__botao { position: relative; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--ma-tinta); cursor: pointer; transition: background 0.3s, transform 0.3s var(--ma-mola); }
+.ma-hamb__botao:hover { transform: scale(1.06); }
+.ma-hamb__botao span { position: absolute; left: 13px; width: 18px; height: 2px; border-radius: 2px; background: #fff; transition: transform 0.45s var(--ma-mola), opacity 0.2s, width 0.3s; }
+.ma-hamb__botao span:nth-child(1) { top: 15px; }
+.ma-hamb__botao span:nth-child(2) { top: 21px; width: 12px; }
+.ma-hamb__botao span:nth-child(3) { top: 27px; }
+.ma-hamb__botao[aria-expanded="true"] { background: var(--ma-azul); }
+.ma-hamb__botao[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.ma-hamb__botao[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.ma-hamb__botao[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+.ma-hamb__painel { position: absolute; left: 0; right: 0; top: calc(100% + 10px); padding: 10px; border-radius: var(--ma-raio-g); background: var(--ma-papel); border: 1px solid var(--ma-linha); box-shadow: var(--ma-sombra); transform-origin: top right; opacity: 0; visibility: hidden; transform: translateY(-10px) scale(0.96); transition: opacity 0.25s, transform 0.4s var(--ma-mola), visibility 0s 0.4s; }
+.ma-hamb.is-aberto .ma-hamb__painel { opacity: 1; visibility: visible; transform: none; transition: opacity 0.25s, transform 0.45s var(--ma-mola); }
+.ma-hamb__painel li, .ma-hamb__rodape { opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.5s var(--ma-suave-saida); transition-delay: 0s; }
+.ma-hamb.is-aberto .ma-hamb__painel li, .ma-hamb.is-aberto .ma-hamb__rodape { opacity: 1; transform: none; transition-delay: calc(80ms + var(--i, 0) * 45ms); }
+.ma-hamb__painel a { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; font-weight: 600; text-decoration: none; transition: background 0.2s, color 0.2s, padding-left 0.3s var(--ma-mola); }
+.ma-hamb__painel a .ma-icone { color: var(--ma-suave); transition: color 0.2s; }
+.ma-hamb__painel a:hover { background: var(--ma-azul-claro); color: var(--ma-azul); padding-left: 18px; }
+.ma-hamb__painel a:hover .ma-icone { color: var(--ma-azul); }
+.ma-hamb__rodape { margin: 6px 12px 4px; padding-top: 10px; border-top: 1px solid var(--ma-linha); font-size: 13px; color: var(--ma-suave); }
+
+/* --------------------------------------------------------------------------
+   02 · PÍLULAS COM HOLOFOTE · .ma-holo
+   --mx/--my (luz) e --x/--w (pílula) vêm do JS.
+   -------------------------------------------------------------------------- */
+.ma-holo { --mx: 50%; --my: 50%; --x: 0px; --y: 6px; --w: 0px; --h: 40px; position: relative; max-width: 100%; padding: 6px; border-radius: 999px; background: #23222b; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 30px 60px -30px rgba(0, 0, 0, 0.8); isolation: isolate; overflow: hidden; }
+.ma-holo::before { /* a luz que segue o cursor */ content: ""; position: absolute; inset: 0; z-index: 0; background: radial-gradient(140px circle at var(--mx) var(--my), rgba(220, 255, 77, 0.22), transparent 60%); opacity: 0; transition: opacity 0.35s; pointer-events: none; }
+.ma-holo:hover::before, .ma-holo:focus-within::before { opacity: 1; }
+.ma-holo ul { position: relative; z-index: 2; display: flex; gap: 2px; }
+.ma-holo a { display: block; padding: 10px 18px; border-radius: 999px; color: rgba(255, 255, 255, 0.72); font-size: 14.5px; font-weight: 600; text-decoration: none; white-space: nowrap; transform: translate(var(--tx, 0), var(--ty, 0)); transition: color 0.25s, transform 0.3s var(--ma-suave-saida); }
+.ma-holo a:hover, .ma-holo a:focus-visible, .ma-holo a[aria-current="page"] { color: var(--ma-tinta); }
+.ma-holo.is-apontando a[aria-current="page"]:not(:hover) { color: rgba(255, 255, 255, 0.72); }
+.ma-holo__pilula { position: absolute; z-index: 1; top: var(--y); left: 0; width: var(--w); height: var(--h); border-radius: 999px; background: var(--ma-limao); box-shadow: 0 0 24px rgba(220, 255, 77, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.2) inset; transform: translateX(var(--x)); transition: transform 0.5s var(--ma-mola), width 0.5s var(--ma-mola), top 0.4s var(--ma-suave-saida), height 0.4s var(--ma-suave-saida); }
+
+/* --------------------------------------------------------------------------
+   03 · MEGA MENU QUE MORFA · .ma-mega
+   Um único .ma-mega__flutuante recebe largura, altura e --x do JS e os
+   painéis trocam por opacidade: a caixa parece "morfar" entre itens.
+   -------------------------------------------------------------------------- */
+.ma-mega { position: relative; width: 100%; }
+.ma-mega__barra { display: flex; align-items: center; gap: 4px; height: 58px; padding: 0 10px 0 18px; border-radius: 999px; background: var(--ma-papel); border: 1px solid var(--ma-linha); box-shadow: 0 10px 30px -20px rgba(21, 20, 26, 0.35); }
+.ma-mega__marca { margin-right: 10px; font-weight: 800; letter-spacing: -0.03em; font-size: 19px; }
+.ma-mega__barra button, .ma-mega__barra > li > a:not(.ma-botao-mini) { display: block; padding: 9px 14px; border: 0; border-radius: 999px; background: transparent; color: var(--ma-tinta-2); font-size: 14.5px; font-weight: 600; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s; }
+.ma-mega__barra button:hover, .ma-mega__barra button[aria-expanded="true"], .ma-mega__barra > li > a:not(.ma-botao-mini):hover { background: var(--ma-fundo); color: var(--ma-tinta); }
+.ma-mega__acao { margin-left: auto; }
+.ma-mega__flutuante { position: absolute; left: 0; top: calc(100% + 10px); z-index: 5; width: 300px; height: 200px; border-radius: 18px; background: var(--ma-papel); border: 1px solid var(--ma-linha); box-shadow: var(--ma-sombra); transform: translateX(var(--x, 0px)); opacity: 0; transition: width 0.4s var(--ma-suave-saida), height 0.4s var(--ma-suave-saida), transform 0.4s var(--ma-suave-saida), opacity 0.2s; }
+.ma-mega__flutuante[hidden] { display: block; visibility: hidden; }
+.ma-mega__flutuante.is-visivel { opacity: 1; }
+.ma-mega__flutuante.is-entrando { transition: opacity 0.2s, transform 0s, width 0s, height 0s; }  /* 1ª abertura: aparece no lugar, sem deslizar de longe */
+.ma-mega__seta { position: absolute; top: -7px; left: var(--seta, 40px); width: 14px; height: 14px; border-radius: 3px 0 0 0; background: var(--ma-papel); border-left: 1px solid var(--ma-linha); border-top: 1px solid var(--ma-linha); transform: translateX(-50%) rotate(45deg); transition: left 0.4s var(--ma-suave-saida); }
+.ma-mega__conteudo { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: inherit; }
+.ma-mega__painel { position: absolute; inset: 0; padding: 14px; opacity: 0; transform: translateX(var(--dir, 0px)); transition: opacity 0.25s, transform 0.35s var(--ma-suave-saida); pointer-events: none; }
+.ma-mega__painel.is-ativo { opacity: 1; transform: none; pointer-events: auto; }
+.ma-mega__painel.is-medindo { position: static; visibility: hidden; opacity: 1; transform: none; }
+.ma-mega__painel a { color: inherit; text-decoration: none; border-radius: 10px; transition: background 0.2s, color 0.2s; }
+.ma-mega__painel--grade { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ma-mega__painel--grade a { display: grid; grid-template-columns: 38px 1fr; grid-template-rows: auto auto; column-gap: 10px; padding: 10px; }
+.ma-mega__painel--grade a .ma-icone { grid-row: 1 / span 2; width: 38px; height: 38px; padding: 9px; border-radius: 10px; background: var(--ma-azul-claro); color: var(--ma-azul); }
+.ma-mega__painel--grade a b { font-size: 14.5px; font-weight: 700; }
+.ma-mega__painel--grade a small { font-size: 12.5px; color: var(--ma-suave); }
+.ma-mega__painel--grade a:hover { background: var(--ma-fundo); }
+.ma-mega__painel--colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 18px; }
+.ma-mega__painel--colunas h3 { margin-bottom: 8px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ma-suave); }
+.ma-mega__painel--colunas a { display: block; padding: 7px 8px; margin: 0 -8px; font-size: 14.5px; font-weight: 600; }
+.ma-mega__painel--colunas a:hover { color: var(--ma-azul); }
+.ma-mega__painel--lista { display: grid; gap: 2px; padding: 10px; }
+.ma-mega__painel--lista a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; font-size: 14.5px; font-weight: 600; }
+.ma-mega__painel--lista a .ma-icone { color: var(--ma-suave); }
+.ma-mega__painel--lista a:hover { background: var(--ma-fundo); }
+
+/* --------------------------------------------------------------------------
+   04 · BARRA LATERAL QUE EXPANDE · .ma-lateral
+   Fechada: 68px. Abre no hover, no foco ou com o pino (.is-fixa).
+   O marcador do item ativo recebe --y do JS.
+   -------------------------------------------------------------------------- */
+.ma-lateral { --larg: 68px; --y: 0px; position: relative; z-index: 2; display: flex; flex-direction: column; width: var(--larg); height: 100%; min-height: 360px; padding: 12px 10px; background: var(--ma-tinta); color: #fff; border-right: 1px solid rgba(255, 255, 255, 0.06); transition: width 0.45s var(--ma-mola); overflow: hidden; }
+.ma-lateral:hover, .ma-lateral:focus-within, .ma-lateral.is-fixa { --larg: 224px; }
+.ma-lateral__topo { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 6px; margin-bottom: 10px; }
+.ma-lateral__logo { flex: none; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 11px; background: var(--ma-limao); color: var(--ma-tinta); font-weight: 800; }
+.ma-lateral__nome { flex: 1; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+.ma-lateral__pino { flex: none; width: 32px; height: 32px; display: grid; place-items: center; border: 0; border-radius: 9px; background: transparent; color: rgba(255, 255, 255, 0.55); cursor: pointer; transition: background 0.2s, color 0.2s, transform 0.3s; }
+.ma-lateral__pino:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.ma-lateral__pino[aria-pressed="true"] { color: var(--ma-limao); transform: rotate(-30deg); }
+.ma-lateral__pino .ma-icone { width: 17px; height: 17px; }
+.ma-lateral__nome, .ma-lateral__pino, .ma-lateral__lista span, .ma-lateral__badge { opacity: 0; transform: translateX(-8px); transition: opacity 0.25s, transform 0.4s var(--ma-suave-saida); transition-delay: 0s; }
+.ma-lateral:hover :is(.ma-lateral__nome, .ma-lateral__pino, .ma-lateral__lista span, .ma-lateral__badge),
+.ma-lateral:focus-within :is(.ma-lateral__nome, .ma-lateral__pino, .ma-lateral__lista span, .ma-lateral__badge),
+.ma-lateral.is-fixa :is(.ma-lateral__nome, .ma-lateral__pino, .ma-lateral__lista span, .ma-lateral__badge) { opacity: 1; transform: none; transition-delay: calc(60ms + var(--i, 0) * 35ms); }
+.ma-lateral__lista { display: grid; gap: 4px; }
+.ma-lateral__lista a { position: relative; display: flex; align-items: center; gap: 14px; height: 46px; padding: 0 14px; border-radius: 12px; color: rgba(255, 255, 255, 0.68); font-size: 14.5px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: color 0.2s, background 0.2s; }
+.ma-lateral__lista a:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
+.ma-lateral__lista a[aria-current="page"] { color: var(--ma-tinta); }
+.ma-lateral__lista .ma-icone { position: relative; z-index: 1; }
+.ma-lateral__lista span { position: relative; z-index: 1; flex: 1; }
+.ma-lateral__badge { flex: none; position: relative; z-index: 1; min-width: 22px; padding: 2px 7px; border-radius: 999px; background: var(--ma-coral); color: #fff; font-size: 11px; font-weight: 700; font-style: normal; text-align: center; }
+.ma-lateral__marcador { position: absolute; left: 10px; width: calc(100% - 20px); height: 46px; top: 0; border-radius: 12px; background: var(--ma-limao); transform: translateY(var(--y)); transition: transform 0.5s var(--ma-mola), width 0.45s var(--ma-mola); }
+.ma-lateral__conteudo { flex: 1; display: grid; grid-template-rows: 110px 1fr 1fr; gap: 14px; padding: 22px; }
+.ma-lateral__conteudo i { border-radius: 14px; background: #ecE9e1; }
+
+/* --------------------------------------------------------------------------
+   05 · SUBLINHADO DESLIZANTE · .ma-sub   (--x e --w vêm do JS)
+   -------------------------------------------------------------------------- */
+.ma-sub { --x: 0px; --y: 0px; --w: 0px; position: relative; max-width: 100%; }
+.ma-sub ul { display: flex; flex-wrap: wrap; gap: 4px 28px; }
+.ma-sub a { display: block; padding: 10px 2px; font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 600; letter-spacing: -0.01em; color: var(--ma-suave); text-decoration: none; transition: color 0.25s; }
+.ma-sub a:hover, .ma-sub a:focus-visible, .ma-sub a[aria-current="page"] { color: var(--ma-tinta); }
+.ma-sub__linha { position: absolute; left: 0; top: var(--y); height: 3px; width: var(--w); border-radius: 3px; background: var(--ma-azul); transform: translateX(var(--x)); transition: transform 0.45s var(--ma-mola), width 0.45s var(--ma-mola), top 0.35s var(--ma-suave-saida); }
+
+/* --------------------------------------------------------------------------
+   06 · LETRAS QUE ROLAM · .ma-rol
+   O JS duplica o texto em duas camadas de letras (.ma-rol__texto > i).
+   -------------------------------------------------------------------------- */
+.ma-rol ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 36px; }
+.ma-rol a { position: relative; display: inline-block; overflow: hidden; line-height: 1.22; font-size: clamp(1.7rem, 3.2vw, 2.6rem); font-weight: 800; letter-spacing: -0.04em; text-decoration: none; }
+.ma-rol__texto { display: block; white-space: nowrap; }
+.ma-rol__texto + .ma-rol__texto { position: absolute; left: 0; top: 0; color: var(--ma-azul); }
+.ma-rol__texto i { display: inline-block; font-style: normal; transform: translateY(var(--de, 0)); transition: transform 0.55s var(--ma-mola); transition-delay: calc(var(--i, 0) * 22ms); }
+.ma-rol__texto + .ma-rol__texto i { --de: 110%; }
+.ma-rol a:hover .ma-rol__texto i, .ma-rol a:focus-visible .ma-rol__texto i { transform: translateY(-110%); }
+.ma-rol a:hover .ma-rol__texto + .ma-rol__texto i, .ma-rol a:focus-visible .ma-rol__texto + .ma-rol__texto i { transform: translateY(0); }
+
+/* --------------------------------------------------------------------------
+   07 · MENU RADIAL · .ma-radial   (--a = ângulo do item, --i = ordem)
+   -------------------------------------------------------------------------- */
+.ma-radial { --raio: 112px; position: relative; width: 300px; max-width: 100%; height: 230px; }
+.ma-radial__gatilho { position: absolute; left: 50%; bottom: 24px; width: 64px; height: 64px; margin-left: -32px; border: 0; border-radius: 50%; background: var(--ma-azul); color: #fff; box-shadow: 0 18px 34px -14px rgba(43, 76, 255, 0.8); cursor: pointer; display: grid; place-items: center; transition: transform 0.5s var(--ma-mola), background 0.3s; }
+.ma-radial__gatilho .ma-icone { width: 26px; height: 26px; stroke-width: 2.2; }
+.ma-radial__gatilho:hover { transform: scale(1.06); }
+.ma-radial__gatilho[aria-expanded="true"] { background: var(--ma-tinta); transform: rotate(135deg); }
+.ma-radial__itens li { position: absolute; left: 50%; bottom: 24px; width: 64px; height: 64px; margin-left: -32px; display: grid; place-items: center; pointer-events: none; transform: rotate(var(--a)) translate(0) rotate(calc(var(--a) * -1)) scale(0.4); opacity: 0; transition: transform 0.55s var(--ma-mola), opacity 0.25s; transition-delay: calc((4 - var(--i, 0)) * 35ms); }
+.ma-radial.is-aberto .ma-radial__itens li { pointer-events: auto; opacity: 1; transform: rotate(var(--a)) translate(var(--raio)) rotate(calc(var(--a) * -1)); transition-delay: calc(var(--i, 0) * 45ms); }
+.ma-radial__itens button { position: relative; width: 50px; height: 50px; border: 1px solid var(--ma-linha); border-radius: 50%; background: var(--ma-papel); color: var(--ma-tinta); box-shadow: 0 12px 26px -14px rgba(21, 20, 26, 0.5); cursor: pointer; display: grid; place-items: center; transition: background 0.2s, color 0.2s, transform 0.3s var(--ma-mola); }
+.ma-radial__itens button:hover, .ma-radial__itens button:focus-visible { background: var(--ma-tinta); color: var(--ma-limao); transform: scale(1.1); }
+.ma-radial__itens button::after { /* rótulo */ content: attr(aria-label); position: absolute; top: calc(100% + 8px); left: 50%; padding: 4px 9px; border-radius: 7px; background: var(--ma-tinta); color: #fff; font-size: 12px; font-weight: 600; white-space: nowrap; opacity: 0; transform: translate(-50%, -4px); transition: opacity 0.2s, transform 0.3s var(--ma-mola); pointer-events: none; }
+.ma-radial__itens button:hover::after, .ma-radial__itens button:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+
+/* --------------------------------------------------------------------------
+   08 · SANFONA EM ÁRVORE · .ma-sanfona
+   Altura animada com grid-template-rows 0fr → 1fr (sem medir no JS).
+   -------------------------------------------------------------------------- */
+.ma-sanfona { width: 272px; max-width: 100%; min-height: 360px; padding: 16px 12px; background: var(--ma-papel); border-right: 1px solid var(--ma-linha); }
+.ma-sanfona > ul { display: grid; gap: 2px; }
+.ma-sanfona__grupo > button, .ma-sanfona__solto { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border: 0; border-radius: 11px; background: transparent; color: var(--ma-tinta); font-size: 14.5px; font-weight: 600; text-align: left; text-decoration: none; cursor: pointer; transition: background 0.2s; }
+.ma-sanfona__grupo > button:hover, .ma-sanfona__solto:hover { background: var(--ma-fundo); }
+.ma-sanfona__grupo > button span { flex: 1; }
+.ma-sanfona__grupo > button > .ma-icone:first-child, .ma-sanfona__solto .ma-icone { color: var(--ma-suave); }
+.ma-sanfona__grupo > button[aria-expanded="true"] > .ma-icone:first-child { color: var(--ma-azul); }
+.ma-sanfona__chevron { width: 18px; height: 18px; color: var(--ma-suave); transition: transform 0.45s var(--ma-mola); }
+.ma-sanfona__grupo > button[aria-expanded="true"] .ma-sanfona__chevron { transform: rotate(180deg); }
+.ma-sanfona__sub { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s var(--ma-suave-saida); }
+.ma-sanfona__sub > ul { min-height: 0; overflow: hidden; margin-left: 22px; padding-left: 14px; border-left: 1px solid var(--ma-linha); }
+.ma-sanfona__grupo > button[aria-expanded="true"] + .ma-sanfona__sub { grid-template-rows: 1fr; }
+.ma-sanfona__sub li { opacity: 0; transform: translateX(-8px); transition: opacity 0.25s, transform 0.35s var(--ma-suave-saida); transition-delay: 0s; }
+.ma-sanfona__grupo > button[aria-expanded="true"] + .ma-sanfona__sub li { opacity: 1; transform: none; transition-delay: calc(100ms + var(--i, 0) * 45ms); }
+.ma-sanfona__sub a { position: relative; display: block; padding: 8px 10px; border-radius: 8px; color: var(--ma-suave); font-size: 14px; font-weight: 500; text-decoration: none; transition: color 0.2s, background 0.2s; }
+.ma-sanfona__sub a::before { content: ""; position: absolute; left: -15px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: var(--ma-azul); transform: scale(0); transition: transform 0.3s var(--ma-mola); }
+.ma-sanfona__sub a:hover { color: var(--ma-tinta); background: var(--ma-fundo); }
+.ma-sanfona__sub a[aria-current="page"] { color: var(--ma-azul); font-weight: 600; }
+.ma-sanfona__sub a[aria-current="page"]::before { transform: scale(1); }
+
+/* --------------------------------------------------------------------------
+   09 · MENU DE CONTEXTO · .ma-ctx
+   Posição (--x/--y) e origem (transform-origin) vêm do JS.
+   -------------------------------------------------------------------------- */
+.ma-ctx { position: relative; width: 100%; height: 100%; min-height: 300px; display: grid; }
+.ma-ctx__zona { display: grid; place-content: center; justify-items: center; gap: 6px; padding: 24px; border: 1.5px dashed var(--ma-linha-forte); border-radius: 18px; background: var(--ma-papel); text-align: center; cursor: context-menu; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; transition: border-color 0.2s, background 0.2s; }
+.ma-ctx__zona:hover, .ma-ctx__zona[aria-expanded="true"] { border-color: var(--ma-azul); background: #fbfbff; }
+.ma-ctx__zona .ma-icone { width: 44px; height: 44px; padding: 10px; border-radius: 13px; background: var(--ma-azul-claro); color: var(--ma-azul); margin-bottom: 6px; }
+.ma-ctx__zona strong { font-size: 15.5px; }
+.ma-ctx__zona span { font-size: 13px; color: var(--ma-suave); max-width: 30ch; }
+.ma-ctx__menu { position: absolute; left: var(--x, 0px); top: var(--y, 0px); z-index: 6; min-width: 210px; padding: 6px; border-radius: 14px; background: var(--ma-papel); border: 1px solid var(--ma-linha); box-shadow: var(--ma-sombra); transform-origin: top left; opacity: 0; transform: scale(0.84); transition: opacity 0.18s, transform 0.35s var(--ma-mola); }
+.ma-ctx__menu[hidden] { display: block; visibility: hidden; }
+.ma-ctx__menu.is-aberto { opacity: 1; transform: none; }
+.ma-ctx__menu [role="separator"] { height: 1px; margin: 5px 8px; background: var(--ma-linha); }
+.ma-ctx__menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 9px; background: transparent; font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.ma-ctx__menu button .ma-icone { width: 17px; height: 17px; color: var(--ma-suave); }
+.ma-ctx__menu button kbd { margin-left: auto; font: 500 11.5px var(--ma-mono); color: var(--ma-suave); }
+.ma-ctx__menu button:hover, .ma-ctx__menu button:focus-visible { background: var(--ma-tinta); color: #fff; outline: none; }
+.ma-ctx__menu button:hover .ma-icone, .ma-ctx__menu button:hover kbd, .ma-ctx__menu button:focus-visible .ma-icone, .ma-ctx__menu button:focus-visible kbd { color: inherit; }
+.ma-ctx__perigo { color: #c4341a; }
+.ma-ctx__perigo .ma-icone { color: inherit !important; }
+.ma-ctx__menu .ma-ctx__perigo:hover, .ma-ctx__menu .ma-ctx__perigo:focus-visible { background: var(--ma-coral); }
+
+/* --------------------------------------------------------------------------
+   10 · CORTINA EM TELA CHEIA · .ma-cortina
+   A tela é absoluta dentro do bloco; no seu site, use position: fixed; inset: 0.
+   -------------------------------------------------------------------------- */
+.ma-cortina { position: relative; width: 100%; min-height: 440px; display: flex; flex-direction: column; background: var(--ma-papel); overflow: hidden; }
+.ma-cortina__cab { position: relative; z-index: 12; display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; }
+.ma-cortina__marca { font-weight: 800; letter-spacing: -0.03em; font-size: 18px; transition: color 0.4s; }
+.ma-cortina.is-aberta .ma-cortina__marca { color: #fff; }
+.ma-cortina__abrir { display: inline-flex; align-items: center; gap: 10px; padding: 9px 10px 9px 16px; border: 1px solid var(--ma-linha); border-radius: 999px; background: var(--ma-papel); font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.3s; }
+.ma-cortina__abrir i { width: 18px; height: 10px; background: linear-gradient(var(--ma-tinta), var(--ma-tinta)) top / 100% 2px no-repeat, linear-gradient(var(--ma-tinta), var(--ma-tinta)) bottom / 65% 2px no-repeat; background-position: top right, bottom right; transition: background-size 0.3s; }
+.ma-cortina__abrir:hover { border-color: var(--ma-tinta); }
+.ma-cortina__abrir:hover i { background-size: 100% 2px, 100% 2px; }
+.ma-cortina.is-aberta .ma-cortina__abrir { opacity: 0; pointer-events: none; }
+.ma-cortina__falso { flex: 1; display: grid; place-content: center; padding: 20px 28px 48px; text-align: center; }
+.ma-cortina__falso h3 { font-size: clamp(1.8rem, 3.4vw, 2.8rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.ma-cortina__falso p { margin-top: 10px; color: var(--ma-suave); }
+.ma-cortina__tela { position: absolute; inset: 0; z-index: 10; display: grid; grid-template-rows: 1fr auto; align-content: center; padding: 80px 28px 24px; color: #fff; }
+.ma-cortina__tela[hidden] { display: grid; visibility: hidden; }
+.ma-cortina__paineis { position: absolute; inset: 0; z-index: -1; display: grid; grid-template-columns: repeat(4, 1fr); }
+.ma-cortina__paineis i { display: block; background: var(--ma-tinta); transform: scaleY(0); transform-origin: top; transition: transform 0.6s var(--ma-suave-saida); }
+.ma-cortina__paineis i:nth-child(1) { transition-delay: 0ms; }
+.ma-cortina__paineis i:nth-child(2) { transition-delay: 70ms; background: #1b1a21; }
+.ma-cortina__paineis i:nth-child(3) { transition-delay: 140ms; }
+.ma-cortina__paineis i:nth-child(4) { transition-delay: 210ms; background: #1b1a21; }
+.ma-cortina.is-aberta .ma-cortina__paineis i { transform: scaleY(1); }
+.ma-cortina.is-fechando .ma-cortina__paineis i { transform-origin: bottom; transition-delay: calc(300ms - var(--k, 0) * 0ms); }
+.ma-cortina__fechar { position: absolute; top: 18px; right: 22px; z-index: 13; width: 46px; height: 46px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; background: rgba(255, 255, 255, 0.06); color: #fff; cursor: pointer; display: grid; place-items: center; opacity: 0; transform: rotate(-90deg) scale(0.6); transition: opacity 0.3s, transform 0.5s var(--ma-mola), background 0.2s; }
+.ma-cortina.is-aberta .ma-cortina__fechar { opacity: 1; transform: none; transition-delay: 350ms; }
+.ma-cortina__fechar:hover { background: var(--ma-limao); color: var(--ma-tinta); }
+.ma-cortina__tela ol { display: grid; gap: 4px; }
+.ma-cortina__tela li { overflow: hidden; }
+.ma-cortina__tela li a, .ma-cortina__rodape { display: inline-flex; align-items: baseline; gap: 16px; text-decoration: none; transform: translateY(110%); opacity: 0; transition: transform 0.7s var(--ma-suave-saida), opacity 0.4s; transition-delay: 0s; }
+.ma-cortina__tela li a { font-size: clamp(2.2rem, 5vw, 4.2rem); font-weight: 800; letter-spacing: -0.045em; line-height: 1.05; color: #fff; }
+.ma-cortina__tela li a small { font: 600 13px var(--ma-mono); color: var(--ma-limao); }
+.ma-cortina__tela li a:hover { color: var(--ma-limao); }
+.ma-cortina.is-aberta .ma-cortina__tela li a, .ma-cortina.is-aberta .ma-cortina__rodape { transform: none; opacity: 1; transition-delay: calc(320ms + var(--i, 0) * 70ms); }
+.ma-cortina__rodape { margin-top: 24px; font-size: 14px; color: rgba(255, 255, 255, 0.6); }
+.ma-cortina__rodape a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+/* --------------------------------------------------------------------------
+   Responsivo
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .ma-galeria { grid-template-columns: minmax(0, 1fr); }
+  .ma-topo { grid-template-columns: 1fr; align-items: start; }
+}
+@media (max-width: 640px) {
+  .ma-pagina { padding-top: 24px; }
+  .ma-palco__cab { flex-wrap: wrap; }
+  .ma-palco__dica { white-space: normal; }
+  .ma-copiar span { display: none; }
+  .ma-copiar { padding: 8px 10px; }
+  .ma-palco__area { padding: 20px 16px; }
+  .ma-holo a { padding: 9px 12px; font-size: 13.5px; }
+  .ma-holo ul { flex-wrap: wrap; justify-content: center; }
+  .ma-mega__barra { height: auto; flex-wrap: wrap; padding: 8px 10px; border-radius: 22px; }
+  .ma-mega__marca { width: 100%; margin: 4px 8px 6px; }
+  .ma-mega__acao { display: none; }
+  .ma-palco__area--mega { min-height: 480px; }   /* o painel fica mais alto em 2 colunas estreitas */
+  .ma-mega__painel--grade { grid-template-columns: 1fr; }
+  .ma-radial { --raio: 92px; height: 210px; }
+  .ma-lateral { min-height: 340px; }
+  .ma-lateral__conteudo { padding: 16px; }
+  .ma-cortina__tela { padding: 72px 20px 20px; }
+  .ma-cortina__cab { padding: 18px 20px; }
+}
+
+/* ==========================================================================
+   4. MOVIMENTO REDUZIDO — tudo troca de estado na hora, sem deslizar
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; transition-delay: 0s !important; animation-duration: 0.01ms !important; }
+}

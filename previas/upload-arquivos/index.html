@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload de Arquivos — zona de soltar, botão com progresso e avatar</title>
+  <meta name="description" content="Kit de upload em HTML, CSS e JavaScript puros: arrastar e soltar com progresso, botão que vira anel e foto de perfil com recorte.">
+  <meta name="theme-color" content="#0f1115">
+
+  <!-- Fontes: Manrope (texto) e JetBrains Mono (tamanhos e percentuais) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap">
+
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="up-corpo">
+
+  <a class="up-pular" href="#up-sec-zona">Pular para a zona de upload</a>
+
+  <!-- ================= CABEÇALHO ================= -->
+  <header class="up-cabecalho">
+    <div class="up-marca">
+      <span class="up-marca-icone" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 16V5M7.5 9.5L12 5l4.5 4.5"/><path d="M5 19h14"/></svg>
+      </span>
+      <div>
+        <h1 class="up-marca-nome">Upload de Arquivos</h1>
+        <p class="up-marca-sub">Kit com 3 variações · HTML, CSS e JS puros</p>
+      </div>
+    </div>
+
+    <nav class="up-nav" aria-label="Variações do kit">
+      <a href="#up-sec-zona"><span>01</span>Zona de soltar</a>
+      <a href="#up-sec-botao"><span>02</span>Botão com progresso</a>
+      <a href="#up-sec-avatar"><span>03</span>Avatar</a>
+    </nav>
+
+    <!-- A foto salva no avatar aparece aqui -->
+    <div class="up-usuario">
+      <img class="up-usuario-foto" id="up-perfil-foto" alt="Sua foto de perfil" width="36" height="36">
+      <span class="up-usuario-nome">Marina Couto<small>Conta pessoal</small></span>
+    </div>
+  </header>
+
+  <!-- ================= VARIAÇÕES ================= -->
+  <main class="up-principal">
+
+    <!-- 01 · Zona de soltar -->
+    <section class="up-cartao up-cartao-zona" id="up-sec-zona" aria-labelledby="up-t-zona">
+      <header class="up-cartao-topo">
+        <span class="up-num" aria-hidden="true">01</span>
+        <h2 id="up-t-zona">Zona de soltar</h2>
+        <p class="up-cartao-dica">Arraste, escolha ou cole · vários de uma vez</p>
+      </header>
+      <!-- Upload.criar() monta a zona e a lista aqui dentro -->
+      <div id="up-demo-zona"></div>
+    </section>
+
+    <div class="up-coluna">
+      <!-- 02 · Botão com progresso -->
+      <section class="up-cartao up-cartao-botao" id="up-sec-botao" aria-labelledby="up-t-botao">
+        <header class="up-cartao-topo">
+          <span class="up-num" aria-hidden="true">02</span>
+          <h2 id="up-t-botao">Botão com progresso</h2>
+          <p class="up-cartao-dica">Vira anel e termina em ✓</p>
+        </header>
+        <div class="up-palco-botao" id="up-demo-botao"></div>
+      </section>
+
+      <!-- 03 · Avatar -->
+      <section class="up-cartao up-cartao-avatar" id="up-sec-avatar" aria-labelledby="up-t-avatar">
+        <header class="up-cartao-topo">
+          <span class="up-num" aria-hidden="true">03</span>
+          <h2 id="up-t-avatar">Avatar</h2>
+          <p class="up-cartao-dica">Recorte com zoom e arraste</p>
+        </header>
+        <div id="up-demo-avatar"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrossel 3D — Cobertura, Anel e Pilha</title>
+  <meta name="description" content="Três carrosséis 3D em HTML, CSS e JavaScript puros: cobertura, anel e pilha, com arrastar, inércia, teclado e autoplay.">
+  <meta name="theme-color" content="#0b0c10">
+  <!-- Fontes (única dependência externa; o layout funciona sem elas, com fontes do sistema) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="c3-pagina">
+
+  <a class="c3-pular" href="#cobertura">Pular para os carrosséis</a>
+
+  <!-- ===================== TOPO ===================== -->
+  <header class="c3-topo">
+    <a class="c3-marca" href="#inicio" aria-label="Carrossel 3D — início">
+      <span class="c3-marca-icone" aria-hidden="true"><i></i><i></i><i></i></span>
+      Carrossel 3D
+    </a>
+    <nav class="c3-nav" aria-label="Modos do carrossel">
+      <a href="#cobertura">Cobertura</a>
+      <a href="#anel">Anel</a>
+      <a href="#pilha">Pilha</a>
+    </nav>
+  </header>
+
+  <main id="inicio">
+
+    <!-- ===================== HERÓI ===================== -->
+    <section class="c3-heroi" aria-labelledby="c3-titulo-heroi">
+      <div>
+        <p class="c3-sobretitulo"><span class="c3-ponto" aria-hidden="true"></span>3 modos · 1 biblioteca · zero dependências</p>
+        <h1 id="c3-titulo-heroi">Galerias com <em>profundidade</em> de verdade.</h1>
+      </div>
+      <p class="c3-heroi-texto">Arraste com o mouse ou o dedo, use as setas do teclado ou deixe girar sozinho. Inércia, encaixe no slide mais próximo e acessibilidade já resolvidos.</p>
+    </section>
+
+    <!-- ===================== 01 · COBERTURA ===================== -->
+    <section id="cobertura" class="c3-secao c3-secao--primeira" aria-labelledby="c3-t-cobertura">
+      <div class="c3-cabeca c3-cabeca--compacta">
+        <h2 id="c3-t-cobertura" class="c3-rotulo"><span>01</span>Cobertura</h2>
+        <code class="c3-codigo">Carrossel.criar(el, { modo: 'cobertura', autoplay: 4800 })</code>
+      </div>
+
+      <!--
+        Estrutura mínima de um carrossel:
+        .c3[data-c3-modo] > .c3-palco > .c3-trilho > .c3-slide > (seu conteúdo)
+        Os controles (setas, bolinhas, contador e play/pausa) são criados pelo script.
+      -->
+      <div class="c3" data-c3-modo="cobertura" data-c3-autoplay="4800" role="region" aria-roledescription="carrossel" aria-label="Destinos em destaque">
+        <div class="c3-palco">
+          <ul class="c3-trilho" aria-live="polite">
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--serra">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Montanha</span>
+                <div class="c3-info">
+                  <p class="c3-meta">1.920 m · 3 dias</p>
+                  <h3 class="c3-titulo">Serra Azul</h3>
+                  <p class="c3-legenda">Trilhas entre névoa e granito, com mirantes que acordam antes do sol.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--duna">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Deserto</span>
+                <div class="c3-info">
+                  <p class="c3-meta">42 km² · 2 dias</p>
+                  <h3 class="c3-titulo">Duna Clara</h3>
+                  <p class="c3-legenda">Areia fina que muda de cor a cada hora, do pêssego ao marfim.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--cobre">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Cânion</span>
+                <div class="c3-info">
+                  <p class="c3-meta">780 m · 4 dias</p>
+                  <h3 class="c3-titulo">Vale do Cobre</h3>
+                  <p class="c3-legenda">Paredões de rocha avermelhada e rios que correm em silêncio.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--ilha">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Litoral</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Barco · 1 dia</p>
+                  <h3 class="c3-titulo">Ilha Lume</h3>
+                  <p class="c3-legenda">Um farol, uma enseada e a lua desenhando caminhos no mar.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--bosque">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Floresta</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Trilha leve · 2 dias</p>
+                  <h3 class="c3-titulo">Bosque Ameixa</h3>
+                  <p class="c3-legenda">Copas violeta, cheiro de terra molhada e chalés escondidos.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--lago">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Lago</span>
+                <div class="c3-info">
+                  <p class="c3-meta">1.100 m · 3 dias</p>
+                  <h3 class="c3-titulo">Lago Vidro</h3>
+                  <p class="c3-legenda">Água tão parada que o céu aparece duas vezes na paisagem.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--brasa">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Vulcão</span>
+                <div class="c3-info">
+                  <p class="c3-meta">2.640 m · 5 dias</p>
+                  <h3 class="c3-titulo">Pico Brasa</h3>
+                  <p class="c3-legenda">Subida noturna até a cratera, onde o horizonte brilha em brasa.</p>
+                </div>
+              </article>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 02 · ANEL ===================== -->
+    <section id="anel" class="c3-secao" aria-labelledby="c3-t-anel">
+      <div class="c3-cabeca">
+        <div>
+          <h2 id="c3-t-anel" class="c3-rotulo"><span>02</span>Anel</h2>
+          <p class="c3-cabeca-titulo">Um cilindro que gira com o seu gesto.</p>
+        </div>
+        <div class="c3-cabeca-lado">
+          <p>Os cartões ficam distribuídos num anel 3D. Arraste rápido para girar com inércia: ao soltar, ele desacelera e encaixa no cartão mais próximo da frente.</p>
+          <code class="c3-codigo">Carrossel.criar(el, { modo: 'anel' })</code>
+        </div>
+      </div>
+
+      <div class="c3" data-c3-modo="anel" role="region" aria-roledescription="carrossel" aria-label="Roteiros em anel">
+        <div class="c3-palco">
+          <ul class="c3-trilho" aria-live="polite">
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--campo">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Planície</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Bicicleta · 2 dias</p>
+                  <h3 class="c3-titulo">Campo Âmbar</h3>
+                  <p class="c3-legenda">Colinas douradas, estradas de terra e pôr do sol sem pressa.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--serra">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Montanha</span>
+                <div class="c3-info">
+                  <p class="c3-meta">1.920 m · 3 dias</p>
+                  <h3 class="c3-titulo">Serra Azul</h3>
+                  <p class="c3-legenda">Trilhas entre névoa e granito, com mirantes que acordam antes do sol.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--brasa">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Vulcão</span>
+                <div class="c3-info">
+                  <p class="c3-meta">2.640 m · 5 dias</p>
+                  <h3 class="c3-titulo">Pico Brasa</h3>
+                  <p class="c3-legenda">Subida noturna até a cratera, onde o horizonte brilha em brasa.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--lago">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Lago</span>
+                <div class="c3-info">
+                  <p class="c3-meta">1.100 m · 3 dias</p>
+                  <h3 class="c3-titulo">Lago Vidro</h3>
+                  <p class="c3-legenda">Água tão parada que o céu aparece duas vezes na paisagem.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--duna">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Deserto</span>
+                <div class="c3-info">
+                  <p class="c3-meta">42 km² · 2 dias</p>
+                  <h3 class="c3-titulo">Duna Clara</h3>
+                  <p class="c3-legenda">Areia fina que muda de cor a cada hora, do pêssego ao marfim.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--bosque">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Floresta</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Trilha leve · 2 dias</p>
+                  <h3 class="c3-titulo">Bosque Ameixa</h3>
+                  <p class="c3-legenda">Copas violeta, cheiro de terra molhada e chalés escondidos.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--ilha">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Litoral</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Barco · 1 dia</p>
+                  <h3 class="c3-titulo">Ilha Lume</h3>
+                  <p class="c3-legenda">Um farol, uma enseada e a lua desenhando caminhos no mar.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--cobre">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Cânion</span>
+                <div class="c3-info">
+                  <p class="c3-meta">780 m · 4 dias</p>
+                  <h3 class="c3-titulo">Vale do Cobre</h3>
+                  <p class="c3-legenda">Paredões de rocha avermelhada e rios que correm em silêncio.</p>
+                </div>
+              </article>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 03 · PILHA ===================== -->
+    <section id="pilha" class="c3-secao" aria-labelledby="c3-t-pilha">
+      <div class="c3-cabeca">
+        <div>
+          <h2 id="c3-t-pilha" class="c3-rotulo"><span>03</span>Pilha</h2>
+          <p class="c3-cabeca-titulo">Um baralho para descartar com o dedo.</p>
+        </div>
+        <div class="c3-cabeca-lado">
+          <p>Arraste o cartão de cima para qualquer lado: ele sai girando e volta para o fundo da pilha. Solte antes do limite e ele retorna ao lugar.</p>
+          <code class="c3-codigo">Carrossel.criar(el, { modo: 'pilha', autoplay: 5200 })</code>
+        </div>
+      </div>
+
+      <div class="c3" data-c3-modo="pilha" data-c3-autoplay="5200" role="region" aria-roledescription="carrossel" aria-label="Baralho de destinos">
+        <div class="c3-palco">
+          <ul class="c3-trilho" aria-live="polite">
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--campo">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Planície</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Bicicleta · 2 dias</p>
+                  <h3 class="c3-titulo">Campo Âmbar</h3>
+                  <p class="c3-legenda">Colinas douradas, estradas de terra e pôr do sol sem pressa.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--ilha">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Litoral</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Barco · 1 dia</p>
+                  <h3 class="c3-titulo">Ilha Lume</h3>
+                  <p class="c3-legenda">Um farol, uma enseada e a lua desenhando caminhos no mar.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--brasa">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Vulcão</span>
+                <div class="c3-info">
+                  <p class="c3-meta">2.640 m · 5 dias</p>
+                  <h3 class="c3-titulo">Pico Brasa</h3>
+                  <p class="c3-legenda">Subida noturna até a cratera, onde o horizonte brilha em brasa.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--duna">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Deserto</span>
+                <div class="c3-info">
+                  <p class="c3-meta">42 km² · 2 dias</p>
+                  <h3 class="c3-titulo">Duna Clara</h3>
+                  <p class="c3-legenda">Areia fina que muda de cor a cada hora, do pêssego ao marfim.</p>
+                </div>
+              </article>
+            </li>
+            <li class="c3-slide">
+              <article class="c3-cartao c3-tema--bosque">
+                <div class="c3-arte" aria-hidden="true"><i class="c3-astro"></i><i class="c3-c1"></i><i class="c3-nevoa"></i><i class="c3-c2"></i><i class="c3-c3"></i><i class="c3-luz"></i></div>
+                <span class="c3-etiqueta">Floresta</span>
+                <div class="c3-info">
+                  <p class="c3-meta">Trilha leve · 2 dias</p>
+                  <h3 class="c3-titulo">Bosque Ameixa</h3>
+                  <p class="c3-legenda">Copas violeta, cheiro de terra molhada e chalés escondidos.</p>
+                </div>
+              </article>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="c3-rodape">
+    <p>Carrossel 3D · HTML, CSS e JavaScript puros. Use <span class="c3-teclas"><kbd>←</kbd> <kbd>→</kbd></span> com o carrossel em foco.</p>
+  </footer>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

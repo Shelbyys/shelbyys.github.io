@@ -1,0 +1,890 @@
+/* =========================================================================
+   TEXTOS CINÉTICOS — estilo
+   Duas partes:
+     1) BIBLIOTECA  → estilos de cada efeito (seção "EFEITOS"), copie junto com o script.js
+     2) PÁGINA DEMO → layout editorial da vitrine (hero, grade, "como usar")
+   Para trocar a identidade visual, mexa só nos tokens do :root.
+   ========================================================================= */
+
+/* ---------- Tokens ---------- */
+:root {
+  /* cores */
+  --fundo: #0c0c0b;
+  --fundo-2: #131311;
+  --creme: #f2eee3;
+  --creme-suave: rgba(242, 238, 227, 0.62);
+  --creme-apagado: #4b4842;          /* cor do texto "ainda não revelado" na varredura */
+  --linha: rgba(242, 238, 227, 0.16);
+  --tomate: #ff4a3d;                 /* acento 1 */
+  --limao: #e9ff5c;                  /* acento 2 */
+
+  /* fontes */
+  --fonte-display: "Unbounded", "Archivo Black", system-ui, sans-serif;
+  --fonte-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --fonte-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* medidas e movimento */
+  --margem: clamp(1rem, 3vw, 2.5rem);
+  --ease-saida: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--creme);
+  font-family: var(--fonte-serif);
+  font-size: 1.2rem;
+  line-height: 1.4;
+  overflow-x: clip;                  /* garantia extra: nunca rolar na horizontal */
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p { margin: 0; }
+::selection { background: var(--limao); color: var(--fundo); }
+
+:focus-visible { outline: 2px solid var(--limao); outline-offset: 3px; }
+
+/* =========================================================================
+   1) BIBLIOTECA — EFEITOS
+   Regra geral: o script separa o texto em .tc-palavra > .tc-letra e,
+   ao entrar na tela, põe a classe .tc-ativo no elemento.
+   Variáveis opcionais (vêm dos data-atributos): --atraso (s) e --passo (ms).
+   ========================================================================= */
+
+/* Enquanto o script prepara o texto, evita o "pisca" do texto cru.
+   Se algo falhar, a animação de segurança libera o texto depois de 3 s. */
+.js [data-tc]:not(.tc-pronto) {
+  visibility: hidden;
+  animation: tc-seguranca 0s 3s forwards;
+}
+@keyframes tc-seguranca { to { visibility: visible; } }
+
+/* Reinício (botão "Repetir"): desliga transições por um instante */
+.tc-reset,
+.tc-reset * { transition: none !important; animation: none !important; }
+
+.tc-palavra { display: inline-block; }
+.tc-letra   { display: inline-block; }
+
+/* ---- 1. revelar: letras sobem de dentro de uma máscara ---- */
+[data-tc="revelar"] .tc-palavra {
+  /* máscara: recorta o que está fora da palavra (com folga para
+     descendentes e itálico) sem alterar o alinhamento da linha */
+  clip-path: inset(-0.14em -0.14em -0.16em -0.14em);
+}
+[data-tc="revelar"] .tc-letra {
+  transform: translateY(125%);
+  transition: transform 0.8s var(--ease-saida);
+  transition-delay: calc(var(--atraso, 0s) + var(--i) * var(--passo, 30ms));
+}
+[data-tc="revelar"].tc-ativo .tc-letra { transform: none; }
+
+/* ---- 2. decodificar: caracteres embaralhados que se resolvem ---- */
+[data-tc="decodificar"] .tc-letra { color: var(--tomate); }
+[data-tc="decodificar"] .tc-letra.tc-resolvida { color: inherit; }
+
+/* ---- 3. digitar: máquina de escrever com cursor piscando ---- */
+[data-tc="digitar"] .tc-texto { white-space: pre-wrap; }
+[data-tc="digitar"] .tc-cursor {
+  display: inline-block;
+  width: 0.09em;
+  height: 0.92em;
+  margin-left: 0.08em;
+  vertical-align: -0.1em;
+  background: var(--tomate);
+  animation: tc-piscar 1s steps(1) infinite;
+}
+[data-tc="digitar"].tc-digitando .tc-cursor { animation: none; }   /* fixo enquanto digita */
+@keyframes tc-piscar { 50% { opacity: 0; } }
+
+/* ---- 4. varredura: faixa de cor passando pelo texto ---- */
+[data-tc="varredura"] {
+  /* esquerda → direita no desenho: [texto já varrido] [faixa] [texto ainda apagado] */
+  background-image: linear-gradient(
+    100deg,
+    var(--creme) 0%,
+    var(--creme) 33%,
+    var(--tomate) 40%,
+    var(--limao) 50%,
+    var(--creme-apagado) 58%,
+    var(--creme-apagado) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+[data-tc="varredura"].tc-ativo {
+  background-position: 0 0;                          /* estado final (também sem animação) */
+  animation: tc-varrer 2.4s cubic-bezier(0.65, 0, 0.35, 1) var(--atraso, 0s) both;
+}
+@keyframes tc-varrer {
+  from { background-position: 100% 0; }
+  to   { background-position: 0 0; }
+}
+
+/* ---- 5. onda: letras oscilando continuamente ---- */
+[data-tc="onda"] .tc-letra {
+  animation: tc-onda 1.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.11s);
+  animation-play-state: paused;
+}
+[data-tc="onda"].tc-ativo .tc-letra { animation-play-state: running; }
+@keyframes tc-onda {
+  0%, 100% { transform: translateY(0) rotate(0deg); color: var(--creme); }
+  50%      { transform: translateY(-0.2em) rotate(-3deg); color: var(--limao); }
+}
+
+/* ---- 6. desfocar: palavras saem do desfoque uma a uma ---- */
+[data-tc="desfocar"] .tc-palavra {
+  opacity: 0;
+  filter: blur(0.3em);
+  transform: translateY(0.25em);
+  transition: opacity 0.9s ease, filter 1s ease, transform 1s var(--ease-saida);
+  transition-delay: calc(var(--atraso, 0s) + var(--p) * var(--passo, 110ms));
+}
+[data-tc="desfocar"].tc-ativo .tc-palavra {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+
+/* ---- 7. contador: odômetro com dígitos rolando ---- */
+[data-tc="contador"] {
+  --alt: 1.1em;                                      /* altura de cada dígito */
+  display: inline-flex;
+  align-items: center;
+  height: var(--alt);
+  line-height: var(--alt);
+  font-variant-numeric: tabular-nums;
+}
+[data-tc="contador"] .tc-fixo { display: inline-block; height: var(--alt); }
+[data-tc="contador"] .tc-digito {
+  display: inline-block;
+  width: 1ch;
+  height: var(--alt);
+  overflow: hidden;
+}
+[data-tc="contador"] .tc-fita {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  /* os dígitos da esquerda giram um pouco mais, como num odômetro de verdade */
+  transition: transform calc(1.4s + var(--i) * 0.14s) cubic-bezier(0.22, 0.8, 0.2, 1);
+  transition-delay: var(--atraso, 0s);
+}
+[data-tc="contador"] .tc-fita span { display: block; height: var(--alt); text-align: center; }
+[data-tc="contador"].tc-ativo .tc-fita {
+  transform: translateY(calc(var(--alvo) * var(--alt) * -1));
+}
+
+/* ---- 8. destaque: marca-texto desenhado atrás do <mark> ---- */
+[data-tc="destaque"] mark {
+  --cor-marca: var(--limao);
+  --quando: calc(var(--atraso, 0s) + var(--m, 0) * 0.5s + 0.15s);
+  padding: 0 0.14em;
+  color: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(var(--cor-marca), var(--cor-marca));
+  background-repeat: no-repeat;
+  background-position: 0 85%;
+  background-size: 0% 72%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;                        /* funciona em marcas que quebram de linha */
+  transition: background-size 0.9s var(--ease-saida) var(--quando),
+              color 0.3s ease calc(var(--quando) + 0.25s);
+}
+[data-tc="destaque"] mark[data-cor="tomate"] { --cor-marca: var(--tomate); }
+[data-tc="destaque"].tc-ativo mark {
+  background-size: 100% 72%;
+  color: var(--fundo);
+}
+
+/* ---- 9. cair: letras despencam de cima e quicam ---- */
+[data-tc="cair"] .tc-letra {
+  opacity: 0;
+  transform: translateY(-1.6em) rotate(var(--r, 0deg));
+  transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+  transition-delay: calc(var(--atraso, 0s) + var(--i) * var(--passo, 45ms));
+}
+[data-tc="cair"].tc-ativo .tc-letra { opacity: 1; transform: none; }
+
+/* ---- 10. girar: letras viram em 3D a partir da base ---- */
+[data-tc="girar"] .tc-palavra { perspective: 600px; }
+[data-tc="girar"] .tc-letra {
+  opacity: 0;
+  transform: rotateX(-95deg) translateY(0.15em);
+  transform-origin: 50% 100%;
+  transition: transform 0.9s var(--ease-saida), opacity 0.4s ease;
+  transition-delay: calc(var(--atraso, 0s) + var(--i) * var(--passo, 35ms));
+}
+[data-tc="girar"].tc-ativo .tc-letra { opacity: 1; transform: none; }
+
+/* ---- 11. glitch: cópias deslocadas em RGB, recortadas em fatias ---- */
+[data-tc="glitch"] {
+  position: relative;
+  display: inline-block;
+}
+[data-tc="glitch"]::before,
+[data-tc="glitch"]::after {
+  content: attr(data-texto);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+[data-tc="glitch"]::before { color: var(--tomate); }
+[data-tc="glitch"]::after  { color: var(--limao); }
+[data-tc="glitch"].tc-ativo { animation: tc-glitch-base 1.6s steps(1) var(--atraso, 0s) both; }
+[data-tc="glitch"].tc-ativo::before { animation: tc-glitch-a 1.6s steps(1) var(--atraso, 0s) both; }
+[data-tc="glitch"].tc-ativo::after  { animation: tc-glitch-b 1.6s steps(1) var(--atraso, 0s) both; }
+@keyframes tc-glitch-base {
+  0%, 100% { transform: none; }
+  10%  { transform: translateX(-0.03em); }
+  30%  { transform: translateX(0.04em) skewX(-4deg); }
+  55%  { transform: translateX(-0.02em); }
+  70%  { transform: none; }
+}
+@keyframes tc-glitch-a {
+  0%   { opacity: 1; clip-path: inset(10% 0 70% 0); transform: translate(-0.08em, -0.02em); }
+  15%  { clip-path: inset(50% 0 20% 0); transform: translate(0.06em, 0); }
+  30%  { clip-path: inset(80% 0 2% 0);  transform: translate(-0.05em, 0.02em); }
+  45%  { clip-path: inset(25% 0 55% 0); transform: translate(0.08em, -0.01em); }
+  60%  { clip-path: inset(60% 0 10% 0); transform: translate(-0.03em, 0); }
+  72%, 100% { opacity: 0; }
+}
+@keyframes tc-glitch-b {
+  0%   { opacity: 1; clip-path: inset(60% 0 20% 0); transform: translate(0.08em, 0.02em); }
+  15%  { clip-path: inset(5% 0 80% 0);  transform: translate(-0.06em, 0); }
+  30%  { clip-path: inset(40% 0 35% 0); transform: translate(0.05em, -0.02em); }
+  45%  { clip-path: inset(70% 0 5% 0);  transform: translate(-0.08em, 0.01em); }
+  60%  { clip-path: inset(15% 0 65% 0); transform: translate(0.03em, 0); }
+  72%, 100% { opacity: 0; }
+}
+
+/* ---- 12. neon: letreiro que pisca até acender ---- */
+[data-tc="neon"] {
+  --neon: var(--limao);
+  color: color-mix(in srgb, var(--neon) 35%, transparent);
+  -webkit-text-stroke: 0.012em color-mix(in srgb, var(--neon) 60%, transparent);
+}
+[data-tc="neon"].tc-ativo {
+  animation: tc-neon 2.2s linear var(--atraso, 0s) both;
+}
+@keyframes tc-neon {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    color: var(--neon);
+    -webkit-text-stroke-color: transparent;
+    text-shadow:
+      0 0 0.04em #fff,
+      0 0 0.12em var(--neon),
+      0 0 0.35em var(--neon),
+      0 0 0.9em color-mix(in srgb, var(--neon) 70%, transparent);
+  }
+  20%, 24%, 55%, 10%, 14% {
+    color: color-mix(in srgb, var(--neon) 30%, transparent);
+    -webkit-text-stroke-color: color-mix(in srgb, var(--neon) 60%, transparent);
+    text-shadow: none;
+  }
+}
+
+/* ---- 13. fatiar: três fatias horizontais que deslizam até se alinhar ---- */
+[data-tc="fatiar"] {
+  position: relative;
+  display: inline-block;
+}
+[data-tc="fatiar"] .tc-fatia {
+  display: block;
+  /* fatia f de n: recorta de cima e de baixo com uma folga de 0,5 px para não abrir fresta */
+  clip-path: inset(calc(var(--f) / var(--n) * 100% - 0.5px) -0.2em calc((var(--n) - var(--f) - 1) / var(--n) * 100% - 0.5px) -0.2em);
+  opacity: 0;
+  transform: translateX(calc((var(--f) - (var(--n) - 1) / 2) * 0.6em));
+  transition: transform 0.9s var(--ease-saida), opacity 0.4s ease;
+  transition-delay: calc(var(--atraso, 0s) + var(--f) * 90ms);
+}
+[data-tc="fatiar"] .tc-fatia + .tc-fatia { position: absolute; inset: 0; }
+[data-tc="fatiar"].tc-ativo .tc-fatia { opacity: 1; transform: none; }
+
+/* ---- 14. trocar: a palavra sobe e a próxima entra por baixo ---- */
+[data-tc="trocar"] .tc-janela {
+  position: relative;
+  display: inline-block;
+  height: 1.15em;
+  line-height: 1.15em;
+  overflow: hidden;
+  vertical-align: bottom;
+  transition: width 0.5s var(--ease-saida);
+}
+[data-tc="trocar"] .tc-troca {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  color: var(--limao);
+  transition: transform 0.65s var(--ease-saida), opacity 0.45s ease;
+}
+[data-tc="trocar"] .tc-troca.tc-entra { transform: translateY(110%); opacity: 0; }
+[data-tc="trocar"] .tc-troca.tc-sai   { transform: translateY(-110%); opacity: 0; }
+
+/* ---- 15. contorno: só o traço, que se preenche letra a letra ---- */
+[data-tc="contorno"] .tc-letra {
+  color: transparent;
+  -webkit-text-stroke: 0.025em var(--creme);
+  transition: color 0.7s ease, -webkit-text-stroke-color 0.7s ease, transform 0.8s var(--ease-saida);
+  transition-delay: calc(var(--atraso, 0s) + var(--i) * var(--passo, 40ms));
+  transform: translateY(0.08em);
+}
+[data-tc="contorno"].tc-ativo .tc-letra {
+  color: var(--creme);
+  -webkit-text-stroke-color: transparent;
+  transform: none;
+}
+[data-tc="contorno"].tc-ativo em .tc-letra { color: var(--limao); }
+
+/* ---- 16. gradiente: faixa de cores correndo pelo texto (loop) ---- */
+[data-tc="gradiente"] {
+  background-image: linear-gradient(100deg, var(--tomate), var(--limao), var(--creme), #7ad8ff, var(--tomate));
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: tc-gradiente 5s linear infinite;
+  animation-play-state: paused;
+}
+[data-tc="gradiente"].tc-ativo { animation-play-state: running; }
+@keyframes tc-gradiente { to { background-position: -300% 0; } }
+
+/* ---- 17. espalhar: letras chegam de posições aleatórias e se encaixam ---- */
+[data-tc="espalhar"] .tc-letra {
+  opacity: 0;
+  filter: blur(0.08em);
+  transform: translate(var(--dx, 0), var(--dy, 0)) rotate(var(--r, 0deg)) scale(1.5);
+  transition: transform 1s var(--ease-saida), opacity 0.5s ease, filter 0.8s ease;
+  transition-delay: calc(var(--atraso, 0s) + var(--i) * var(--passo, 28ms));
+}
+[data-tc="espalhar"].tc-ativo .tc-letra { opacity: 1; filter: none; transform: none; }
+
+/* ---- 18. riscar: risca o <s> e revela o <ins> ao lado ---- */
+[data-tc="riscar"] s,
+[data-tc="riscar"] ins {
+  --quando: calc(var(--atraso, 0s) + var(--m, 0) * 0.9s);
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+}
+[data-tc="riscar"] s { color: var(--creme-suave); }
+[data-tc="riscar"] s::after {
+  content: "";
+  position: absolute;
+  left: -0.05em;
+  top: 50%;
+  width: 0;
+  height: 0.1em;
+  border-radius: 0.05em;
+  background: var(--tomate);
+  transform: translateY(-50%) rotate(-2deg);
+  transition: width 0.5s var(--ease-saida) var(--quando);
+}
+[data-tc="riscar"] ins {
+  margin-left: 0.3em;
+  color: var(--limao);
+  clip-path: inset(0 100% -0.2em 0);
+  transition: clip-path 0.7s var(--ease-saida) calc(var(--quando) + 0.35s);
+}
+[data-tc="riscar"].tc-ativo s::after { width: calc(100% + 0.1em); }
+[data-tc="riscar"].tc-ativo ins { clip-path: inset(0 -0.1em -0.2em 0); }
+
+/* =========================================================================
+   2) PÁGINA DEMO
+   ========================================================================= */
+
+.mono { font-family: var(--fonte-mono); }
+
+/* ---------- Hero (primeira tela / capa) ---------- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  border-bottom: 1px solid var(--linha);
+  overflow: hidden;
+}
+/* colunas finas ao fundo — régua editorial */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, var(--linha) 1px, transparent 1px);
+  background-size: 25% 100%;
+  background-position: -1px 0;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.hero > * { position: relative; }
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem var(--margem);
+  border-bottom: 1px solid var(--linha);
+  font-family: var(--fonte-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--creme);
+  font-weight: 700;
+  text-decoration: none;
+}
+.marca::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--tomate);
+  border-radius: 50%;
+}
+.topo-meta { color: var(--creme-suave); }
+.topo-link { color: var(--limao); text-decoration: none; }
+.topo-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.hero-centro {
+  display: flex;
+  align-items: center;
+  padding: 2rem var(--margem);
+}
+.hero-titulo {
+  font-size: clamp(2.6rem, min(13.5vw, 23vh), 14rem);
+  line-height: 0.88;
+}
+.hero-titulo .l1 {
+  display: block;
+  font-size: 1.28em;
+  font-family: var(--fonte-display);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+.hero-titulo .l2 {
+  display: block;
+  margin-top: 0.03em;
+  font-family: var(--fonte-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.12em;
+  letter-spacing: -0.02em;
+}
+.hero-titulo em { color: var(--tomate); }
+
+.hero-base {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 1.5rem 2.5rem;
+  padding: 1.1rem var(--margem);
+  border-top: 1px solid var(--linha);
+}
+.hero-tag {
+  font-family: var(--fonte-mono);
+  font-size: clamp(0.8rem, 1.3vw, 1.05rem);
+  letter-spacing: 0.02em;
+  min-height: 1.5em;
+}
+.hero-meta {
+  display: flex;
+  gap: 2rem;
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--creme-suave);
+}
+.hero-meta b {
+  display: block;
+  font-family: var(--fonte-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--creme);
+}
+
+/* faixa rolante */
+.faixa {
+  overflow: hidden;
+  background: var(--tomate);
+  color: var(--fundo);
+  white-space: nowrap;
+}
+.faixa-trilho {
+  display: flex;
+  width: max-content;
+  animation: faixa 64s linear infinite;      /* 18 nomes: trilho longo, ritmo de leitura */
+}
+.faixa-grupo { display: flex; align-items: center; flex-shrink: 0; }
+.faixa-grupo span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 0;
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.faixa-grupo span::after {                           /* losango separador */
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: 0 1.6rem;
+  background: var(--fundo);
+  transform: rotate(45deg);
+}
+@keyframes faixa { to { transform: translateX(-50%); } }
+
+/* ---------- Botão "Repetir" ---------- */
+.repetir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--creme);
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.repetir:hover { background: var(--limao); border-color: var(--limao); color: var(--fundo); }
+.repetir svg { width: 0.95em; height: 0.95em; }
+
+/* ---------- Seção dos efeitos ---------- */
+.secao { padding: clamp(3rem, 8vw, 6.5rem) var(--margem); }
+
+.secao-cab {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+.eyebrow {
+  margin-bottom: 0.9rem;
+  font-family: var(--fonte-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tomate);
+}
+.secao-titulo {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: clamp(1.9rem, 5vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.secao-titulo i {
+  font-family: var(--fonte-serif);
+  font-weight: 400;
+  font-size: 1.15em;
+  letter-spacing: -0.01em;
+  color: var(--limao);
+}
+.secao-nota {
+  max-width: 28rem;
+  font-size: 1.15rem;
+  color: var(--creme-suave);
+}
+
+/* grade com linhas finas: o "gap" deixa o fundo da grade aparecer como linha */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--linha);
+  border: 1px solid var(--linha);
+}
+.celula {
+  grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 21rem;
+  background: var(--fundo);
+  transition: background 0.3s;
+}
+.celula:hover { background: var(--fundo-2); }
+.c7 { grid-column: span 7; }
+.c5 { grid-column: span 5; }
+
+.celula-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1.1rem, 2.2vw, 2rem) 0;
+}
+.rotulo {
+  font-family: var(--fonte-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--creme-suave);
+}
+.rotulo i { margin-right: 0.6rem; font-style: normal; color: var(--tomate); }
+
+.celula-corpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem clamp(1.1rem, 2.2vw, 2rem);
+}
+.celula-uso {
+  padding: 0.9rem clamp(1.1rem, 2.2vw, 2rem);
+  border-top: 1px solid var(--linha);
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  color: var(--creme-suave);
+  overflow-wrap: anywhere;
+}
+.celula-uso b { font-weight: 500; color: var(--limao); }
+
+/* tipos de texto usados nas células */
+.t-display {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 3.5vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+.t-mono {
+  font-family: var(--fonte-mono);
+  font-weight: 500;
+  font-size: clamp(1.05rem, 1.9vw, 1.6rem);
+  line-height: 1.45;
+}
+.t-serif {
+  font-size: clamp(1.8rem, 3.2vw, 3rem);
+  line-height: 1.12;
+}
+.t-serif em { color: var(--limao); }
+.t-onda {
+  font-style: italic;
+  font-size: clamp(3rem, 7.2vw, 6.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.t-destaque {
+  font-size: clamp(1.9rem, 3.4vw, 3.2rem);
+  line-height: 1.32;
+}
+
+/* digitar */
+.digitar-linha {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+  letter-spacing: -0.02em;
+}
+.digitar-linha [data-tc] {
+  display: block;
+  min-height: 1.1em;
+  margin-top: 0.15em;
+  font-family: var(--fonte-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.8rem, 5.6vw, 5.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--limao);
+}
+
+/* células novas (09–18) */
+.t-glitch { letter-spacing: 0.02em; }
+.t-neon {
+  font-family: var(--fonte-serif);
+  font-style: italic;
+  font-size: clamp(3rem, 7vw, 6.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.t-gradiente {
+  font-family: var(--fonte-display);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 6.4vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.trocar-linha {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+  letter-spacing: -0.02em;
+}
+.trocar-linha [data-tc] {
+  display: inline-block;
+  margin-top: 0.15em;
+  font-family: var(--fonte-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(2.8rem, 5.6vw, 5.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* contador */
+.contador-grande {
+  font-family: var(--fonte-mono);
+  font-weight: 700;
+  font-size: clamp(2.2rem, 5.4vw, 5rem);
+  letter-spacing: -0.04em;
+  color: var(--limao);
+}
+.contador-legenda {
+  margin-top: 0.4rem;
+  font-size: 1.1rem;
+  color: var(--creme-suave);
+}
+.mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 2.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--linha);
+}
+.mini-stats .contador-mini {
+  font-family: var(--fonte-mono);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  color: var(--creme);
+}
+.mini-stats small {
+  display: block;
+  font-family: var(--fonte-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--creme-suave);
+}
+
+/* ---------- Como usar ---------- */
+.uso {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  align-items: start;
+}
+.passos { margin: 1.5rem 0 0; padding: 0; list-style: none; counter-reset: passo; }
+.passos li {
+  counter-increment: passo;
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  padding: 1rem 0;
+  border-top: 1px solid var(--linha);
+  font-size: 1.2rem;
+}
+.passos li::before {
+  content: "0" counter(passo);
+  font-family: var(--fonte-mono);
+  font-size: 0.75rem;
+  padding-top: 0.35rem;
+  color: var(--tomate);
+}
+.passos code, .secao-nota code {
+  font-family: var(--fonte-mono);
+  font-size: 0.8em;
+  color: var(--limao);
+}
+.codigo {
+  margin: 0;
+  padding: clamp(1.1rem, 2.4vw, 1.9rem);
+  max-width: 100%;
+  overflow-x: auto;                                  /* rola só dentro do bloco, nunca a página */
+  border: 1px solid var(--linha);
+  background: var(--fundo-2);
+  font-family: var(--fonte-mono);
+  font-size: clamp(0.72rem, 1.1vw, 0.9rem);
+  line-height: 1.75;
+  color: var(--creme);
+}
+.codigo .k { color: var(--tomate); }                 /* tag */
+.codigo .a { color: var(--limao); }                  /* atributo */
+.codigo .v { color: #ffd0a6; }                       /* valor */
+.codigo .c { color: var(--creme-suave); }            /* comentário */
+
+.rodape {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.6rem 2rem;
+  padding: 1.5rem var(--margem) 2.2rem;
+  border-top: 1px solid var(--linha);
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--creme-suave);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1100px) {
+  .hero-meta { display: none; }
+  .hero-base { grid-template-columns: 1fr auto; }
+}
+
+@media (max-width: 900px) {
+  .celula, .c5, .c7 { grid-column: 1 / -1; min-height: 0; }
+  .uso { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .topo-meta { display: none; }
+  .hero-base { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  .hero-tag { min-height: 3em; }
+  .faixa-grupo span { font-size: 0.78rem; padding: 0.7rem 0; }
+}
+
+/* ---------- Movimento reduzido: texto final direto, sem animar ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  [data-tc="revelar"] .tc-letra,
+  [data-tc="cair"] .tc-letra,
+  [data-tc="girar"] .tc-letra,
+  [data-tc="espalhar"] .tc-letra,
+  [data-tc="fatiar"] .tc-fatia,
+  [data-tc="desfocar"] .tc-palavra { transform: none; opacity: 1; filter: none; }
+  [data-tc="contorno"] .tc-letra { color: var(--creme); -webkit-text-stroke-color: transparent; transform: none; }
+  [data-tc="neon"] { color: var(--limao); -webkit-text-stroke-color: transparent; }
+  [data-tc="gradiente"] { background-position: 0 0; }
+  [data-tc="riscar"] s::after { width: calc(100% + 0.1em); }
+  [data-tc="riscar"] ins { clip-path: inset(0 -0.1em -0.2em 0); }
+  .faixa-trilho { transform: none; }
+  .repetir { display: none; }                        /* não há o que repetir */
+}

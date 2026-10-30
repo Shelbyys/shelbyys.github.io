@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel Caixa — fluxo de caixa</title>
+  <meta name="description" content="Painel Caixa: dashboard financeiro editorial para pequenas empresas e finanças pessoais.">
+  <link rel="icon" href="data:,">
+
+  <!-- Fontes (única dependência externa): Fraunces para números e títulos, IBM Plex Sans para texto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <!-- =========================================================
+       ÍCONES (sprite SVG). Use assim: <svg class="icone"><use href="#i-casa"/></svg>
+       ========================================================= -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-seta-esq" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+      <symbol id="i-seta-dir" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+      <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+      <symbol id="i-fechar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+      <symbol id="i-sobe" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
+      <symbol id="i-desce" viewBox="0 0 24 24"><path d="M7 7l10 10M17 9v8H9"/></symbol>
+      <symbol id="i-alerta" viewBox="0 0 24 24"><path d="M12 4l9 16H3L12 4z"/><path d="M12 10v4M12 17v.5"/></symbol>
+      <symbol id="i-virar" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></symbol>
+      <symbol id="i-sacola" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+      <symbol id="i-vaso" viewBox="0 0 24 24"><path d="M9 3h6M10 3v3.2C7 7.6 5.5 10 5.5 13.2 5.5 17.4 8.4 21 12 21s6.5-3.6 6.5-7.8C18.5 10 17 7.6 14 6.2V3"/><path d="M6 13h12"/></symbol>
+      <symbol id="i-rendimento" viewBox="0 0 24 24"><path d="M4 17l5-5 4 3 7-8"/><path d="M15 7h5v5"/></symbol>
+      <symbol id="i-casa" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/></symbol>
+      <symbol id="i-caixa" viewBox="0 0 24 24"><path d="M4 8l8-4 8 4v8.5l-8 4-8-4V8z"/><path d="M4 8l8 4 8-4M12 12v8.5"/></symbol>
+      <symbol id="i-carrinho" viewBox="0 0 24 24"><path d="M3 4h2.5l2 11h10l2-8H6.6"/><circle cx="9.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/></symbol>
+      <symbol id="i-carro" viewBox="0 0 24 24"><path d="M4 15.5V12l2.2-5h11.6L20 12v3.5H4z"/><path d="M4 12h16"/><circle cx="8" cy="17" r="1.6"/><circle cx="16" cy="17" r="1.6"/></symbol>
+      <symbol id="i-taca" viewBox="0 0 24 24"><path d="M8 3h8l-.4 5.5a3.6 3.6 0 0 1-7.2 0L8 3z"/><path d="M12 12v8M8.5 20h7"/></symbol>
+      <symbol id="i-raio" viewBox="0 0 24 24"><path d="M13 3L5.5 13H11l-1 8 7.5-10H12l1-8z"/></symbol>
+      <symbol id="i-cofre" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="13" rx="1.5"/><circle cx="12" cy="11.5" r="3"/><path d="M12 8.5v1M12 13.5v1M7 18v2M17 18v2"/></symbol>
+      <symbol id="i-sem-fio" viewBox="0 0 24 24"><path d="M8 8.5a5 5 0 0 1 0 7M11.5 6a9 9 0 0 1 0 12M15 4a12 12 0 0 1 0 16"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="pagina">
+
+    <!-- =========================================================
+         CABEÇALHO: saudação, data e seletor de mês
+         ========================================================= -->
+    <header class="topo entra" style="--ordem:0">
+      <div class="topo-id">
+        <p class="sobretitulo">
+          <span class="marca">Painel Caixa</span>
+          <span class="sobretitulo-sep" aria-hidden="true">/</span>
+          <span id="negocio">Ateliê Marina Couto</span>
+          <span class="sobretitulo-sep sobretitulo-sep--data" aria-hidden="true">/</span>
+          <span class="sobretitulo-data" id="data-hoje">quinta-feira, 29 de outubro</span>
+        </p>
+        <h1 class="saudacao"><span id="saudacao">Boa tarde</span>, <em id="nome-usuario">Marina</em>.</h1>
+      </div>
+
+      <div class="topo-acoes">
+        <div class="seletor-mes" role="group" aria-label="Mês do relatório">
+          <button class="botao-icone" type="button" id="mes-anterior" aria-label="Mês anterior">
+            <svg class="icone" aria-hidden="true"><use href="#i-seta-esq"/></svg>
+          </button>
+          <p class="seletor-rotulo" aria-live="polite">
+            <span class="seletor-texto" id="mes-rotulo">outubro de 2026</span>
+          </p>
+          <button class="botao-icone" type="button" id="mes-proximo" aria-label="Próximo mês">
+            <svg class="icone" aria-hidden="true"><use href="#i-seta-dir"/></svg>
+          </button>
+        </div>
+        <button class="botao botao--primario" type="button" id="abrir-modal" aria-haspopup="dialog">
+          <svg class="icone" aria-hidden="true"><use href="#i-mais"/></svg>
+          Nova transação
+        </button>
+      </div>
+    </header>
+
+    <div class="regua regua--forte" aria-hidden="true"></div>
+
+    <main class="grade" id="conteudo">
+
+      <!-- ============ 01 · SALDO ============ -->
+      <section class="bloco bloco--saldo entra" style="--ordem:1" aria-labelledby="t-saldo">
+        <header class="bloco-topo">
+          <h2 class="bloco-titulo" id="t-saldo"><span class="bloco-num">01</span>Saldo em caixa</h2>
+          <p class="bloco-nota" id="saldo-nota">atualizado em 29 out</p>
+        </header>
+
+        <p class="saldo-valor" id="saldo-valor" aria-label="R$ 0,00">
+          <span class="saldo-moeda" aria-hidden="true">R$</span><span class="saldo-inteiro" aria-hidden="true">0</span><span class="saldo-centavos" aria-hidden="true">,00</span>
+        </p>
+
+        <p class="variacao" id="saldo-variacao">
+          <svg class="icone" aria-hidden="true"><use href="#i-sobe"/></svg>
+          <span class="variacao-texto">—</span>
+        </p>
+
+        <dl class="indicadores">
+          <div class="indicador indicador--entrada">
+            <dt><span class="ponto" aria-hidden="true"></span>Entradas</dt>
+            <dd class="indicador-valor" id="ind-entradas">R$ 0,00</dd>
+            <dd class="indicador-sub" id="ind-entradas-sub">—</dd>
+          </div>
+          <div class="indicador indicador--saida">
+            <dt><span class="ponto" aria-hidden="true"></span>Saídas</dt>
+            <dd class="indicador-valor" id="ind-saidas">R$ 0,00</dd>
+            <dd class="indicador-sub" id="ind-saidas-sub">—</dd>
+          </div>
+          <div class="indicador indicador--reserva">
+            <dt><span class="ponto" aria-hidden="true"></span>Reserva</dt>
+            <dd class="indicador-valor" id="ind-reserva">R$ 0,00</dd>
+            <dd class="indicador-sub" id="ind-reserva-sub">—</dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- ============ 02 · CARTÃO ============ -->
+      <section class="bloco bloco--cartao lateral entra" style="--ordem:2" aria-labelledby="t-cartao">
+        <header class="bloco-topo">
+          <h2 class="bloco-titulo" id="t-cartao"><span class="bloco-num">02</span>Cartão do ateliê</h2>
+          <p class="bloco-nota"><svg class="icone" aria-hidden="true"><use href="#i-virar"/></svg>clique para virar</p>
+        </header>
+
+        <div class="cartao-area">
+          <button class="cartao" type="button" id="cartao" aria-pressed="false" aria-label="Cartão final 4821. Mostrar o verso.">
+            <span class="cartao-interno" aria-hidden="true">
+              <!-- Frente -->
+              <span class="cartao-face cartao-frente">
+                <span class="cartao-linha">
+                  <span class="cartao-marca">caixa<span>.</span></span>
+                  <svg class="icone cartao-sem-fio"><use href="#i-sem-fio"/></svg>
+                </span>
+                <span class="cartao-chip"></span>
+                <span class="cartao-numero">•••• •••• •••• <span id="cartao-final">4821</span></span>
+                <span class="cartao-linha cartao-rodape">
+                  <span class="cartao-campo"><small>Titular</small><span id="cartao-titular">MARINA COUTO</span></span>
+                  <span class="cartao-campo"><small>Validade</small><span id="cartao-validade">08/29</span></span>
+                  <svg class="cartao-bandeira" viewBox="0 0 40 24"><circle cx="14" cy="12" r="9"/><circle cx="26" cy="12" r="9"/></svg>
+                </span>
+              </span>
+              <!-- Verso -->
+              <span class="cartao-face cartao-verso">
+                <span class="cartao-tarja"></span>
+                <span class="cartao-assinatura"><span>Marina Couto</span><b>CVV •••</b></span>
+                <span class="cartao-verso-info">
+                  <span class="cartao-campo"><small>Fatura atual</small><span id="verso-fatura">R$ 0,00</span></span>
+                  <span class="cartao-campo"><small>Disponível</small><span id="verso-disponivel">R$ 0,00</span></span>
+                  <span class="cartao-campo"><small>Vencimento</small><span id="verso-vencimento">12 nov</span></span>
+                </span>
+              </span>
+            </span>
+          </button>
+
+          <div class="limite">
+            <p class="limite-linha">
+              <span class="rotulo">Limite usado</span>
+              <span class="limite-pct" id="limite-pct">0%</span>
+            </p>
+            <div class="barra" id="limite-barra" role="progressbar" aria-label="Limite usado do cartão" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span class="barra-preenchida"></span>
+            </div>
+            <p class="limite-valores">
+              <strong id="limite-usado">R$ 0,00</strong> de <span id="limite-total">R$ 0,00</span>
+              <span class="limite-fecha" id="limite-fecha">· fecha dia 5</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="regua" aria-hidden="true"></div>
+
+      <!-- ============ 03 · FLUXO DE CAIXA (gráfico SVG) ============ -->
+      <section class="bloco bloco--fluxo entra" style="--ordem:3" aria-labelledby="t-fluxo">
+        <header class="bloco-topo">
+          <h2 class="bloco-titulo" id="t-fluxo"><span class="bloco-num">03</span>Fluxo de caixa</h2>
+          <ul class="legenda" aria-label="Legenda">
+            <li><span class="legenda-cor legenda-cor--entrada" aria-hidden="true"></span>Entradas</li>
+            <li><span class="legenda-cor legenda-cor--saida" aria-hidden="true"></span>Saídas</li>
+            <li><span class="legenda-linha" aria-hidden="true"></span>Saldo acumulado</li>
+          </ul>
+        </header>
+        <div class="grafico" id="grafico">
+          <div class="grafico-area" id="grafico-area"></div>
+          <div class="dica" id="dica" role="status" hidden></div>
+        </div>
+      </section>
+
+      <!-- ============ 04 · ORÇAMENTO POR CATEGORIA ============ -->
+      <section class="bloco bloco--orcamento lateral entra" style="--ordem:4" aria-labelledby="t-orcamento">
+        <header class="bloco-topo">
+          <h2 class="bloco-titulo" id="t-orcamento"><span class="bloco-num">04</span>Orçamento do mês</h2>
+          <p class="bloco-nota" id="orcamento-nota">—</p>
+        </header>
+        <ul class="aneis" id="aneis"></ul>
+      </section>
+
+      <div class="regua" aria-hidden="true"></div>
+
+      <!-- ============ 05 · TRANSAÇÕES ============ -->
+      <section class="bloco bloco--transacoes" aria-labelledby="t-transacoes">
+        <header class="bloco-topo">
+          <h2 class="bloco-titulo" id="t-transacoes"><span class="bloco-num">05</span>Transações</h2>
+          <p class="bloco-nota" id="tx-status" aria-live="polite">—</p>
+        </header>
+
+        <div class="tx-controles">
+          <div class="filtros" role="group" aria-label="Filtrar por tipo">
+            <button type="button" class="filtro" data-filtro="todas" aria-pressed="true">Todas</button>
+            <button type="button" class="filtro" data-filtro="entrada" aria-pressed="false">Entradas</button>
+            <button type="button" class="filtro" data-filtro="saida" aria-pressed="false">Saídas</button>
+          </div>
+          <label class="busca">
+            <svg class="icone" aria-hidden="true"><use href="#i-busca"/></svg>
+            <span class="sr">Buscar transações</span>
+            <input type="search" id="tx-busca" placeholder="Buscar descrição ou categoria" autocomplete="off">
+          </label>
+        </div>
+
+        <ul class="tx-lista" id="tx-lista"></ul>
+        <p class="tx-vazio" id="tx-vazio" hidden></p>
+        <button type="button" class="botao botao--linha tx-mais" id="tx-mais" aria-controls="tx-lista" aria-expanded="false" hidden>Mostrar todas</button>
+      </section>
+
+      <!-- ============ 06 · METAS ============ -->
+      <section class="bloco bloco--metas lateral" aria-labelledby="t-metas">
+        <header class="bloco-topo">
+          <h2 class="bloco-titulo" id="t-metas"><span class="bloco-num">06</span>Metas</h2>
+          <p class="bloco-nota">quanto guardar por mês</p>
+        </header>
+        <ul class="metas" id="metas"></ul>
+
+        <!-- Nota do mês: resumo em texto corrido, gerado pelo script -->
+        <div class="nota">
+          <h3 class="bloco-titulo"><span class="bloco-num">§</span>Nota do mês</h3>
+          <p class="nota-texto" id="nota-texto">—</p>
+        </div>
+      </section>
+    </main>
+
+    <div class="regua" aria-hidden="true"></div>
+    <footer class="rodape">
+      <p><span class="marca">Painel Caixa</span> · relatório mensal de caixa</p>
+      <p>Dados fictícios para demonstração. Valores em reais (R$).</p>
+    </footer>
+  </div>
+
+  <!-- =========================================================
+       MODAL: nova transação (dialog nativo + foco preso + Esc fecha)
+       ========================================================= -->
+  <dialog class="modal" id="modal" aria-labelledby="modal-titulo" aria-describedby="modal-desc">
+    <form class="modal-caixa" id="form-tx" novalidate>
+      <header class="modal-topo">
+        <div>
+          <p class="bloco-titulo"><span class="bloco-num">+</span>Lançamento</p>
+          <h2 class="modal-titulo" id="modal-titulo">Nova transação</h2>
+          <p class="modal-desc" id="modal-desc">Ela entra na lista e atualiza saldo, gráfico e orçamento na hora.</p>
+        </div>
+        <button type="button" class="botao-icone" id="fechar-modal" aria-label="Fechar">
+          <svg class="icone" aria-hidden="true"><use href="#i-fechar"/></svg>
+        </button>
+      </header>
+
+      <fieldset class="campo campo--tipo">
+        <legend class="campo-rotulo">Tipo</legend>
+        <div class="alternador">
+          <label class="alternador-opcao alternador-opcao--entrada">
+            <input type="radio" name="tipo" value="entrada">
+            <span><svg class="icone" aria-hidden="true"><use href="#i-sobe"/></svg>Entrada</span>
+          </label>
+          <label class="alternador-opcao alternador-opcao--saida">
+            <input type="radio" name="tipo" value="saida" checked>
+            <span><svg class="icone" aria-hidden="true"><use href="#i-desce"/></svg>Saída</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="campo">
+        <label class="campo-rotulo" for="f-descricao">Descrição</label>
+        <input class="entrada-texto" id="f-descricao" name="descricao" type="text" maxlength="60" placeholder="Ex.: Supermercado, venda de vasos…" aria-describedby="erro-descricao" required>
+        <p class="campo-erro" id="erro-descricao"></p>
+      </div>
+
+      <div class="campos-duplos">
+        <div class="campo">
+          <label class="campo-rotulo" for="f-valor">Valor (R$)</label>
+          <input class="entrada-texto entrada-texto--numero" id="f-valor" name="valor" type="text" inputmode="decimal" placeholder="0,00" aria-describedby="erro-valor" required>
+          <p class="campo-erro" id="erro-valor"></p>
+        </div>
+        <div class="campo">
+          <label class="campo-rotulo" for="f-data">Data</label>
+          <input class="entrada-texto" id="f-data" name="data" type="date" aria-describedby="erro-data" required>
+          <p class="campo-erro" id="erro-data"></p>
+        </div>
+      </div>
+
+      <div class="campos-duplos">
+        <div class="campo">
+          <label class="campo-rotulo" for="f-categoria">Categoria</label>
+          <select class="entrada-texto" id="f-categoria" name="categoria"></select>
+        </div>
+        <div class="campo">
+          <label class="campo-rotulo" for="f-meio">Meio de pagamento</label>
+          <select class="entrada-texto" id="f-meio" name="meio"></select>
+        </div>
+      </div>
+
+      <footer class="modal-rodape">
+        <button type="button" class="botao botao--linha" id="cancelar-modal">Cancelar</button>
+        <button type="submit" class="botao botao--primario">Salvar transação</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- Aviso rápido (toast) -->
+  <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

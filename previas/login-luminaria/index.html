@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Luminária — acenda a luz para entrar</title>
+  <meta name="description" content="Tela de login com uma luminária articulada em SVG que acende e ilumina o formulário.">
+  <meta name="theme-color" content="#0d0f14">
+  <!-- Fontes: Fraunces (títulos) + Inter (texto) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="ll-corpo">
+
+<!-- ===================================================================
+     CENA: escritório à noite. data-luz = "apagada" | "acesa"
+     data-tom = "quente" | "neutra" | "fria" (cor da lâmpada)
+     =================================================================== -->
+<main class="ll-cena" id="ll-cena" data-luz="apagada" data-tom="quente">
+
+  <!-- Marca -->
+  <div class="ll-marca">
+    <svg class="ll-marca-icone" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M16 3a13 13 0 0 1 0 26z" fill="currentColor"/>
+    </svg>
+    <span>Ateliê Noturno</span>
+  </div>
+
+  <!-- ===== PAREDE (decoração, fica no escuro) ===== -->
+  <div class="ll-parede" aria-hidden="true">
+    <!-- Janela com céu noturno e cidade -->
+    <svg class="ll-janela" viewBox="0 0 240 300">
+      <defs>
+        <linearGradient id="ll-ceu" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#16203a"/>
+          <stop offset="1" stop-color="#0e121c"/>
+        </linearGradient>
+      </defs>
+      <rect x="8" y="8" width="224" height="268" rx="4" fill="url(#ll-ceu)"/>
+      <!-- lua crescente -->
+      <circle cx="172" cy="66" r="20" fill="#ece5d2" opacity=".9"/>
+      <circle cx="181" cy="59" r="18" fill="#16203a"/>
+      <!-- estrelas -->
+      <g fill="#ece5d2">
+        <circle cx="40" cy="44" r="1.6"/><circle cx="92" cy="30" r="1.2"/><circle cx="64" cy="96" r="1.4"/>
+        <circle cx="206" cy="122" r="1.2"/><circle cx="140" cy="40" r="1"/><circle cx="30" cy="132" r="1"/>
+      </g>
+      <!-- silhueta da cidade -->
+      <path d="M8 276V196h26v-22h20v38h18v-56h30v40h16v-24h24v50h20v-34h24v-18h22v28h24v78z" fill="#0a0d14"/>
+      <g fill="#ffcf7a" opacity=".55">
+        <rect x="80" y="166" width="5" height="5"/><rect x="90" y="182" width="5" height="5"/>
+        <rect x="140" y="196" width="5" height="5"/><rect x="40" y="186" width="5" height="5"/>
+        <rect x="194" y="214" width="5" height="5"/><rect x="176" y="200" width="5" height="5"/>
+      </g>
+      <!-- caixilho -->
+      <g fill="none" stroke="#2a3040" stroke-width="8">
+        <rect x="8" y="8" width="224" height="268" rx="4"/>
+        <path d="M120 8v268M8 142h224"/>
+      </g>
+      <rect x="0" y="276" width="240" height="14" rx="3" fill="#232836"/>
+    </svg>
+
+    <!-- Prateleiras com livros -->
+    <svg class="ll-estante" viewBox="0 0 240 320">
+      <!-- prateleira de cima -->
+      <g>
+        <rect x="18" y="16" width="16" height="104" rx="2" fill="#34445a"/>
+        <rect x="36" y="32" width="14" height="88" rx="2" fill="#5b4632"/>
+        <rect x="52" y="24" width="20" height="96" rx="2" fill="#3c5446"/>
+        <rect x="74" y="44" width="12" height="76" rx="2" fill="#6b3f36"/>
+        <rect x="96" y="40" width="14" height="84" rx="2" fill="#2f3a52" transform="rotate(-16 96 124)"/>
+        <circle cx="168" cy="102" r="16" fill="#3a3f4c"/>
+        <path d="M152 102h32" stroke="#4a5060" stroke-width="3"/>
+        <rect x="196" y="76" width="26" height="44" rx="3" fill="#2a2f3b"/>
+      </g>
+      <rect x="0" y="120" width="240" height="8" rx="2" fill="#2b2620"/>
+      <path d="M30 128v14h14M210 128v14h-14" fill="none" stroke="#2b2620" stroke-width="4"/>
+      <!-- prateleira de baixo -->
+      <g>
+        <rect x="20" y="248" width="96" height="14" rx="2" fill="#4c3a2c"/>
+        <rect x="28" y="234" width="84" height="14" rx="2" fill="#34445a"/>
+        <rect x="24" y="220" width="90" height="14" rx="2" fill="#3c5446"/>
+        <path d="M150 262l18-56 18 56z" fill="#5c5446"/>
+        <rect x="196" y="214" width="12" height="48" rx="2" fill="#6b3f36"/>
+        <rect x="210" y="200" width="14" height="62" rx="2" fill="#2f3a52"/>
+      </g>
+      <rect x="0" y="262" width="240" height="8" rx="2" fill="#2b2620"/>
+      <path d="M30 270v14h14M210 270v14h-14" fill="none" stroke="#2b2620" stroke-width="4"/>
+    </svg>
+
+    <!-- Quadro geométrico -->
+    <svg class="ll-quadro" viewBox="0 0 120 150">
+      <rect x="2" y="2" width="116" height="146" rx="3" fill="#1b1f29" stroke="#2c3240" stroke-width="4"/>
+      <circle cx="60" cy="62" r="26" fill="#3b4c63"/>
+      <path d="M18 128l30-40 22 26 14-16 18 30z" fill="#2c3a2f"/>
+    </svg>
+  </div>
+
+  <!-- ===== MESA ===== -->
+  <div class="ll-mesa" aria-hidden="true"></div>
+
+  <!-- Objetos sobre a mesa (mesma âncora do cartão, mas atrás da sombra) -->
+  <div class="ll-ancora ll-objetos" aria-hidden="true">
+    <!-- Planta -->
+    <svg class="ll-planta" viewBox="0 0 170 240">
+      <g fill="#2f4a3c">
+        <path d="M84 150C70 112 40 92 14 94c10 26 36 48 70 56z"/>
+        <path d="M88 150c4-46 26-78 56-90 4 34-14 70-56 90z" fill="#3a5a48"/>
+        <path d="M86 152C82 96 66 52 46 30c-14 34-6 82 40 122z" fill="#35523f"/>
+        <path d="M90 154c22-30 52-40 76-34-12 24-38 38-76 34z"/>
+        <path d="M86 152c-2-58 10-110 34-140 14 40 6 96-34 140z" fill="#2b4436"/>
+      </g>
+      <g fill="none" stroke="#1d2e25" stroke-width="2" stroke-linecap="round">
+        <path d="M84 150C66 124 44 108 22 100M88 150c12-30 30-56 52-84M86 152C78 108 64 70 48 40M90 154c22-16 46-26 70-32M86 152c4-44 14-88 32-130"/>
+      </g>
+      <path d="M44 160h82l-10 74H54z" fill="#3b2a22"/>
+      <rect x="38" y="150" width="94" height="16" rx="3" fill="#4a3529"/>
+    </svg>
+    <!-- Pilha de livros e caneca -->
+    <svg class="ll-livros" viewBox="0 0 190 90">
+      <rect x="4" y="66" width="120" height="20" rx="3" fill="#34445a"/>
+      <rect x="14" y="48" width="104" height="18" rx="3" fill="#5b4632"/>
+      <rect x="8" y="32" width="112" height="16" rx="3" fill="#3c5446"/>
+      <path d="M150 40h28v40a6 6 0 0 1-6 6h-16a6 6 0 0 1-6-6z" fill="#4a4f5c"/>
+      <path d="M178 50h4a7 7 0 0 1 0 14h-4" fill="none" stroke="#4a4f5c" stroke-width="4"/>
+    </svg>
+  </div>
+
+  <!-- Escuridão da sala: uma máscara radial abre um "buraco" onde a luz bate -->
+  <div class="ll-sombra" aria-hidden="true"></div>
+
+  <!-- ===== FEIXE DE LUZ (geometria calculada no script.js) ===== -->
+  <svg class="ll-feixe" id="ll-feixe" aria-hidden="true" preserveAspectRatio="none">
+    <defs>
+      <radialGradient id="ll-grad-feixe" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="600">
+        <stop offset="0" class="ll-s0"/>
+        <stop offset=".42" class="ll-s1"/>
+        <stop offset="1" class="ll-s2"/>
+      </radialGradient>
+      <radialGradient id="ll-grad-brilho">
+        <stop offset="0" class="ll-s0"/>
+        <stop offset="1" class="ll-s2"/>
+      </radialGradient>
+      <linearGradient id="ll-grad-mascara" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff"/>
+        <stop offset=".55" stop-color="#fff"/>
+        <stop offset="1" stop-color="#000"/>
+      </linearGradient>
+      <mask id="ll-mascara-feixe" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+        <rect id="ll-mascara-rect" x="0" y="0" width="100%" height="100%" fill="url(#ll-grad-mascara)"/>
+      </mask>
+      <filter id="ll-borrao" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="12"/>
+      </filter>
+    </defs>
+    <g class="ll-feixe-oscila">
+      <g mask="url(#ll-mascara-feixe)">
+        <path id="ll-cone" fill="url(#ll-grad-feixe)" filter="url(#ll-borrao)" d="M0 0"/>
+        <path id="ll-nucleo" class="ll-nucleo" fill="url(#ll-grad-feixe)" filter="url(#ll-borrao)" d="M0 0"/>
+      </g>
+      <ellipse id="ll-poca" fill="url(#ll-grad-brilho)" cx="0" cy="0" rx="0" ry="0"/>
+      <circle id="ll-halo" fill="url(#ll-grad-brilho)" cx="0" cy="0" r="0"/>
+    </g>
+  </svg>
+
+  <!-- Apagão rápido usado na comemoração (a luz pisca 2x) -->
+  <div class="ll-apagao" aria-hidden="true"></div>
+
+  <!-- ===== PALCO: luminária + cartão de login ===== -->
+  <div class="ll-ancora ll-palco" id="ll-palco">
+
+    <!-- Suporte de parede (só aparece no celular, onde a luminária fica acima do cartão) -->
+    <div class="ll-suporte" aria-hidden="true"></div>
+
+    <!-- Luminária articulada. É clicável e arrastável com mouse/toque.
+         Para teclado existe o botão real "Acender a luz" no painel. -->
+    <div class="ll-luminaria" id="ll-luminaria" aria-hidden="true">
+      <svg class="ll-lamp-svg" viewBox="0 0 420 640">
+        <g class="ll-lamp-traco" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <!-- base -->
+          <path class="ll-lamp-cheio" d="M28 632L44 610H116L132 632Z"/>
+          <path d="M44 621H116"/>
+          <!-- braço inferior (duas hastes) + mola -->
+          <path d="M85.4 599.1L147.4 301.1M74.6 596.9L136.6 298.9"/>
+          <path class="ll-mola" d="M70.3 571.1L76.6 560.4L71.1 547.3L81.4 537.4L75.9 524.3L86.1 514.4L80.7 501.3L90.9 491.5L85.5 478.3L95.7 468.5L90.3 455.3L100.5 445.5L95.1 432.4L105.3 422.5L103.8 410.2"/>
+          <path d="M70.3 571.1L85 574.2M103.8 410.2L118.4 413.2"/>
+          <circle class="ll-lamp-cheio" cx="80" cy="598" r="10"/>
+          <!-- braço superior + mola -->
+          <path d="M145.9 303.1L333.9 65.1M138.1 296.9L326.1 58.9"/>
+          <path class="ll-mola" d="M174.8 279.5L184.7 272.6L186.3 259.2L198.9 254.5L200.6 241.2L213.2 236.4L214.9 223.1L227.5 218.4L229.2 205L241.8 200.3L246.2 189.1"/>
+          <path d="M174.8 279.5L164.6 271.4M246.2 189.1L236 181"/>
+          <!-- cotovelo -->
+          <circle class="ll-lamp-cheio" cx="142" cy="300" r="11"/>
+          <circle cx="142" cy="300" r="3"/>
+        </g>
+        <!-- Área de clique invisível (mais fácil de acertar) -->
+        <g class="ll-alvo">
+          <path d="M80 610L142 300L330 62" fill="none" stroke="transparent" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="20" y="590" width="120" height="50" fill="transparent"/>
+        </g>
+        <!-- Cabeça: desenhada apontando para +x; o script gira para mirar o cartão -->
+        <g id="ll-cabeca" class="ll-cabeca" transform="translate(330 62) rotate(45)">
+          <path class="ll-alvo" d="M-14 -24H86V24H-14Z" fill="transparent"/>
+          <g class="ll-lamp-traco" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path class="ll-lamp-cheio" d="M14 -9L60 -30L60 30L14 9Z"/>
+            <path class="ll-lamp-cheio" d="M14 -9A9 9 0 0 0 14 9"/>
+            <path d="M32 -17.4V17.4"/>
+            <path d="M24 -13.6L18 -24M14 -27H22"/>
+            <circle class="ll-bulbo" cx="63" cy="0" r="10"/>
+            <ellipse class="ll-boca" cx="60" cy="0" rx="5" ry="30"/>
+            <circle class="ll-lamp-cheio" cx="0" cy="0" r="9"/>
+            <circle cx="0" cy="0" r="2.5"/>
+          </g>
+        </g>
+        <!-- marcador do eixo da articulação (lido pelo script) -->
+        <circle id="ll-junta" cx="330" cy="62" r="1" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- ===== CARTÃO DE LOGIN ===== -->
+    <section class="ll-cartao" id="ll-cartao" aria-labelledby="ll-titulo" inert>
+      <div class="ll-cartao-conteudo" id="ll-conteudo-form">
+        <p class="ll-sobretitulo">Ateliê Noturno</p>
+        <h1 class="ll-titulo" id="ll-titulo">Boa noite.</h1>
+        <p class="ll-subtitulo">Acenda a luz e continue de onde parou.</p>
+
+        <!-- Conta de demonstração (remova ao publicar) -->
+        <div class="ll-demo">
+          <p class="ll-demo-texto"><span class="ll-demo-rotulo">Demo</span> <code>ana@atelie.com</code> <span class="ll-oculto">senha</span> <code>abajur</code></p>
+          <button class="ll-demo-usar" id="ll-preencher" type="button">Preencher</button>
+        </div>
+
+        <div class="ll-area-form">
+        <form class="ll-form" id="ll-form" novalidate>
+          <div class="ll-campo">
+            <label class="ll-rotulo" for="ll-email">E-mail</label>
+            <input class="ll-entrada" id="ll-email" name="email" type="email" inputmode="email"
+                   autocomplete="email" placeholder="voce@estudio.com" required
+                   aria-describedby="ll-erro-email">
+            <p class="ll-erro" id="ll-erro-email"></p>
+          </div>
+
+          <div class="ll-campo">
+            <label class="ll-rotulo" for="ll-senha">Senha</label>
+            <div class="ll-senha-caixa">
+              <input class="ll-entrada" id="ll-senha" name="senha" type="password"
+                     autocomplete="current-password" placeholder="Mínimo de 6 caracteres" required minlength="6"
+                     aria-describedby="ll-erro-senha">
+              <button class="ll-olho" id="ll-olho" type="button" aria-label="Mostrar senha" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                  <path class="ll-olho-risco" d="M4 20L20 4"/>
+                </svg>
+              </button>
+            </div>
+            <p class="ll-erro" id="ll-erro-senha"></p>
+          </div>
+
+          <div class="ll-linha">
+            <label class="ll-lembrar">
+              <input type="checkbox" name="lembrar" checked>
+              <span>Lembrar de mim</span>
+            </label>
+            <a class="ll-link" href="#" data-aviso="Enviaríamos um link de recuperação para o seu e-mail (demonstração).">Esqueci a senha</a>
+          </div>
+
+          <button class="ll-entrar" id="ll-entrar" type="submit">
+            <span class="ll-entrar-texto">Entrar</span>
+            <span class="ll-spinner" aria-hidden="true"></span>
+            <svg class="ll-entrar-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </button>
+
+          <p class="ll-rodape">Novo por aqui? <a class="ll-link" href="#" data-aviso="Aqui abriria o cadastro (demonstração).">Criar uma conta</a></p>
+        </form>
+
+        <!-- BLOQUEIO (após 3 erros seguidos): a luz se apaga e um cadeado tranca o formulário.
+             Cobre o formulário (que fica disabled + inert) com a contagem regressiva. -->
+        <div class="ll-bloqueio" id="ll-bloqueio" hidden>
+          <svg class="ll-cadeado" viewBox="0 0 64 64" aria-hidden="true">
+            <path class="ll-cadeado-arco" d="M21 29v-8a11 11 0 0 1 22 0v8"/>
+            <rect class="ll-cadeado-corpo" x="14" y="29" width="36" height="27" rx="6"/>
+            <path class="ll-cadeado-furo" d="M32 39.5v6"/>
+            <circle class="ll-cadeado-furo-topo" cx="32" cy="39" r="2.6"/>
+          </svg>
+          <h2 class="ll-bloqueio-titulo" id="ll-bloqueio-titulo" tabindex="-1">Acesso pausado</h2>
+          <p class="ll-bloqueio-texto">Muitas tentativas seguidas. Apagamos a luz por um instante para proteger sua conta.</p>
+          <p class="ll-bloqueio-contagem">Tente de novo em <strong id="ll-bloqueio-tempo">0:30</strong></p>
+          <div class="ll-bloqueio-barra" aria-hidden="true"><span></span></div>
+          <a class="ll-link ll-bloqueio-suporte" id="ll-suporte" href="#">Falar com o suporte</a>
+        </div>
+        </div>
+      </div>
+
+      <!-- Painel de sucesso (substitui o formulário) -->
+      <div class="ll-sucesso" id="ll-sucesso" hidden>
+        <svg class="ll-sucesso-icone" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="21"/>
+          <path d="M15 24.5l6 6L33.5 18"/>
+        </svg>
+        <h2 class="ll-titulo ll-titulo-menor" tabindex="-1" id="ll-sucesso-titulo">Bem-vindo de volta.</h2>
+        <p class="ll-subtitulo">Você entrou como <strong id="ll-sucesso-email">voce@estudio.com</strong>. A luz fica acesa enquanto você trabalha.</p>
+        <button class="ll-entrar ll-secundario" id="ll-sair" type="button"><span class="ll-entrar-texto">Sair</span></button>
+      </div>
+
+      <p class="ll-nota" id="ll-nota" aria-live="polite"></p>
+    </section>
+  </div>
+
+  <!-- ===== PAINEL DE CONTROLE (na frente da mesa) ===== -->
+  <div class="ll-ancora ll-painel">
+    <div class="ll-controles">
+      <button class="ll-interruptor" id="ll-interruptor" type="button">
+        <span class="ll-chave" aria-hidden="true"><span></span></span>
+        <span class="ll-interruptor-texto">Acender a luz</span>
+      </button>
+      <div class="ll-tons" role="group" aria-label="Cor da luz">
+        <button class="ll-tom" type="button" data-tom="quente" aria-pressed="true" aria-label="Luz quente"></button>
+        <button class="ll-tom" type="button" data-tom="neutra" aria-pressed="false" aria-label="Luz neutra"></button>
+        <button class="ll-tom" type="button" data-tom="fria" aria-pressed="false" aria-label="Luz fria"></button>
+      </div>
+    </div>
+    <p class="ll-dica">Clique na luminária ou puxe a cabeça dela para baixo.</p>
+  </div>
+
+  <!-- Anúncios para leitores de tela -->
+  <p class="ll-oculto" id="ll-anuncio" aria-live="polite"></p>
+</main>
+
+<script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

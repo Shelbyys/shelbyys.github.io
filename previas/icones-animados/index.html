@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ícones Animados — 20 ícones SVG duotone com microinterações</title>
+  <meta name="description" content="20 ícones SVG originais em traço linear com preenchimento duotone opcional, grade 24×24, com microanimações em CSS ao passar o mouse, focar ou tocar.">
+  <meta name="theme-color" content="#f2f1ed">
+
+  <!-- Fonte Outfit (única dependência externa, opcional) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap">
+
+  <!-- icones.css = a biblioteca de ícones (leve para o seu projeto)
+       estilo.css  = só a página de demonstração -->
+  <link rel="stylesheet" href="icones.css">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="ia-corpo">
+
+<div class="ia-pagina">
+
+  <!-- ================= PAINEL LATERAL ================= -->
+  <aside class="ia-lateral" aria-label="Ajustes dos ícones">
+    <div class="ia-topo">
+      <span class="ia-selo">Grátis</span>
+      <span class="ia-contagem" id="ia-contagem" aria-live="polite">20 ícones</span>
+    </div>
+
+    <h1 class="ia-titulo">Ícones<br><em>animados</em></h1>
+    <p class="ia-desc">20 ícones SVG em traço linear com um toque duotone e microinterações em CSS. Passe o mouse, use o teclado ou toque. Clique no cartão para copiar o SVG.</p>
+
+    <!-- Busca por nome -->
+    <div class="ia-pesquisa">
+      <label class="ia-oculto" for="ia-busca">Buscar ícone pelo nome</label>
+      <svg class="ia-pesquisa-icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3L20 20"/></svg>
+      <input class="ia-pesquisa-campo" id="ia-busca" type="search" placeholder="Buscar ícone…" autocomplete="off" spellcheck="false">
+      <kbd class="ia-atalho" aria-hidden="true">/</kbd>
+    </div>
+
+    <!-- Ajustes ao vivo: alteram --ia-cor, --ia-tamanho e --ia-traco no :root -->
+    <div class="ia-ajustes">
+      <div class="ia-ajuste">
+        <div class="ia-ajuste-topo">
+          <label for="ia-cor">Cor</label>
+          <output class="ia-valor" id="ia-cor-valor" for="ia-cor">#2F5BD3</output>
+        </div>
+        <div class="ia-cores">
+          <span class="ia-cor-caixa">
+            <input class="ia-cor" id="ia-cor" type="color" value="#2f5bd3">
+          </span>
+          <div class="ia-amostras" role="group" aria-label="Cores prontas">
+            <button class="ia-amostra" type="button" data-cor="#18181b" style="--a:#18181b" aria-label="Grafite" aria-pressed="false"></button>
+            <button class="ia-amostra" type="button" data-cor="#2f5bd3" style="--a:#2f5bd3" aria-label="Azul" aria-pressed="true"></button>
+            <button class="ia-amostra" type="button" data-cor="#c2412d" style="--a:#c2412d" aria-label="Terracota" aria-pressed="false"></button>
+            <button class="ia-amostra" type="button" data-cor="#177a55" style="--a:#177a55" aria-label="Verde" aria-pressed="false"></button>
+            <button class="ia-amostra" type="button" data-cor="#7a3fc4" style="--a:#7a3fc4" aria-label="Violeta" aria-pressed="false"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ia-ajuste">
+        <div class="ia-ajuste-topo">
+          <label for="ia-tamanho">Tamanho</label>
+          <output class="ia-valor" id="ia-tamanho-valor" for="ia-tamanho">44 px</output>
+        </div>
+        <input class="ia-faixa" id="ia-tamanho" type="range" min="16" max="64" step="2" value="44">
+      </div>
+
+      <div class="ia-ajuste">
+        <div class="ia-ajuste-topo">
+          <label for="ia-traco">Espessura do traço</label>
+          <output class="ia-valor" id="ia-traco-valor" for="ia-traco">1,75</output>
+        </div>
+        <input class="ia-faixa" id="ia-traco" type="range" min="1" max="3" step="0.25" value="1.75">
+      </div>
+
+      <!-- Duotone liga/desliga (põe .ia-so-traco na grade) + restaurar -->
+      <div class="ia-acoes">
+        <button class="ia-chave" id="ia-duotone" type="button" aria-pressed="true">
+          <span class="ia-chave-trilho" aria-hidden="true"></span>
+          Duotone
+        </button>
+        <button class="ia-restaurar" id="ia-restaurar" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/></svg>
+          Restaurar
+        </button>
+      </div>
+    </div>
+
+    <!-- Como usar, em três linhas -->
+    <figure class="ia-uso">
+      <figcaption>Uso</figcaption>
+      <pre><code><span class="ia-c-tag">&lt;button</span> <span class="ia-c-atr">class</span>=<span class="ia-c-str">"ia-gatilho"</span><span class="ia-c-tag">&gt;</span>
+  <span class="ia-c-tag">&lt;svg</span> <span class="ia-c-atr">class</span>=<span class="ia-c-str">"ia-icone ia-sino"</span><span class="ia-c-tag">&gt;</span>…
+<span class="ia-c-tag">&lt;/button&gt;</span></code></pre>
+    </figure>
+
+    <p class="ia-ficha">Grade 24×24 · traço 1,75 · duotone · <code>currentColor</code></p>
+  </aside>
+
+  <!-- ================= GALERIA ================= -->
+  <main class="ia-principal">
+    <h2 class="ia-oculto">Galeria de ícones</h2>
+    <ul class="ia-grade" id="ia-grade">
+
+      <!-- 1. Sino -->
+      <li class="ia-item ia-gatilho" style="--i:0" data-nome="sino" data-busca="sino notificação alerta aviso lembrete bell">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Sino">
+          <svg class="ia-icone ia-sino" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-sino-corpo">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M6.5 10.5a5.5 5.5 0 0 1 11 0v3.2c0 1.1.4 2.2 1.1 3l.9 1.05h-15l.9-1.05c.7-.8 1.1-1.9 1.1-3z"/>
+              <path d="M6.5 10.5a5.5 5.5 0 0 1 11 0v3.2c0 1.1.4 2.2 1.1 3l.9 1.05h-15l.9-1.05c.7-.8 1.1-1.9 1.1-3z"/>
+              <path d="M12 3v2"/>
+            </g>
+            <path class="ia-sino-badalo" d="M10.27 20.5a2 2 0 0 0 3.46 0"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Sino</span><button class="ia-baixar" type="button" aria-label="Baixar sino.svg">.svg</button></div>
+      </li>
+
+      <!-- 2. Coração -->
+      <li class="ia-item ia-gatilho" style="--i:1" data-nome="coracao" data-busca="coração curtir like favorito amor heart">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Coração">
+          <svg class="ia-icone ia-coracao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-coracao-forma">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M12 20c-.28 0-.55-.08-.79-.24C6.5 16.7 3 13.6 3 9.6 3 6.8 5.1 4.6 7.8 4.6c1.7 0 3.2.85 4.2 2.2 1-1.35 2.5-2.2 4.2-2.2 2.7 0 4.8 2.2 4.8 5 0 4-3.5 7.1-8.21 10.16-.24.16-.51.24-.79.24z"/>
+              <path d="M12 20c-.28 0-.55-.08-.79-.24C6.5 16.7 3 13.6 3 9.6 3 6.8 5.1 4.6 7.8 4.6c1.7 0 3.2.85 4.2 2.2 1-1.35 2.5-2.2 4.2-2.2 2.7 0 4.8 2.2 4.8 5 0 4-3.5 7.1-8.21 10.16-.24.16-.51.24-.79.24z"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Coração</span><button class="ia-baixar" type="button" aria-label="Baixar coracao.svg">.svg</button></div>
+      </li>
+
+      <!-- 3. Lixeira -->
+      <li class="ia-item ia-gatilho" style="--i:2" data-nome="lixeira" data-busca="lixeira excluir apagar deletar remover lixo trash">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Lixeira">
+          <svg class="ia-icone ia-lixeira" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M5.75 6.5h12.5l-.9 12.3a2 2 0 0 1-2 1.95h-6.7a2 2 0 0 1-2-1.95z"/>
+            <g class="ia-lixeira-tampa">
+              <path d="M3.75 6.5h16.5"/>
+              <path d="M9 6.5V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v1.5"/>
+            </g>
+            <path d="M5.75 6.5l.9 12.3a2 2 0 0 0 2 1.95h6.7a2 2 0 0 0 2-1.95l.9-12.3"/>
+            <path d="M10 10.5v6M14 10.5v6"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Lixeira</span><button class="ia-baixar" type="button" aria-label="Baixar lixeira.svg">.svg</button></div>
+      </li>
+
+      <!-- 4. Cadeado -->
+      <li class="ia-item ia-gatilho" style="--i:3" data-nome="cadeado" data-busca="cadeado senha segurança bloquear desbloquear privacidade lock">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Cadeado">
+          <svg class="ia-icone ia-cadeado" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path class="ia-cadeado-arco" d="M7.75 10.5V7.75a4.25 4.25 0 0 1 8.5 0v2.75"/>
+            <rect class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" x="4.5" y="10.5" width="15" height="10.5" rx="2.75"/>
+            <rect x="4.5" y="10.5" width="15" height="10.5" rx="2.75"/>
+            <path class="ia-cadeado-furo" d="M12 14.6v2.6"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Cadeado</span><button class="ia-baixar" type="button" aria-label="Baixar cadeado.svg">.svg</button></div>
+      </li>
+
+      <!-- 5. Envelope -->
+      <li class="ia-item ia-gatilho" style="--i:4" data-nome="envelope" data-busca="envelope email e-mail mensagem carta correio caixa mail">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Envelope">
+          <svg class="ia-icone ia-envelope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" x="3" y="5" width="18" height="14" rx="2.75"/>
+            <rect x="3" y="5" width="18" height="14" rx="2.75"/>
+            <path class="ia-envelope-aba" d="M3.9 6.6l7.1 5.5a1.6 1.6 0 0 0 2 0l7.1-5.5"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Envelope</span><button class="ia-baixar" type="button" aria-label="Baixar envelope.svg">.svg</button></div>
+      </li>
+
+      <!-- 6. Engrenagem -->
+      <li class="ia-item ia-gatilho" style="--i:5" data-nome="engrenagem" data-busca="engrenagem configurações ajustes opções preferências settings gear">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Engrenagem">
+          <svg class="ia-icone ia-engrenagem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-engrenagem-roda">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" fill-rule="evenodd" d="M10.31 5.47L10.44 3.14A9 9 0 0 1 13.56 3.14L13.69 5.47A6.75 6.75 0 0 1 15.43 6.18L17.16 4.63A9 9 0 0 1 19.37 6.84L17.82 8.57A6.75 6.75 0 0 1 18.53 10.31L20.86 10.44A9 9 0 0 1 20.86 13.56L18.53 13.69A6.75 6.75 0 0 1 17.82 15.43L19.37 17.16A9 9 0 0 1 17.16 19.37L15.43 17.82A6.75 6.75 0 0 1 13.69 18.53L13.56 20.86A9 9 0 0 1 10.44 20.86L10.31 18.53A6.75 6.75 0 0 1 8.57 17.82L6.84 19.37A9 9 0 0 1 4.63 17.16L6.18 15.43A6.75 6.75 0 0 1 5.47 13.69L3.14 13.56A9 9 0 0 1 3.14 10.44L5.47 10.31A6.75 6.75 0 0 1 6.18 8.57L4.63 6.84A9 9 0 0 1 6.84 4.63L8.57 6.18A6.75 6.75 0 0 1 10.31 5.47ZM15 12a3 3 0 1 0-6 0 3 3 0 1 0 6 0z"/>
+              <path d="M10.31 5.47L10.44 3.14A9 9 0 0 1 13.56 3.14L13.69 5.47A6.75 6.75 0 0 1 15.43 6.18L17.16 4.63A9 9 0 0 1 19.37 6.84L17.82 8.57A6.75 6.75 0 0 1 18.53 10.31L20.86 10.44A9 9 0 0 1 20.86 13.56L18.53 13.69A6.75 6.75 0 0 1 17.82 15.43L19.37 17.16A9 9 0 0 1 17.16 19.37L15.43 17.82A6.75 6.75 0 0 1 13.69 18.53L13.56 20.86A9 9 0 0 1 10.44 20.86L10.31 18.53A6.75 6.75 0 0 1 8.57 17.82L6.84 19.37A9 9 0 0 1 4.63 17.16L6.18 15.43A6.75 6.75 0 0 1 5.47 13.69L3.14 13.56A9 9 0 0 1 3.14 10.44L5.47 10.31A6.75 6.75 0 0 1 6.18 8.57L4.63 6.84A9 9 0 0 1 6.84 4.63L8.57 6.18A6.75 6.75 0 0 1 10.31 5.47Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Engrenagem</span><button class="ia-baixar" type="button" aria-label="Baixar engrenagem.svg">.svg</button></div>
+      </li>
+
+      <!-- 7. Lupa -->
+      <li class="ia-item ia-gatilho" style="--i:6" data-nome="lupa" data-busca="lupa busca buscar pesquisar procurar zoom search">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Lupa">
+          <svg class="ia-icone ia-lupa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle class="ia-lupa-onda" data-ia-extra cx="10.75" cy="10.75" r="7"/>
+            <g class="ia-lupa-corpo">
+              <circle class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" cx="10.75" cy="10.75" r="7"/>
+              <circle cx="10.75" cy="10.75" r="7"/>
+              <path d="M15.75 15.75l4.5 4.5"/>
+              <path d="M7.46 9.55a3.5 3.5 0 0 1 2.09-2.09"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Lupa</span><button class="ia-baixar" type="button" aria-label="Baixar lupa.svg">.svg</button></div>
+      </li>
+
+      <!-- 8. Confirmar -->
+      <li class="ia-item ia-gatilho" style="--i:7" data-nome="confirmar" data-busca="confirmar check ok concluído sucesso feito certo aprovado">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Confirmar">
+          <svg class="ia-icone ia-confirmar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" cx="12" cy="12" r="9"/>
+            <path class="ia-confirmar-anel" pathLength="1" d="M12 3a9 9 0 1 1 0 18 9 9 0 1 1 0-18z"/>
+            <path class="ia-confirmar-marca" pathLength="1" d="M8.25 12.25l2.6 2.6 4.9-5.2"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Confirmar</span><button class="ia-baixar" type="button" aria-label="Baixar confirmar.svg">.svg</button></div>
+      </li>
+
+      <!-- 9. Download -->
+      <li class="ia-item ia-gatilho" style="--i:8" data-nome="download" data-busca="download baixar salvar transferir">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Download">
+          <svg class="ia-icone ia-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-download-seta">
+              <path d="M12 3.75v10.5"/>
+              <path d="M7.75 10L12 14.25 16.25 10"/>
+            </g>
+            <g class="ia-download-base">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M3.75 15h16.5v2.75a2.5 2.5 0 0 1-2.5 2.5H6.25a2.5 2.5 0 0 1-2.5-2.5z"/>
+              <path d="M3.75 15v2.75a2.5 2.5 0 0 0 2.5 2.5h11.5a2.5 2.5 0 0 0 2.5-2.5V15"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Download</span><button class="ia-baixar" type="button" aria-label="Baixar download.svg">.svg</button></div>
+      </li>
+
+      <!-- 10. Upload -->
+      <li class="ia-item ia-gatilho" style="--i:9" data-nome="upload" data-busca="upload enviar subir anexar transferir">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Upload">
+          <svg class="ia-icone ia-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-upload-seta">
+              <path d="M12 14.25V3.75"/>
+              <path d="M7.75 8L12 3.75 16.25 8"/>
+            </g>
+            <g class="ia-upload-base">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M3.75 15h16.5v2.75a2.5 2.5 0 0 1-2.5 2.5H6.25a2.5 2.5 0 0 1-2.5-2.5z"/>
+              <path d="M3.75 15v2.75a2.5 2.5 0 0 0 2.5 2.5h11.5a2.5 2.5 0 0 0 2.5-2.5V15"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Upload</span><button class="ia-baixar" type="button" aria-label="Baixar upload.svg">.svg</button></div>
+      </li>
+
+      <!-- 11. Menu -->
+      <li class="ia-item ia-gatilho" style="--i:10" data-nome="menu" data-busca="menu hambúrguer navegação fechar x abrir">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Menu">
+          <svg class="ia-icone ia-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path class="ia-menu-l1" d="M4 6h16"/>
+            <path class="ia-menu-l2" d="M4 12h16"/>
+            <path class="ia-menu-l3" d="M4 18h16"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Menu</span><button class="ia-baixar" type="button" aria-label="Baixar menu.svg">.svg</button></div>
+      </li>
+
+      <!-- 12. Play / Pause -->
+      <li class="ia-item ia-gatilho" style="--i:11" data-nome="play" data-busca="play pause reproduzir pausar tocar vídeo áudio player música">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Play / Pause">
+          <svg class="ia-icone ia-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-play-tri">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M7.75 5.2v13.6c0 .85.95 1.38 1.68.93l10.9-6.8c.66-.41.66-1.38 0-1.8L9.43 4.27c-.73-.45-1.68.08-1.68.93z"/>
+              <path d="M7.75 5.2v13.6c0 .85.95 1.38 1.68.93l10.9-6.8c.66-.41.66-1.38 0-1.8L9.43 4.27c-.73-.45-1.68.08-1.68.93z"/>
+            </g>
+            <g class="ia-play-barras" data-ia-extra>
+              <rect class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" x="6.75" y="5" width="3.75" height="14" rx="1.25"/>
+              <rect class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" x="13.5" y="5" width="3.75" height="14" rx="1.25"/>
+              <rect x="6.75" y="5" width="3.75" height="14" rx="1.25"/>
+              <rect x="13.5" y="5" width="3.75" height="14" rx="1.25"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Play / Pause</span><button class="ia-baixar" type="button" aria-label="Baixar play.svg">.svg</button></div>
+      </li>
+
+      <!-- 13. Estrela -->
+      <li class="ia-item ia-gatilho" style="--i:12" data-nome="estrela" data-busca="estrela favorito destaque avaliação nota premium star">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Estrela">
+          <svg class="ia-icone ia-estrela" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-estrela-forma">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M12 3.25L14.7 9.03L21.04 9.81L16.37 14.17L17.58 20.44L12 17.35L6.42 20.44L7.63 14.17L2.96 9.81L9.3 9.03Z"/>
+              <path d="M12 3.25L14.7 9.03L21.04 9.81L16.37 14.17L17.58 20.44L12 17.35L6.42 20.44L7.63 14.17L2.96 9.81L9.3 9.03Z"/>
+            </g>
+            <path class="ia-brilho ia-brilho-1" data-ia-extra d="M20.5 1.75v3M19 3.25h3"/>
+            <path class="ia-brilho ia-brilho-2" data-ia-extra d="M3.5 17.5v3M2 19h3"/>
+            <path class="ia-brilho ia-brilho-3" data-ia-extra d="M3.5 2.25v2.5M2.25 3.5h2.5"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Estrela</span><button class="ia-baixar" type="button" aria-label="Baixar estrela.svg">.svg</button></div>
+      </li>
+
+      <!-- 14. Chuva -->
+      <li class="ia-item ia-gatilho" style="--i:13" data-nome="chuva" data-busca="chuva nuvem clima tempo previsão rain cloud">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Chuva">
+          <svg class="ia-icone ia-chuva" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-chuva-nuvem">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M7 15a3.5 3.5 0 0 1-.4-6.98A5.5 5.5 0 0 1 17.3 8.1 3.5 3.5 0 0 1 17 15z"/>
+              <path d="M7 15a3.5 3.5 0 0 1-.4-6.98A5.5 5.5 0 0 1 17.3 8.1 3.5 3.5 0 0 1 17 15z"/>
+            </g>
+            <path class="ia-gota ia-gota-1" d="M8.6 18.25l-.75 2"/>
+            <path class="ia-gota ia-gota-2" d="M12.4 18.25l-.75 2"/>
+            <path class="ia-gota ia-gota-3" d="M16.2 18.25l-.75 2"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Chuva</span><button class="ia-baixar" type="button" aria-label="Baixar chuva.svg">.svg</button></div>
+      </li>
+
+      <!-- 15. Wi-Fi -->
+      <li class="ia-item ia-gatilho" style="--i:14" data-nome="wifi" data-busca="wifi wi-fi sinal internet conexão rede">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Wi-Fi">
+          <svg class="ia-icone ia-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M12 18.5L3.16 9.66A12.5 12.5 0 0 1 20.84 9.66z"/>
+            <path d="M12 18.5h.01"/>
+            <path class="ia-onda ia-onda-1" d="M9.17 15.67a4 4 0 0 1 5.66 0"/>
+            <path class="ia-onda ia-onda-2" d="M6.17 12.67a8.25 8.25 0 0 1 11.66 0"/>
+            <path class="ia-onda ia-onda-3" d="M3.16 9.66a12.5 12.5 0 0 1 17.68 0"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Wi-Fi</span><button class="ia-baixar" type="button" aria-label="Baixar wifi.svg">.svg</button></div>
+      </li>
+
+      <!-- 16. Bateria -->
+      <li class="ia-item ia-gatilho" style="--i:15" data-nome="bateria" data-busca="bateria carga carregando energia celular battery">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Bateria">
+          <svg class="ia-icone ia-bateria" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" x="2" y="6.75" width="18" height="10.5" rx="2.75"/>
+            <rect x="2" y="6.75" width="18" height="10.5" rx="2.75"/>
+            <path d="M22 10.25v3.5"/>
+            <path class="ia-carga ia-carga-1" d="M5.6 10.25v3.5"/>
+            <path class="ia-carga ia-carga-2" d="M9.2 10.25v3.5"/>
+            <path class="ia-carga ia-carga-3" d="M12.8 10.25v3.5"/>
+            <path class="ia-carga ia-carga-4" d="M16.4 10.25v3.5"/>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Bateria</span><button class="ia-baixar" type="button" aria-label="Baixar bateria.svg">.svg</button></div>
+      </li>
+
+      <!-- 17. Casa -->
+      <li class="ia-item ia-gatilho" style="--i:16" data-nome="casa" data-busca="casa início home página inicial lar">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Casa">
+          <svg class="ia-icone ia-casa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-casa-corpo">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M3.75 10.1a1.75 1.75 0 0 1 .63-1.35l6.5-5.4a1.75 1.75 0 0 1 2.24 0l6.5 5.4a1.75 1.75 0 0 1 .63 1.35v8.4a2 2 0 0 1-2 2H5.75a2 2 0 0 1-2-2z"/>
+              <path d="M3.75 10.1a1.75 1.75 0 0 1 .63-1.35l6.5-5.4a1.75 1.75 0 0 1 2.24 0l6.5 5.4a1.75 1.75 0 0 1 .63 1.35v8.4a2 2 0 0 1-2 2H5.75a2 2 0 0 1-2-2z"/>
+              <path class="ia-casa-porta" d="M9.75 20.5v-4.25a2.25 2.25 0 0 1 4.5 0v4.25"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Casa</span><button class="ia-baixar" type="button" aria-label="Baixar casa.svg">.svg</button></div>
+      </li>
+
+      <!-- 18. Usuário -->
+      <li class="ia-item ia-gatilho" style="--i:17" data-nome="usuario" data-busca="usuário perfil conta pessoa login avatar user">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Usuário">
+          <svg class="ia-icone ia-usuario" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-usuario-cabeca">
+              <circle class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" cx="12" cy="8" r="4"/>
+              <circle cx="12" cy="8" r="4"/>
+            </g>
+            <g class="ia-usuario-ombros">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M4.75 20.25v-.5a5.25 5.25 0 0 1 5.25-5.25h4a5.25 5.25 0 0 1 5.25 5.25v.5z"/>
+              <path d="M4.75 20.25v-.5a5.25 5.25 0 0 1 5.25-5.25h4a5.25 5.25 0 0 1 5.25 5.25v.5"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Usuário</span><button class="ia-baixar" type="button" aria-label="Baixar usuario.svg">.svg</button></div>
+      </li>
+
+      <!-- 19. Olho -->
+      <li class="ia-item ia-gatilho" style="--i:18" data-nome="olho" data-busca="olho ver visualizar mostrar senha visível visibilidade eye">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Olho">
+          <svg class="ia-icone ia-olho" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ia-olho-globo">
+              <path class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" d="M2.6 12.35a1 1 0 0 1 0-.7 10.2 10.2 0 0 1 18.8 0 1 1 0 0 1 0 .7 10.2 10.2 0 0 1-18.8 0z"/>
+              <path d="M2.6 12.35a1 1 0 0 1 0-.7 10.2 10.2 0 0 1 18.8 0 1 1 0 0 1 0 .7 10.2 10.2 0 0 1-18.8 0z"/>
+              <circle class="ia-olho-pupila" cx="12" cy="12" r="3"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Olho</span><button class="ia-baixar" type="button" aria-label="Baixar olho.svg">.svg</button></div>
+      </li>
+
+      <!-- 20. Compartilhar -->
+      <li class="ia-item ia-gatilho" style="--i:19" data-nome="compartilhar" data-busca="compartilhar enviar share rede conectar link">
+        <button class="ia-cartao" type="button" aria-label="Copiar SVG do ícone Compartilhar">
+          <svg class="ia-icone ia-compartilhar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <path class="ia-elo ia-elo-1" pathLength="1" d="M8.64 10.65l6.72-3.8"/>
+            <path class="ia-elo ia-elo-2" pathLength="1" d="M8.64 13.35l6.72 3.8"/>
+            <g class="ia-no ia-no-1">
+              <circle class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" cx="6.25" cy="12" r="2.75"/>
+              <circle cx="6.25" cy="12" r="2.75"/>
+            </g>
+            <g class="ia-no ia-no-2">
+              <circle class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" cx="17.75" cy="5.5" r="2.75"/>
+              <circle cx="17.75" cy="5.5" r="2.75"/>
+            </g>
+            <g class="ia-no ia-no-3">
+              <circle class="ia-tom" fill="currentColor" fill-opacity=".16" stroke="none" cx="17.75" cy="18.5" r="2.75"/>
+              <circle cx="17.75" cy="18.5" r="2.75"/>
+            </g>
+          </svg>
+        </button>
+        <div class="ia-rodape"><span class="ia-nome">Compartilhar</span><button class="ia-baixar" type="button" aria-label="Baixar compartilhar.svg">.svg</button></div>
+      </li>
+    </ul>
+
+    <p class="ia-vazio" id="ia-vazio" hidden>Nenhum ícone encontrado para “<span id="ia-vazio-termo"></span>”.</p>
+  </main>
+</div>
+
+<!-- Aviso flutuante (copiado / baixado) -->
+<div class="ia-toast" id="ia-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

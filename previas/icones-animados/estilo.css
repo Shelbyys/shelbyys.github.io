@@ -1,0 +1,611 @@
+/* =====================================================================
+   ÍCONES ANIMADOS — estilo da página de demonstração (galeria)
+   As animações dos ícones ficam em icones.css. Aqui só o layout da vitrine.
+   ===================================================================== */
+
+:root {
+  /* Paleta da galeria */
+  --ia-fundo: #f2f1ed;
+  --ia-papel: #ffffff;
+  --ia-tinta: #18181b;
+  --ia-sinal: #2f5bd3;
+  --ia-linha: #e2e0d9;
+  --ia-linha-forte: #cfccc2;
+  --ia-suave: #5b5b64;     /* texto secundário (AA sobre branco e sobre o fundo) */
+  --ia-campo: #f7f6f2;
+
+  /* Valores iniciais dos ícones (o script.js altera ao vivo) */
+  --ia-cor: #2f5bd3;
+  --ia-tamanho: 44px;
+  --ia-traco: 1.75;
+
+  /* Medidas */
+  --ia-raio: 20px;
+  --ia-espaco: 28px;
+  --ia-vao: 14px;
+  --ia-fonte: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ia-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body.ia-corpo {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ia-fundo);
+  color: var(--ia-tinta);
+  font-family: var(--ia-fonte);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+button,
+input { font: inherit; color: inherit; }
+
+/* Texto só para leitores de tela */
+.ia-oculto {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Foco visível padrão */
+:focus-visible {
+  outline: 2px solid var(--ia-sinal);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Estrutura: painel lateral + galeria
+   --------------------------------------------------------------------- */
+.ia-pagina {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: var(--ia-espaco);
+  padding: var(--ia-espaco);
+  min-height: 100vh;
+}
+
+.ia-lateral {
+  position: sticky;
+  top: var(--ia-espaco);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--ia-espaco) * 2);
+  min-height: 760px;
+  padding: 6px 6px 4px;
+  animation: ia-surge .6s cubic-bezier(.2, .8, .2, 1) backwards;
+}
+
+.ia-topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ia-selo {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 11px;
+  border-radius: 999px;
+  background: var(--ia-sinal);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.ia-contagem {
+  font-size: 14px;
+  color: var(--ia-suave);
+}
+
+.ia-titulo {
+  margin: 22px 0 14px;
+  font-size: 56px;
+  line-height: .98;
+  font-weight: 600;
+  letter-spacing: -.035em;
+}
+.ia-titulo em {
+  font-style: normal;
+  color: var(--ia-sinal);
+}
+
+.ia-desc {
+  margin: 0 0 24px;
+  max-width: 34ch;
+  color: var(--ia-suave);
+  font-size: 15.5px;
+}
+
+/* ---------- Busca ---------- */
+.ia-pesquisa {
+  position: relative;
+  margin-bottom: 22px;
+}
+.ia-pesquisa-icone {
+  position: absolute;
+  left: 14px; top: 50%;
+  width: 18px; height: 18px;
+  translate: 0 -50%;
+  color: var(--ia-suave);
+  pointer-events: none;
+}
+.ia-pesquisa-campo {
+  width: 100%;
+  height: 48px;
+  padding: 0 44px 0 42px;
+  border: 1px solid var(--ia-linha);
+  border-radius: 14px;
+  background: var(--ia-papel);
+  font-size: 15px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.ia-pesquisa-campo::placeholder { color: #75757e; }
+.ia-pesquisa-campo:hover { border-color: var(--ia-linha-forte); }
+.ia-pesquisa-campo:focus-visible {
+  outline: none;
+  border-color: var(--ia-sinal);
+  box-shadow: 0 0 0 4px rgba(47, 91, 211, .14);
+}
+.ia-pesquisa-campo::-webkit-search-cancel-button { cursor: pointer; }
+.ia-atalho {
+  position: absolute;
+  right: 12px; top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  min-width: 24px; height: 24px;
+  border: 1px solid var(--ia-linha);
+  border-radius: 7px;
+  background: var(--ia-campo);
+  color: var(--ia-suave);
+  font: 500 12px/1 var(--ia-mono);
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.ia-pesquisa-campo:focus ~ .ia-atalho,
+.ia-pesquisa-campo:not(:placeholder-shown) ~ .ia-atalho { opacity: 0; }
+
+/* ---------- Ajustes ---------- */
+.ia-ajustes {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid var(--ia-linha);
+  border-radius: var(--ia-raio);
+  background: var(--ia-papel);
+}
+.ia-ajuste-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.ia-valor {
+  font: 500 12.5px/1 var(--ia-mono);
+  color: var(--ia-suave);
+}
+
+.ia-cores {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ia-cor-caixa {
+  position: relative;
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12);
+}
+.ia-cor {
+  position: absolute;
+  inset: -8px;
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.ia-cor-caixa:has(:focus-visible) {
+  outline: 2px solid var(--ia-sinal);
+  outline-offset: 2px;
+}
+.ia-cor:focus-visible { outline: none; }
+
+.ia-amostras { display: flex; gap: 8px; flex-wrap: wrap; }
+.ia-amostra {
+  width: 26px; height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--a);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.ia-amostra:hover { transform: scale(1.1); }
+.ia-amostra[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--ia-papel), 0 0 0 4px var(--a);
+}
+
+/* Slider personalizado — a parte preenchida usa --pct (definido no script) */
+.ia-faixa {
+  --pct: 50%;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ia-faixa::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(var(--ia-tinta) 0 0) 0 / var(--pct) 100% no-repeat, #dedcd4;
+}
+.ia-faixa::-moz-range-track {
+  height: 4px;
+  border-radius: 4px;
+  background: linear-gradient(var(--ia-tinta) 0 0) 0 / var(--pct) 100% no-repeat, #dedcd4;
+}
+.ia-faixa::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  margin-top: -7px;
+  border: 2px solid var(--ia-tinta);
+  border-radius: 50%;
+  background: var(--ia-papel);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+  transition: transform .15s;
+}
+.ia-faixa::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border: 2px solid var(--ia-tinta);
+  border-radius: 50%;
+  background: var(--ia-papel);
+}
+.ia-faixa:active::-webkit-slider-thumb { transform: scale(1.15); }
+.ia-faixa:focus-visible { outline: none; }
+.ia-faixa:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(47, 91, 211, .3); border-color: var(--ia-sinal); }
+.ia-faixa:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgba(47, 91, 211, .3); border-color: var(--ia-sinal); }
+
+/* Linha de ações: chave Duotone + Restaurar */
+.ia-acoes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.ia-chave {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--ia-linha);
+  border-radius: 12px;
+  background: var(--ia-campo);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.ia-chave:hover { background: #efede7; border-color: var(--ia-linha-forte); }
+/* Trilho do interruptor (o estado vem de aria-pressed) */
+.ia-chave-trilho {
+  position: relative;
+  flex-shrink: 0;
+  width: 30px; height: 18px;
+  border-radius: 999px;
+  background: #b9b6ab;
+  transition: background .25s;
+}
+.ia-chave-trilho::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+  transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+}
+.ia-chave[aria-pressed="true"] .ia-chave-trilho { background: var(--ia-sinal); }
+.ia-chave[aria-pressed="true"] .ia-chave-trilho::after { transform: translateX(12px); }
+
+.ia-restaurar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  border: 1px solid var(--ia-linha);
+  border-radius: 12px;
+  background: var(--ia-campo);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+.ia-restaurar svg { width: 16px; height: 16px; transition: transform .5s cubic-bezier(.45, 0, .2, 1); }
+.ia-restaurar:hover { background: #efede7; border-color: var(--ia-linha-forte); }
+.ia-restaurar:hover svg { transform: rotate(-200deg); }
+
+/* ---------- Bloco "Uso" ---------- */
+.ia-uso {
+  margin: auto 0 0;
+  padding: 14px 16px 15px;
+  border-radius: 16px;
+  background: var(--ia-tinta);
+  color: #e7e7ea;
+}
+.ia-uso figcaption {
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #a1a1aa;
+}
+.ia-uso pre {
+  margin: 0;
+  overflow-x: auto;
+  font: 12.5px/1.65 var(--ia-mono);
+}
+.ia-c-tag { color: #9db8ff; }
+.ia-c-atr { color: #f2bb88; }
+.ia-c-str { color: #a3e2b8; }
+
+.ia-ficha {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--ia-suave);
+}
+.ia-ficha code { font: 12px var(--ia-mono); }
+
+/* ---------------------------------------------------------------------
+   Galeria
+   --------------------------------------------------------------------- */
+.ia-principal { min-width: 0; }
+
+.ia-grade {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  /* 4 linhas que ocupam a altura da tela (mínimo de 150px) */
+  grid-auto-rows: max(150px, calc((100vh - var(--ia-espaco) * 2 - var(--ia-vao) * 3) / 4));
+  gap: var(--ia-vao);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ia-item {
+  position: relative;
+  border: 1px solid var(--ia-linha);
+  border-radius: var(--ia-raio);
+  background: linear-gradient(180deg, #ffffff, #fbfaf6);
+  transition: border-color .25s, box-shadow .3s, transform .3s cubic-bezier(.2, .8, .2, 1);
+  animation: ia-entra .55s cubic-bezier(.2, .8, .2, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 38ms + 120ms);
+}
+.ia-item:hover {
+  border-color: color-mix(in srgb, var(--ia-cor) 28%, var(--ia-linha));
+  box-shadow: 0 18px 34px -20px color-mix(in srgb, var(--ia-cor) 40%, rgba(24, 24, 27, .3));
+  transform: translateY(-3px);
+}
+
+/* Cartão inteiro clicável (copia o SVG) */
+.ia-cartao {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 0 34px;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: var(--ia-cor);
+  cursor: copy;
+}
+.ia-cartao:focus-visible { outline-offset: -3px; }
+
+/* "Almofada" atrás do ícone: um tile com tintura suave da cor atual (--ia-cor).
+   Ao passar o mouse / focar, ganha mais cor, um brilho colorido e cresce um pouco. */
+.ia-cartao::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: calc(50% - 17px);
+  width: calc(var(--ia-tamanho) + 34px);
+  height: calc(var(--ia-tamanho) + 34px);
+  border-radius: calc(var(--ia-tamanho) * .3 + 8px);
+  /* Quase branco: deixa a camada duotone do ícone aparecer */
+  background: linear-gradient(150deg, #fff 30%, color-mix(in srgb, var(--ia-cor) 5%, #fff));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px color-mix(in srgb, var(--ia-cor) 13%, transparent),
+    0 1px 2px color-mix(in srgb, var(--ia-cor) 10%, transparent),
+    0 8px 18px -12px color-mix(in srgb, var(--ia-cor) 40%, transparent);
+  transform: translate(-50%, -50%);
+  transition: background .3s, box-shadow .3s, transform .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+.ia-gatilho:is(:hover, :has(:focus-visible)) .ia-cartao::before {
+  background: linear-gradient(150deg, #fff 20%, color-mix(in srgb, var(--ia-cor) 10%, #fff));
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px color-mix(in srgb, var(--ia-cor) 22%, transparent),
+    0 14px 26px -14px color-mix(in srgb, var(--ia-cor) 55%, transparent);
+  transform: translate(-50%, -50%) scale(1.06);
+}
+.ia-cartao .ia-icone {
+  position: relative;
+  filter: drop-shadow(0 1px 1px color-mix(in srgb, var(--ia-cor) 22%, transparent));
+}
+
+/* Selo "Copiar" no canto */
+.ia-item::after {
+  content: "Clique para copiar";
+  position: absolute;
+  top: 12px; right: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--ia-tinta);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+.ia-item:hover::after { opacity: 1; transform: none; }
+
+.ia-rodape {
+  position: absolute;
+  left: 16px; right: 12px; bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+.ia-nome {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ia-suave);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ia-baixar {
+  flex-shrink: 0;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--ia-linha);
+  border-radius: 999px;
+  background: var(--ia-campo);
+  font: 500 12px/1 var(--ia-mono);
+  color: var(--ia-suave);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.ia-baixar:hover {
+  color: var(--ia-sinal);
+  border-color: currentColor;
+  background: #eef2fc;
+}
+
+.ia-vazio {
+  margin: 40px 0;
+  text-align: center;
+  color: var(--ia-suave);
+}
+
+/* ---------------------------------------------------------------------
+   Toast
+   --------------------------------------------------------------------- */
+.ia-toast {
+  position: fixed;
+  left: 50%; bottom: 28px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: calc(100vw - 32px);
+  padding: 12px 18px 12px 14px;
+  border-radius: 14px;
+  background: var(--ia-tinta);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 500;
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .45);
+  opacity: 0;
+  transform: translate(-50%, 16px);
+  transition: opacity .25s, transform .35s cubic-bezier(.34, 1.56, .64, 1);
+  pointer-events: none;
+}
+.ia-toast:empty { padding: 0; }
+.ia-toast.ia-visivel { opacity: 1; transform: translate(-50%, 0); }
+.ia-toast svg { width: 18px; height: 18px; flex-shrink: 0; color: #8fe3b0; }
+
+/* ---------------------------------------------------------------------
+   Entrada
+   --------------------------------------------------------------------- */
+@keyframes ia-entra {
+  from { opacity: 0; transform: translateY(14px) scale(.97); }
+}
+@keyframes ia-surge {
+  from { opacity: 0; transform: translateX(-10px); }
+}
+
+/* ---------------------------------------------------------------------
+   Responsivo
+   --------------------------------------------------------------------- */
+/* Até 1280px: 4 colunas (5 linhas, a galeria rola) */
+@media (max-width: 1280px) {
+  .ia-grade { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1180px) {
+  .ia-pagina { grid-template-columns: 290px minmax(0, 1fr); --ia-espaco: 22px; }
+  .ia-titulo { font-size: 46px; }
+  /* Cartões mais estreitos: o botão .svg sobe para o canto e o nome ganha a linha toda */
+  .ia-item::after { display: none; }
+  .ia-baixar { position: absolute; top: -2px; right: 0; height: 26px; padding: 0 8px; }
+  .ia-rodape { position: absolute; top: 12px; bottom: 12px; left: 14px; right: 12px; align-items: flex-end; }
+}
+
+/* Telas baixas: o painel deixa de ser fixo para nada ficar escondido */
+@media (max-height: 820px) {
+  .ia-lateral { position: static; height: auto; min-height: 0; }
+  .ia-uso { margin-top: 18px; }
+}
+
+@media (max-width: 900px) {
+  .ia-pagina { grid-template-columns: 1fr; --ia-espaco: 18px; }
+  .ia-lateral { position: static; height: auto; min-height: 0; }
+  .ia-desc { max-width: 52ch; }
+  .ia-uso { margin-top: 18px; }
+  .ia-grade { grid-auto-rows: 160px; }
+}
+
+@media (max-width: 640px) {
+  .ia-grade { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 150px; --ia-vao: 12px; }
+  .ia-titulo { font-size: 42px; margin-top: 16px; }
+  .ia-ajustes { padding: 16px; }
+  .ia-item::after,
+  .ia-atalho { display: none; }
+  .ia-rodape { left: 12px; right: 10px; bottom: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ia-item,
+  .ia-lateral { animation: none; }
+  .ia-item,
+  .ia-toast,
+  .ia-cartao::before,
+  .ia-restaurar svg,
+  .ia-chave-trilho,
+  .ia-chave-trilho::after { transition-duration: .01ms; }
+  .ia-item:hover { transform: none; }
+}

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Aurora — entrar ou criar conta</title>
+  <meta name="description" content="Login Aurora: tela de login e cadastro com aurora boreal animada, validação em tempo real e vidro fosco.">
+  <meta name="theme-color" content="#070b14">
+  <link rel="icon" href="data:,">
+
+  <!-- Fontes (única dependência externa): Sora para títulos, Inter para textos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@500;600;700&display=swap">
+
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body class="la-body">
+  <!-- RETRATOS: retratos ilustrados em SVG (#retrato-nina).
+       Use com <svg class="..." aria-hidden="true"><use href="#retrato-ana"/></svg>.
+       Cores por variável CSS: --retrato-fundo, --retrato-aro, --retrato-luz, --retrato-roupa-<nome>.
+       Para trocar por foto real, veja "Retratos" no LEIAME.md. -->
+  <svg class="retratos-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="rt-disco"><circle cx="60" cy="60" r="60"/></clipPath>
+      <path id="rt-rosto" d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/>
+      <clipPath id="rt-clip-rosto"><path d="M60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-fora-rosto"><path clip-rule="evenodd" d="M0 0H120V120H0ZM60 27C74.5 27 82 37.5 82 51C82 60 79.5 67.5 74.5 73C70.5 77.5 65.5 80 60 80C54.5 80 49.5 77.5 45.5 73C40.5 67.5 38 60 38 51C38 37.5 45.5 27 60 27Z"/></clipPath>
+      <clipPath id="rt-clip-torso"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></clipPath>
+      <radialGradient id="rt-luz-fundo" cx=".32" cy=".26" r=".85"><stop offset="0" stop-color="#fff" style="stop-opacity:var(--retrato-luz, .38)"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".16"/></radialGradient>
+      <linearGradient id="rt-sombra-corpo" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".34"/></linearGradient>
+      <linearGradient id="rt-sombra-pescoco" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".5" stop-color="#000" stop-opacity=".06"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></linearGradient>
+      <linearGradient id="rt-sombra-gola" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".25"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+      <linearGradient id="rt-aro-grad" gradientUnits="userSpaceOnUse" x1="62" y1="40" x2="86" y2="54"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <mask id="rt-aro" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-grad)"/></mask>
+      <radialGradient id="rt-aro-cabeca-grad" gradientUnits="userSpaceOnUse" cx="94" cy="26" r="46"><stop offset=".25" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+      <mask id="rt-aro-cabeca" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="120"><rect width="120" height="120" fill="url(#rt-aro-cabeca-grad)"/></mask>
+      <linearGradient id="rt-pele-nina" x1="0" y1=".2" x2="1" y2=".8"><stop offset="0" stop-color="#311c12"/><stop offset=".38" stop-color="#4d2d1f"/><stop offset="1" stop-color="#74493a"/></linearGradient>
+      <linearGradient id="rt-cabelo-nina" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a110e"/><stop offset=".6" stop-color="#1a110e"/><stop offset="1" stop-color="#4a342a"/></linearGradient>
+      <radialGradient id="rt-volume-nina" gradientUnits="userSpaceOnUse" cx="74" cy="26" r="52"><stop offset="0" stop-color="#4a342a"/><stop offset=".6" stop-color="#1a110e"/><stop offset="1" stop-color="#1a110e"/></radialGradient>
+      <clipPath id="rt-clip-cabelo-nina"><path d="M37.6 53C36 34 45.5 24 60 24C74.5 24 84 34 82.4 53C80.6 45 75.5 39 67.5 37.4C62.5 36.4 57.5 36.4 52.5 37.4C44.5 39 39.4 45 37.6 53Z"/></clipPath>
+    </defs>
+    <symbol id="retrato-nina" viewBox="0 0 120 120"><!-- Nina — black power volumoso, argolas --><g clip-path="url(#rt-disco)" stroke="none"><circle cx="60" cy="60" r="60" style="fill:var(--retrato-fundo, #e9e2d6)"/><circle cx="60" cy="60" r="60" fill="url(#rt-luz-fundo)"/><g fill="url(#rt-volume-nina)"><circle cx="42.5" cy="67.7" r="6.5"/><circle cx="35.8" cy="63.2" r="6.5"/><circle cx="30.6" cy="57.3" r="6.5"/><circle cx="26.9" cy="50.5" r="6.5"/><circle cx="25.2" cy="43.0" r="6.5"/><circle cx="25.4" cy="35.4" r="6.5"/><circle cx="27.5" cy="28.1" r="6.5"/><circle cx="31.5" cy="21.4" r="6.5"/><circle cx="37.1" cy="15.8" r="6.5"/><circle cx="44.0" cy="11.6" r="6.5"/><circle cx="51.7" cy="8.9" r="6.5"/><circle cx="60.0" cy="8.0" r="6.5"/><circle cx="68.3" cy="8.9" r="6.5"/><circle cx="76.0" cy="11.6" r="6.5"/><circle cx="82.9" cy="15.8" r="6.5"/><circle cx="88.5" cy="21.4" r="6.5"/><circle cx="92.5" cy="28.1" r="6.5"/><circle cx="94.6" cy="35.4" r="6.5"/><circle cx="94.8" cy="43.0" r="6.5"/><circle cx="93.1" cy="50.5" r="6.5"/><circle cx="89.4" cy="57.3" r="6.5"/><circle cx="84.2" cy="63.2" r="6.5"/><circle cx="77.5" cy="67.7" r="6.5"/><ellipse cx="60" cy="40" rx="35" ry="32"/></g><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="#311c12"/><path d="M49.5 68L49.5 88Q60 97 70.5 88L70.5 68Z" fill="url(#rt-sombra-pescoco)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" style="fill:var(--retrato-roupa-nina, #7b62c9)"/><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z" fill="url(#rt-sombra-corpo)"/><path d="M47 88.6L60 105L73 88.6Q60 96 47 88.6Z" fill="url(#rt-pele-nina)"/><path d="M47 88.6L60 105L73 88.6" fill="none" stroke="#000" stroke-opacity=".22" stroke-width="2.4" stroke-linejoin="round"/><g mask="url(#rt-aro)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-torso)"><path d="M6 124C7 104 24 93 47 88.5Q60 96 73 88.5C96 93 113 104 114 124Z"/></g></g><ellipse cx="38.6" cy="56" rx="4.6" ry="6.6" fill="#311c12"/><ellipse cx="81.4" cy="56" rx="4.6" ry="6.6" fill="#74493a"/><ellipse cx="38.9" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".16"/><ellipse cx="81.1" cy="56.4" rx="2" ry="3.4" fill="#000" fill-opacity=".1"/><use href="#rt-rosto" fill="url(#rt-pele-nina)"/><circle cx="47.5" cy="65" r="5" fill="#7e3a2c" fill-opacity=".15"/><circle cx="72.5" cy="65" r="5" fill="#7e3a2c" fill-opacity=".15"/><ellipse cx="72" cy="61" rx="3.4" ry="1.8" fill="#fff" fill-opacity=".14"/><path d="M58.4 56.6C58 60 56.6 62.4 57.2 64.4C58.4 65.9 61.8 65.9 63.2 64.5" fill="none" stroke="#311c12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="61.4" cy="62.2" rx="1.7" ry="1.3" fill="#fff" fill-opacity=".2"/><path d="M53 70.2Q60 73.2 67 70.2Q64.6 77 60 77Q55.4 77 53 70.2Z" fill="#6c3027"/><path d="M54.4 71Q60 73.4 65.6 71Q65 72.9 60 73.4Q55 72.9 54.4 71Z" fill="#fff" fill-opacity=".92"/><ellipse cx="50.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="51.5" cy="54.5" r="1.05" fill="#fff"/><ellipse cx="69.5" cy="55.8" rx="2.9" ry="3.4" fill="#1d1412"/><circle cx="70.5" cy="54.5" r="1.05" fill="#fff"/><path d="M46.4 53.2Q50.5 50.4 54.6 53M65.4 53Q69.5 50.4 73.6 53.2" fill="none" stroke="#1d1412" stroke-width="1.3" stroke-linecap="round" stroke-opacity=".55"/><path d="M44.6 48.2Q50 44.8 55.6 47.2M64.4 47.2Q70 44.8 75.4 48.2" fill="none" stroke="#1a110e" stroke-width="2.6" stroke-linecap="round"/><g mask="url(#rt-aro-cabeca)" fill="none" style="stroke:var(--retrato-aro, #fff)" stroke-width="3" stroke-opacity=".6"><g clip-path="url(#rt-clip-rosto)"><use href="#rt-rosto"/></g></g><g clip-path="url(#rt-clip-rosto)"><path d="M37.6 53C36 34 45.5 24 60 24C74.5 24 84 34 82.4 53C80.6 45 75.5 39 67.5 37.4C62.5 36.4 57.5 36.4 52.5 37.4C44.5 39 39.4 45 37.6 53Z" transform="translate(-.6 2.8)" fill="#000" fill-opacity=".16"/></g><path d="M37.6 53C36 34 45.5 24 60 24C74.5 24 84 34 82.4 53C80.6 45 75.5 39 67.5 37.4C62.5 36.4 57.5 36.4 52.5 37.4C44.5 39 39.4 45 37.6 53Z" fill="url(#rt-volume-nina)"/><circle cx="38" cy="67" r="4.6" fill="none" stroke="#e2ae3c" stroke-width="2"/><circle cx="82" cy="67" r="4.6" fill="none" stroke="#f4cd63" stroke-width="2"/></g></symbol>
+  </svg>
+  <!-- /RETRATOS -->
+
+  <!-- =========================================================
+       ÍCONES (sprite SVG). Uso: <svg class="la-icone"><use href="#la-i-email"/></svg>
+       ========================================================= -->
+  <svg class="la-sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="la-i-email" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M4 7.5l8 5.5 8-5.5"/></symbol>
+      <symbol id="la-i-cadeado" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2"/></symbol>
+      <symbol id="la-i-usuario" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.3-3.6 4.2-5.5 7.5-5.5s6.2 1.9 7.5 5.5"/></symbol>
+      <symbol id="la-i-escudo" viewBox="0 0 24 24"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6L12 3z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.4"/></symbol>
+      <symbol id="la-i-seta-esq" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol>
+      <symbol id="la-i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+      <symbol id="la-i-alerta" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.4v.1"/></symbol>
+      <symbol id="la-i-carta" viewBox="0 0 24 24"><path d="M3.5 8.5L12 3l8.5 5.5V19a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V8.5z"/><path d="M3.5 8.5L12 14l8.5-5.5"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- =========================================================
+       FUNDO: céu estrelado + aurora (canvas) + montanhas (SVG)
+       ========================================================= -->
+  <div class="la-ceu" aria-hidden="true">
+    <canvas class="la-ceu__estrelas"></canvas>
+    <canvas class="la-ceu__aurora"></canvas>
+    <svg class="la-ceu__montanhas" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice">
+      <defs>
+        <linearGradient id="la-g-monte-1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0d1a2b"/><stop offset="1" stop-color="#070b14"/>
+        </linearGradient>
+        <linearGradient id="la-g-monte-2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#08111e"/><stop offset="1" stop-color="#05080f"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#la-g-monte-1)" d="M0 150 L120 96 L210 132 L330 60 L440 120 L560 84 L660 128 L790 52 L900 112 L1010 80 L1120 126 L1240 70 L1350 112 L1440 88 V260 H0 Z"/>
+      <path class="la-ceu__crista" d="M0 150 L120 96 L210 132 L330 60 L440 120 L560 84 L660 128 L790 52 L900 112 L1010 80 L1120 126 L1240 70 L1350 112 L1440 88"/>
+      <path fill="url(#la-g-monte-2)" d="M0 200 L150 150 L260 186 L400 132 L520 178 L640 150 L760 192 L900 140 L1040 184 L1180 150 L1300 186 L1440 158 V260 H0 Z"/>
+    </svg>
+  </div>
+
+  <main class="la-pagina">
+
+    <!-- =========================================================
+         LADO DA MARCA (desktop): logo, frase e depoimento
+         ========================================================= -->
+    <section class="la-marca" aria-label="Sobre o Polar">
+      <a class="la-logo" href="#" aria-label="Polar — página inicial">
+        <svg class="la-logo__simbolo" viewBox="0 0 32 32" aria-hidden="true">
+          <defs>
+            <linearGradient id="la-g-logo" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3ef2a5"/><stop offset=".6" stop-color="#2fd8e4"/><stop offset="1" stop-color="#ff6fae"/>
+            </linearGradient>
+          </defs>
+          <path d="M16 2l3.2 10.8L30 16l-10.8 3.2L16 30l-3.2-10.8L2 16l10.8-3.2z" fill="url(#la-g-logo)"/>
+        </svg>
+        <span class="la-logo__nome">Polar</span>
+      </a>
+
+      <div class="la-marca__centro">
+        <p class="la-marca__selo"><span class="la-marca__ponto" aria-hidden="true"></span> Novo: espaços de equipe ilimitados</p>
+        <h1 class="la-marca__titulo">Onde suas ideias ganham <span class="la-marca__brilho">luz própria.</span></h1>
+        <p class="la-marca__texto">Planeje projetos, converse com o time e acompanhe tudo num só lugar, com a calma de uma noite clara.</p>
+      </div>
+
+      <figure class="la-depoimento">
+        <blockquote class="la-depoimento__texto">
+          <p>“Trocamos três ferramentas pelo Polar e o time finalmente fala a mesma língua. Parece que alguém acendeu as luzes.”</p>
+        </blockquote>
+        <figcaption class="la-depoimento__autor">
+          <!-- Retrato ilustrado (#retrato-nina). Foto real: troque o <svg> por
+               <img class="la-depoimento__retrato" src="img/marina.jpg" alt="" width="48" height="48">.
+               Sem imagem: volte às iniciais, <span class="la-depoimento__avatar" aria-hidden="true">MD</span>. -->
+          <span class="la-depoimento__avatar" aria-hidden="true"><svg class="la-depoimento__retrato" viewBox="0 0 120 120" focusable="false"><use href="#retrato-nina"/></svg></span>
+          <span>
+            <strong>Marina Duarte</strong>
+            <span class="la-depoimento__cargo">Head de Produto · Fjord Labs</span>
+          </span>
+          <span class="la-depoimento__nota" aria-label="Nota 4,9 de 5">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.8l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.7l-5.1 2.8L6 11.8l-4.3-4 5.8-.7z"/></svg>
+            4,9
+          </span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <!-- =========================================================
+         PAINEL DO FORMULÁRIO (vidro fosco)
+         ========================================================= -->
+    <section class="la-painel" aria-labelledby="la-painel-titulo">
+      <header class="la-painel__topo">
+        <h2 class="la-painel__titulo" id="la-painel-titulo">Que bom ver você</h2>
+        <p class="la-painel__sub" id="la-painel-sub">Entre para continuar de onde parou.</p>
+      </header>
+
+      <!-- Abas Entrar / Criar conta com indicador deslizante -->
+      <div class="la-abas" role="tablist" aria-label="Acesso à conta" data-ativa="0">
+        <span class="la-abas__indicador" aria-hidden="true"></span>
+        <button class="la-aba" id="la-aba-entrar" type="button" role="tab" aria-selected="true" aria-controls="la-form-entrar">Entrar</button>
+        <button class="la-aba" id="la-aba-cadastro" type="button" role="tab" aria-selected="false" aria-controls="la-form-cadastro" tabindex="-1">Criar conta</button>
+      </div>
+
+      <!-- Palco: só um formulário visível por vez; a altura anima ao trocar -->
+      <div class="la-palco">
+
+        <!-- ---------- ENTRAR ---------- -->
+        <form class="la-form" id="la-form-entrar" role="tabpanel" aria-labelledby="la-aba-entrar" novalidate data-painel="entrar">
+          <!-- BLOQUEIO (após 3 erros seguidos): escudo de luz + contagem regressiva.
+               Aparece no lugar do login social; os campos ficam disabled. -->
+          <div class="la-bloqueio" id="la-bloqueio" hidden>
+            <div class="la-bloqueio__topo">
+              <span class="la-bloqueio__escudo" aria-hidden="true">
+                <svg viewBox="0 0 56 56">
+                  <circle class="la-bloqueio__anel" cx="28" cy="28" r="26" pathLength="1"/>
+                  <path class="la-bloqueio__forma" d="M28 9.5l13 5.2v9.6c0 8.6-5.5 15.4-13 18.2-7.5-2.8-13-9.6-13-18.2v-9.6z"/>
+                  <rect class="la-bloqueio__corpo" x="22.5" y="25" width="11" height="8.5" rx="2"/>
+                  <path class="la-bloqueio__fecho" d="M24.5 25v-2.6a3.5 3.5 0 0 1 7 0V25"/>
+                </svg>
+              </span>
+              <div>
+                <h3 class="la-bloqueio__titulo" id="la-bloqueio-titulo" tabindex="-1">Acesso pausado por segurança</h3>
+                <p class="la-bloqueio__texto">Muitas tentativas seguidas. Para proteger sua conta, congelamos o login por um instante.</p>
+              </div>
+            </div>
+            <p class="la-bloqueio__contagem">Tente de novo em <strong class="la-bloqueio__tempo" id="la-bloqueio-tempo">0:30</strong></p>
+            <div class="la-bloqueio__barra" aria-hidden="true"><span></span></div>
+            <a class="la-link la-bloqueio__suporte" href="#">Falar com o suporte</a>
+          </div>
+
+          <div class="la-sociais">
+            <button class="la-social" type="button" data-social="Google" aria-label="Entrar com Google">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/>
+                <path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/>
+                <path fill="#FBBC05" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2L6.4 14z"/>
+                <path fill="#EA4335" d="M12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10C7.2 7.7 9.4 6 12 6z"/>
+              </svg>
+              <span>Google</span>
+            </button>
+            <button class="la-social" type="button" data-social="Apple" aria-label="Entrar com Apple">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8C6.9 7.4 5.4 8.3 4.6 9.8c-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.1.8c1.3 0 2.1-1.2 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7 0 0-2.8-1-2.8-4.2zM14.1 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>
+              <span>Apple</span>
+            </button>
+            <button class="la-social" type="button" data-social="GitHub" aria-label="Entrar com GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>
+              <span>GitHub</span>
+            </button>
+          </div>
+
+          <p class="la-divisor"><span>ou com seu e-mail</span></p>
+
+          <div class="la-grupo">
+            <div class="la-campo">
+              <svg class="la-campo__icone" aria-hidden="true"><use href="#la-i-email"/></svg>
+              <input class="la-campo__input" id="la-entrar-email" name="email" type="email" placeholder=" " autocomplete="email" inputmode="email" required data-validar="email" aria-describedby="la-entrar-email-erro">
+              <label class="la-campo__rotulo" for="la-entrar-email">E-mail</label>
+              <svg class="la-campo__ok" aria-hidden="true"><use href="#la-i-check"/></svg>
+            </div>
+            <p class="la-erro" id="la-entrar-email-erro" aria-live="polite"></p>
+          </div>
+
+          <div class="la-grupo">
+            <div class="la-campo">
+              <svg class="la-campo__icone" aria-hidden="true"><use href="#la-i-cadeado"/></svg>
+              <input class="la-campo__input" id="la-entrar-senha" name="senha" type="password" placeholder=" " autocomplete="current-password" required data-validar="senha" aria-describedby="la-entrar-senha-erro">
+              <label class="la-campo__rotulo" for="la-entrar-senha">Senha</label>
+              <button class="la-olho" type="button" aria-controls="la-entrar-senha" aria-pressed="false" aria-label="Mostrar senha">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <g class="la-olho__globo">
+                    <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/>
+                    <circle cx="12" cy="12" r="2.8"/>
+                  </g>
+                  <path class="la-olho__risco" d="M4.5 4.5l15 15" pathLength="1"/>
+                </svg>
+              </button>
+            </div>
+            <p class="la-erro" id="la-entrar-senha-erro" aria-live="polite"></p>
+          </div>
+
+          <div class="la-linha">
+            <label class="la-check">
+              <input class="la-check__input" type="checkbox" name="lembrar" checked>
+              <span class="la-check__caixa" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg></span>
+              <span class="la-check__texto">Lembrar de mim</span>
+            </label>
+            <button class="la-link" type="button" data-ir="recuperar">Esqueci a senha</button>
+          </div>
+
+          <button class="la-botao" type="submit">
+            <span class="la-botao__texto">Entrar</span>
+            <span class="la-botao__spinner" aria-hidden="true"></span>
+            <svg class="la-botao__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>
+          </button>
+
+          <p class="la-rodape">Novo por aqui? <button class="la-link" type="button" data-ir="cadastro">Crie sua conta grátis</button></p>
+
+          <!-- Conta de demonstração (remova ao publicar) -->
+          <div class="la-demo">
+            <p class="la-demo__texto"><span class="la-demo__rotulo">Demo</span> <code>demo@polar.app</code> <span class="la-sr">senha</span> <code>aurora</code></p>
+            <button class="la-link la-demo__usar" type="button" id="la-preencher">Preencher</button>
+          </div>
+        </form>
+
+        <!-- ---------- CRIAR CONTA ---------- -->
+        <form class="la-form" id="la-form-cadastro" role="tabpanel" aria-labelledby="la-aba-cadastro" novalidate data-painel="cadastro" hidden>
+          <div class="la-grupo">
+            <div class="la-campo">
+              <svg class="la-campo__icone" aria-hidden="true"><use href="#la-i-usuario"/></svg>
+              <input class="la-campo__input" id="la-cad-nome" name="nome" type="text" placeholder=" " autocomplete="name" required data-validar="nome" aria-describedby="la-cad-nome-erro">
+              <label class="la-campo__rotulo" for="la-cad-nome">Nome completo</label>
+              <svg class="la-campo__ok" aria-hidden="true"><use href="#la-i-check"/></svg>
+            </div>
+            <p class="la-erro" id="la-cad-nome-erro" aria-live="polite"></p>
+          </div>
+
+          <div class="la-grupo">
+            <div class="la-campo">
+              <svg class="la-campo__icone" aria-hidden="true"><use href="#la-i-email"/></svg>
+              <input class="la-campo__input" id="la-cad-email" name="email" type="email" placeholder=" " autocomplete="email" inputmode="email" required data-validar="email" aria-describedby="la-cad-email-erro">
+              <label class="la-campo__rotulo" for="la-cad-email">E-mail</label>
+              <svg class="la-campo__ok" aria-hidden="true"><use href="#la-i-check"/></svg>
+            </div>
+            <p class="la-erro" id="la-cad-email-erro" aria-live="polite"></p>
+          </div>
+
+          <div class="la-grupo">
+            <div class="la-campo">
+              <svg class="la-campo__icone" aria-hidden="true"><use href="#la-i-cadeado"/></svg>
+              <input class="la-campo__input" id="la-cad-senha" name="senha" type="password" placeholder=" " autocomplete="new-password" required data-validar="senha-nova" aria-describedby="la-cad-senha-erro la-cad-senha-forca">
+              <label class="la-campo__rotulo" for="la-cad-senha">Crie uma senha</label>
+              <button class="la-olho" type="button" aria-controls="la-cad-senha" aria-pressed="false" aria-label="Mostrar senha">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <g class="la-olho__globo">
+                    <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/>
+                    <circle cx="12" cy="12" r="2.8"/>
+                  </g>
+                  <path class="la-olho__risco" d="M4.5 4.5l15 15" pathLength="1"/>
+                </svg>
+              </button>
+            </div>
+            <!-- Medidor de força: 4 níveis (data-nivel 0–4) -->
+            <div class="la-forca" data-nivel="0">
+              <div class="la-forca__barras" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+              <p class="la-forca__texto" id="la-cad-senha-forca" aria-live="polite">Use 8+ caracteres com letras, números e símbolos.</p>
+            </div>
+            <p class="la-erro" id="la-cad-senha-erro" aria-live="polite"></p>
+          </div>
+
+          <div class="la-grupo">
+            <div class="la-campo">
+              <svg class="la-campo__icone" aria-hidden="true"><use href="#la-i-escudo"/></svg>
+              <input class="la-campo__input" id="la-cad-confirmar" name="confirmar" type="password" placeholder=" " autocomplete="new-password" required data-validar="confirmar" data-igual="la-cad-senha" aria-describedby="la-cad-confirmar-erro">
+              <label class="la-campo__rotulo" for="la-cad-confirmar">Confirme a senha</label>
+              <svg class="la-campo__ok" aria-hidden="true"><use href="#la-i-check"/></svg>
+            </div>
+            <p class="la-erro" id="la-cad-confirmar-erro" aria-live="polite"></p>
+          </div>
+
+          <div class="la-grupo">
+            <label class="la-check">
+              <input class="la-check__input" id="la-cad-termos" type="checkbox" name="termos" required data-validar="termos" aria-describedby="la-cad-termos-erro">
+              <span class="la-check__caixa" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg></span>
+              <span class="la-check__texto">Li e aceito os <a class="la-link" href="#">Termos</a> e a <a class="la-link" href="#">Privacidade</a></span>
+            </label>
+            <p class="la-erro" id="la-cad-termos-erro" aria-live="polite"></p>
+          </div>
+
+          <button class="la-botao" type="submit">
+            <span class="la-botao__texto">Criar conta</span>
+            <span class="la-botao__spinner" aria-hidden="true"></span>
+            <svg class="la-botao__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>
+          </button>
+
+          <p class="la-rodape">Já tem conta? <button class="la-link" type="button" data-ir="entrar">Entrar</button></p>
+        </form>
+
+        <!-- ---------- RECUPERAR SENHA (mini-fluxo inline) ---------- -->
+        <form class="la-form" id="la-form-recuperar" novalidate data-painel="recuperar" hidden aria-labelledby="la-rec-titulo">
+          <button class="la-voltar" type="button" data-ir="entrar">
+            <svg class="la-icone" aria-hidden="true"><use href="#la-i-seta-esq"/></svg> Voltar para entrar
+          </button>
+
+          <!-- Etapa 1: pedir o e-mail -->
+          <div class="la-rec__etapa" data-etapa="pedir">
+            <h3 class="la-rec__titulo" id="la-rec-titulo" tabindex="-1">Recuperar acesso</h3>
+            <p class="la-rec__texto">Informe o e-mail da sua conta. Enviaremos um link seguro para criar uma nova senha.</p>
+
+            <div class="la-grupo">
+              <div class="la-campo">
+                <svg class="la-campo__icone" aria-hidden="true"><use href="#la-i-email"/></svg>
+                <input class="la-campo__input" id="la-rec-email" name="email" type="email" placeholder=" " autocomplete="email" inputmode="email" required data-validar="email" aria-describedby="la-rec-email-erro">
+                <label class="la-campo__rotulo" for="la-rec-email">E-mail da conta</label>
+                <svg class="la-campo__ok" aria-hidden="true"><use href="#la-i-check"/></svg>
+              </div>
+              <p class="la-erro" id="la-rec-email-erro" aria-live="polite"></p>
+            </div>
+
+            <button class="la-botao" type="submit">
+              <span class="la-botao__texto">Enviar link</span>
+              <span class="la-botao__spinner" aria-hidden="true"></span>
+              <svg class="la-botao__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>
+            </button>
+          </div>
+
+          <!-- Etapa 2: confirmação -->
+          <div class="la-rec__etapa la-rec__enviado" data-etapa="enviado" hidden>
+            <span class="la-selo-icone" aria-hidden="true"><svg class="la-icone"><use href="#la-i-carta"/></svg></span>
+            <h3 class="la-rec__titulo" id="la-rec-enviado-titulo" tabindex="-1">Confira seu e-mail</h3>
+            <p class="la-rec__texto">Se existir uma conta para <strong class="la-rec__destino">você</strong>, o link chega em instantes. Ele vale por 30 minutos.</p>
+            <button class="la-botao la-botao--fantasma" type="button" data-ir="entrar">Voltar para entrar</button>
+          </div>
+        </form>
+
+        <!-- ---------- SUCESSO ---------- -->
+        <div class="la-form la-sucesso" data-painel="sucesso" hidden>
+          <span class="la-sucesso__icone" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>
+          </span>
+          <h3 class="la-sucesso__titulo" id="la-sucesso-titulo" tabindex="-1">Bem-vindo(a)!</h3>
+          <p class="la-sucesso__texto">Sessão iniciada como <strong class="la-sucesso__quem">você</strong>. Redirecionando para o seu painel…</p>
+          <div class="la-sucesso__barra" aria-hidden="true"><span></span></div>
+          <button class="la-botao la-botao--fantasma" type="button" data-ir="entrar">Voltar à demonstração</button>
+        </div>
+      </div>
+
+      <!-- Avisos curtos (login social da demonstração) -->
+      <p class="la-aviso" role="status" aria-live="polite"></p>
+      <!-- Anúncios de bloqueio/liberação para leitores de tela -->
+      <p class="la-sr" id="la-anuncio" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+<script src="/assets/marca-dagua.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": true,
+  "headers": [
+    {
+      "source": "/downloads/(.*)",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment"
+        }
+      ]
+    }
+  ]
+}
